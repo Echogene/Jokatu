@@ -6,3 +6,7 @@ gradle
 src/main/resources/static/css
 
 Notes
+
+gradlew
+gradlew.bat
+*.iml
