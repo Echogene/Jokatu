@@ -5,9 +5,9 @@ pageTitle: 'Hello world!',
 mainBody: contents {
 	div('This is the body.')
 	button(onclick: 'requestEvent()') {
-		div('Request event')
+		yield 'Request event'
 	}
 	button(onclick: 'navigator.id.request()') {
-		div('Sign in')
+		yield 'Sign in'
 	}
 }
