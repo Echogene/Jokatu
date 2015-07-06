@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Controller;
 
 /**
+ * Run the Jokatu web server.
  * @author Steven Weston
  */
 @Controller
