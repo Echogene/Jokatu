@@ -1,4 +1,4 @@
-layout 'layouts/main.tpl',
+layout 'layouts/main.tpl', true,
 
 pageTitle: 'Hello world!',
 
