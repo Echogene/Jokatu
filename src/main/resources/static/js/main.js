@@ -13,6 +13,7 @@ source.onmessage = function(e) {
 function requestEvent() {
 	var request = new XMLHttpRequest();
 	request.open("post", "requestEvent", true);
+	request.setRequestHeader(_csrf_header, _csrf);
 	request.send();
 }
 
