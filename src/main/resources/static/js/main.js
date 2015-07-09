@@ -38,6 +38,8 @@ function verifyAssertion(assertion) {
 	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhr.setRequestHeader("Content-length", param.length);
 	xhr.setRequestHeader("Connection", "close");
+	xhr.setRequestHeader(_csrf_header, _csrf);
+	xhr.send(param);
 
 	xhr.onreadystatechange = simpleXhrSentinel(xhr);
 }
@@ -50,7 +52,7 @@ function signoutUser() {
 }
 
 navigator.id.watch({
-	loggedInUser: 'steven.weston.alpha@gmail.com',
+	loggedInUser: 'echogene.alpha@gmail.com',
 	onlogin: verifyAssertion,
 	onlogout: signoutUser
 });
