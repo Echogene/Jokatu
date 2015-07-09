@@ -18,7 +18,7 @@ public class InMemoryPersonaUserDetailsService
 	private final Map<String, UserDetails> registeredUsers = new HashMap<>();
 
 	public InMemoryPersonaUserDetailsService() {
-		registeredUsers.put("admin", new User("admin"));
+		registeredUsers.put("echogene.alpha@gmail.com", new User("admin"));
 	}
 
 	@Override
