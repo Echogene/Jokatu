@@ -17,15 +17,15 @@ function requestEvent() {
 	request.send();
 }
 
-function simpleXhrSentinel(xhr) {
+function simpleXhrSentinel(request) {
 	return function() {
-		if (xhr.readyState == 4) {
-			if (xhr.status == 200){
+		if (request.readyState == 4) {
+			if (request.status == 200){
 				alert('lol');
 			}
 			else {
 				navigator.id.logout();
-				alert("XMLHttpRequest error: " + xhr.status);
+				alert("XMLHttpRequest error: " + request.status);
 			}
 		}
 	}
