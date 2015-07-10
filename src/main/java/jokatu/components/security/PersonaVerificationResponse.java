@@ -3,7 +3,7 @@ package jokatu.components.security;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * {"audience":"http://localhost:8080","expires":1436464604148,"issuer":"gmail.login.persona.org","email":"steven.weston.alpha@gmail.com","status":"okay"}
+ * Wrap the JSON response from verifier.login.persona.org.
  * @author Steven Weston
  */
 public class PersonaVerificationResponse {
