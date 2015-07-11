@@ -27,6 +27,7 @@ dependencies {
 	compile 'org.springframework:spring-web:4.2.0.RC1'
 	compile 'org.springframework:spring-webmvc:4.2.0.RC1'
 	compile 'org.springframework.security:spring-security-web:4.0.1.RELEASE'
+	compile 'org.springframework.security:spring-security-openid:4.0.1.RELEASE'
 	compile 'org.springframework.security:spring-security-config:4.0.1.RELEASE'
 	compile 'org.codehaus.groovy:groovy-templates:2.4.3'
 	compile 'org.codehaus.jackson:jackson-core-asl:1.9.13'
