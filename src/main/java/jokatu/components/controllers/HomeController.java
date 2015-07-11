@@ -16,6 +16,6 @@ public class HomeController {
 
 	@RequestMapping("/")
 	String loggedIn() {
-		return "views/logged_in";
+		return "views/home";
 	}
 }
