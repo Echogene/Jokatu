@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * @author Steven Weston
@@ -28,6 +29,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/favicon.ico").permitAll()
 				.antMatchers("/").permitAll()
 				.anyRequest().authenticated()
+				.and()
+			.logout()
+				.logoutRequestMatcher(new AntPathRequestMatcher("/logout/persona"))
+				.logoutSuccessUrl("/")
 				.and()
 			.authenticationProvider(provider)
 			.userDetailsService(userDetailsService);

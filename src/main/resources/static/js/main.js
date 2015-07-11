@@ -46,8 +46,9 @@ function verifyAssertion(assertion) {
 
 function signoutUser() {
 	var request = new XMLHttpRequest();
-	request.open("GET", "/request/sign-out", true);
-	//request.send(null);
+	request.open("GET", "/logout/persona", true);
+	request.setRequestHeader(_csrf_header, _csrf);
+	request.send(null);
 	request.onreadystatechange = simpleXhrSentinel(request);
 }
 
