@@ -13,12 +13,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RestController
 public class ExampleAjaxController {
 
-	private final ExampleEventEmitter emitter;
+	private final EventController emitter;
 
 	private final AtomicInteger requests = new AtomicInteger(0);
 
 	@Autowired
-	public ExampleAjaxController(ExampleEventEmitter emitter) {
+	public ExampleAjaxController(EventController emitter) {
 		this.emitter = emitter;
 	}
 

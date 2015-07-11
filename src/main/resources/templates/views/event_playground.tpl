@@ -1,10 +1,16 @@
 layout 'layouts/main.tpl', true,
 
-	pageTitle: 'Logged in',
+	pageTitle: 'Playground for events',
+
+	headers: contents {
+		script(type: 'text/javascript', src: '/js/events.js') {}
+	},
 
 	mainBody: contents {
-		div('Your login was successful.')
-		a(href: "/event_playground") {yield 'Play with events'}
+		div('Play with events here.')
+		button(onclick: 'requestEvent()') {
+			yield 'Request event'
+		}
 		form(action: '/logout', method: 'post') {
 			input(type: 'hidden', name: "${_csrf.parameterName}", value: "${_csrf.token}")
 			button(id: 'submit', type: 'submit') {yield 'Log out'}

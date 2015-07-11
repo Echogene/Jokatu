@@ -1,7 +1,8 @@
 package jokatu.components.controllers;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
@@ -12,18 +13,23 @@ import java.util.Set;
 /**
  * @author Steven Weston
  */
-@RestController
-@RequestMapping("/events/**")
-public class ExampleEventEmitter {
+@Controller
+public class EventController {
 
 	public static final String TEXT_EVENT_STREAM = "text/event-stream";
+
+	@RequestMapping(value = "/event_playground")
+	String eventPlayground() {
+		return "views/event_playground";
+	}
 
 	private final Set<SseEmitter> emitters = new HashSet<>();
 
 	@RequestMapping(
-			value = "exampleStream",
+			value = "/events/exampleStream",
 			produces = TEXT_EVENT_STREAM
 	)
+	@ResponseBody
 	SseEmitter exampleEventStream() throws InterruptedException {
 
 		SseEmitter emitter = new SseEmitter();
