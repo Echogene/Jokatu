@@ -23,7 +23,6 @@ public class PersonaIdentificationFilter extends AbstractAuthenticationProcessin
 	private final RestTemplate restTemplate = new RestTemplate();
 
 	public PersonaIdentificationFilter() {
-
 		super("/login/persona");
 	}
 
