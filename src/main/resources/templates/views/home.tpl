@@ -4,9 +4,10 @@ layout 'layouts/main.tpl', true,
 
 	mainBody: contents {
 		div('Your login was successful.')
-		a(href: "/event_playground") {yield 'Play with events'}
+		div() {a(href: "/event_playground", 'Play with events')}
+		div() {a(href: "/websocket_playground", 'Play with websockets')}
 		form(action: '/logout', method: 'post') {
 			input(type: 'hidden', name: "${_csrf.parameterName}", value: "${_csrf.token}")
-			button(id: 'submit', type: 'submit') {yield 'Log out'}
+			button(id: 'submit', type: 'submit', 'Log out')
 		}
 	}

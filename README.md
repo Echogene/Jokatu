@@ -5,5 +5,6 @@ Some playing about with the Spring framework.  Experimentation includes but is n
 
 - Spring Boot
 - Server-sent events
+- WebSocket
 - Groovy templates
 - Less

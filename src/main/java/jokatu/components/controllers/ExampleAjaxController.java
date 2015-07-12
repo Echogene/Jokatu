@@ -1,10 +1,12 @@
 package jokatu.components.controllers;
 
+import jokatu.components.websocket.ExampleWebSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -13,12 +15,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RestController
 public class ExampleAjaxController {
 
-	private final EventController emitter;
+	private final ExampleWebSocketHandler emitter;
 
 	private final AtomicInteger requests = new AtomicInteger(0);
 
 	@Autowired
-	public ExampleAjaxController(EventController emitter) {
+	public ExampleAjaxController(ExampleWebSocketHandler emitter) {
 		this.emitter = emitter;
 	}
 
@@ -26,7 +28,7 @@ public class ExampleAjaxController {
 			value = "requestEvent",
 			method = RequestMethod.POST
 	)
-	void requestEvent() {
-		emitter.send("lol " + requests.incrementAndGet());
+	void requestEvent() throws IOException {
+		emitter.broadcast("lol " + requests.incrementAndGet());
 	}
 }
