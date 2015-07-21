@@ -32,4 +32,9 @@ public class GameID implements Identity {
 	public int hashCode() {
 		return (int) (identity ^ (identity >>> 32));
 	}
+
+	@Override
+	public String toString() {
+		return Long.toString(identity);
+	}
 }
