@@ -7,7 +7,8 @@ import jokatu.identity.IdentifiableRegistry;
 import ophelia.collections.set.UnmodifiableSet;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author Steven Weston
@@ -15,7 +16,7 @@ import java.util.HashMap;
 @Component
 public class GameDao implements IdentifiableReader<GameID, Game<?, ?>>, IdentifiableRegistry<GameID, Game<?, ?>> {
 
-	private final HashMap<GameID, Game<?, ?>> games = new HashMap<>();
+	private final ConcurrentMap<GameID, Game<?, ?>> games = new ConcurrentHashMap<>();
 
 	public UnmodifiableSet<Game<?, ?>> getAll() {
 		return new UnmodifiableSet<>(games.values());
