@@ -3,6 +3,7 @@ package jokatu.game;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jokatu.identity.Identity;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author Steven Weston
@@ -21,7 +22,7 @@ public class GameID implements Identity, Comparable<GameID> {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(@Nullable Object o) {
 
 		if (this == o) {
 			return true;
