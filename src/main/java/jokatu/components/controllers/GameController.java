@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -33,7 +35,9 @@ public class GameController {
 	@RequestMapping("/games")
 	ModelAndView games() {
 		// Pro tip: Never give the view the same name as an attribute in the model if you want to use that attribute.
-		return new ModelAndView("views/game_list", "games", gameDao.getAll().getUnmodifiableInnerSet());
+		SortedSet<Game<?, ?>> games = new TreeSet<>((g, h) -> g.getIdentifier().compareTo(h.getIdentifier()));
+		games.addAll(gameDao.getAll().getUnmodifiableInnerSet());
+		return new ModelAndView("views/game_list", "games", games);
 	}
 
 	@RequestMapping(value = "/createGame.do", method = GET)
