@@ -1,13 +1,8 @@
 function createGame() {
-	var request = new XMLHttpRequest();
-	request.open('get', 'createGame.do', true);
-	request.setRequestHeader(_csrf_header, _csrf);
-	request.onload = function() {
-		var game = JSON.parse(this.responseText);
+	get('createGame.do', function(game) {
 		games.push(game);
 		renderGames([game]);
-	};
-	request.send();
+	});
 }
 
 function renderGames(games) {
