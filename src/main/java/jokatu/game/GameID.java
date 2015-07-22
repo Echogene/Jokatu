@@ -10,15 +10,17 @@ import org.jetbrains.annotations.Nullable;
  */
 public class GameID implements Identity, Comparable<GameID> {
 
-	private final long identity;
+	private long identity;
 
-	public GameID(long identity) {
-		this.identity = identity;
-	}
+	public GameID() {}
 
 	@JsonValue
 	public long getIdentity() {
 		return identity;
+	}
+
+	public void setIdentity(long identity) {
+		this.identity = identity;
 	}
 
 	@Override
