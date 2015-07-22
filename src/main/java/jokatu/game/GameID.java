@@ -1,5 +1,6 @@
 package jokatu.game;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import jokatu.identity.Identity;
 
 /**
@@ -7,10 +8,15 @@ import jokatu.identity.Identity;
  */
 public class GameID implements Identity {
 
-	public final long identity;
+	private final long identity;
 
 	public GameID(long identity) {
 		this.identity = identity;
+	}
+
+	@JsonValue
+	public long getIdentity() {
+		return identity;
 	}
 
 	@Override
