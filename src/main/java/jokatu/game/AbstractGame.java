@@ -12,7 +12,8 @@ public abstract class AbstractGame<P extends Player, C extends Collection<P>> im
 	private final GameID identifier;
 
 	protected AbstractGame(long identifier) {
-		this.identifier = new GameID(identifier);
+		this.identifier = new GameID();
+		this.identifier.setIdentity(identifier);
 	}
 
 	@Override
