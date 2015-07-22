@@ -3,6 +3,7 @@ package jokatu.components.controllers;
 import jokatu.components.dao.GameDao;
 import jokatu.game.EmptyGame;
 import jokatu.game.Game;
+import jokatu.game.GameID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +39,11 @@ public class GameController {
 		SortedSet<Game<?, ?>> games = new TreeSet<>((g, h) -> g.getIdentifier().compareTo(h.getIdentifier()));
 		games.addAll(gameDao.getAll().getUnmodifiableInnerSet());
 		return new ModelAndView("views/game_list", "games", games);
+	}
+
+	@RequestMapping("/game/{identity}")
+	ModelAndView game(GameID identifier) {
+		return new ModelAndView("views/game_view", "game", gameDao.read(identifier));
 	}
 
 	@RequestMapping(value = "/createGame.do", method = GET)

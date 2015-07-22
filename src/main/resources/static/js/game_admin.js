@@ -10,7 +10,7 @@ function renderGames(games) {
 	for (var i = 0; i < games.length; i++) {
 		var game = games[i];
 		var gameRow = document.createElement('div');
-		gameRow.innerHTML = game.identifier;
+		gameRow.innerHTML = '<a href="game/' + game.identifier + '">' + game.identifier + '</a>';
 		gameContainer.appendChild(gameRow);
 	}
 }
