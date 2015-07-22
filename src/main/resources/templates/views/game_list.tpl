@@ -1,4 +1,4 @@
-import com.fasterxml.jackson.databind.ObjectMapper
+import static jokatu.util.Json.serialise
 
 layout 'layouts/main.tpl', true,
 
@@ -6,7 +6,7 @@ layout 'layouts/main.tpl', true,
 
 	headers: contents {
 		script(type: 'text/javascript', src: '/js/game_admin.js') {}
-		script(type: 'text/javascript', "games = ${new ObjectMapper().writeValueAsString(games)};")
+		script(type: 'text/javascript', "games = ${serialise(games)};")
 	},
 
 	mainBody: contents {
