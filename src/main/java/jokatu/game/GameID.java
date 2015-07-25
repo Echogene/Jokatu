@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
+ * An object that uniquely identifies a game.
  * @author Steven Weston
  */
 public class GameID implements Identity, Comparable<GameID> {
