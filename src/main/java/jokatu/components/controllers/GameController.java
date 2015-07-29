@@ -5,6 +5,8 @@ import jokatu.game.EmptyGame;
 import jokatu.game.Game;
 import jokatu.game.GameID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -43,6 +45,11 @@ public class GameController {
 
 	@RequestMapping("/game/{identity}")
 	ModelAndView game(GameID identifier) {
+		return new ModelAndView("views/game_view", "game", gameDao.read(identifier));
+	}
+
+	@SubscribeMapping("/game/{identity}")
+	ModelAndView gameSocket(@DestinationVariable("identity") GameID identifier) {
 		return new ModelAndView("views/game_view", "game", gameDao.read(identifier));
 	}
 

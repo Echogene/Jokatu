@@ -13,3 +13,7 @@ function get(location, onload) {
 	};
 	request.send();
 }
+
+function subscribe(destination) {
+	return 'SUBSCRIBE\ndestination:' + destination + '\nid:1\n\n\0'
+}
