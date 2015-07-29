@@ -15,6 +15,8 @@ public class GameID implements Identity, Comparable<GameID> {
 
 	public GameID() {}
 
+	public GameID(long identity) {setIdentity(identity);}
+
 	@JsonValue
 	public long getIdentity() {
 		return identity;

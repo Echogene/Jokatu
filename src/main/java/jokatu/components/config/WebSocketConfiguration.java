@@ -1,30 +1,47 @@
 package jokatu.components.config;
 
-import jokatu.components.websocket.ExampleWebSocketHandler;
+import jokatu.util.Json;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.format.support.DefaultFormattingConversionService;
+import org.springframework.messaging.simp.annotation.support.SimpAnnotationMethodMessageHandler;
+import org.springframework.session.MapSessionRepository;
+import org.springframework.session.web.socket.config.annotation.AbstractSessionWebSocketMessageBrokerConfigurer;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+
+import javax.annotation.PostConstruct;
 
 @Component
 @EnableWebSocket
 // todo: secure web sockets
-//@EnableWebSocketMessageBroker
+@EnableWebSocketMessageBroker
 public class WebSocketConfiguration
-//		extends AbstractSecurityWebSocketMessageBrokerConfigurer
-		implements WebSocketConfigurer {
-
-	private final ExampleWebSocketHandler exampleHandler;
+		extends AbstractSessionWebSocketMessageBrokerConfigurer {
 
 	@Autowired
-	public WebSocketConfiguration(ExampleWebSocketHandler exampleHandler) {
-		this.exampleHandler = exampleHandler;
+	private SimpAnnotationMethodMessageHandler simpAnnotationMethodMessageHandler;
+
+	@PostConstruct
+	public void init() {
+		// How about you use the ConversionService that already exists, rather than creating your own, and then this
+		// wouldn't be necessary?  Also how about you update your DestinationVariableMethodArgumentResolver's
+		// ConversionService when yours gets set?
+		DefaultFormattingConversionService conversionService
+				= (DefaultFormattingConversionService) simpAnnotationMethodMessageHandler.getConversionService();
+		conversionService.addConverterFactory(new Json.JacksonConverterFactory());
 	}
 
 	@Override
-	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(exampleHandler, "/test");
+	protected void configureStompEndpoints(StompEndpointRegistry registry) {
+		registry.addEndpoint("/ws");
+	}
+
+	@Bean
+	public MapSessionRepository sessionRepository() {
+		return new MapSessionRepository();
 	}
 
 //	@Override
