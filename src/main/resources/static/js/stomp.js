@@ -26,8 +26,10 @@ Socket.prototype.onmessage = function(message) {
 	if (headers.has('content-length')) {
 		bodyEnd = Math.min(bodyEnd, headers.get('content-length'))
 	}
-	// Assume the text is JSON, lol.
-	var body = JSON.parse(data.substring(0, bodyEnd));
+	var body = data.substring(0, bodyEnd);
+	if (headers.has('content-type') && headers.get('content-type').contains('application/json')) {
+		body = JSON.parse(body);
+	}
 
 	// todo: support other commands when needed
 	if (command === 'MESSAGE') {
