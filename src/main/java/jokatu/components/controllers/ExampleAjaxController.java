@@ -2,6 +2,7 @@ package jokatu.components.controllers;
 
 import jokatu.components.websocket.ExampleWebSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,11 +18,14 @@ public class ExampleAjaxController {
 
 	private final ExampleWebSocketHandler emitter;
 
+	private final SimpMessagingTemplate template;
+
 	private final AtomicInteger requests = new AtomicInteger(0);
 
 	@Autowired
-	public ExampleAjaxController(ExampleWebSocketHandler emitter) {
+	public ExampleAjaxController(ExampleWebSocketHandler emitter, SimpMessagingTemplate template) {
 		this.emitter = emitter;
+		this.template = template;
 	}
 
 	@RequestMapping(
@@ -29,6 +33,9 @@ public class ExampleAjaxController {
 			method = RequestMethod.POST
 	)
 	void requestEvent() throws IOException {
-		emitter.broadcast("lol " + requests.incrementAndGet());
+		String message = "lol " + requests.incrementAndGet();
+
+		emitter.broadcast(message);
+		template.convertAndSend("/game/0", message);
 	}
 }
