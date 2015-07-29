@@ -49,8 +49,8 @@ public class GameController {
 	}
 
 	@SubscribeMapping("/game/{identity}")
-	ModelAndView gameSocket(@DestinationVariable("identity") GameID identifier) {
-		return new ModelAndView("views/game_view", "game", gameDao.read(identifier));
+	Game<?, ?> gameSocket(@DestinationVariable("identity") GameID identifier) {
+		return gameDao.read(identifier);
 	}
 
 	@RequestMapping(value = "/createGame.do", method = GET)
