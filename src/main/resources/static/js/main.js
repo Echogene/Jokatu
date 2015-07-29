@@ -14,6 +14,9 @@ function get(location, onload) {
 	request.send();
 }
 
-function subscribe(destination) {
-	return 'SUBSCRIBE\ndestination:' + destination + '\nid:1\n\n\0'
+function requestEvent() {
+	var request = new XMLHttpRequest();
+	request.open("post", "/requestEvent", true);
+	request.setRequestHeader(_csrf_header, _csrf);
+	request.send();
 }

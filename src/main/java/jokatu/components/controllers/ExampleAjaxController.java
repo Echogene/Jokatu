@@ -36,6 +36,6 @@ public class ExampleAjaxController {
 		String message = "lol " + requests.incrementAndGet();
 
 		emitter.broadcast(message);
-		template.convertAndSend("/game/0", message);
+		template.convertAndSend("/game/0", "\"" + message + "\"");
 	}
 }
