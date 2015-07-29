@@ -17,8 +17,7 @@ Socket.prototype.onmessage = function(message) {
 	var headersEnd = data.indexOf('\n\n');
 	var headers = data.substring(0, headersEnd).split('\n').reduce(function(left, right) {
 		var keyEnd = right.indexOf(':');
-		left.set(right.substring(0, keyEnd).trim(), right.substring(keyEnd + 1).trim());
-		return left;
+		return left.set(right.substring(0, keyEnd).trim(), right.substring(keyEnd + 1).trim());
 	}, new Map());
 	data = data.substring(headersEnd + 2);
 
