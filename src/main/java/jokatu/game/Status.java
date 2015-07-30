@@ -2,6 +2,6 @@ package jokatu.game;
 
 public enum Status {
 	NOT_STARTED,
-	AWAITING_INPUT,
+	IN_PROGRESS,
 	OVER
 }
