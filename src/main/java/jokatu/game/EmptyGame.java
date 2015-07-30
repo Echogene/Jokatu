@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.Set;
 
 /**
- * An zero-player game that does nothing for testing.
+ * An zero-player game that does nothing, for testing.
  * @author Steven Weston
  */
 public class EmptyGame extends AbstractGame<Player, Set<Player>> {
