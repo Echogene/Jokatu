@@ -11,4 +11,6 @@ import java.util.Collection;
 public interface Game<P extends Player, C extends Collection<P>> extends Identifiable<GameID> {
 
 	C getPlayers();
+
+	void join(P player);
 }
