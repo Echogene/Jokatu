@@ -19,4 +19,9 @@ public class EmptyGame extends AbstractGame<Player, Set<Player>> {
 	public Set<Player> getPlayers() {
 		return Collections.emptySet();
 	}
+
+	@Override
+	public void join(Player player) throws GameFullException {
+		throw new GameFullException("An empty game cannot have any players");
+	}
 }
