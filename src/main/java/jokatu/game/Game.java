@@ -13,4 +13,6 @@ public interface Game<P extends Player, C extends Collection<P>> extends Identif
 	C getPlayers();
 
 	void join(P player) throws GameFullException;
+
+	Status getStatus();
 }

@@ -5,6 +5,8 @@ import jokatu.game.user.player.Player;
 import java.util.Collections;
 import java.util.Set;
 
+import static jokatu.game.Status.OVER;
+
 /**
  * An zero-player game that does nothing, for testing.
  * @author Steven Weston
@@ -23,5 +25,11 @@ public class EmptyGame extends AbstractGame<Player, Set<Player>> {
 	@Override
 	public void join(Player player) throws GameFullException {
 		throw new GameFullException("An empty game cannot have any players");
+	}
+
+	@Override
+	public Status getStatus() {
+		// An empty game is always over.
+		return OVER;
 	}
 }
