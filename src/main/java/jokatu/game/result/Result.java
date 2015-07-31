@@ -1,4 +1,4 @@
-package jokatu.game;
+package jokatu.game.result;
 
 /**
  * A standard result for any game.
