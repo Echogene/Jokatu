@@ -14,7 +14,7 @@ import static jokatu.game.Status.OVER;
  * An zero-player game that does nothing, for testing.
  * @author Steven Weston
  */
-public class EmptyGame extends AbstractGame<Player, Input<Player>> {
+public class EmptyGame extends AbstractGame<Player, Input<Player>, Set<Player>> {
 
 	public EmptyGame(long identifier) {
 		super(identifier);

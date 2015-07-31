@@ -6,14 +6,14 @@ import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.user.player.Player;
 import jokatu.identity.Identifiable;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * @author Steven Weston
  */
-public interface Game<P extends Player, I extends Input<P>> extends Identifiable<GameID> {
+public interface Game<P extends Player, I extends Input<P>, C extends Collection<P>> extends Identifiable<GameID> {
 
-	Set<P> getPlayers();
+	C getPlayers();
 
 	void join(P player) throws CannotJoinGameException;
 
