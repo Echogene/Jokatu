@@ -2,13 +2,11 @@ package jokatu.game;
 
 import jokatu.game.user.player.Player;
 
-import java.util.Collection;
-
 /**
  * A abstract implementation of {@link Game} that has an identifier.
  * @author Steven Weston
  */
-public abstract class AbstractGame<P extends Player, C extends Collection<P>> implements Game<P, C> {
+public abstract class AbstractGame<P extends Player> implements Game<P> {
 
 	private final GameID identifier;
 
