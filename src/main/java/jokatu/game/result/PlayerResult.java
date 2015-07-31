@@ -2,7 +2,7 @@ package jokatu.game.result;
 
 import jokatu.game.user.player.Player;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * An endgame result for multiple players.  When a team wins, or multiple players draw, the set of players will have
@@ -11,9 +11,9 @@ import java.util.Set;
 public class PlayerResult {
 
 	private final Result result;
-	private final Set<? extends Player> players;
+	private final Collection<? extends Player> players;
 
-	public PlayerResult(Result result, Set<? extends Player> players) {
+	public PlayerResult(Result result, Collection<? extends Player> players) {
 		this.result = result;
 		this.players = players;
 	}
@@ -21,7 +21,7 @@ public class PlayerResult {
 		return result;
 	}
 
-	public Set<? extends Player> getPlayers() {
+	public Collection<? extends Player> getPlayers() {
 		return players;
 	}
 }
