@@ -1,5 +1,7 @@
 package jokatu.game;
 
+import jokatu.game.joining.CannotJoinGameException;
+import jokatu.game.joining.GameFullException;
 import jokatu.game.user.player.Player;
 
 import java.util.Collections;
@@ -23,7 +25,7 @@ public class EmptyGame extends AbstractGame<Player, Set<Player>> {
 	}
 
 	@Override
-	public void join(Player player) throws GameFullException {
+	public void join(Player player) throws CannotJoinGameException {
 		throw new GameFullException("An empty game cannot have any players");
 	}
 

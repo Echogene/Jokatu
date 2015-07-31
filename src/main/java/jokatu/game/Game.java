@@ -1,5 +1,6 @@
 package jokatu.game;
 
+import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.user.player.Player;
 import jokatu.identity.Identifiable;
 
@@ -12,7 +13,7 @@ public interface Game<P extends Player, C extends Collection<P>> extends Identif
 
 	C getPlayers();
 
-	void join(P player) throws GameFullException;
+	void join(P player) throws CannotJoinGameException;
 
 	Status getStatus();
 }
