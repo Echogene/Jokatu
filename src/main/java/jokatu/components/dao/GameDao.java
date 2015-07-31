@@ -14,21 +14,21 @@ import java.util.concurrent.ConcurrentMap;
  * @author Steven Weston
  */
 @Component
-public class GameDao implements IdentifiableReader<GameID, Game<?, ?>>, IdentifiableRegistry<GameID, Game<?, ?>> {
+public class GameDao implements IdentifiableReader<GameID, Game<?>>, IdentifiableRegistry<GameID, Game<?>> {
 
-	private final ConcurrentMap<GameID, Game<?, ?>> games = new ConcurrentHashMap<>();
+	private final ConcurrentMap<GameID, Game<?>> games = new ConcurrentHashMap<>();
 
-	public UnmodifiableSet<Game<?, ?>> getAll() {
+	public UnmodifiableSet<Game<?>> getAll() {
 		return new UnmodifiableSet<>(games.values());
 	}
 
 	@Override
-	public Game<?, ?> read(GameID gameID) {
+	public Game<?> read(GameID gameID) {
 		return games.get(gameID);
 	}
 
 	@Override
-	public void register(Game<?, ?> identifiable) {
+	public void register(Game<?> identifiable) {
 		games.put(identifiable.getIdentifier(), identifiable);
 	}
 }
