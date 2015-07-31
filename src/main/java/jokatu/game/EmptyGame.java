@@ -13,7 +13,7 @@ import static ophelia.collections.set.EmptySet.emptySet;
  * An zero-player game that does nothing, for testing.
  * @author Steven Weston
  */
-public class EmptyGame extends AbstractGame<Player, Input<Player>, EmptySet<Player>> {
+public class EmptyGame extends AbstractGame<Player, Input<Player>, EmptySet<Player>, Void> {
 
 	public EmptyGame(long identifier) {
 		super(identifier);
