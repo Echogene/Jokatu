@@ -5,13 +5,12 @@ import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.user.player.Player;
 import jokatu.identity.Identifiable;
-
-import java.util.Collection;
+import ophelia.collections.BaseCollection;
 
 /**
  * @author Steven Weston
  */
-public interface Game<P extends Player, I extends Input<P>, C extends Collection<P>> extends Identifiable<GameID> {
+public interface Game<P extends Player, I extends Input<P>, C extends BaseCollection<P>> extends Identifiable<GameID> {
 
 	C getPlayers();
 
