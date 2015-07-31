@@ -1,5 +1,6 @@
 package jokatu.game;
 
+import jokatu.game.input.Input;
 import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.joining.GameFullException;
 import jokatu.game.user.player.Player;
@@ -13,7 +14,7 @@ import static jokatu.game.Status.OVER;
  * An zero-player game that does nothing, for testing.
  * @author Steven Weston
  */
-public class EmptyGame extends AbstractGame<Player> {
+public class EmptyGame extends AbstractGame<Player, Input<Player>> {
 
 	public EmptyGame(long identifier) {
 		super(identifier);
@@ -33,5 +34,10 @@ public class EmptyGame extends AbstractGame<Player> {
 	public Status getStatus() {
 		// An empty game is always over.
 		return OVER;
+	}
+
+	@Override
+	public void accept(Input<Player> input) {
+		// Do nothing.
 	}
 }

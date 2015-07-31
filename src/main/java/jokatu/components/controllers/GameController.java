@@ -38,7 +38,7 @@ public class GameController {
 	@RequestMapping("/games")
 	ModelAndView games() {
 		// Pro tip: Never give the view the same name as an attribute in the model if you want to use that attribute.
-		SortedSet<Game<?>> games = new TreeSet<>((g, h) -> g.getIdentifier().compareTo(h.getIdentifier()));
+		SortedSet<Game<?, ?>> games = new TreeSet<>((g, h) -> g.getIdentifier().compareTo(h.getIdentifier()));
 		games.addAll(gameDao.getAll().getUnmodifiableInnerSet());
 		return new ModelAndView("views/game_list", "games", games);
 	}
@@ -49,13 +49,13 @@ public class GameController {
 	}
 
 	@SubscribeMapping("/game/{identity}")
-	Game<?> gameSocket(@DestinationVariable("identity") GameID identifier) {
+	Game<?, ?> gameSocket(@DestinationVariable("identity") GameID identifier) {
 		return gameDao.read(identifier);
 	}
 
 	@RequestMapping(value = "/createGame.do", method = GET)
 	@ResponseBody
-	Game<?> createGame() {
+	Game<?, ?> createGame() {
 
 		// todo: obviously move this to a factory or something
 		EmptyGame game = new EmptyGame(atomicLong.getAndIncrement());
