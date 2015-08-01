@@ -9,14 +9,17 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * @author Steven Weston
@@ -62,6 +65,14 @@ public class GameController {
 
 		gameDao.register(game);
 
+		return game;
+	}
+
+	@RequestMapping(value = "/joinGame.do", method = POST)
+	@ResponseBody
+	Game<?, ?, ?, ?> join(@RequestParam("gameID") GameID identifier, Principal principal) {
+		Game<?, ?, ?, ?> game = gameDao.read(identifier);
+		// todo: create a player and join
 		return game;
 	}
 }

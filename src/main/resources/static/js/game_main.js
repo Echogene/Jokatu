@@ -11,3 +11,9 @@ function lol() {
 		div.innerHTML = JSON.stringify(e);
 	});
 }
+
+function join() {
+	post('/joinGame.do', {gameID: game.identifier}, function(game) {
+		alert(JSON.stringify(game));
+	});
+}
