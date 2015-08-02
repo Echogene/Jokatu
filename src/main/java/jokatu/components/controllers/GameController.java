@@ -1,9 +1,9 @@
 package jokatu.components.controllers;
 
 import jokatu.components.dao.GameDao;
-import jokatu.game.empty.EmptyGame;
 import jokatu.game.Game;
 import jokatu.game.GameID;
+import jokatu.game.empty.EmptyGame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
@@ -18,7 +18,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
@@ -56,7 +55,7 @@ public class GameController {
 		return gameDao.read(identifier);
 	}
 
-	@RequestMapping(value = "/createGame.do", method = GET)
+	@RequestMapping(value = "/createGame.do", method = POST)
 	@ResponseBody
 	Game<?, ?, ?, ?> createGame() {
 
