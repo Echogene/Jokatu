@@ -34,14 +34,15 @@ public class FactoryConfiguration {
 
 	public static class GameFactories {
 		private final Map<String, GameFactory> gameFactories;
+		private final List<String> gameNames;
 
 		private GameFactories(Map<String, GameFactory> gameFactories) {
 			this.gameFactories = gameFactories;
+			gameNames = new ArrayList<>(gameFactories.keySet());
+			Collections.sort(gameNames);
 		}
 
 		public List<String> getGameNames() {
-			ArrayList<String> gameNames = new ArrayList<>(gameFactories.keySet());
-			Collections.sort(gameNames);
 			return gameNames;
 		}
 
