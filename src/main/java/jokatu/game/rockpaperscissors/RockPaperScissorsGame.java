@@ -1,6 +1,7 @@
 package jokatu.game.rockpaperscissors;
 
 import jokatu.game.AbstractGame;
+import jokatu.game.GameID;
 import jokatu.game.Status;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
@@ -32,7 +33,7 @@ public class RockPaperScissorsGame
 
 	private Status status;
 
-	protected RockPaperScissorsGame(long identifier) {
+	protected RockPaperScissorsGame(GameID identifier) {
 		super(identifier);
 		status = NOT_STARTED;
 	}
