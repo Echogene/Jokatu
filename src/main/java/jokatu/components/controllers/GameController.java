@@ -1,9 +1,10 @@
 package jokatu.components.controllers;
 
+import jokatu.components.config.FactoryConfiguration.GameFactories;
 import jokatu.components.dao.GameDao;
 import jokatu.game.Game;
 import jokatu.game.GameID;
-import jokatu.game.empty.EmptyGame;
+import jokatu.game.factory.GameFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
@@ -16,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.security.Principal;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.concurrent.atomic.AtomicLong;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -26,15 +26,14 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Controller
 public class GameController {
 
-	private final AtomicLong atomicLong = new AtomicLong(0);
+	private final GameFactories gameFactories;
 
 	private final GameDao gameDao;
 
 	@Autowired
-	public GameController(GameDao gameDao) {
+	public GameController(GameFactories gameFactories, GameDao gameDao) {
+		this.gameFactories = gameFactories;
 		this.gameDao = gameDao;
-
-		createGame();
 	}
 
 	@RequestMapping("/games")
@@ -57,11 +56,10 @@ public class GameController {
 
 	@RequestMapping(value = "/createGame.do", method = POST)
 	@ResponseBody
-	Game<?, ?, ?, ?> createGame() {
+	Game<?, ?, ?, ?> createGame(@RequestParam("gameName") String gameName) {
 
-		// todo: obviously move this to a factory or something
-		EmptyGame game = new EmptyGame(new GameID(atomicLong.getAndIncrement()));
-
+		GameFactory factory = gameFactories.getFactory(gameName);
+		Game game = factory.produce();
 		gameDao.register(game);
 
 		return game;

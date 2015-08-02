@@ -1,5 +1,5 @@
 function createGame() {
-	post('createGame.do', {}, function(game) {
+	post('createGame.do', {gameName: 'Empty game'}, function(game) {
 		games.push(game);
 		renderGames([game]);
 	});
