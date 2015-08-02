@@ -1,7 +1,7 @@
 package jokatu.components.controllers;
 
 import jokatu.components.websocket.ExampleWebSocketHandler;
-import jokatu.game.EmptyGame;
+import jokatu.game.empty.EmptyGame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;

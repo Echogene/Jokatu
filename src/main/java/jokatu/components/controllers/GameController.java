@@ -1,7 +1,7 @@
 package jokatu.components.controllers;
 
 import jokatu.components.dao.GameDao;
-import jokatu.game.EmptyGame;
+import jokatu.game.empty.EmptyGame;
 import jokatu.game.Game;
 import jokatu.game.GameID;
 import org.springframework.beans.factory.annotation.Autowired;

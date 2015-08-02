@@ -1,5 +1,7 @@
-package jokatu.game;
+package jokatu.game.empty;
 
+import jokatu.game.AbstractGame;
+import jokatu.game.Status;
 import jokatu.game.input.Input;
 import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.joining.GameFullException;
