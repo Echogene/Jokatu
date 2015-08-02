@@ -59,10 +59,7 @@ public class GameController {
 	Game<?, ?, ?, ?> createGame(@RequestParam("gameName") String gameName) {
 
 		GameFactory factory = gameFactories.getFactory(gameName);
-		Game game = factory.produce();
-		gameDao.register(game);
-
-		return game;
+		return factory.produce();
 	}
 
 	@RequestMapping(value = "/joinGame.do", method = POST)

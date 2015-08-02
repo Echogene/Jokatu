@@ -1,8 +1,10 @@
 package jokatu.game.factory;
 
+import jokatu.components.dao.GameDao;
 import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.identity.Identifier;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -18,9 +20,14 @@ public abstract class AbstractGameFactory<G extends Game<?, ?, ?, ?>> implements
 		}
 	};
 
+	@Autowired
+	private GameDao gameDao;
+
 	@Override
 	public G produce() {
-		return produce(GAME_IDENTIFIER.get());
+		G game = produce(GAME_IDENTIFIER.get());
+		gameDao.register(game);
+		return game;
 	}
 
 	protected abstract G produce(GameID gameID);
