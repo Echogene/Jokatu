@@ -12,5 +12,10 @@ layout 'layouts/main.tpl', true,
 	mainBody: contents {
 		div(id: 'gameContainer') {}
 		script(type: 'text/javascript', 'renderGames(games);')
+		select(id: 'gameName') {
+			gameNames.each {
+				option(value: it, it)
+			}
+		}
 		button(id: 'create', onclick: 'createGame();', 'Create game')
 	}
