@@ -1,6 +1,7 @@
 package jokatu.game.empty;
 
 import jokatu.game.AbstractGame;
+import jokatu.game.GameID;
 import jokatu.game.Status;
 import jokatu.game.input.Input;
 import jokatu.game.joining.CannotJoinGameException;
@@ -17,8 +18,8 @@ import static ophelia.collections.set.EmptySet.emptySet;
  */
 public class EmptyGame extends AbstractGame<Player, Input<Player>, EmptySet<Player>, Void> {
 
-	public EmptyGame(long identifier) {
-		super(identifier);
+	public EmptyGame(GameID gameID) {
+		super(gameID);
 	}
 
 	@Override

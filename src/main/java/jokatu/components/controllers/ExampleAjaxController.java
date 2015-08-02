@@ -1,6 +1,7 @@
 package jokatu.components.controllers;
 
 import jokatu.components.websocket.ExampleWebSocketHandler;
+import jokatu.game.GameID;
 import jokatu.game.empty.EmptyGame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -37,6 +38,6 @@ public class ExampleAjaxController {
 		String message = "lol " + requests.incrementAndGet();
 
 		emitter.broadcast(message);
-		template.convertAndSend("/game/0", new EmptyGame(requests.get()));
+		template.convertAndSend("/game/0", new EmptyGame(new GameID(requests.get())));
 	}
 }

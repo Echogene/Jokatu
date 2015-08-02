@@ -61,7 +61,7 @@ public class GameController {
 	Game<?, ?, ?, ?> createGame() {
 
 		// todo: obviously move this to a factory or something
-		EmptyGame game = new EmptyGame(atomicLong.getAndIncrement());
+		EmptyGame game = new EmptyGame(new GameID(atomicLong.getAndIncrement()));
 
 		gameDao.register(game);
 

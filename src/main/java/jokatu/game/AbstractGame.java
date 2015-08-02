@@ -15,9 +15,8 @@ public abstract class AbstractGame<P extends Player, I extends Input<P>, C exten
 
 	private final GameID identifier;
 
-	protected AbstractGame(long identifier) {
-		this.identifier = new GameID();
-		this.identifier.setIdentity(identifier);
+	protected AbstractGame(GameID identifier) {
+		this.identifier = identifier;
 	}
 
 	@Override
