@@ -1,4 +1,4 @@
-package jokatu.game.factory;
+package jokatu.game.factory.game;
 
 import jokatu.game.Game;
 

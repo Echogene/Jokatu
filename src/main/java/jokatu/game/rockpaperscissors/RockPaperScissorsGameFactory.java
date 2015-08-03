@@ -1,7 +1,7 @@
 package jokatu.game.rockpaperscissors;
 
 import jokatu.game.GameID;
-import jokatu.game.factory.AbstractGameFactory;
+import jokatu.game.factory.game.AbstractGameFactory;
 import jokatu.game.factory.Factory;
 
 @Factory

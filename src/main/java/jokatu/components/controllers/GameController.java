@@ -4,7 +4,7 @@ import jokatu.components.config.FactoryConfiguration.GameFactories;
 import jokatu.components.dao.GameDao;
 import jokatu.game.Game;
 import jokatu.game.GameID;
-import jokatu.game.factory.GameFactory;
+import jokatu.game.factory.game.GameFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
