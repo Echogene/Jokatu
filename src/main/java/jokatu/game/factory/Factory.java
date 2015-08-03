@@ -11,4 +11,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Component
 public @interface Factory {
+	/**
+	 * @return the name of the game for which this is a factory
+	 */
+	String value();
 }

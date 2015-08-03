@@ -4,13 +4,10 @@ import jokatu.game.GameID;
 import jokatu.game.factory.game.AbstractGameFactory;
 import jokatu.game.factory.Factory;
 
-@Factory
-public class EmptyGameFactory extends AbstractGameFactory<EmptyGame> {
+import static jokatu.game.empty.EmptyGame.EMPTY_GAME;
 
-	@Override
-	public String getGameName() {
-		return EmptyGame.EMPTY_GAME;
-	}
+@Factory(EMPTY_GAME)
+public class EmptyGameFactory extends AbstractGameFactory<EmptyGame> {
 
 	@Override
 	protected EmptyGame produce(GameID gameID) {

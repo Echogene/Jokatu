@@ -4,16 +4,13 @@ import jokatu.game.GameID;
 import jokatu.game.factory.game.AbstractGameFactory;
 import jokatu.game.factory.Factory;
 
-@Factory
+import static jokatu.game.rockpaperscissors.RockPaperScissorsGame.ROCK_PAPER_SCISSORS;
+
+@Factory(ROCK_PAPER_SCISSORS)
 public class RockPaperScissorsGameFactory extends AbstractGameFactory<RockPaperScissorsGame> {
 
 	@Override
 	protected RockPaperScissorsGame produce(GameID gameID) {
 		return new RockPaperScissorsGame(gameID);
-	}
-
-	@Override
-	public String getGameName() {
-		return RockPaperScissorsGame.ROCK_PAPER_SCISSORS;
 	}
 }

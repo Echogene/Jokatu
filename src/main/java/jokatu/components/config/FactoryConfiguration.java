@@ -1,6 +1,7 @@
 package jokatu.components.config;
 
 import jokatu.game.Game;
+import jokatu.game.factory.Factory;
 import jokatu.game.factory.game.GameFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -10,6 +11,8 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+
+import static java.text.MessageFormat.format;
 
 @Configuration
 @ComponentScan("jokatu.game")
@@ -24,7 +27,12 @@ public class FactoryConfiguration {
 	public void populateFactories() {
 		Map<String, GameFactory> factoryBeans = applicationContext.getBeansOfType(GameFactory.class);
 		for (GameFactory factory : factoryBeans.values()) {
-			gameFactories.put(factory.getGameName(), factory);
+			Factory annotation = factory.getClass().getAnnotation(Factory.class);
+			if (annotation == null) {
+				throw new RuntimeException(format("{0} was not annotated with @Factory.", factory));
+			}
+
+			gameFactories.put(annotation.value(), factory);
 		}
 	}
 
