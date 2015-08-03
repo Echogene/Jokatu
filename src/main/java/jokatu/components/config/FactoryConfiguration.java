@@ -31,7 +31,11 @@ public class FactoryConfiguration {
 
 	@PostConstruct
 	public void populateFactories() {
-		gameFactories = applicationContext.getBeansOfType(GameFactory.class).values().stream()
+		gameFactories = getFactoryMap(GameFactory.class);
+	}
+
+	private <T> Map<String, T> getFactoryMap(Class<T> clazz) {
+		return applicationContext.getBeansOfType(clazz).values().stream()
 				.collect(toMap(this::getGameNameFromFactoryAnnotation, identity()));
 	}
 
