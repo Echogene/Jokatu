@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -57,7 +58,11 @@ public class GameController {
 
 	@RequestMapping("/game/{identity}")
 	ModelAndView game(GameID identifier) {
-		return new ModelAndView("views/game_view", "game", gameDao.read(identifier));
+		Game<?, ?, ?, ?> game = gameDao.read(identifier);
+		if (game == null) {
+			return new ModelAndView(new RedirectView("/games"));
+		}
+		return new ModelAndView("views/game_view", "game", game);
 	}
 
 	@SubscribeMapping("/game/{identity}")
