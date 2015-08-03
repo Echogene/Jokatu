@@ -29,15 +29,15 @@ public class GameDao implements IdentifiableReader<GameID, Game<?, ?, ?, ?>>, Id
 
 	@Nullable
 	@Override
-	public Game<?, ?, ?, ?> read(@NotNull GameID gameID) {
-		return games.get(gameID);
+	public Game<?, ?, ?, ?> read(@NotNull GameID identity) {
+		return games.get(identity);
 	}
 
 	@Nullable
 	// I hate Java generics so much.  If we give this the right name, it apparently doesn't override the interface
 	// method even though it has the same erasure as it.
-	public <P extends Player, I extends Input<P>, C extends BaseCollection<P>, E> Game<P, I, C, E> uncheckedRead(GameID gameID) {
-		return (Game<P, I, C, E>) read(gameID);
+	public <P extends Player, I extends Input<P>, C extends BaseCollection<P>, E> Game<P, I, C, E> uncheckedRead(GameID identity) {
+		return (Game<P, I, C, E>) read(identity);
 	}
 
 	@Override
