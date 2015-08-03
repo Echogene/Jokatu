@@ -9,5 +9,5 @@ import org.jetbrains.annotations.Nullable;
 public interface IdentifiableReader<I extends Identity, J extends Identifiable<I>> {
 
 	@Nullable
-	J read(@NotNull I i);
+	J read(@NotNull I identity);
 }
