@@ -18,6 +18,8 @@ import static ophelia.collections.set.EmptySet.emptySet;
  */
 public class EmptyGame extends AbstractGame<Player, Input<Player>, EmptySet<Player>, Void> {
 
+	public static final String EMPTY_GAME = "Empty game";
+
 	public EmptyGame(GameID gameID) {
 		super(gameID);
 	}

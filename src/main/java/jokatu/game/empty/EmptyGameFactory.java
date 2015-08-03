@@ -7,11 +7,9 @@ import jokatu.game.factory.Factory;
 @Factory
 public class EmptyGameFactory extends AbstractGameFactory<EmptyGame> {
 
-	public static final String EMPTY_GAME = "Empty game";
-
 	@Override
 	public String getGameName() {
-		return EMPTY_GAME;
+		return EmptyGame.EMPTY_GAME;
 	}
 
 	@Override

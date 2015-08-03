@@ -27,6 +27,8 @@ public class RockPaperScissorsGame
 				PlayerResult
 		> {
 
+	public static final String ROCK_PAPER_SCISSORS = "Rock/paper/scissors";
+
 	private final BoundedPair<RockPaperScissorsPlayer> players = new BoundedPair<>();
 
 	private final Map<RockPaperScissorsPlayer, RockPaperScissors> inputs = new ConcurrentHashMap<>();
