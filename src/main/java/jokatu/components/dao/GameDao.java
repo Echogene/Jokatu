@@ -2,8 +2,11 @@ package jokatu.components.dao;
 
 import jokatu.game.Game;
 import jokatu.game.GameID;
+import jokatu.game.input.Input;
+import jokatu.game.user.player.Player;
 import jokatu.identity.IdentifiableReader;
 import jokatu.identity.IdentifiableRegistry;
+import ophelia.collections.BaseCollection;
 import ophelia.collections.set.UnmodifiableSet;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +28,12 @@ public class GameDao implements IdentifiableReader<GameID, Game<?, ?, ?, ?>>, Id
 	@Override
 	public Game<?, ?, ?, ?> read(GameID gameID) {
 		return games.get(gameID);
+	}
+
+	// I hate Java generics so much.  If we give this the right name, it apparently doesn't override the interface
+	// method even though it has the same erasure as it.
+	public <P extends Player, I extends Input<P>, C extends BaseCollection<P>, E> Game<P, I, C, E> uncheckedRead(GameID gameID) {
+		return (Game<P, I, C, E>) read(gameID);
 	}
 
 	@Override
