@@ -14,6 +14,8 @@ import ophelia.event.observable.Observable;
 public interface Game<P extends Player, I extends Input<P>, C extends BaseCollection<P>, E>
 		extends Identifiable<GameID>, Observable<E> {
 
+	String getGameName();
+
 	C getPlayers();
 
 	void join(P player) throws CannotJoinGameException;

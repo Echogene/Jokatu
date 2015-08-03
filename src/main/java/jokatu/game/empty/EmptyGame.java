@@ -25,6 +25,11 @@ public class EmptyGame extends AbstractGame<Player, Input<Player>, EmptySet<Play
 	}
 
 	@Override
+	public String getGameName() {
+		return EMPTY_GAME;
+	}
+
+	@Override
 	public EmptySet<Player> getPlayers() {
 		return emptySet();
 	}

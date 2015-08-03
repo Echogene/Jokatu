@@ -41,6 +41,11 @@ public class RockPaperScissorsGame
 	}
 
 	@Override
+	public String getGameName() {
+		return ROCK_PAPER_SCISSORS;
+	}
+
+	@Override
 	public BoundedPair<RockPaperScissorsPlayer> getPlayers() {
 		return players;
 	}
