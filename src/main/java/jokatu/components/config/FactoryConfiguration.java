@@ -46,8 +46,8 @@ public class FactoryConfiguration {
 			return gameNames;
 		}
 
-		public GameFactory getFactory(String gameNames) {
-			return gameFactories.get(gameNames);
+		public GameFactory getFactory(String gameName) {
+			return gameFactories.get(gameName);
 		}
 	}
 }
