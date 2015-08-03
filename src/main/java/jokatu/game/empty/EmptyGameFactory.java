@@ -6,7 +6,7 @@ import jokatu.game.factory.Factory;
 
 import static jokatu.game.empty.EmptyGame.EMPTY_GAME;
 
-@Factory(EMPTY_GAME)
+@Factory(gameName = EMPTY_GAME)
 public class EmptyGameFactory extends AbstractGameFactory<EmptyGame> {
 
 	@Override

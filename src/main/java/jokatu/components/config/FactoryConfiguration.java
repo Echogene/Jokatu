@@ -45,7 +45,7 @@ public class FactoryConfiguration {
 		if (annotation == null) {
 			throw new RuntimeException(format("{0} was not annotated with @Factory.", factory));
 		}
-		return annotation.value();
+		return annotation.gameName();
 	}
 
 	@Bean

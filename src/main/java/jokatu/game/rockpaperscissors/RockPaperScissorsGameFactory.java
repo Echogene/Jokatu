@@ -6,7 +6,7 @@ import jokatu.game.factory.Factory;
 
 import static jokatu.game.rockpaperscissors.RockPaperScissorsGame.ROCK_PAPER_SCISSORS;
 
-@Factory(ROCK_PAPER_SCISSORS)
+@Factory(gameName = ROCK_PAPER_SCISSORS)
 public class RockPaperScissorsGameFactory extends AbstractGameFactory<RockPaperScissorsGame> {
 
 	@Override
