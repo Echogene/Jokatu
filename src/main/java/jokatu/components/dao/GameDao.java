@@ -8,6 +8,7 @@ import jokatu.identity.IdentifiableReader;
 import jokatu.identity.IdentifiableRegistry;
 import ophelia.collections.BaseCollection;
 import ophelia.collections.set.UnmodifiableSet;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +29,7 @@ public class GameDao implements IdentifiableReader<GameID, Game<?, ?, ?, ?>>, Id
 
 	@Nullable
 	@Override
-	public Game<?, ?, ?, ?> read(GameID gameID) {
+	public Game<?, ?, ?, ?> read(@NotNull GameID gameID) {
 		return games.get(gameID);
 	}
 
@@ -40,7 +41,7 @@ public class GameDao implements IdentifiableReader<GameID, Game<?, ?, ?, ?>>, Id
 	}
 
 	@Override
-	public void register(Game<?, ?, ?, ?> identifiable) {
+	public void register(@NotNull Game<?, ?, ?, ?> identifiable) {
 		games.put(identifiable.getIdentifier(), identifiable);
 	}
 }

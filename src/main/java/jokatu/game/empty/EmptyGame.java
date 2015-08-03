@@ -31,16 +31,18 @@ public class EmptyGame extends AbstractGame<Player, Input<Player>, EmptySet<Play
 		return EMPTY_GAME;
 	}
 
+	@NotNull
 	@Override
 	public EmptySet<Player> getPlayers() {
 		return emptySet();
 	}
 
 	@Override
-	public void join(Player player) throws CannotJoinGameException {
+	public void join(@NotNull Player player) throws CannotJoinGameException {
 		throw new GameFullException("An empty game cannot have any players");
 	}
 
+	@NotNull
 	@Override
 	public Status getStatus() {
 		// An empty game is always over.
@@ -48,7 +50,7 @@ public class EmptyGame extends AbstractGame<Player, Input<Player>, EmptySet<Play
 	}
 
 	@Override
-	public void accept(Input<Player> input) {
+	public void accept(@NotNull Input<Player> input) {
 		// Do nothing.
 	}
 }

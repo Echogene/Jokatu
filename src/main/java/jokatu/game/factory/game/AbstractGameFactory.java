@@ -4,6 +4,7 @@ import jokatu.components.dao.GameDao;
 import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.identity.Identifier;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.concurrent.atomic.AtomicLong;
@@ -23,6 +24,7 @@ public abstract class AbstractGameFactory<G extends Game<?, ?, ?, ?>> implements
 	@Autowired
 	private GameDao gameDao;
 
+	@NotNull
 	@Override
 	public G produce() {
 		G game = produce(GAME_IDENTIFIER.get());
@@ -30,5 +32,6 @@ public abstract class AbstractGameFactory<G extends Game<?, ?, ?, ?>> implements
 		return game;
 	}
 
+	@NotNull
 	protected abstract G produce(GameID gameID);
 }

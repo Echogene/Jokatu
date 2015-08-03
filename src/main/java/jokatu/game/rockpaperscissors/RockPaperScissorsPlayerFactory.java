@@ -8,6 +8,7 @@ import static jokatu.game.rockpaperscissors.RockPaperScissorsGame.ROCK_PAPER_SCI
 
 @Factory(gameName = ROCK_PAPER_SCISSORS)
 public class RockPaperScissorsPlayerFactory implements PlayerFactory<RockPaperScissorsPlayer> {
+	@NotNull
 	@Override
 	public RockPaperScissorsPlayer produce(@NotNull String username) {
 		return new RockPaperScissorsPlayer(username);

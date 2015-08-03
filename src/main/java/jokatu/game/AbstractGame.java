@@ -4,6 +4,7 @@ import jokatu.game.input.Input;
 import jokatu.game.user.player.Player;
 import ophelia.collections.BaseCollection;
 import ophelia.event.observable.AbstractSynchronousObservable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A abstract implementation of {@link Game} that has an identifier.
@@ -19,6 +20,7 @@ public abstract class AbstractGame<P extends Player, I extends Input<P>, C exten
 		this.identifier = identifier;
 	}
 
+	@NotNull
 	@Override
 	public GameID getIdentifier() {
 		return identifier;

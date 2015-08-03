@@ -15,14 +15,13 @@ import org.jetbrains.annotations.NotNull;
 public interface Game<P extends Player, I extends Input<P>, C extends BaseCollection<P>, E>
 		extends Identifiable<GameID>, Observable<E> {
 
-	@NotNull
-	String getGameName();
+	@NotNull String getGameName();
 
-	C getPlayers();
+	@NotNull C getPlayers();
 
-	void join(P player) throws CannotJoinGameException;
+	void join(@NotNull P player) throws CannotJoinGameException;
 
-	Status getStatus();
+	@NotNull Status getStatus();
 
-	void accept(I input) throws UnacceptableInputException;
+	void accept(@NotNull I input) throws UnacceptableInputException;
 }

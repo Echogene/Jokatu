@@ -5,5 +5,5 @@ import org.jetbrains.annotations.NotNull;
 
 public interface PlayerFactory<P extends Player> {
 
-	P produce(@NotNull String username);
+	@NotNull P produce(@NotNull String username);
 }

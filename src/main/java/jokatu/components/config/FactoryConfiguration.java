@@ -37,13 +37,13 @@ public class FactoryConfiguration {
 		playerFactories = getFactoryMap(PlayerFactory.class);
 	}
 
-	private <T> Map<String, T> getFactoryMap(Class<T> clazz) {
+	private <T> Map<String, T> getFactoryMap(@NotNull Class<T> clazz) {
 		return applicationContext.getBeansOfType(clazz).values().stream()
 				.collect(toMap(this::getGameNameFromFactoryAnnotation, identity()));
 	}
 
 	@NotNull
-	private String getGameNameFromFactoryAnnotation(Object factory) {
+	private String getGameNameFromFactoryAnnotation(@NotNull Object factory) {
 		Factory annotation = factory.getClass().getAnnotation(Factory.class);
 		if (annotation == null) {
 			throw new RuntimeException(format("{0} was not annotated with @Factory.", factory));
@@ -70,7 +70,7 @@ public class FactoryConfiguration {
 		}
 
 		@NotNull
-		public GameFactory getFactory(String gameName) {
+		public GameFactory getFactory(@NotNull String gameName) {
 			GameFactory factory = gameFactories.get(gameName);
 			if (factory == null) {
 				throw new NullPointerException(format("The game ''{0}'' has no factory.", gameName));
@@ -79,7 +79,7 @@ public class FactoryConfiguration {
 		}
 
 		@NotNull
-		public PlayerFactory getPlayerFactory(Game game) {
+		public PlayerFactory getPlayerFactory(@NotNull Game game) {
 			String gameName = game.getGameName();
 			PlayerFactory factory = playerFactories.get(gameName);
 			if (factory == null) {

@@ -1,5 +1,6 @@
 package jokatu.identity;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -8,5 +9,5 @@ import org.jetbrains.annotations.Nullable;
 public interface IdentifiableReader<I extends Identity, J extends Identifiable<I>> {
 
 	@Nullable
-	J read(I i);
+	J read(@NotNull I i);
 }

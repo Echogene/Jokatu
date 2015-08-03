@@ -1,5 +1,6 @@
 package jokatu.game.factory;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.lang.annotation.ElementType;
@@ -14,5 +15,5 @@ public @interface Factory {
 	/**
 	 * @return the name of the game for which this is a factory
 	 */
-	String gameName();
+	@NotNull String gameName();
 }

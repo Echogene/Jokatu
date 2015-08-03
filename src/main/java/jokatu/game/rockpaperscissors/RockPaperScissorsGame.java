@@ -47,13 +47,14 @@ public class RockPaperScissorsGame
 		return ROCK_PAPER_SCISSORS;
 	}
 
+	@NotNull
 	@Override
 	public BoundedPair<RockPaperScissorsPlayer> getPlayers() {
 		return players;
 	}
 
 	@Override
-	public void join(RockPaperScissorsPlayer player) throws CannotJoinGameException {
+	public void join(@NotNull RockPaperScissorsPlayer player) throws CannotJoinGameException {
 		checkCanJoin();
 		players.add(player);
 		if (players.size() == 2) {
@@ -70,13 +71,14 @@ public class RockPaperScissorsGame
 		}
 	}
 
+	@NotNull
 	@Override
 	public Status getStatus() {
 		return status;
 	}
 
 	@Override
-	public void accept(RockPaperScissorsInput input) throws UnacceptableInputException {
+	public void accept(@NotNull RockPaperScissorsInput input) throws UnacceptableInputException {
 		RockPaperScissorsPlayer inputter = input.getPlayer();
 		if (inputs.containsKey(inputter)) {
 			// Player has already chosen.
