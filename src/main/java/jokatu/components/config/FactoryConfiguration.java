@@ -46,15 +46,13 @@ public class FactoryConfiguration {
 
 	@Bean
 	public GameFactories gameFactories() {
-		return new GameFactories(gameFactories);
+		return new GameFactories();
 	}
 
-	public static class GameFactories {
-		private final Map<String, GameFactory> gameFactories;
+	public class GameFactories {
 		private final List<String> gameNames;
 
-		private GameFactories(Map<String, GameFactory> gameFactories) {
-			this.gameFactories = gameFactories;
+		private GameFactories() {
 			gameNames = new ArrayList<>(gameFactories.keySet());
 			Collections.sort(gameNames);
 		}
