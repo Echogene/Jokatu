@@ -8,6 +8,7 @@ import jokatu.identity.IdentifiableReader;
 import jokatu.identity.IdentifiableRegistry;
 import ophelia.collections.BaseCollection;
 import ophelia.collections.set.UnmodifiableSet;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,11 +26,13 @@ public class GameDao implements IdentifiableReader<GameID, Game<?, ?, ?, ?>>, Id
 		return new UnmodifiableSet<>(games.values());
 	}
 
+	@Nullable
 	@Override
 	public Game<?, ?, ?, ?> read(GameID gameID) {
 		return games.get(gameID);
 	}
 
+	@Nullable
 	// I hate Java generics so much.  If we give this the right name, it apparently doesn't override the interface
 	// method even though it has the same erasure as it.
 	public <P extends Player, I extends Input<P>, C extends BaseCollection<P>, E> Game<P, I, C, E> uncheckedRead(GameID gameID) {
