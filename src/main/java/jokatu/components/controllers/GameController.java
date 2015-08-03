@@ -83,11 +83,11 @@ public class GameController {
 
 	@RequestMapping(value = "/joinGame.do", method = POST)
 	@ResponseBody
-	Game<?, ?, ?, ?> join(@RequestParam("gameID") GameID identifier, Principal principal) throws CannotJoinGameException {
-		Game<Player, ?, ?, ?> game = gameDao.uncheckedRead(identifier);
+	Game<?, ?, ?, ?> join(@RequestParam("gameID") GameID identity, Principal principal) throws CannotJoinGameException {
+		Game<Player, ?, ?, ?> game = gameDao.uncheckedRead(identity);
 		if (game == null) {
 			throw new NullPointerException(
-					format("Game with ID {0} does not exist.  You cannot join a non-existent game.", identifier)
+					format("Game with ID {0} does not exist.  You cannot join a non-existent game.", identity)
 			);
 		}
 		PlayerFactory factory = gameFactories.getPlayerFactory(game);
