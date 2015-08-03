@@ -32,8 +32,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Controller
 public class GameController {
 
-	private final GameFactories gameFactories;
+	public static final String GAME_LIST_MAPPING = "/games";
 
+	private final GameFactories gameFactories;
 	private final GameDao gameDao;
 
 	@Autowired
@@ -42,7 +43,7 @@ public class GameController {
 		this.gameDao = gameDao;
 	}
 
-	@RequestMapping("/games")
+	@RequestMapping(GAME_LIST_MAPPING)
 	ModelAndView games() {
 		// Pro tip: Never give the view the same name as an attribute in the model if you want to use that attribute.
 		Map<String, Object> model = new HashMap<>();
@@ -60,7 +61,7 @@ public class GameController {
 	ModelAndView game(GameID identifier) {
 		Game<?, ?, ?, ?> game = gameDao.read(identifier);
 		if (game == null) {
-			return new ModelAndView(new RedirectView("/games"));
+			return new ModelAndView(new RedirectView(GAME_LIST_MAPPING));
 		}
 		return new ModelAndView("views/game_view", "game", game);
 	}
