@@ -5,6 +5,9 @@ import jokatu.components.dao.GameDao;
 import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.factory.game.GameFactory;
+import jokatu.game.factory.player.PlayerFactory;
+import jokatu.game.joining.CannotJoinGameException;
+import jokatu.game.user.player.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
@@ -72,9 +75,11 @@ public class GameController {
 
 	@RequestMapping(value = "/joinGame.do", method = POST)
 	@ResponseBody
-	Game<?, ?, ?, ?> join(@RequestParam("gameID") GameID identifier, Principal principal) {
-		Game<?, ?, ?, ?> game = gameDao.read(identifier);
-		// todo: create a player and join
+	Game<?, ?, ?, ?> join(@RequestParam("gameID") GameID identifier, Principal principal) throws CannotJoinGameException {
+		Game<Player, ?, ?, ?> game = gameDao.uncheckedRead(identifier);
+		PlayerFactory factory = gameFactories.getPlayerFactory(game);
+		Player player = factory.produce(principal.getName());
+		game.join(player);
 		return game;
 	}
 }
