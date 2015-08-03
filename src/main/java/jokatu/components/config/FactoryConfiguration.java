@@ -3,6 +3,7 @@ package jokatu.components.config;
 import jokatu.game.Game;
 import jokatu.game.factory.Factory;
 import jokatu.game.factory.game.GameFactory;
+import jokatu.game.factory.player.PlayerFactory;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -25,6 +26,7 @@ import static java.util.stream.Collectors.toMap;
 public class FactoryConfiguration {
 
 	private Map<String, GameFactory> gameFactories;
+	private Map<String, PlayerFactory> playerFactories;
 
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -32,6 +34,7 @@ public class FactoryConfiguration {
 	@PostConstruct
 	public void populateFactories() {
 		gameFactories = getFactoryMap(GameFactory.class);
+		playerFactories = getFactoryMap(PlayerFactory.class);
 	}
 
 	private <T> Map<String, T> getFactoryMap(Class<T> clazz) {
@@ -61,16 +64,28 @@ public class FactoryConfiguration {
 			Collections.sort(gameNames);
 		}
 
+		@NotNull
 		public List<String> getGameNames() {
 			return gameNames;
 		}
 
+		@NotNull
 		public GameFactory getFactory(String gameName) {
-			return gameFactories.get(gameName);
+			GameFactory factory = gameFactories.get(gameName);
+			if (factory == null) {
+				throw new NullPointerException(format("The game ''{0}'' has no factory.", gameName));
+			}
+			return factory;
 		}
 
-		public GameFactory getFactory(Game game) {
-			return getFactory(game.getGameName());
+		@NotNull
+		public PlayerFactory getPlayerFactory(Game game) {
+			String gameName = game.getGameName();
+			PlayerFactory factory = playerFactories.get(gameName);
+			if (factory == null) {
+				throw new NullPointerException(format("The game ''{0}'' has no player factory.", gameName));
+			}
+			return factory;
 		}
 	}
 }
