@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -59,8 +60,8 @@ public class GameController {
 	}
 
 	@RequestMapping("/game/{identity}")
-	ModelAndView game(GameID identifier) {
-		Game<?, ?, ?, ?> game = gameDao.read(identifier);
+	ModelAndView game(@PathVariable("identity") GameID identity) {
+		Game<?, ?, ?, ?> game = gameDao.read(identity);
 		if (game == null) {
 			return new ModelAndView(new RedirectView(GAME_LIST_MAPPING));
 		}
