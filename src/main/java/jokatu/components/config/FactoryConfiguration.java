@@ -1,5 +1,6 @@
 package jokatu.components.config;
 
+import jokatu.game.Game;
 import jokatu.game.factory.GameFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -48,6 +49,10 @@ public class FactoryConfiguration {
 
 		public GameFactory getFactory(String gameName) {
 			return gameFactories.get(gameName);
+		}
+
+		public GameFactory getFactory(Game game) {
+			return getFactory(game.getGameName());
 		}
 	}
 }
