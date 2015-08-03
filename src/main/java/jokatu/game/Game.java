@@ -7,6 +7,7 @@ import jokatu.game.user.player.Player;
 import jokatu.identity.Identifiable;
 import ophelia.collections.BaseCollection;
 import ophelia.event.observable.Observable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Steven Weston
@@ -14,6 +15,7 @@ import ophelia.event.observable.Observable;
 public interface Game<P extends Player, I extends Input<P>, C extends BaseCollection<P>, E>
 		extends Identifiable<GameID>, Observable<E> {
 
+	@NotNull
 	String getGameName();
 
 	C getPlayers();

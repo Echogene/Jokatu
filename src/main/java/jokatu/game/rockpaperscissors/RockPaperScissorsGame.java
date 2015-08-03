@@ -9,6 +9,7 @@ import jokatu.game.joining.GameFullException;
 import jokatu.game.result.PlayerResult;
 import jokatu.game.result.Result;
 import ophelia.collections.set.bounded.BoundedPair;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,6 +41,7 @@ public class RockPaperScissorsGame
 		status = NOT_STARTED;
 	}
 
+	@NotNull
 	@Override
 	public String getGameName() {
 		return ROCK_PAPER_SCISSORS;

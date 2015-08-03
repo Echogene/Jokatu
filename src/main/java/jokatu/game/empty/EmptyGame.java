@@ -8,6 +8,7 @@ import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.joining.GameFullException;
 import jokatu.game.user.player.Player;
 import ophelia.collections.set.EmptySet;
+import org.jetbrains.annotations.NotNull;
 
 import static jokatu.game.Status.OVER;
 import static ophelia.collections.set.EmptySet.emptySet;
@@ -24,6 +25,7 @@ public class EmptyGame extends AbstractGame<Player, Input<Player>, EmptySet<Play
 		super(gameID);
 	}
 
+	@NotNull
 	@Override
 	public String getGameName() {
 		return EMPTY_GAME;
