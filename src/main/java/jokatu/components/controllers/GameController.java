@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import static java.text.MessageFormat.format;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
@@ -83,6 +84,11 @@ public class GameController {
 	@ResponseBody
 	Game<?, ?, ?, ?> join(@RequestParam("gameID") GameID identifier, Principal principal) throws CannotJoinGameException {
 		Game<Player, ?, ?, ?> game = gameDao.uncheckedRead(identifier);
+		if (game == null) {
+			throw new NullPointerException(
+					format("Game with ID {0} does not exist.  You cannot join a non-existent game.", identifier)
+			);
+		}
 		PlayerFactory factory = gameFactories.getPlayerFactory(game);
 		Player player = factory.produce(principal.getName());
 		game.join(player);
