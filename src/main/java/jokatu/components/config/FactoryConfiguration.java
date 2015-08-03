@@ -11,25 +11,28 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import static java.text.MessageFormat.format;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
 
 @Configuration
 @ComponentScan("jokatu.game")
 public class FactoryConfiguration {
 
-	private final Map<String, GameFactory> gameFactories = new HashMap<>();
+	private Map<String, GameFactory> gameFactories;
 
 	@Autowired
 	private ApplicationContext applicationContext;
 
 	@PostConstruct
 	public void populateFactories() {
-		Map<String, GameFactory> factoryBeans = applicationContext.getBeansOfType(GameFactory.class);
-		for (GameFactory factory : factoryBeans.values()) {
-			gameFactories.put(getGameNameFromFactoryAnnotation(factory), factory);
-		}
+		gameFactories = applicationContext.getBeansOfType(GameFactory.class).values().stream()
+				.collect(toMap(this::getGameNameFromFactoryAnnotation, identity()));
 	}
 
 	@NotNull
