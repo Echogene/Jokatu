@@ -92,6 +92,11 @@ public class GameController {
 		}
 		PlayerFactory factory = gameFactories.getPlayerFactory(game);
 		Player player = factory.produce(principal.getName());
+		if (game.hasPlayer(player)) {
+			throw new CannotJoinGameException(
+					format("You can't join a game twice!  Use a different account.")
+			);
+		}
 		game.join(player);
 		return game;
 	}
