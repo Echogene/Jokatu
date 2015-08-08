@@ -4,8 +4,7 @@ import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.input.Input;
 import jokatu.game.user.player.Player;
-import jokatu.identity.IdentifiableReader;
-import jokatu.identity.IdentifiableRegistry;
+import jokatu.identity.IdentifiableDao;
 import ophelia.collections.BaseCollection;
 import ophelia.collections.set.UnmodifiableSet;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +18,7 @@ import java.util.concurrent.ConcurrentMap;
  * @author Steven Weston
  */
 @Component
-public class GameDao implements IdentifiableReader<GameID, Game<?, ?, ?, ?>>, IdentifiableRegistry<GameID, Game<?, ?, ?, ?>> {
+public class GameDao implements IdentifiableDao<GameID, Game<?, ?, ?, ?>> {
 
 	private final ConcurrentMap<GameID, Game<?, ?, ?, ?>> games = new ConcurrentHashMap<>();
 
