@@ -80,10 +80,10 @@ Socket.prototype.subscribe = function(destination, callback) {
 	this._subscribers.set(`${id}`, callback);
 
 	var headers = new Map();
-	headers.set("destination", destination);
-	headers.set("id", id);
+	headers.set('destination', destination);
+	headers.set('id', id);
 
-	this._message("SUBSCRIBE", headers);
+	this._message('SUBSCRIBE', headers);
 };
 
 /**
@@ -93,7 +93,7 @@ Socket.prototype.subscribe = function(destination, callback) {
 Socket.prototype.send = function(destination, body) {
 
 	var headers = new Map();
-	headers.set("destination", destination);
+	headers.set('destination', destination);
 
-	this._message("SEND", headers, body);
+	this._message('SEND', headers, body);
 };
