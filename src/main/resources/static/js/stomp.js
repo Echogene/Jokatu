@@ -85,3 +85,15 @@ Socket.prototype.subscribe = function(destination, callback) {
 
 	this._message("SUBSCRIBE", headers);
 };
+
+/**
+ * @param {string} destination
+ * @param {string|Object} body
+ */
+Socket.prototype.send = function(destination, body) {
+
+	var headers = new Map();
+	headers.set("destination", destination);
+
+	this._message("SEND", headers, body);
+};
