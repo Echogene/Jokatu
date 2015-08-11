@@ -35,7 +35,7 @@ public class GameDao implements IdentifiableDao<GameID, Game<?, ?, ?, ?>> {
 	@Nullable
 	// I hate Java generics so much.  If we give this the right name, it apparently doesn't override the interface
 	// method even though it has the same erasure as it.
-	public <P extends Player, I extends Input<P>, C extends BaseCollection<P>, E> Game<P, I, C, E> uncheckedRead(GameID identity) {
+	public <P extends Player, I extends Input, C extends BaseCollection<P>, E> Game<P, I, C, E> uncheckedRead(GameID identity) {
 		return (Game<P, I, C, E>) read(identity);
 	}
 

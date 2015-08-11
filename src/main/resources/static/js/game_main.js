@@ -17,3 +17,7 @@ function join() {
 		alert(JSON.stringify(game));
 	});
 }
+
+function choose() {
+	socket.send(`/game/${game.identifier}`, document.getElementById('choice').value);
+}

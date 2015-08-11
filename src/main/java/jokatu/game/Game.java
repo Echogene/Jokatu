@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Steven Weston
  */
-public interface Game<P extends Player, I extends Input<P>, C extends BaseCollection<P>, E>
+public interface Game<P extends Player, I extends Input, C extends BaseCollection<P>, E>
 		extends Identifiable<GameID>, Observable<E> {
 
 	@NotNull String getGameName();
@@ -23,7 +23,7 @@ public interface Game<P extends Player, I extends Input<P>, C extends BaseCollec
 
 	@NotNull Status getStatus();
 
-	void accept(@NotNull I input) throws UnacceptableInputException;
+	void accept(@NotNull I input, P player) throws UnacceptableInputException;
 
 	default boolean hasPlayer(P player) {
 		return getPlayers().contains(player);

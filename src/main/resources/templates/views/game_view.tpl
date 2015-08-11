@@ -15,4 +15,11 @@ layout 'layouts/main.tpl', true,
 		button(onclick: 'lol()', 'Subscribe')
 		button(onclick: 'join()', 'Join game')
 		button(onclick: 'requestEvent()', 'Request event')
+		// todo: obviously factor this out
+		select(id: 'choice') {
+			option(value: 'ROCK', 'Rock')
+			option(value: 'PAPER', 'Paper')
+			option(value: 'SCISSORS', 'Scissors')
+		}
+		button(onclick: 'choose()', 'Choose')
 	}

@@ -1,13 +1,12 @@
 package jokatu.game.rockpaperscissors;
 
-import jokatu.game.input.AbstractInput;
+import jokatu.game.input.Input;
 
-public class RockPaperScissorsInput extends AbstractInput<RockPaperScissorsPlayer> {
+public class RockPaperScissorsInput implements Input {
 
 	private final RockPaperScissors choice;
 
-	protected RockPaperScissorsInput(RockPaperScissorsPlayer player, RockPaperScissors choice) {
-		super(player);
+	protected RockPaperScissorsInput(RockPaperScissors choice) {
 		this.choice = choice;
 	}
 

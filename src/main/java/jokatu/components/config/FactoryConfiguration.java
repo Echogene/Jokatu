@@ -3,6 +3,7 @@ package jokatu.components.config;
 import jokatu.game.Game;
 import jokatu.game.factory.Factory;
 import jokatu.game.factory.game.GameFactory;
+import jokatu.game.factory.input.InputDeserialiser;
 import jokatu.game.factory.player.PlayerFactory;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class FactoryConfiguration {
 
 	private Map<String, GameFactory> gameFactories;
 	private Map<String, PlayerFactory> playerFactories;
+	private Map<String, InputDeserialiser> inputDeserialisers;
 
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -35,6 +37,7 @@ public class FactoryConfiguration {
 	public void populateFactories() {
 		gameFactories = getFactoryMap(GameFactory.class);
 		playerFactories = getFactoryMap(PlayerFactory.class);
+		inputDeserialisers = getFactoryMap(InputDeserialiser.class);
 	}
 
 	private <T> Map<String, T> getFactoryMap(@NotNull Class<T> clazz) {
@@ -84,6 +87,15 @@ public class FactoryConfiguration {
 			PlayerFactory factory = playerFactories.get(gameName);
 			if (factory == null) {
 				throw new NullPointerException(format("The game ''{0}'' has no player factory.", gameName));
+			}
+			return factory;
+		}
+
+		public InputDeserialiser getInputDeserialiser(@NotNull Game game) {
+			String gameName = game.getGameName();
+			InputDeserialiser factory = inputDeserialisers.get(gameName);
+			if (factory == null) {
+				throw new NullPointerException(format("The game ''{0}'' has no input deserialiser.", gameName));
 			}
 			return factory;
 		}

@@ -78,8 +78,9 @@ public class RockPaperScissorsGame
 	}
 
 	@Override
-	public void accept(@NotNull RockPaperScissorsInput input) throws UnacceptableInputException {
-		RockPaperScissorsPlayer inputter = input.getPlayer();
+	public void accept(@NotNull RockPaperScissorsInput input, RockPaperScissorsPlayer inputter)
+			throws UnacceptableInputException {
+
 		if (inputs.containsKey(inputter)) {
 			// Player has already chosen.
 			throw new UnacceptableInputException("You can't change your mind");

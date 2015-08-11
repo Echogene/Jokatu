@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
  * A abstract implementation of {@link Game} that has an identifier.
  * @author Steven Weston
  */
-public abstract class AbstractGame<P extends Player, I extends Input<P>, C extends BaseCollection<P>, E>
+public abstract class AbstractGame<P extends Player, I extends Input, C extends BaseCollection<P>, E>
 		extends AbstractSynchronousObservable<E>
 		implements Game<P, I, C, E> {
 

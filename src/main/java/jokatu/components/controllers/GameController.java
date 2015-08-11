@@ -5,11 +5,17 @@ import jokatu.components.dao.GameDao;
 import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.factory.game.GameFactory;
+import jokatu.game.factory.input.InputDeserialiser;
 import jokatu.game.factory.player.PlayerFactory;
+import jokatu.game.input.Input;
+import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.user.player.Player;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -73,6 +79,23 @@ public class GameController {
 		return gameDao.read(identifier);
 	}
 
+	@MessageMapping("/game/{identity}")
+	void input(@DestinationVariable("identity") GameID identity, @Payload String json, Principal principal)
+			throws UnacceptableInputException {
+
+		Game<Player, Input, ?, ?> game = gameDao.uncheckedRead(identity);
+		if (game == null) {
+			throw new UnacceptableInputException("You can't input to a game that does not exist.");
+		}
+		InputDeserialiser inputDeserialiser = gameFactories.getInputDeserialiser(game);
+		Input input = inputDeserialiser.deserialise(json);
+		Player player = getPlayer(principal, game);
+		if (!game.hasPlayer(player)) {
+			throw new UnacceptableInputException("You can't input to a game you're not playing.");
+		}
+		game.accept(input, player);
+	}
+
 	@RequestMapping(value = "/createGame.do", method = POST)
 	@ResponseBody
 	Game<?, ?, ?, ?> createGame(@RequestParam("gameName") String gameName) {
@@ -90,8 +113,7 @@ public class GameController {
 					format("Game with ID {0} does not exist.  You cannot join a non-existent game.", identity)
 			);
 		}
-		PlayerFactory factory = gameFactories.getPlayerFactory(game);
-		Player player = factory.produce(principal.getName());
+		Player player = getPlayer(principal, game);
 		if (game.hasPlayer(player)) {
 			throw new CannotJoinGameException(
 					format("You can't join a game twice!  Use a different account.")
@@ -99,5 +121,11 @@ public class GameController {
 		}
 		game.join(player);
 		return game;
+	}
+
+	@NotNull
+	private Player getPlayer(Principal principal, Game<Player, ?, ?, ?> game) {
+		PlayerFactory factory = gameFactories.getPlayerFactory(game);
+		return factory.produce(principal.getName());
 	}
 }
