@@ -1,6 +1,7 @@
 package jokatu.game.rockpaperscissors;
 
 import jokatu.game.user.player.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class RockPaperScissorsPlayer implements Player {
 
@@ -10,6 +11,8 @@ public class RockPaperScissorsPlayer implements Player {
 		this.name = username;
 	}
 
+	@NotNull
+	@Override
 	public String getName() {
 		return name;
 	}
