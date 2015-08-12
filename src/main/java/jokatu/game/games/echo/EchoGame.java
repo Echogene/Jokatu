@@ -48,7 +48,7 @@ public class EchoGame extends AbstractGame<EchoPlayer, EchoInput, BaseCollection
 	}
 
 	@Override
-	public void accept(@NotNull EchoInput input, EchoPlayer player) throws UnacceptableInputException {
+	public void accept(@NotNull EchoInput input, @NotNull EchoPlayer player) throws UnacceptableInputException {
 		fireEvent(new Echo(input, player));
 	}
 }

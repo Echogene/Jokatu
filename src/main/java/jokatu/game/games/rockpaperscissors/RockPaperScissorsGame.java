@@ -78,7 +78,7 @@ public class RockPaperScissorsGame
 	}
 
 	@Override
-	public void accept(@NotNull RockPaperScissorsInput input, RockPaperScissorsPlayer inputter)
+	public void accept(@NotNull RockPaperScissorsInput input, @NotNull RockPaperScissorsPlayer inputter)
 			throws UnacceptableInputException {
 
 		if (inputs.containsKey(inputter)) {

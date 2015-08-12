@@ -51,7 +51,7 @@ public class EmptyGame extends AbstractGame<Player, Input, EmptySet<Player>, Gam
 	}
 
 	@Override
-	public void accept(@NotNull Input input, Player player) {
+	public void accept(@NotNull Input input, @NotNull Player player) {
 		// Do nothing.
 	}
 }

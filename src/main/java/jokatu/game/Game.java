@@ -24,9 +24,9 @@ public interface Game<P extends Player, I extends Input, C extends BaseCollectio
 
 	@NotNull Status getStatus();
 
-	void accept(@NotNull I input, P player) throws UnacceptableInputException;
+	void accept(@NotNull I input, @NotNull P player) throws UnacceptableInputException;
 
-	default boolean hasPlayer(P player) {
+	default boolean hasPlayer(@NotNull P player) {
 		return getPlayers().contains(player);
 	}
 }
