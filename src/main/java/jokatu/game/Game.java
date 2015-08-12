@@ -1,5 +1,6 @@
 package jokatu.game;
 
+import jokatu.game.event.GameEvent;
 import jokatu.game.input.Input;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Steven Weston
  */
-public interface Game<P extends Player, I extends Input, C extends BaseCollection<P>, E>
+public interface Game<P extends Player, I extends Input, C extends BaseCollection<P>, E extends GameEvent<P>>
 		extends Identifiable<GameID>, Observable<E> {
 
 	@NotNull String getGameName();

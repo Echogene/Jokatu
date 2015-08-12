@@ -25,7 +25,7 @@ public class RockPaperScissorsGame
 				RockPaperScissorsPlayer,
 				RockPaperScissorsInput,
 				BoundedPair<RockPaperScissorsPlayer>,
-				PlayerResult
+				PlayerResult<RockPaperScissorsPlayer>
 		> {
 
 	public static final String ROCK_PAPER_SCISSORS = "Rock/paper/scissors";
@@ -92,11 +92,11 @@ public class RockPaperScissorsGame
 			Result result = inputs.get(player1).resultAgainst(inputs.get(player2));
 			switch (result) {
 				case WIN:
-					fireEvent(new PlayerResult(WIN, singleton(player1)));
+					fireEvent(new PlayerResult<>(WIN, singleton(player1)));
 				case LOSE:
-					fireEvent(new PlayerResult(WIN, singleton(player2)));
+					fireEvent(new PlayerResult<>(WIN, singleton(player2)));
 				default:
-					fireEvent(new PlayerResult(DRAW, asList(player1, player2)));
+					fireEvent(new PlayerResult<>(DRAW, asList(player1, player2)));
 			}
 			status = OVER;
 		}

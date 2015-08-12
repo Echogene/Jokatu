@@ -4,6 +4,7 @@ import jokatu.components.config.FactoryConfiguration.GameFactories;
 import jokatu.components.dao.GameDao;
 import jokatu.game.Game;
 import jokatu.game.GameID;
+import jokatu.game.event.GameEvent;
 import jokatu.game.factory.game.GameFactory;
 import jokatu.game.factory.input.InputDeserialiser;
 import jokatu.game.factory.player.PlayerFactory;
@@ -11,11 +12,13 @@ import jokatu.game.input.Input;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.user.player.Player;
+import ophelia.collections.BaseCollection;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,11 +47,13 @@ public class GameController {
 
 	private final GameFactories gameFactories;
 	private final GameDao gameDao;
+	private final SimpMessagingTemplate template;
 
 	@Autowired
-	public GameController(GameFactories gameFactories, GameDao gameDao) {
+	public GameController(GameFactories gameFactories, GameDao gameDao, SimpMessagingTemplate template) {
 		this.gameFactories = gameFactories;
 		this.gameDao = gameDao;
+		this.template = template;
 	}
 
 	@RequestMapping(GAME_LIST_MAPPING)
@@ -98,10 +103,21 @@ public class GameController {
 
 	@RequestMapping(value = "/createGame.do", method = POST)
 	@ResponseBody
-	Game<?, ?, ?, ?> createGame(@RequestParam("gameName") String gameName) {
+	Game createGame(@RequestParam("gameName") String gameName) {
 
-		GameFactory factory = gameFactories.getFactory(gameName);
-		return factory.produce();
+		GameFactory<Game<?, ?, ?, GameEvent<Player>>> factory = gameFactories.getFactory(gameName);
+		Game<?, ?, ?, GameEvent<Player>> game = factory.produce();
+
+		game.observe(event -> sendEvent(game, event));
+		return game;
+	}
+
+	private void sendEvent(@NotNull Game game, @NotNull GameEvent<Player> event) {
+		String gameLocation = "/game/" + game.getIdentifier();
+		BaseCollection<Player> players = event.getPlayers();
+
+		players.stream()
+				.forEach(player -> template.convertAndSendToUser(player.getName(), gameLocation, event));
 	}
 
 	@RequestMapping(value = "/joinGame.do", method = POST)

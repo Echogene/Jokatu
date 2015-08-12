@@ -3,6 +3,7 @@ package jokatu.game.empty;
 import jokatu.game.AbstractGame;
 import jokatu.game.GameID;
 import jokatu.game.Status;
+import jokatu.game.event.GameEvent;
 import jokatu.game.input.Input;
 import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.joining.GameFullException;
@@ -17,7 +18,7 @@ import static ophelia.collections.set.EmptySet.emptySet;
  * An zero-player game that does nothing, for testing.
  * @author Steven Weston
  */
-public class EmptyGame extends AbstractGame<Player, Input, EmptySet<Player>, Void> {
+public class EmptyGame extends AbstractGame<Player, Input, EmptySet<Player>, GameEvent<Player>> {
 
 	public static final String EMPTY_GAME = "Empty game";
 
