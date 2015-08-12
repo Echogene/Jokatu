@@ -1,6 +1,5 @@
 package jokatu.game.user.player;
 
-import jokatu.game.games.rockpaperscissors.RockPaperScissorsPlayer;
 import org.jetbrains.annotations.NotNull;
 
 public class AbstractPlayer implements Player {
