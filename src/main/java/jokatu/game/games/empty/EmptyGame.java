@@ -1,4 +1,4 @@
-package jokatu.game.empty;
+package jokatu.game.games.empty;
 
 import jokatu.game.AbstractGame;
 import jokatu.game.GameID;

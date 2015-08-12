@@ -1,10 +1,10 @@
-package jokatu.game.rockpaperscissors;
+package jokatu.game.games.rockpaperscissors;
 
 import jokatu.game.factory.Factory;
 import jokatu.game.factory.input.InputDeserialiser;
 import org.jetbrains.annotations.NotNull;
 
-import static jokatu.game.rockpaperscissors.RockPaperScissorsGame.ROCK_PAPER_SCISSORS;
+import static jokatu.game.games.rockpaperscissors.RockPaperScissorsGame.ROCK_PAPER_SCISSORS;
 
 @Factory(gameName = ROCK_PAPER_SCISSORS)
 public class RockPaperScissorsInputDeserializer implements InputDeserialiser<RockPaperScissorsInput> {

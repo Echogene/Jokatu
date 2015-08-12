@@ -1,4 +1,4 @@
-package jokatu.game.rockpaperscissors;
+package jokatu.game.games.rockpaperscissors;
 
 import jokatu.game.AbstractGame;
 import jokatu.game.GameID;
