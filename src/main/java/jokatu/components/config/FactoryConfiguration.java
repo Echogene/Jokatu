@@ -73,7 +73,7 @@ public class FactoryConfiguration {
 		}
 
 		@NotNull
-		public GameFactory getFactory(@NotNull String gameName) {
+		public <G extends Game<?, ?, ?, ?>> GameFactory<G> getFactory(@NotNull String gameName) {
 			GameFactory factory = gameFactories.get(gameName);
 			if (factory == null) {
 				throw new NullPointerException(format("The game ''{0}'' has no factory.", gameName));
