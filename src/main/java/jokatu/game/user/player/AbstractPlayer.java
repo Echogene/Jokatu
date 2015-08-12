@@ -21,7 +21,7 @@ public class AbstractPlayer implements Player {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 
-		RockPaperScissorsPlayer that = (RockPaperScissorsPlayer) o;
+		AbstractPlayer that = (AbstractPlayer) o;
 
 		return name.equals(that.name);
 
