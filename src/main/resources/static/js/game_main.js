@@ -1,21 +1,18 @@
 var socket = new Socket();
+socket.subscribe(`/game/${game.identifier}`, handleMessage);
 
-function lol() {
-	socket.subscribe(`/game/${game.identifier}`, function(e) {
-		var div = document.getElementById('lol');
-		if (!div) {
-			div = document.createElement('div');
-			div.id = 'lol';
-			document.body.appendChild(div);
-		}
-		div.innerHTML = JSON.stringify(e);
-	});
+function handleMessage(e) {
+	var div = document.getElementById('lol');
+	if (!div) {
+		div = document.createElement('div');
+		div.id = 'lol';
+		document.body.appendChild(div);
+	}
+	div.innerHTML = JSON.stringify(e);
 }
 
 function join() {
-	post('/joinGame.do', {gameID: game.identifier}, function(game) {
-		alert(JSON.stringify(game));
-	});
+	post('/joinGame.do', {gameID: game.identifier}, (game) => alert(JSON.stringify(game)));
 }
 
 function choose() {
