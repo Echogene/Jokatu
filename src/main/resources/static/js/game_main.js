@@ -2,7 +2,7 @@ var socket = new Socket();
 socket.subscribe(`/game/${game.identifier}`, handleMessage);
 
 function join() {
-	post('/joinGame.do', {gameID: game.identifier}, (game) => alert(JSON.stringify(game)));
+	post('/joinGame.do', {gameID: game.identifier}, (game) => console.log(game));
 }
 
 function handleMessage(e) {
