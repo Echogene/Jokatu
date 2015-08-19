@@ -2,6 +2,12 @@ function Socket() {
 	this._ws = new WebSocket('ws://' + window.location.host + '/ws');
 	this._ws.onmessage = this.onmessage.bind(this);
 
+	this._queue = [];
+
+	this._ws.onopen = () => {
+		this._queue.forEach((message) => this._ws.send(message));
+	};
+
 	this._subscribers = new Map();
 
 	this._subscriptionId = 0;
@@ -66,7 +72,11 @@ Socket.prototype._message = function(command, headers, body) {
 
 	message += '\0';
 
-	this._ws.send(message)
+	if (this._ws.readyState == WebSocket.OPEN) {
+		this._ws.send(message);
+	} else {
+		this._queue.push(message);
+	}
 };
 
 /**
