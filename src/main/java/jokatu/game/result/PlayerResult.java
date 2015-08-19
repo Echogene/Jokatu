@@ -1,5 +1,6 @@
 package jokatu.game.result;
 
+import jokatu.game.event.AbstractGameEvent;
 import jokatu.game.user.player.Player;
 
 import java.util.Collection;

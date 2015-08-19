@@ -1,6 +1,5 @@
-package jokatu.game.result;
+package jokatu.game.event;
 
-import jokatu.game.event.GameEvent;
 import jokatu.game.user.player.Player;
 import ophelia.collections.BaseCollection;
 import ophelia.collections.UnmodifiableCollection;
