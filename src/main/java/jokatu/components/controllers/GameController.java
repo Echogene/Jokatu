@@ -113,11 +113,15 @@ public class GameController {
 	}
 
 	private void sendEvent(@NotNull Game game, @NotNull GameEvent<Player> event) {
-		String gameLocation = "/game/" + game.getIdentifier();
+		String gameDestination = getGameDestination(game);
 		BaseCollection<Player> players = event.getPlayers();
 
 		players.stream()
-				.forEach(player -> template.convertAndSendToUser(player.getName(), gameLocation, event));
+				.forEach(player -> template.convertAndSendToUser(player.getName(), gameDestination, event));
+	}
+
+	private String getGameDestination(Game game) {
+		return "/game/" + game.getIdentifier();
 	}
 
 	@RequestMapping(value = "/joinGame.do", method = POST)
@@ -136,6 +140,9 @@ public class GameController {
 			);
 		}
 		game.join(player);
+
+		template.convertAndSend(getGameDestination(game), player.getName() + " joined the game.");
+
 		return game;
 	}
 
