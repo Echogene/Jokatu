@@ -17,6 +17,7 @@ public class RequestAttributeExposer implements BeanPostProcessor {
 
 		if (bean instanceof GroovyMarkupViewResolver) {
 			((GroovyMarkupViewResolver) bean).setExposeRequestAttributes(true);
+			((GroovyMarkupViewResolver) bean).setExposeSessionAttributes(true);
 		}
 		return bean;
 	}
