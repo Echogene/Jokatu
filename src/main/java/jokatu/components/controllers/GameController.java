@@ -20,6 +20,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -79,12 +80,28 @@ public class GameController {
 		return new ModelAndView("views/game_view", "game", game);
 	}
 
-	@SubscribeMapping("/game/{identity}")
-	Game<?, ?, ?, ?> gameSocket(@DestinationVariable("identity") GameID identifier) {
-		return gameDao.read(identifier);
+	/**
+	 * Users can subscribe to public events for a game without being a player.  Examples of public events would include:
+	 * <ul>
+	 *     <li>Players joining the game</li>
+	 *     <li>Players leaving the game</li>
+	 *     <li>Results of dice rolls</li>
+	 *     <li>The results of the end of the game</li>
+	 * </ul>
+	 */
+	@SubscribeMapping("/public/game/{identity}")
+	void publicGameSubscription(
+			@DestinationVariable("identity") GameID identity
+	) {
+		Game game = gameDao.read(identity);
+		if (game == null) {
+			throw new NullPointerException(
+					format("Game with ID {0} does not exist.  You cannot subscribe to a non-existent game.", identity)
+			);
+		}
 	}
 
-	@MessageMapping("/game/{identity}")
+	@MessageMapping("/input/game/{identity}")
 	void input(@DestinationVariable("identity") GameID identity, @Payload String json, Principal principal)
 			throws UnacceptableInputException {
 
@@ -112,21 +129,20 @@ public class GameController {
 		return game;
 	}
 
-	private void sendEvent(@NotNull Game game, @NotNull GameEvent<Player> event) {
-		String gameDestination = getGameDestination(game);
-		BaseCollection<Player> players = event.getPlayers();
+	/**
+	 * Join a game by subscribing to a private channel.
+	 */
+	@SubscribeMapping("/user/{username}/game/{identity}")
+	void join(
+			@DestinationVariable("username") String username,
+			@DestinationVariable("identity") GameID identity,
+			Principal principal
+	) throws CannotJoinGameException {
 
-		players.stream()
-				.forEach(player -> template.convertAndSendToUser(player.getName(), gameDestination, event));
-	}
+		if (username == null || !username.equals(principal.getName())) {
+			throw new BadCredentialsException("Logged-in user did not match attempted subscription.");
+		}
 
-	private String getGameDestination(Game game) {
-		return "/game/" + game.getIdentifier();
-	}
-
-	@RequestMapping(value = "/joinGame.do", method = POST)
-	@ResponseBody
-	Game<?, ?, ?, ?> join(@RequestParam("gameID") GameID identity, Principal principal) throws CannotJoinGameException {
 		Game<Player, ?, ?, ?> game = gameDao.uncheckedRead(identity);
 		if (game == null) {
 			throw new NullPointerException(
@@ -136,18 +152,32 @@ public class GameController {
 		Player player = getPlayer(principal, game);
 		if (game.hasPlayer(player)) {
 			throw new CannotJoinGameException(
-					format("You can't join a game twice!  Use a different account.")
+					format("You can''t join a game twice!  Use a different account.")
 			);
 		}
 		game.join(player);
 
-		template.convertAndSend(getGameDestination(game), player.getName() + " joined the game.");
+		sendPublicMessageToGameSubscribers(game, player.getName() + " joined the game.");
+	}
 
-		return game;
+	private void sendEvent(@NotNull Game game, @NotNull GameEvent<Player> event) {
+
+		BaseCollection<Player> players = event.getPlayers();
+
+		players.stream()
+				.forEach(player -> sendPrivateMessageToPlayer(player, game, event));
+	}
+
+	private void sendPrivateMessageToPlayer(@NotNull Player player, @NotNull Game game, @NotNull Object payload) {
+		template.convertAndSendToUser(player.getName(), "/game/" + game.getIdentifier(), payload);
+	}
+
+	private void sendPublicMessageToGameSubscribers(@NotNull Game game, @NotNull Object payload) {
+		template.convertAndSend("/public/game/" + game.getIdentifier(), payload);
 	}
 
 	@NotNull
-	private Player getPlayer(Principal principal, Game<Player, ?, ?, ?> game) {
+	private Player getPlayer(@NotNull Principal principal, @NotNull Game<Player, ?, ?, ?> game) {
 		PlayerFactory factory = gameFactories.getPlayerFactory(game);
 		return factory.produce(principal.getName());
 	}

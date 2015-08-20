@@ -16,6 +16,8 @@ function Socket() {
 Socket.prototype.onmessage = function(message) {
 	var data = message.data;
 
+	console.log(`Received:\n${data}`);
+
 	var commandEnd = data.indexOf('\n');
 	var command = data.substring(0, commandEnd).trim();
 	data = data.substring(commandEnd + 1);
@@ -71,6 +73,8 @@ Socket.prototype._message = function(command, headers, body) {
 	}
 
 	message += '\0';
+
+	console.log(`Sending:\n${message}`);
 
 	if (this._ws.readyState == WebSocket.OPEN) {
 		this._ws.send(message);
