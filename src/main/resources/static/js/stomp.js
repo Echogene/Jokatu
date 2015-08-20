@@ -37,7 +37,7 @@ Socket.prototype.onmessage = function(message) {
 		bodyEnd = Math.min(bodyEnd, headers.get('content-length'))
 	}
 	var body = data.substring(0, bodyEnd);
-	if (headers.has('content-type') && headers.get('content-type').contains('application/json')) {
+	if (headers.has('content-type') && headers.get('content-type').includes('application/json')) {
 		body = JSON.parse(body);
 	}
 
