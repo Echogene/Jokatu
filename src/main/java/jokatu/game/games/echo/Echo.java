@@ -1,5 +1,6 @@
 package jokatu.game.games.echo;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import jokatu.game.event.GameEvent;
 import ophelia.collections.BaseCollection;
 import ophelia.collections.set.Singleton;
@@ -19,5 +20,10 @@ public class Echo implements GameEvent<EchoPlayer> {
 	@Override
 	public BaseCollection<EchoPlayer> getPlayers() {
 		return new Singleton<>(player);
+	}
+
+	@JsonValue
+	public String getInput() {
+		return input;
 	}
 }
