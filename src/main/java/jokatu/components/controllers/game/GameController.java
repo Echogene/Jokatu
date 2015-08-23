@@ -1,4 +1,4 @@
-package jokatu.components.controllers;
+package jokatu.components.controllers.game;
 
 import jokatu.components.config.FactoryConfiguration.GameFactories;
 import jokatu.components.dao.GameDao;
