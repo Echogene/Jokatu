@@ -94,10 +94,11 @@ public class GameController {
 	@SubscribeMapping("/public/game/{identity}")
 	void publicGameSubscription(
 			@DestinationVariable("identity") GameID identity
-	) {
+	) throws GameException {
 		Game game = gameDao.read(identity);
 		if (game == null) {
-			throw new NullPointerException(
+			throw new GameException(
+					identity,
 					format("Game with ID {0} does not exist.  You cannot subscribe to a non-existent game.", identity)
 			);
 		}
@@ -105,7 +106,7 @@ public class GameController {
 
 	@MessageMapping("/input/game/{identity}")
 	void input(@DestinationVariable("identity") GameID identity, @Payload String json, Principal principal)
-			throws UnacceptableInputException {
+			throws GameException {
 
 		Game<Player, Input, ?, ?> game = gameDao.uncheckedRead(identity);
 		if (game == null) {
@@ -139,7 +140,7 @@ public class GameController {
 			@DestinationVariable("username") String username,
 			@DestinationVariable("identity") GameID identity,
 			Principal principal
-	) throws CannotJoinGameException {
+	) throws GameException {
 
 		if (username == null || !username.equals(principal.getName())) {
 			throw new BadCredentialsException("Logged-in user did not match attempted subscription.");
@@ -147,7 +148,8 @@ public class GameController {
 
 		Game<Player, ?, ?, ?> game = gameDao.uncheckedRead(identity);
 		if (game == null) {
-			throw new NullPointerException(
+			throw new GameException(
+					identity,
 					format("Game with ID {0} does not exist.  You cannot join a non-existent game.", identity)
 			);
 		}
@@ -180,7 +182,7 @@ public class GameController {
 	}
 
 	@NotNull
-	private Player getPlayer(@NotNull Principal principal, @NotNull Game<Player, ?, ?, ?> game) {
+	private Player getPlayer(@NotNull Principal principal, @NotNull Game<Player, ?, ?, ?> game) throws GameException {
 		PlayerFactory factory = gameFactories.getPlayerFactory(game);
 		return factory.produce(principal.getName());
 	}

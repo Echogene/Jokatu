@@ -1,6 +1,7 @@
 package jokatu.components.config;
 
 import jokatu.game.Game;
+import jokatu.game.exception.GameException;
 import jokatu.game.factory.Factory;
 import jokatu.game.factory.game.GameFactory;
 import jokatu.game.factory.input.InputDeserialiser;
@@ -82,20 +83,26 @@ public class FactoryConfiguration {
 		}
 
 		@NotNull
-		public PlayerFactory getPlayerFactory(@NotNull Game game) {
+		public PlayerFactory getPlayerFactory(@NotNull Game<?, ?, ?, ?> game) throws GameException {
 			String gameName = game.getGameName();
 			PlayerFactory factory = playerFactories.get(gameName);
 			if (factory == null) {
-				throw new NullPointerException(format("The game ''{0}'' has no player factory.", gameName));
+				throw new GameException(
+						game.getIdentifier(),
+						format("The game ''{0}'' has no player factory.", gameName)
+				);
 			}
 			return factory;
 		}
 
-		public InputDeserialiser getInputDeserialiser(@NotNull Game game) {
+		public InputDeserialiser getInputDeserialiser(@NotNull Game<?, ?, ?, ?> game) throws GameException {
 			String gameName = game.getGameName();
 			InputDeserialiser factory = inputDeserialisers.get(gameName);
 			if (factory == null) {
-				throw new NullPointerException(format("The game ''{0}'' has no input deserialiser.", gameName));
+				throw new GameException(
+						game.getIdentifier(),
+						format("The game ''{0}'' has no input deserialiser.", gameName)
+				);
 			}
 			return factory;
 		}
