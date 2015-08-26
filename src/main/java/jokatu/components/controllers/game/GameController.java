@@ -95,23 +95,31 @@ public class GameController {
 	void publicGameSubscription(
 			@DestinationVariable("identity") GameID identity
 	) throws GameException {
-		Game game = gameDao.read(identity);
+		getGame(identity, "You cannot subscribe to a non-existent game.");
+	}
+
+	@NotNull
+	private <P extends Player, I extends Input, C extends BaseCollection<P>, E extends GameEvent<P>>
+	Game<P, I, C, E> getGame(
+			@DestinationVariable("identity") GameID identity,
+			@NotNull final String errorMessage
+	) throws GameException {
+
+		Game<P, I, C, E> game = gameDao.uncheckedRead(identity);
 		if (game == null) {
 			throw new GameException(
 					identity,
-					format("Game with ID {0} does not exist.  You cannot subscribe to a non-existent game.", identity)
+					format("Game with ID {0} does not exist.  {1}", identity, errorMessage)
 			);
 		}
+		return game;
 	}
 
 	@MessageMapping("/input/game/{identity}")
 	void input(@DestinationVariable("identity") GameID identity, @Payload String json, Principal principal)
 			throws GameException {
 
-		Game<Player, Input, ?, ?> game = gameDao.uncheckedRead(identity);
-		if (game == null) {
-			throw new UnacceptableInputException(identity, "You can't input to a game that does not exist.");
-		}
+		Game<Player, Input, ?, ?> game = getGame(identity, "You can't input to a game that does not exist.");
 		InputDeserialiser inputDeserialiser = gameFactories.getInputDeserialiser(game);
 		Input input = inputDeserialiser.deserialise(json);
 		Player player = getPlayer(principal, game);
@@ -146,13 +154,7 @@ public class GameController {
 			throw new BadCredentialsException("Logged-in user did not match attempted subscription.");
 		}
 
-		Game<Player, ?, ?, ?> game = gameDao.uncheckedRead(identity);
-		if (game == null) {
-			throw new GameException(
-					identity,
-					format("Game with ID {0} does not exist.  You cannot join a non-existent game.", identity)
-			);
-		}
+		Game<Player, ?, ?, ?> game = getGame(identity, "You cannot join a non-existent game.");
 		Player player = getPlayer(principal, game);
 		if (game.hasPlayer(player)) {
 			throw new CannotJoinGameException(
