@@ -93,8 +93,10 @@ public class RockPaperScissorsGame
 			switch (result) {
 				case WIN:
 					fireEvent(new PlayerResult<>(WIN, singleton(player1)));
+					break;
 				case LOSE:
 					fireEvent(new PlayerResult<>(WIN, singleton(player2)));
+					break;
 				default:
 					fireEvent(new PlayerResult<>(DRAW, asList(player1, player2)));
 			}
