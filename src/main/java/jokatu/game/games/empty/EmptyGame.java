@@ -40,7 +40,7 @@ public class EmptyGame extends AbstractGame<Player, Input, EmptySet<Player>, Gam
 
 	@Override
 	public void join(@NotNull Player player) throws CannotJoinGameException {
-		throw new GameFullException("An empty game cannot have any players");
+		throw new GameFullException(getIdentifier(), "An empty game cannot have any players");
 	}
 
 	@NotNull

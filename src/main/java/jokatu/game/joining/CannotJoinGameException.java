@@ -1,8 +1,11 @@
 package jokatu.game.joining;
 
-public class CannotJoinGameException extends Exception {
+import jokatu.game.GameID;
+import jokatu.game.exception.GameException;
 
-	public CannotJoinGameException(String message) {
-		super(message);
+public class CannotJoinGameException extends GameException {
+
+	public CannotJoinGameException(GameID id, String message) {
+		super(id, message);
 	}
 }

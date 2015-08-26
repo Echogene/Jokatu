@@ -1,8 +1,11 @@
 package jokatu.game.input;
 
-public class UnacceptableInputException extends Exception {
+import jokatu.game.GameID;
+import jokatu.game.exception.GameException;
 
-	public UnacceptableInputException(String message) {
-		super(message);
+public class UnacceptableInputException extends GameException {
+
+	public UnacceptableInputException(GameID id, String message) {
+		super(id, message);
 	}
 }

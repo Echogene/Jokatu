@@ -5,6 +5,7 @@ import jokatu.components.dao.GameDao;
 import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.event.GameEvent;
+import jokatu.game.exception.GameException;
 import jokatu.game.factory.game.GameFactory;
 import jokatu.game.factory.input.InputDeserialiser;
 import jokatu.game.factory.player.PlayerFactory;
@@ -15,11 +16,14 @@ import jokatu.game.user.player.Player;
 import ophelia.collections.BaseCollection;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
+import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,12 +34,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 import static java.text.MessageFormat.format;
+import static org.springframework.messaging.support.NativeMessageHeaderAccessor.NATIVE_HEADERS;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
@@ -107,13 +109,13 @@ public class GameController {
 
 		Game<Player, Input, ?, ?> game = gameDao.uncheckedRead(identity);
 		if (game == null) {
-			throw new UnacceptableInputException("You can't input to a game that does not exist.");
+			throw new UnacceptableInputException(identity, "You can't input to a game that does not exist.");
 		}
 		InputDeserialiser inputDeserialiser = gameFactories.getInputDeserialiser(game);
 		Input input = inputDeserialiser.deserialise(json);
 		Player player = getPlayer(principal, game);
 		if (!game.hasPlayer(player)) {
-			throw new UnacceptableInputException("You can't input to a game you're not playing.");
+			throw new UnacceptableInputException(identity, "You can't input to a game you're not playing.");
 		}
 		game.accept(input, player);
 	}
@@ -152,6 +154,7 @@ public class GameController {
 		Player player = getPlayer(principal, game);
 		if (game.hasPlayer(player)) {
 			throw new CannotJoinGameException(
+					identity,
 					format("You can''t join a game twice!  Use a different account.")
 			);
 		}
@@ -180,5 +183,27 @@ public class GameController {
 	private Player getPlayer(@NotNull Principal principal, @NotNull Game<Player, ?, ?, ?> game) {
 		PlayerFactory factory = gameFactories.getPlayerFactory(game);
 		return factory.produce(principal.getName());
+	}
+
+	@MessageExceptionHandler(GameException.class)
+	void handleException(GameException e, Message originalMessage, Principal principal) {
+		StompCommand stompCommand = (StompCommand) originalMessage.getHeaders().get("stompCommand");
+		switch (stompCommand) {
+			case SUBSCRIBE:
+				handleSubscriptionError(e, originalMessage, principal);
+				break;
+			default:
+				template.convertAndSendToUser(principal.getName(), "/errors/" + e.getId(), e);
+		}
+	}
+
+	private void handleSubscriptionError(GameException e, Message originalMessage, Principal principal) {
+		Map<String, Object> nativeHeaders = (Map<String, Object>) originalMessage.getHeaders().get(NATIVE_HEADERS);
+		String subscriptionId = ((LinkedList<String>) nativeHeaders.get("id")).get(0);
+
+		Map<String, Object> errorHeaders = new HashMap<>();
+		errorHeaders.put("subscription-id", subscriptionId);
+
+		template.convertAndSendToUser(principal.getName(), "/errors/" + e.getId(), e, errorHeaders);
 	}
 }

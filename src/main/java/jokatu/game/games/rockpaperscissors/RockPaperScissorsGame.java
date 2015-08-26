@@ -64,10 +64,10 @@ public class RockPaperScissorsGame
 
 	private void checkCanJoin() throws CannotJoinGameException {
 		if (players.size() > 1) {
-			throw new GameFullException("Rock-paper-scissors supports two players");
+			throw new GameFullException(getIdentifier(), "Rock-paper-scissors supports two players");
 		}
 		if (status != NOT_STARTED) {
-			throw new CannotJoinGameException("Cannot join rock-paper-scissors after it has started");
+			throw new CannotJoinGameException(getIdentifier(), "Cannot join rock-paper-scissors after it has started");
 		}
 	}
 
@@ -83,7 +83,7 @@ public class RockPaperScissorsGame
 
 		if (inputs.containsKey(inputter)) {
 			// Player has already chosen.
-			throw new UnacceptableInputException("You can't change your mind");
+			throw new UnacceptableInputException(getIdentifier(), "You can't change your mind");
 		}
 		inputs.put(inputter, input.getChoice());
 		if (inputs.size() == 2) {

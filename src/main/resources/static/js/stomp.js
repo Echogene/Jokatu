@@ -1,15 +1,30 @@
 function Socket() {
+	/**
+	 * @type {WebSocket}
+	 * @private
+	 */
 	this._ws = new WebSocket('ws://' + window.location.host + '/ws');
 	this._ws.onmessage = this.onmessage.bind(this);
-
+	/**
+	 * @type {Array.<String>}
+	 * @private
+	 */
 	this._queue = [];
 
 	this._ws.onopen = () => {
 		this._queue.forEach((message) => this._ws.send(message));
 	};
 
+	/**
+	 * @type {Map}
+	 * @private
+	 */
 	this._subscribers = new Map();
 
+	/**
+	 * @type {number}
+	 * @private
+	 */
 	this._subscriptionId = 0;
 }
 
@@ -98,6 +113,19 @@ Socket.prototype.subscribe = function(destination, callback) {
 	headers.set('id', id);
 
 	this._message('SUBSCRIBE', headers);
+};
+
+/**
+ * @param {string} subscriptionId
+ */
+Socket.prototype.unsubscribe = function(subscriptionId) {
+
+	this._subscribers.delete(subscriptionId);
+
+	var headers = new Map();
+	headers.set('id', subscriptionId);
+
+	this._message('UNSUBSCRIBE', headers);
 };
 
 /**
