@@ -1,9 +1,10 @@
 var socket = new Socket();
 socket.subscribe(`/public/game/${game.identifier}`, handleMessage);
 socket.subscribe(`/user/${username}/errors/${game.identifier}`, handleError);
+socket.subscribe(`/user/${username}/game/${game.identifier}`, handleMessage);
 
 function join() {
-	socket.subscribe(`/user/${username}/game/${game.identifier}`, handleMessage);
+	post('/joinGame.do', {gameID: game.identifier}, (newGame) => game = newGame);
 }
 
 function handleMessage(e) {

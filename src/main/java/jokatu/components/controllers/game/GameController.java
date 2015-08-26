@@ -140,19 +140,9 @@ public class GameController {
 		return game;
 	}
 
-	/**
-	 * Join a game by subscribing to a private channel.
-	 */
-	@SubscribeMapping("/user/{username}/game/{identity}")
-	void join(
-			@DestinationVariable("username") String username,
-			@DestinationVariable("identity") GameID identity,
-			Principal principal
-	) throws GameException {
-
-		if (username == null || !username.equals(principal.getName())) {
-			throw new BadCredentialsException("Logged-in user did not match attempted subscription.");
-		}
+	@RequestMapping(value = "/joinGame.do", method = POST)
+	@ResponseBody
+	Game<?, ?, ?, ?> join(@RequestParam("gameID") GameID identity, Principal principal) throws GameException {
 
 		Game<Player, ?, ?, ?> game = getGame(identity, "You cannot join a non-existent game.");
 		Player player = getPlayer(principal, game);
@@ -165,6 +155,26 @@ public class GameController {
 		game.join(player);
 
 		sendPublicMessageToGameSubscribers(game, player.getName() + " joined the game.");
+
+		return game;
+	}
+
+	/**
+	 * Users are allowed to subscribe to a private channel for a game, but unless they're players, they probably won't
+	 * receive any messages for it.
+	 */
+	@SubscribeMapping("/user/{username}/game/{identity}")
+	void join(
+			@DestinationVariable("username") String username,
+			@DestinationVariable("identity") GameID identity,
+			Principal principal
+	) throws GameException {
+
+		if (username == null || !username.equals(principal.getName())) {
+			throw new BadCredentialsException("Logged-in user did not match attempted subscription.");
+		}
+
+		getGame(identity, "You cannot subscribe to a non-existent game.");
 	}
 
 	private void sendEvent(@NotNull Game game, @NotNull GameEvent<Player> event) {
