@@ -2,9 +2,7 @@ package jokatu.game.games.rockpaperscissors;
 
 import jokatu.game.result.Result;
 
-import static jokatu.game.result.Result.DRAW;
-import static jokatu.game.result.Result.LOSE;
-import static jokatu.game.result.Result.WIN;
+import static jokatu.game.result.Result.*;
 
 public enum RockPaperScissors {
 	ROCK {

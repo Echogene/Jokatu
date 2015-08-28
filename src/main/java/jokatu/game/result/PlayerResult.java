@@ -2,6 +2,7 @@ package jokatu.game.result;
 
 import jokatu.game.event.AbstractGameEvent;
 import jokatu.game.user.player.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
@@ -17,8 +18,16 @@ public class PlayerResult<P extends Player> extends AbstractGameEvent<P> {
 		super(players);
 		this.result = result;
 	}
-	public Result getResult() {
-		return result;
+
+	@NotNull
+	@Override
+	public String getMessageToPlayers() {
+		return getPublicMessage();
 	}
 
+	@NotNull
+	@Override
+	public String getPublicMessage() {
+		return players.toString() + " " + result.toString();
+	}
 }

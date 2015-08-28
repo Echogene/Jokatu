@@ -7,11 +7,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
-public class AbstractGameEvent<P extends Player> implements GameEvent<P> {
+public abstract class AbstractGameEvent<P extends Player> implements GameEvent<P> {
 
 	protected final Collection<P> players;
 
-	public AbstractGameEvent(Collection<P> players) {
+	protected AbstractGameEvent(Collection<P> players) {
 		this.players = players;
 	}
 

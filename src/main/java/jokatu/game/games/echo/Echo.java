@@ -1,10 +1,10 @@
 package jokatu.game.games.echo;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import jokatu.game.event.GameEvent;
 import ophelia.collections.BaseCollection;
 import ophelia.collections.set.Singleton;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class Echo implements GameEvent<EchoPlayer> {
 
@@ -18,12 +18,19 @@ public class Echo implements GameEvent<EchoPlayer> {
 
 	@NotNull
 	@Override
-	public BaseCollection<EchoPlayer> getPlayers() {
-		return new Singleton<>(player);
+	public String getMessageToPlayers() {
+		return "You said: " + input;
 	}
 
-	@JsonValue
-	public String getInput() {
-		return input;
+	@Nullable
+	@Override
+	public String getPublicMessage() {
+		return player.getName() + " said: " + input;
+	}
+
+	@NotNull
+	@Override
+	public BaseCollection<EchoPlayer> getPlayers() {
+		return new Singleton<>(player);
 	}
 }

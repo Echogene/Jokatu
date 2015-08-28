@@ -179,10 +179,14 @@ public class GameController {
 
 	private void sendEvent(@NotNull Game game, @NotNull GameEvent<Player> event) {
 
-		BaseCollection<Player> players = event.getPlayers();
+		String privateMessage = event.getMessageToPlayers();
+		event.getPlayers().stream()
+				.forEach(player -> sendPrivateMessageToPlayer(player, game, privateMessage));
 
-		players.stream()
-				.forEach(player -> sendPrivateMessageToPlayer(player, game, event));
+		String publicMessage = event.getPublicMessage();
+		if (publicMessage != null) {
+			sendPublicMessageToGameSubscribers(game, publicMessage);
+		}
 	}
 
 	private void sendPrivateMessageToPlayer(@NotNull Player player, @NotNull Game game, @NotNull Object payload) {
