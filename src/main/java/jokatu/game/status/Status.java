@@ -1,4 +1,4 @@
-package jokatu.game;
+package jokatu.game.status;
 
 public enum Status {
 	NOT_STARTED,

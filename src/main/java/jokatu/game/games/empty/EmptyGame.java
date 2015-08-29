@@ -2,7 +2,7 @@ package jokatu.game.games.empty;
 
 import jokatu.game.AbstractGame;
 import jokatu.game.GameID;
-import jokatu.game.Status;
+import jokatu.game.status.Status;
 import jokatu.game.event.GameEvent;
 import jokatu.game.input.Input;
 import jokatu.game.joining.CannotJoinGameException;
@@ -11,7 +11,7 @@ import jokatu.game.user.player.Player;
 import ophelia.collections.set.EmptySet;
 import org.jetbrains.annotations.NotNull;
 
-import static jokatu.game.Status.OVER;
+import static jokatu.game.status.Status.OVER;
 import static ophelia.collections.set.EmptySet.emptySet;
 
 /**
