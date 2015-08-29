@@ -13,11 +13,10 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class AbstractGame<
 		P extends Player,
-		I extends Input,
-		E extends GameEvent<P>
+		I extends Input
 >
-		extends AbstractSynchronousObservable<E>
-		implements Game<P, I, E> {
+		extends AbstractSynchronousObservable<GameEvent<P>>
+		implements Game<P, I> {
 
 	private final GameID identifier;
 

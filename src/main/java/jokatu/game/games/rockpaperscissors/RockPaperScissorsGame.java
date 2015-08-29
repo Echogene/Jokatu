@@ -23,8 +23,7 @@ import static jokatu.game.result.Result.WIN;
 public class RockPaperScissorsGame
 		extends AbstractGame <
 				RockPaperScissorsPlayer,
-				RockPaperScissorsInput,
-				PlayerResult<RockPaperScissorsPlayer>
+				RockPaperScissorsInput
 		> {
 
 	public static final String ROCK_PAPER_SCISSORS = "Rock/paper/scissors";

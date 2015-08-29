@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-public abstract class AbstractGameFactory<G extends Game<?, ?, ?>> implements GameFactory<G> {
+public abstract class AbstractGameFactory<G extends Game<?, ?>> implements GameFactory<G> {
 
 	private static final Identifier<GameID> GAME_IDENTIFIER = new Identifier<GameID>() {
 

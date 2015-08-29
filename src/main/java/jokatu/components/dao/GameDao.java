@@ -19,29 +19,29 @@ import java.util.concurrent.ConcurrentMap;
  * @author Steven Weston
  */
 @Component
-public class GameDao implements IdentifiableDao<GameID, Game<?, ?, ?>> {
+public class GameDao implements IdentifiableDao<GameID, Game<?, ?>> {
 
-	private final ConcurrentMap<GameID, Game<?, ?, ?>> games = new ConcurrentHashMap<>();
+	private final ConcurrentMap<GameID, Game<?, ?>> games = new ConcurrentHashMap<>();
 
-	public UnmodifiableSet<Game<?, ?, ?>> getAll() {
+	public UnmodifiableSet<Game<?, ?>> getAll() {
 		return new UnmodifiableSet<>(games.values());
 	}
 
 	@Nullable
 	@Override
-	public Game<?, ?, ?> read(@NotNull GameID identity) {
+	public Game<?, ?> read(@NotNull GameID identity) {
 		return games.get(identity);
 	}
 
 	@Nullable
 	// I hate Java generics so much.  If we give this the right name, it apparently doesn't override the interface
 	// method even though it has the same erasure as it.
-	public <P extends Player, I extends Input, E extends GameEvent<P>> Game<P, I, E> uncheckedRead(GameID identity) {
-		return (Game<P, I, E>) read(identity);
+	public <P extends Player, I extends Input> Game<P, I> uncheckedRead(GameID identity) {
+		return (Game<P, I>) read(identity);
 	}
 
 	@Override
-	public void register(@NotNull Game<?, ?, ?> identifiable) {
+	public void register(@NotNull Game<?, ?> identifiable) {
 		games.put(identifiable.getIdentifier(), identifiable);
 	}
 }

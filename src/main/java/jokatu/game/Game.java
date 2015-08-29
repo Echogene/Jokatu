@@ -14,8 +14,8 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Steven Weston
  */
-public interface Game<P extends Player, I extends Input, E extends GameEvent<P>>
-		extends Identifiable<GameID>, Observable<E> {
+public interface Game<P extends Player, I extends Input>
+		extends Identifiable<GameID>, Observable<GameEvent<P>> {
 
 	@NotNull String getGameName();
 
