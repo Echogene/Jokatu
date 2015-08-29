@@ -3,7 +3,6 @@ package jokatu.game;
 import jokatu.game.event.GameEvent;
 import jokatu.game.input.Input;
 import jokatu.game.user.player.Player;
-import ophelia.collections.BaseCollection;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,7 +14,7 @@ public abstract class AbstractGame<
 		P extends Player,
 		I extends Input
 >
-		extends AbstractSynchronousObservable<GameEvent<P>>
+		extends AbstractSynchronousObservable<GameEvent>
 		implements Game<P, I> {
 
 	private final GameID identifier;

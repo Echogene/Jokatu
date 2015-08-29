@@ -7,17 +7,17 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
-public abstract class AbstractGameEvent<P extends Player> implements GameEvent<P> {
+public abstract class AbstractPrivateGameEvent implements PrivateGameEvent {
 
-	protected final Collection<P> players;
+	protected final Collection<? extends Player> players;
 
-	protected AbstractGameEvent(Collection<P> players) {
+	protected AbstractPrivateGameEvent(Collection<? extends Player> players) {
 		this.players = players;
 	}
 
 	@Override
 	@NotNull
-	public BaseCollection<P> getPlayers() {
+	public BaseCollection<? extends Player> getPlayers() {
 		return new UnmodifiableCollection<>(players);
 	}
 }

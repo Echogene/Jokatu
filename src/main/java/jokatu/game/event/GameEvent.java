@@ -1,31 +1,15 @@
 package jokatu.game.event;
 
-import jokatu.game.user.player.Player;
-import ophelia.collections.BaseCollection;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
- * An event is something that happens in a game to a certain collection of players.
- * @param <P>
+ * An event is something that happens in a game.
  */
-public interface GameEvent<P extends Player> {
+public interface GameEvent {
 
 	/**
-	 * @return the private message as presented to the players for this event
+	 * @return the message as presented to the users receiving the event
 	 */
 	@NotNull
-	String getMessageToPlayers();
-
-	/**
-	 * @return the public message as presented to all players and spectators
-	 */
-	@Nullable
-	String getPublicMessage();
-
-	/**
-	 * @return the players for whom this has a private message
-	 */
-	@NotNull
-	BaseCollection<P> getPlayers();
+	String getMessage();
 }

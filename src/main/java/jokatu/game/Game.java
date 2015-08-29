@@ -4,7 +4,6 @@ import jokatu.game.event.GameEvent;
 import jokatu.game.input.Input;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
-import jokatu.game.status.GameStatus;
 import jokatu.game.status.Status;
 import jokatu.game.user.player.Player;
 import jokatu.identity.Identifiable;
@@ -16,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Steven Weston
  */
 public interface Game<P extends Player, I extends Input>
-		extends Identifiable<GameID>, Observable<GameEvent<P>> {
+		extends Identifiable<GameID>, Observable<GameEvent> {
 
 	@NotNull String getGameName();
 

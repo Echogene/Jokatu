@@ -5,6 +5,9 @@ import jokatu.components.dao.GameDao;
 import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.event.GameEvent;
+import jokatu.game.event.PrivateGameEvent;
+import jokatu.game.event.PublicGameEvent;
+import jokatu.game.event.StatusChangeEvent;
 import jokatu.game.exception.GameException;
 import jokatu.game.factory.game.GameFactory;
 import jokatu.game.factory.input.InputDeserialiser;
@@ -12,6 +15,7 @@ import jokatu.game.factory.player.PlayerFactory;
 import jokatu.game.input.Input;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
+import jokatu.game.status.Status;
 import jokatu.game.user.player.Player;
 import ophelia.collections.BaseCollection;
 import org.jetbrains.annotations.NotNull;
@@ -178,15 +182,22 @@ public class GameController {
 		getGame(identity, "You cannot subscribe to a non-existent game.");
 	}
 
-	private void sendEvent(@NotNull Game game, @NotNull GameEvent<? extends Player> event) {
+	private void sendEvent(@NotNull Game game, @NotNull GameEvent event) {
 
-		String privateMessage = event.getMessageToPlayers();
-		event.getPlayers().stream()
-				.forEach(player -> sendPrivateMessageToPlayer(player, game, privateMessage));
+		if (event instanceof PublicGameEvent) {
+			sendPublicMessageToGameSubscribers(game, event.getMessage());
 
-		String publicMessage = event.getPublicMessage();
-		if (publicMessage != null) {
-			sendPublicMessageToGameSubscribers(game, publicMessage);
+		} else if (event instanceof StatusChangeEvent) {
+			StatusChangeEvent statusChangeEvent = (StatusChangeEvent) event;
+			// todo: send this on a different channel
+			sendPublicMessageToGameSubscribers(game, statusChangeEvent.getStatus());
+
+		} else if (event instanceof PrivateGameEvent) {
+			PrivateGameEvent privateGameEvent = (PrivateGameEvent) event;
+			String privateMessage = event.getMessage();
+			privateGameEvent.getPlayers().stream()
+					.forEach(player -> sendPrivateMessageToPlayer(player, game, privateMessage));
+
 		}
 	}
 
