@@ -1,9 +1,12 @@
 package jokatu.game.factory.game;
 
 import jokatu.game.Game;
+import jokatu.game.input.Input;
+import jokatu.game.user.player.Player;
 import org.jetbrains.annotations.NotNull;
 
-public interface GameFactory<G extends Game<?, ?>> {
+public interface GameFactory {
 
-	@NotNull G produce();
+	@NotNull
+	Game<? extends Player, ? extends Input> produce();
 }

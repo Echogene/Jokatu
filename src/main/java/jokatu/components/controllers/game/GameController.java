@@ -99,13 +99,12 @@ public class GameController {
 	}
 
 	@NotNull
-	private <P extends Player, I extends Input>
-	Game<P, I> getGame(
+	private Game<Player, Input> getGame(
 			GameID identity,
 			@NotNull final String errorMessage
 	) throws GameException {
 
-		Game<P, I> game = gameDao.uncheckedRead(identity);
+		Game<Player, Input> game = gameDao.read(identity);
 		if (game == null) {
 			throw new GameException(
 					identity,
@@ -135,7 +134,7 @@ public class GameController {
 	@ResponseBody
 	Game createGame(@RequestParam("gameName") String gameName) {
 
-		GameFactory<Game<?, ?>> factory = gameFactories.getFactory(gameName);
+		GameFactory factory = gameFactories.getFactory(gameName);
 		Game<?, ?> game = factory.produce();
 
 		game.observe(event -> sendEvent(game, event));

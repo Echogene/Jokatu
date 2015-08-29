@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import static jokatu.game.games.echo.EchoGame.ECHO;
 
 @Factory(gameName = ECHO)
-public class EchoGameFactory extends AbstractGameFactory<EchoGame>
+public class EchoGameFactory extends AbstractGameFactory
 		implements PlayerFactory<EchoPlayer>, InputDeserialiser<EchoInput> {
 
 	@NotNull

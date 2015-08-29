@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import static jokatu.game.games.rockpaperscissors.RockPaperScissorsGame.ROCK_PAPER_SCISSORS;
 
 @Factory(gameName = ROCK_PAPER_SCISSORS)
-public class RockPaperScissorsGameFactory extends AbstractGameFactory<RockPaperScissorsGame> {
+public class RockPaperScissorsGameFactory extends AbstractGameFactory {
 
 	@NotNull
 	@Override
