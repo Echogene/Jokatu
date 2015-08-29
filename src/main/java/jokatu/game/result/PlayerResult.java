@@ -2,9 +2,12 @@ package jokatu.game.result;
 
 import jokatu.game.event.PublicGameEvent;
 import jokatu.game.user.player.Player;
+import ophelia.util.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * An endgame result for multiple players.  When a team wins, or multiple players draw, the set of players will have
@@ -15,7 +18,14 @@ public class PlayerResult implements PublicGameEvent {
 	private final String message;
 
 	public PlayerResult(Result result, Collection<? extends Player> players) {
-		message = players.toString() + " " + result.toString();
+		if (players.size() == 1) {
+			message = players.iterator().next() + " " + result.toString();
+		} else {
+			Set<String> playerNames = players.stream()
+					.map(Player::getName)
+					.collect(Collectors.toSet());
+			message = StringUtils.join(playerNames, ", ") + " " + result.toString();
+		}
 	}
 
 	@NotNull

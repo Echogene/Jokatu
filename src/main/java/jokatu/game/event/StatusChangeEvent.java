@@ -1,6 +1,6 @@
 package jokatu.game.event;
 
-import jokatu.game.status.GameStatus;
+import jokatu.game.status.Status;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -9,5 +9,5 @@ import org.jetbrains.annotations.NotNull;
 public interface StatusChangeEvent extends GameEvent {
 
 	@NotNull
-	GameStatus getStatus();
+	Status getStatus();
 }

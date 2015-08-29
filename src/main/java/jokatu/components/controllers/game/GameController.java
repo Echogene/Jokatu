@@ -15,6 +15,7 @@ import jokatu.game.factory.player.PlayerFactory;
 import jokatu.game.input.Input;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
+import jokatu.game.status.GameStatus;
 import jokatu.game.status.Status;
 import jokatu.game.user.player.Player;
 import ophelia.collections.BaseCollection;
@@ -97,6 +98,13 @@ public class GameController {
 	 */
 	@SubscribeMapping("/public/game/{identity}")
 	void publicGameSubscription(
+			@DestinationVariable("identity") GameID identity
+	) throws GameException {
+		getGame(identity, "You cannot subscribe to a non-existent game.");
+	}
+
+	@SubscribeMapping("/status/game/{identity}")
+	void gameStatusSubscription(
 			@DestinationVariable("identity") GameID identity
 	) throws GameException {
 		getGame(identity, "You cannot subscribe to a non-existent game.");
@@ -189,16 +197,18 @@ public class GameController {
 
 		} else if (event instanceof StatusChangeEvent) {
 			StatusChangeEvent statusChangeEvent = (StatusChangeEvent) event;
-			// todo: send this on a different channel
-			sendPublicMessageToGameSubscribers(game, statusChangeEvent.getStatus());
+			sendStatusUpdateToGameSubscribers(game, statusChangeEvent.getStatus());
 
 		} else if (event instanceof PrivateGameEvent) {
 			PrivateGameEvent privateGameEvent = (PrivateGameEvent) event;
 			String privateMessage = event.getMessage();
 			privateGameEvent.getPlayers().stream()
 					.forEach(player -> sendPrivateMessageToPlayer(player, game, privateMessage));
-
 		}
+	}
+
+	private void sendStatusUpdateToGameSubscribers(Game game, Status status) {
+		template.convertAndSend("/status/game/" + game.getIdentifier(), status);
 	}
 
 	private void sendPrivateMessageToPlayer(@NotNull Player player, @NotNull Game game, @NotNull Object payload) {

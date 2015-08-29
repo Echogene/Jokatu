@@ -20,4 +20,5 @@ layout 'layouts/main.tpl', true,
 			option(value: 'SCISSORS', 'Scissors')
 		}
 		button(onclick: 'choose()', 'Choose')
+		div(id: 'status', "${game.status.getText()}")
 	}

@@ -2,12 +2,12 @@ package jokatu.game.games.rockpaperscissors;
 
 import jokatu.game.AbstractGame;
 import jokatu.game.GameID;
-import jokatu.game.status.GameStatus;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.joining.GameFullException;
 import jokatu.game.result.PlayerResult;
 import jokatu.game.result.Result;
+import jokatu.game.status.Status;
 import ophelia.collections.set.bounded.BoundedPair;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,7 +16,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
-import static jokatu.game.status.GameStatus.*;
 import static jokatu.game.result.Result.DRAW;
 import static jokatu.game.result.Result.WIN;
 
@@ -32,11 +31,12 @@ public class RockPaperScissorsGame
 
 	private final Map<RockPaperScissorsPlayer, RockPaperScissors> inputs = new ConcurrentHashMap<>();
 
-	private GameStatus status;
+	private RockPaperScissorsStatus status;
 
 	protected RockPaperScissorsGame(GameID identifier) {
 		super(identifier);
-		status = NOT_STARTED;
+		status = new RockPaperScissorsStatus("Waiting for two players to join");
+		status.observe(this::fireEvent);
 	}
 
 	@NotNull
@@ -56,7 +56,13 @@ public class RockPaperScissorsGame
 		checkCanJoin();
 		players.add(player);
 		if (players.size() == 2) {
-			status = IN_PROGRESS;
+			RockPaperScissorsPlayer player1 = players.getFirst();
+			assert player1 != null;
+			RockPaperScissorsPlayer player2 = players.getSecond();
+			assert player2 != null;
+			status.setText("Awaiting input from " + player1.getName() + " and " + player2.getName());
+		} else {
+			status.setText("Waiting for one more player to join");
 		}
 	}
 
@@ -64,14 +70,11 @@ public class RockPaperScissorsGame
 		if (players.size() > 1) {
 			throw new GameFullException(getIdentifier(), "Rock-paper-scissors supports two players");
 		}
-		if (status != NOT_STARTED) {
-			throw new CannotJoinGameException(getIdentifier(), "Cannot join rock-paper-scissors after it has started");
-		}
 	}
 
 	@NotNull
 	@Override
-	public GameStatus getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
@@ -98,7 +101,11 @@ public class RockPaperScissorsGame
 				default:
 					fireEvent(new PlayerResult(DRAW, asList(player1, player2)));
 			}
-			status = OVER;
+			status.setText("Game over");
+		} else {
+			RockPaperScissorsPlayer other = players.getOther(inputter);
+			assert other != null;
+			status.setText("Awaiting input from " + other.getName());
 		}
 	}
 }
