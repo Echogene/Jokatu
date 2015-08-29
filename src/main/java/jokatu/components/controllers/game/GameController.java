@@ -120,12 +120,14 @@ public class GameController {
 			throws GameException {
 
 		Game<Player, Input, ?, ?> game = getGame(identity, "You can't input to a game that does not exist.");
-		InputDeserialiser inputDeserialiser = gameFactories.getInputDeserialiser(game);
-		Input input = inputDeserialiser.deserialise(json);
+
 		Player player = getPlayer(principal, game);
 		if (!game.hasPlayer(player)) {
 			throw new UnacceptableInputException(identity, "You can't input to a game you're not playing.");
 		}
+
+		InputDeserialiser inputDeserialiser = gameFactories.getInputDeserialiser(game);
+		Input input = inputDeserialiser.deserialise(json);
 		game.accept(input, player);
 	}
 
