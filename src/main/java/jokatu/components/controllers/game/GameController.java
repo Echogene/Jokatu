@@ -101,7 +101,7 @@ public class GameController {
 	@NotNull
 	private <P extends Player, I extends Input, C extends BaseCollection<P>, E extends GameEvent<P>>
 	Game<P, I, C, E> getGame(
-			@DestinationVariable("identity") GameID identity,
+			GameID identity,
 			@NotNull final String errorMessage
 	) throws GameException {
 
