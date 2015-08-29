@@ -74,7 +74,7 @@ public class FactoryConfiguration {
 		}
 
 		@NotNull
-		public <G extends Game<?, ?, ?, ?>> GameFactory<G> getFactory(@NotNull String gameName) {
+		public <G extends Game<?, ?, ?>> GameFactory<G> getFactory(@NotNull String gameName) {
 			GameFactory factory = gameFactories.get(gameName);
 			if (factory == null) {
 				throw new NullPointerException(format("The game ''{0}'' has no factory.", gameName));
@@ -83,7 +83,7 @@ public class FactoryConfiguration {
 		}
 
 		@NotNull
-		public PlayerFactory getPlayerFactory(@NotNull Game<?, ?, ?, ?> game) throws GameException {
+		public PlayerFactory getPlayerFactory(@NotNull Game<?, ?, ?> game) throws GameException {
 			String gameName = game.getGameName();
 			PlayerFactory factory = playerFactories.get(gameName);
 			if (factory == null) {
@@ -95,7 +95,7 @@ public class FactoryConfiguration {
 			return factory;
 		}
 
-		public InputDeserialiser getInputDeserialiser(@NotNull Game<?, ?, ?, ?> game) throws GameException {
+		public InputDeserialiser getInputDeserialiser(@NotNull Game<?, ?, ?> game) throws GameException {
 			String gameName = game.getGameName();
 			InputDeserialiser factory = inputDeserialisers.get(gameName);
 			if (factory == null) {

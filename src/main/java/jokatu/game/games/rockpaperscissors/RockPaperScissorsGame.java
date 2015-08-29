@@ -24,7 +24,6 @@ public class RockPaperScissorsGame
 		extends AbstractGame <
 				RockPaperScissorsPlayer,
 				RockPaperScissorsInput,
-				BoundedPair<RockPaperScissorsPlayer>,
 				PlayerResult<RockPaperScissorsPlayer>
 		> {
 

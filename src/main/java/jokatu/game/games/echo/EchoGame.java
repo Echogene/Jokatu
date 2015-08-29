@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static java.util.Collections.newSetFromMap;
 import static jokatu.game.status.GameStatus.IN_PROGRESS;
 
-public class EchoGame extends AbstractGame<EchoPlayer, EchoInput, BaseCollection<EchoPlayer>, Echo> {
+public class EchoGame extends AbstractGame<EchoPlayer, EchoInput, Echo> {
 
 	public static final String ECHO = "Echo";
 	private final Collection<EchoPlayer> players = newSetFromMap(new ConcurrentHashMap<>());

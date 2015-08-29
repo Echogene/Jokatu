@@ -14,12 +14,12 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Steven Weston
  */
-public interface Game<P extends Player, I extends Input, C extends BaseCollection<P>, E extends GameEvent<P>>
+public interface Game<P extends Player, I extends Input, E extends GameEvent<P>>
 		extends Identifiable<GameID>, Observable<E> {
 
 	@NotNull String getGameName();
 
-	@NotNull C getPlayers();
+	@NotNull BaseCollection<P> getPlayers();
 
 	void join(@NotNull P player) throws CannotJoinGameException;
 
