@@ -2,7 +2,7 @@ package jokatu.game.games.echo;
 
 import jokatu.game.AbstractGame;
 import jokatu.game.GameID;
-import jokatu.game.status.Status;
+import jokatu.game.status.GameStatus;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
 import ophelia.collections.BaseCollection;
@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static java.util.Collections.newSetFromMap;
-import static jokatu.game.status.Status.IN_PROGRESS;
+import static jokatu.game.status.GameStatus.IN_PROGRESS;
 
 public class EchoGame extends AbstractGame<EchoPlayer, EchoInput, BaseCollection<EchoPlayer>, Echo> {
 
@@ -43,7 +43,7 @@ public class EchoGame extends AbstractGame<EchoPlayer, EchoInput, BaseCollection
 
 	@NotNull
 	@Override
-	public Status getStatus() {
+	public GameStatus getStatus() {
 		return IN_PROGRESS;
 	}
 

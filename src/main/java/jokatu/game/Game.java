@@ -4,7 +4,7 @@ import jokatu.game.event.GameEvent;
 import jokatu.game.input.Input;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
-import jokatu.game.status.Status;
+import jokatu.game.status.GameStatus;
 import jokatu.game.user.player.Player;
 import jokatu.identity.Identifiable;
 import ophelia.collections.BaseCollection;
@@ -24,7 +24,7 @@ public interface Game<P extends Player, I extends Input, C extends BaseCollectio
 	void join(@NotNull P player) throws CannotJoinGameException;
 
 	@NotNull
-	Status getStatus();
+	GameStatus getStatus();
 
 	void accept(@NotNull I input, @NotNull P player) throws UnacceptableInputException;
 

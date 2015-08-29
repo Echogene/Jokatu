@@ -2,7 +2,7 @@ package jokatu.game.games.rockpaperscissors;
 
 import jokatu.game.AbstractGame;
 import jokatu.game.GameID;
-import jokatu.game.status.Status;
+import jokatu.game.status.GameStatus;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.joining.GameFullException;
@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
-import static jokatu.game.status.Status.*;
+import static jokatu.game.status.GameStatus.*;
 import static jokatu.game.result.Result.DRAW;
 import static jokatu.game.result.Result.WIN;
 
@@ -34,7 +34,7 @@ public class RockPaperScissorsGame
 
 	private final Map<RockPaperScissorsPlayer, RockPaperScissors> inputs = new ConcurrentHashMap<>();
 
-	private Status status;
+	private GameStatus status;
 
 	protected RockPaperScissorsGame(GameID identifier) {
 		super(identifier);
@@ -73,7 +73,7 @@ public class RockPaperScissorsGame
 
 	@NotNull
 	@Override
-	public Status getStatus() {
+	public GameStatus getStatus() {
 		return status;
 	}
 
