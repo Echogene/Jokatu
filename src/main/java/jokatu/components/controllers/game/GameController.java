@@ -15,10 +15,8 @@ import jokatu.game.factory.player.PlayerFactory;
 import jokatu.game.input.Input;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
-import jokatu.game.status.GameStatus;
 import jokatu.game.status.Status;
 import jokatu.game.user.player.Player;
-import ophelia.collections.BaseCollection;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
@@ -190,6 +188,7 @@ public class GameController {
 		getGame(identity, "You cannot subscribe to a non-existent game.");
 	}
 
+	// todo: use event handlers instead
 	private void sendEvent(@NotNull Game game, @NotNull GameEvent event) {
 
 		if (event instanceof PublicGameEvent) {
@@ -238,6 +237,7 @@ public class GameController {
 	}
 
 	private void handleSubscriptionError(GameException e, Message originalMessage, Principal principal) {
+		// todo: use accessors?
 		Map<String, Object> nativeHeaders = (Map<String, Object>) originalMessage.getHeaders().get(NATIVE_HEADERS);
 		String subscriptionId = ((LinkedList<String>) nativeHeaders.get("id")).get(0);
 
