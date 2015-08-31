@@ -1,6 +1,6 @@
 package jokatu.game.games.echo;
 
-import jokatu.game.user.player.AbstractPlayer;
+import jokatu.game.player.AbstractPlayer;
 
 public class EchoPlayer extends AbstractPlayer {
 

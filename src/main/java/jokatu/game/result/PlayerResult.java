@@ -1,7 +1,7 @@
 package jokatu.game.result;
 
 import jokatu.game.event.PublicGameEvent;
-import jokatu.game.user.player.Player;
+import jokatu.game.player.Player;
 import ophelia.util.StringUtils;
 import org.jetbrains.annotations.NotNull;
 

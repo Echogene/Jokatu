@@ -5,7 +5,7 @@ import jokatu.game.input.Input;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.status.Status;
-import jokatu.game.user.player.Player;
+import jokatu.game.player.Player;
 import jokatu.identity.Identifiable;
 import ophelia.collections.BaseCollection;
 import ophelia.event.observable.Observable;

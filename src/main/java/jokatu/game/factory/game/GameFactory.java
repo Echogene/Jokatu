@@ -2,7 +2,7 @@ package jokatu.game.factory.game;
 
 import jokatu.game.Game;
 import jokatu.game.input.Input;
-import jokatu.game.user.player.Player;
+import jokatu.game.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 public interface GameFactory {

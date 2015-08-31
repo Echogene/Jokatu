@@ -2,7 +2,7 @@ package jokatu.game;
 
 import jokatu.game.event.GameEvent;
 import jokatu.game.input.Input;
-import jokatu.game.user.player.Player;
+import jokatu.game.player.Player;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import org.jetbrains.annotations.NotNull;
 

@@ -1,6 +1,6 @@
 package jokatu.game.event;
 
-import jokatu.game.user.player.Player;
+import jokatu.game.player.Player;
 import ophelia.collections.BaseCollection;
 import ophelia.collections.UnmodifiableCollection;
 import org.jetbrains.annotations.NotNull;

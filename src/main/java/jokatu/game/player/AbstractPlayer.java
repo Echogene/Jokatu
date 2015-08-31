@@ -1,4 +1,4 @@
-package jokatu.game.user.player;
+package jokatu.game.player;
 
 import org.jetbrains.annotations.NotNull;
 

@@ -2,11 +2,9 @@ package jokatu.components.dao;
 
 import jokatu.game.Game;
 import jokatu.game.GameID;
-import jokatu.game.event.GameEvent;
 import jokatu.game.input.Input;
-import jokatu.game.user.player.Player;
+import jokatu.game.player.Player;
 import jokatu.identity.IdentifiableDao;
-import ophelia.collections.BaseCollection;
 import ophelia.collections.set.UnmodifiableSet;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

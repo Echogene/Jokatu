@@ -1,6 +1,6 @@
 package jokatu.game.games.rockpaperscissors;
 
-import jokatu.game.user.player.AbstractPlayer;
+import jokatu.game.player.AbstractPlayer;
 
 public class RockPaperScissorsPlayer extends AbstractPlayer {
 

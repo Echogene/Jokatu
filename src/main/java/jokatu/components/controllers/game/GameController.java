@@ -16,7 +16,7 @@ import jokatu.game.input.Input;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.status.Status;
-import jokatu.game.user.player.Player;
+import jokatu.game.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;

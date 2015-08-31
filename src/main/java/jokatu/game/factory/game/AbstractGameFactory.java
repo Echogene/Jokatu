@@ -4,7 +4,7 @@ import jokatu.components.dao.GameDao;
 import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.input.Input;
-import jokatu.game.user.player.Player;
+import jokatu.game.player.Player;
 import jokatu.identity.Identifier;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
