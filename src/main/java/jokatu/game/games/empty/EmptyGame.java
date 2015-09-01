@@ -2,11 +2,11 @@ package jokatu.game.games.empty;
 
 import jokatu.game.AbstractGame;
 import jokatu.game.GameID;
-import jokatu.game.status.GameStatus;
 import jokatu.game.input.Input;
 import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.joining.GameFullException;
 import jokatu.game.player.Player;
+import jokatu.game.status.GameStatus;
 import ophelia.collections.set.EmptySet;
 import org.jetbrains.annotations.NotNull;
 

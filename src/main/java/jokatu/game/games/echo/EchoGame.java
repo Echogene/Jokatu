@@ -2,9 +2,9 @@ package jokatu.game.games.echo;
 
 import jokatu.game.AbstractGame;
 import jokatu.game.GameID;
-import jokatu.game.status.GameStatus;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
+import jokatu.game.status.GameStatus;
 import ophelia.collections.BaseCollection;
 import ophelia.collections.UnmodifiableCollection;
 import org.jetbrains.annotations.NotNull;
