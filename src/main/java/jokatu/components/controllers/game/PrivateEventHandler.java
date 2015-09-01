@@ -1,6 +1,8 @@
-package jokatu.game.event;
+package jokatu.components.controllers.game;
 
 import jokatu.game.Game;
+import jokatu.game.event.PrivateGameEvent;
+import jokatu.game.event.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
