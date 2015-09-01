@@ -38,7 +38,7 @@ public class EmptyGame extends AbstractGame<Player, Input> {
 	}
 
 	@Override
-	public void join(@NotNull Player player) throws CannotJoinGameException {
+	public void joinInternal(@NotNull Player player) throws CannotJoinGameException {
 		throw new GameFullException(getIdentifier(), "An empty game cannot have any players");
 	}
 

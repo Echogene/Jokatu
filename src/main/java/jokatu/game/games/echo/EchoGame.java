@@ -37,7 +37,7 @@ public class EchoGame extends AbstractGame<EchoPlayer, EchoInput> {
 	}
 
 	@Override
-	public void join(@NotNull EchoPlayer player) throws CannotJoinGameException {
+	public void joinInternal(@NotNull EchoPlayer player) throws CannotJoinGameException {
 		players.add(player);
 	}
 

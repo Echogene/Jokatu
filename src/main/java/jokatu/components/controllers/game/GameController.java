@@ -4,10 +4,7 @@ import jokatu.components.config.FactoryConfiguration.GameFactories;
 import jokatu.components.dao.GameDao;
 import jokatu.game.Game;
 import jokatu.game.GameID;
-import jokatu.game.event.GameEvent;
-import jokatu.game.event.PrivateGameEvent;
-import jokatu.game.event.PublicGameEvent;
-import jokatu.game.event.StatusChangeEvent;
+import jokatu.game.event.*;
 import jokatu.game.exception.GameException;
 import jokatu.game.factory.game.GameFactory;
 import jokatu.game.factory.input.InputDeserialiser;
@@ -15,8 +12,8 @@ import jokatu.game.factory.player.PlayerFactory;
 import jokatu.game.input.Input;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
-import jokatu.game.status.Status;
 import jokatu.game.player.Player;
+import jokatu.game.status.Status;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
@@ -54,12 +51,19 @@ public class GameController {
 	private final GameFactories gameFactories;
 	private final GameDao gameDao;
 	private final SimpMessagingTemplate template;
+	private final Collection<EventHandler<? extends GameEvent>> eventHandlers;
 
 	@Autowired
-	public GameController(GameFactories gameFactories, GameDao gameDao, SimpMessagingTemplate template) {
+	public GameController(
+			GameFactories gameFactories,
+			GameDao gameDao,
+			SimpMessagingTemplate template,
+			Collection<EventHandler<? extends GameEvent>> eventHandlers
+	) {
 		this.gameFactories = gameFactories;
 		this.gameDao = gameDao;
 		this.template = template;
+		this.eventHandlers = eventHandlers;
 	}
 
 	@RequestMapping(GAME_LIST_MAPPING)
@@ -165,8 +169,6 @@ public class GameController {
 		}
 		game.join(player);
 
-		sendPublicMessageToGameSubscribers(game, player.getName() + " joined the game.");
-
 		return game;
 	}
 
@@ -188,34 +190,8 @@ public class GameController {
 		getGame(identity, "You cannot subscribe to a non-existent game.");
 	}
 
-	// todo: use event handlers instead
 	private void sendEvent(@NotNull Game game, @NotNull GameEvent event) {
-
-		if (event instanceof PublicGameEvent) {
-			sendPublicMessageToGameSubscribers(game, event.getMessage());
-
-		} else if (event instanceof StatusChangeEvent) {
-			StatusChangeEvent statusChangeEvent = (StatusChangeEvent) event;
-			sendStatusUpdateToGameSubscribers(game, statusChangeEvent.getStatus());
-
-		} else if (event instanceof PrivateGameEvent) {
-			PrivateGameEvent privateGameEvent = (PrivateGameEvent) event;
-			String privateMessage = event.getMessage();
-			privateGameEvent.getPlayers().stream()
-					.forEach(player -> sendPrivateMessageToPlayer(player, game, privateMessage));
-		}
-	}
-
-	private void sendStatusUpdateToGameSubscribers(Game game, Status status) {
-		template.convertAndSend("/status/game/" + game.getIdentifier(), status);
-	}
-
-	private void sendPrivateMessageToPlayer(@NotNull Player player, @NotNull Game game, @NotNull Object payload) {
-		template.convertAndSendToUser(player.getName(), "/game/" + game.getIdentifier(), payload);
-	}
-
-	private void sendPublicMessageToGameSubscribers(@NotNull Game game, @NotNull Object payload) {
-		template.convertAndSend("/public/game/" + game.getIdentifier(), payload);
+		eventHandlers.forEach(eventHandler -> eventHandler.handle(game, event));
 	}
 
 	@NotNull
