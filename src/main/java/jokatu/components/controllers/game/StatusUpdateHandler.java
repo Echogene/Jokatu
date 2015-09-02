@@ -1,7 +1,7 @@
 package jokatu.components.controllers.game;
 
 import jokatu.game.Game;
-import jokatu.game.event.StatusChangeEvent;
+import jokatu.game.event.StatusUpdateEvent;
 import jokatu.game.event.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -11,22 +11,22 @@ import org.springframework.stereotype.Component;
  * @author Steven Weston
  */
 @Component
-public class StatusChangeHandler extends EventHandler<StatusChangeEvent> {
+public class StatusUpdateHandler extends EventHandler<StatusUpdateEvent> {
 
 	private final SimpMessagingTemplate template;
 
 	@Autowired
-	public StatusChangeHandler(SimpMessagingTemplate template) {
+	public StatusUpdateHandler(SimpMessagingTemplate template) {
 		this.template = template;
 	}
 
 	@Override
-	protected Class<StatusChangeEvent> handles() {
-		return StatusChangeEvent.class;
+	protected Class<StatusUpdateEvent> handles() {
+		return StatusUpdateEvent.class;
 	}
 
 	@Override
-	protected void handleCastEvent(Game game, StatusChangeEvent event) {
+	protected void handleCastEvent(Game game, StatusUpdateEvent event) {
 		template.convertAndSend("/status/game/" + game.getIdentifier(), event.getStatus());
 	}
 }

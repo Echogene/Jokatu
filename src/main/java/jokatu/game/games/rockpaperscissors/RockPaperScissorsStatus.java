@@ -1,7 +1,7 @@
 package jokatu.game.games.rockpaperscissors;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-import jokatu.game.event.StatusChangeEvent;
+import jokatu.game.event.StatusUpdateEvent;
 import jokatu.game.status.Status;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import org.jetbrains.annotations.NotNull;
@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author steven
  */
-public class RockPaperScissorsStatus extends AbstractSynchronousObservable<StatusChangeEvent> implements Status {
+public class RockPaperScissorsStatus extends AbstractSynchronousObservable<StatusUpdateEvent> implements Status {
 
 	private String text;
 
@@ -26,7 +26,7 @@ public class RockPaperScissorsStatus extends AbstractSynchronousObservable<Statu
 
 	public void setText(String text) {
 		this.text = text;
-		fireEvent(new StatusChangeEvent() {
+		fireEvent(new StatusUpdateEvent() {
 			@NotNull
 			@Override
 			public Status getStatus() {

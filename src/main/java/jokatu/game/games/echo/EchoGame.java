@@ -2,7 +2,7 @@ package jokatu.game.games.echo;
 
 import jokatu.game.AbstractGame;
 import jokatu.game.GameID;
-import jokatu.game.event.StatusChangeEvent;
+import jokatu.game.event.StatusUpdateEvent;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.status.GameStatus;
@@ -41,7 +41,7 @@ public class EchoGame extends AbstractGame<EchoPlayer, EchoInput> {
 	@Override
 	public void joinInternal(@NotNull EchoPlayer player) throws CannotJoinGameException {
 		players.add(player);
-		fireEvent(new StatusChangeEvent() {
+		fireEvent(new StatusUpdateEvent() {
 			@NotNull
 			@Override
 			public Status getStatus() {
