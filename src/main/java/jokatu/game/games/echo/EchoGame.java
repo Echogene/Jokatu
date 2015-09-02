@@ -2,9 +2,11 @@ package jokatu.game.games.echo;
 
 import jokatu.game.AbstractGame;
 import jokatu.game.GameID;
+import jokatu.game.event.StatusChangeEvent;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.status.GameStatus;
+import jokatu.game.status.Status;
 import ophelia.collections.BaseCollection;
 import ophelia.collections.UnmodifiableCollection;
 import org.jetbrains.annotations.NotNull;
@@ -39,6 +41,19 @@ public class EchoGame extends AbstractGame<EchoPlayer, EchoInput> {
 	@Override
 	public void joinInternal(@NotNull EchoPlayer player) throws CannotJoinGameException {
 		players.add(player);
+		fireEvent(new StatusChangeEvent() {
+			@NotNull
+			@Override
+			public Status getStatus() {
+				return EchoGame.this.getStatus();
+			}
+
+			@NotNull
+			@Override
+			public String getMessage() {
+				return "In progress";
+			}
+		});
 	}
 
 	@NotNull
