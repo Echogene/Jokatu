@@ -26,10 +26,7 @@ import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -37,6 +34,7 @@ import java.security.Principal;
 import java.util.*;
 
 import static java.text.MessageFormat.format;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.messaging.support.NativeMessageHeaderAccessor.NATIVE_HEADERS;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -221,5 +219,12 @@ public class GameController {
 		errorHeaders.put("subscription-id", subscriptionId);
 
 		template.convertAndSendToUser(principal.getName(), "/errors/" + e.getId(), e, errorHeaders);
+	}
+
+	@ExceptionHandler(GameException.class)
+	@ResponseStatus(INTERNAL_SERVER_ERROR)
+	@ResponseBody
+	Exception handleException(Exception e) {
+		return e;
 	}
 }

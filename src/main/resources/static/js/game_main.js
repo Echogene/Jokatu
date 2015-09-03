@@ -5,7 +5,7 @@ socket.subscribe(`/user/${username}/errors/${game.identifier}`, handleError);
 socket.subscribe(`/user/${username}/game/${game.identifier}`, handleMessage);
 
 function join() {
-	post('/joinGame.do', {gameID: game.identifier}, (newGame) => game = newGame);
+	post('/joinGame.do', {gameID: game.identifier}, (newGame) => game = newGame, handleError);
 }
 
 function handleStatusChange(e) {
@@ -25,7 +25,7 @@ function handleMessage(e) {
 
 /**
  * @param {Object} e
- * @param {Map} headers
+ * @param {Map=} headers
  */
 function handleError(e, headers) {
 	var div = document.getElementById('error');
@@ -34,7 +34,7 @@ function handleError(e, headers) {
 		div.id = 'error';
 		document.body.appendChild(div);
 	}
-	if (headers.has('subscription-id')) {
+	if (headers && headers.has('subscription-id')) {
 		div.innerHTML = 'Subscription error: ' + JSON.stringify(e.message);
 		socket.unsubscribe(headers.get('subscription-id'));
 	} else {
