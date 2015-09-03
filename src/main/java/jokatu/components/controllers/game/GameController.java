@@ -24,6 +24,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.messaging.simp.stomp.StompCommand;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,6 @@ import java.util.*;
 
 import static java.text.MessageFormat.format;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.messaging.support.NativeMessageHeaderAccessor.NATIVE_HEADERS;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
@@ -200,20 +200,19 @@ public class GameController {
 
 	@MessageExceptionHandler(GameException.class)
 	void handleException(GameException e, Message originalMessage, Principal principal) {
-		StompCommand stompCommand = (StompCommand) originalMessage.getHeaders().get("stompCommand");
+		StompHeaderAccessor accessor = StompHeaderAccessor.wrap(originalMessage);
+		StompCommand stompCommand = accessor.getCommand();
 		switch (stompCommand) {
 			case SUBSCRIBE:
-				handleSubscriptionError(e, originalMessage, principal);
+				handleSubscriptionError(e, accessor, principal);
 				break;
 			default:
 				template.convertAndSendToUser(principal.getName(), "/errors/" + e.getId(), e);
 		}
 	}
 
-	private void handleSubscriptionError(GameException e, Message originalMessage, Principal principal) {
-		// todo: use accessors?
-		Map<String, Object> nativeHeaders = (Map<String, Object>) originalMessage.getHeaders().get(NATIVE_HEADERS);
-		String subscriptionId = ((LinkedList<String>) nativeHeaders.get("id")).get(0);
+	private void handleSubscriptionError(GameException e, StompHeaderAccessor accessor, Principal principal) {
+		String subscriptionId = accessor.getNativeHeader("id").get(0);
 
 		Map<String, Object> errorHeaders = new HashMap<>();
 		errorHeaders.put("subscription-id", subscriptionId);
