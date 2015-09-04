@@ -49,14 +49,14 @@ public class GameController {
 	private final GameFactories gameFactories;
 	private final GameDao gameDao;
 	private final SimpMessagingTemplate template;
-	private final Collection<EventHandler<? extends GameEvent>> eventHandlers;
+	private final Collection<EventHandler> eventHandlers;
 
 	@Autowired
 	public GameController(
 			GameFactories gameFactories,
 			GameDao gameDao,
 			SimpMessagingTemplate template,
-			Collection<EventHandler<? extends GameEvent>> eventHandlers
+			Collection<EventHandler> eventHandlers
 	) {
 		this.gameFactories = gameFactories;
 		this.gameDao = gameDao;
