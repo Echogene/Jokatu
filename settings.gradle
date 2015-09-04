@@ -1,3 +1,6 @@
 rootProject.name = 'Jokatu'
 include 'Core'
+include 'Games'
+include 'Games:EmptyGame'
+findProject(':Games:EmptyGame')?.name = 'EmptyGame'
 

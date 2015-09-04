@@ -22,7 +22,8 @@ repositories {
 }
 
 dependencies {
-	compile project(':Core')
+	compile project(':Core'),
+			project(':Games').getChildProjects().values()
 	compile 'org.springframework.boot:spring-boot-starter-web:1.2.5.RELEASE'
 	compile 'org.springframework:spring-context:4.2.1.RELEASE'
 	compile 'org.springframework:spring-web:4.2.1.RELEASE'
