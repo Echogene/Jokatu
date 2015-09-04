@@ -3,17 +3,9 @@ package jokatu.game.event;
 import jokatu.game.Game;
 
 /**
- * @author Steven Weston
+ * @author steven
  */
-public abstract class EventHandler<E extends GameEvent> {
+public interface EventHandler {
 
-	public void handle(Game game, GameEvent e) {
-		if (handles().isInstance(e)) {
-			handleCastEvent(game, handles().cast(e));
-		}
-	}
-
-	protected abstract Class<E> handles();
-
-	protected abstract void handleCastEvent(Game game, E event);
+	void handle(Game game, GameEvent e);
 }

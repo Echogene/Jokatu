@@ -1,7 +1,7 @@
 package jokatu.components.controllers.game;
 
 import jokatu.game.Game;
-import jokatu.game.event.EventHandler;
+import jokatu.game.event.AbstractEventHandler;
 import jokatu.game.event.PublicGameEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @author Steven Weston
  */
 @Component
-public class PublicEventHandler extends EventHandler<PublicGameEvent> {
+public class PublicEventHandler extends AbstractEventHandler<PublicGameEvent> {
 
 	private final SimpMessagingTemplate template;
 
