@@ -14,6 +14,9 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 
 import javax.annotation.PostConstruct;
 
+/**
+ * Set up STOMP web sockets and configure the conversion service for messages to use the default Jackson converter.
+ */
 @Component
 @EnableWebSocket
 // todo: secure web sockets
