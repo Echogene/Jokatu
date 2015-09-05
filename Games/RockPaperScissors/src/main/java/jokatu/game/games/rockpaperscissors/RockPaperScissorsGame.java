@@ -52,7 +52,7 @@ public class RockPaperScissorsGame
 	}
 
 	@Override
-	public void join(@NotNull RockPaperScissorsPlayer player) throws CannotJoinGameException {
+	public void joinInternal(@NotNull RockPaperScissorsPlayer player) throws CannotJoinGameException {
 		checkCanJoin();
 		players.add(player);
 		if (players.size() == 2) {

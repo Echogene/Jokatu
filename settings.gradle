@@ -1,2 +1,10 @@
 rootProject.name = 'Jokatu'
+include 'Core'
+include 'Games'
+include 'Games:EmptyGame'
+findProject(':Games:EmptyGame')?.name = 'EmptyGame'
+include 'Games:EchoGame'
+findProject(':Games:EchoGame')?.name = 'EchoGame'
+include 'Games:RockPaperScissors'
+findProject(':Games:RockPaperScissors')?.name = 'RockPaperScissors'
 

@@ -4,10 +4,8 @@ import jokatu.components.config.FactoryConfiguration.GameFactories;
 import jokatu.components.dao.GameDao;
 import jokatu.game.Game;
 import jokatu.game.GameID;
+import jokatu.game.event.EventHandler;
 import jokatu.game.event.GameEvent;
-import jokatu.game.event.PrivateGameEvent;
-import jokatu.game.event.PublicGameEvent;
-import jokatu.game.event.StatusChangeEvent;
 import jokatu.game.exception.GameException;
 import jokatu.game.factory.game.GameFactory;
 import jokatu.game.factory.input.InputDeserialiser;
@@ -15,7 +13,6 @@ import jokatu.game.factory.player.PlayerFactory;
 import jokatu.game.input.Input;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
-import jokatu.game.status.Status;
 import jokatu.game.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +24,10 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.messaging.simp.stomp.StompCommand;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -40,7 +35,7 @@ import java.security.Principal;
 import java.util.*;
 
 import static java.text.MessageFormat.format;
-import static org.springframework.messaging.support.NativeMessageHeaderAccessor.NATIVE_HEADERS;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
@@ -54,12 +49,19 @@ public class GameController {
 	private final GameFactories gameFactories;
 	private final GameDao gameDao;
 	private final SimpMessagingTemplate template;
+	private final Collection<EventHandler> eventHandlers;
 
 	@Autowired
-	public GameController(GameFactories gameFactories, GameDao gameDao, SimpMessagingTemplate template) {
+	public GameController(
+			GameFactories gameFactories,
+			GameDao gameDao,
+			SimpMessagingTemplate template,
+			Collection<EventHandler> eventHandlers
+	) {
 		this.gameFactories = gameFactories;
 		this.gameDao = gameDao;
 		this.template = template;
+		this.eventHandlers = eventHandlers;
 	}
 
 	@RequestMapping(GAME_LIST_MAPPING)
@@ -165,8 +167,6 @@ public class GameController {
 		}
 		game.join(player);
 
-		sendPublicMessageToGameSubscribers(game, player.getName() + " joined the game.");
-
 		return game;
 	}
 
@@ -188,34 +188,8 @@ public class GameController {
 		getGame(identity, "You cannot subscribe to a non-existent game.");
 	}
 
-	// todo: use event handlers instead
 	private void sendEvent(@NotNull Game game, @NotNull GameEvent event) {
-
-		if (event instanceof PublicGameEvent) {
-			sendPublicMessageToGameSubscribers(game, event.getMessage());
-
-		} else if (event instanceof StatusChangeEvent) {
-			StatusChangeEvent statusChangeEvent = (StatusChangeEvent) event;
-			sendStatusUpdateToGameSubscribers(game, statusChangeEvent.getStatus());
-
-		} else if (event instanceof PrivateGameEvent) {
-			PrivateGameEvent privateGameEvent = (PrivateGameEvent) event;
-			String privateMessage = event.getMessage();
-			privateGameEvent.getPlayers().stream()
-					.forEach(player -> sendPrivateMessageToPlayer(player, game, privateMessage));
-		}
-	}
-
-	private void sendStatusUpdateToGameSubscribers(Game game, Status status) {
-		template.convertAndSend("/status/game/" + game.getIdentifier(), status);
-	}
-
-	private void sendPrivateMessageToPlayer(@NotNull Player player, @NotNull Game game, @NotNull Object payload) {
-		template.convertAndSendToUser(player.getName(), "/game/" + game.getIdentifier(), payload);
-	}
-
-	private void sendPublicMessageToGameSubscribers(@NotNull Game game, @NotNull Object payload) {
-		template.convertAndSend("/public/game/" + game.getIdentifier(), payload);
+		eventHandlers.forEach(eventHandler -> eventHandler.handle(game, event));
 	}
 
 	@NotNull
@@ -226,24 +200,30 @@ public class GameController {
 
 	@MessageExceptionHandler(GameException.class)
 	void handleException(GameException e, Message originalMessage, Principal principal) {
-		StompCommand stompCommand = (StompCommand) originalMessage.getHeaders().get("stompCommand");
+		StompHeaderAccessor accessor = StompHeaderAccessor.wrap(originalMessage);
+		StompCommand stompCommand = accessor.getCommand();
 		switch (stompCommand) {
 			case SUBSCRIBE:
-				handleSubscriptionError(e, originalMessage, principal);
+				handleSubscriptionError(e, accessor, principal);
 				break;
 			default:
 				template.convertAndSendToUser(principal.getName(), "/errors/" + e.getId(), e);
 		}
 	}
 
-	private void handleSubscriptionError(GameException e, Message originalMessage, Principal principal) {
-		// todo: use accessors?
-		Map<String, Object> nativeHeaders = (Map<String, Object>) originalMessage.getHeaders().get(NATIVE_HEADERS);
-		String subscriptionId = ((LinkedList<String>) nativeHeaders.get("id")).get(0);
+	private void handleSubscriptionError(GameException e, StompHeaderAccessor accessor, Principal principal) {
+		String subscriptionId = accessor.getNativeHeader("id").get(0);
 
 		Map<String, Object> errorHeaders = new HashMap<>();
 		errorHeaders.put("subscription-id", subscriptionId);
 
 		template.convertAndSendToUser(principal.getName(), "/errors/" + e.getId(), e, errorHeaders);
+	}
+
+	@ExceptionHandler(GameException.class)
+	@ResponseStatus(INTERNAL_SERVER_ERROR)
+	@ResponseBody
+	Exception handleException(Exception e) {
+		return e;
 	}
 }

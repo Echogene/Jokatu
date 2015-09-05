@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author steven
  */
-public interface StatusChangeEvent extends GameEvent {
+public interface StatusUpdateEvent extends GameEvent {
 
 	@NotNull
 	Status getStatus();
