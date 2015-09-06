@@ -23,6 +23,9 @@ import static java.text.MessageFormat.format;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 
+/**
+ * Autodetect and wire up all the relevant factories for games.
+ */
 @Configuration
 @ComponentScan("jokatu.game")
 public class FactoryConfiguration {
