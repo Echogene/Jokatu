@@ -8,6 +8,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 /**
+ * Private events should be forwarded to the users they specify.
  * @author Steven Weston
  */
 @Component
