@@ -5,6 +5,7 @@ import jokatu.game.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * An event for when a player joins a game.
  * @author Steven Weston
  */
 public class PlayerJoinedEvent implements PublicGameEvent {
