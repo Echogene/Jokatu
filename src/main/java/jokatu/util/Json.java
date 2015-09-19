@@ -7,6 +7,9 @@ import org.springframework.core.convert.converter.ConverterFactory;
 
 import java.io.IOException;
 
+/**
+ * A utility class for handling JSON.
+ */
 public class Json {
 
 	public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
