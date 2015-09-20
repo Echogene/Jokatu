@@ -8,6 +8,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 /**
+ * Handle status updates for a game by sending the new status to the game's status channel.
  * @author Steven Weston
  */
 @Component
