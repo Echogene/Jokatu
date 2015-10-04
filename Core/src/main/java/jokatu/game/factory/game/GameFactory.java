@@ -5,6 +5,9 @@ import jokatu.game.input.Input;
 import jokatu.game.player.Player;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * This creates games of a specific type.
+ */
 public interface GameFactory {
 
 	@NotNull
