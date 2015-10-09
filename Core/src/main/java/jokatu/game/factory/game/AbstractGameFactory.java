@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * An abstract version of game factory that stores a common identifier to give IDs to games in subclasses.
+ */
 public abstract class AbstractGameFactory implements GameFactory {
 
 	private static final Identifier<GameID> GAME_IDENTIFIER = new Identifier<GameID>() {
