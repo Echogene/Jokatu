@@ -3,6 +3,7 @@ package jokatu.game.exception;
 import jokatu.game.GameID;
 
 /**
+ * An exception that occurs within a particular game.
  * @author steven
  */
 public class GameException extends Exception {
