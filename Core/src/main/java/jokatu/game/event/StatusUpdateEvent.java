@@ -4,6 +4,7 @@ import jokatu.game.status.Status;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * An event that occurs when a game changes in status.
  * @author steven
  */
 public interface StatusUpdateEvent extends GameEvent {
