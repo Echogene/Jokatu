@@ -5,6 +5,7 @@ import ophelia.collections.BaseCollection;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * An event that occurs privately for a collection of players.
  * @author steven
  */
 public interface PrivateGameEvent extends GameEvent {
