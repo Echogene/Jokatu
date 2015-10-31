@@ -14,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
+ * A dao that grants access to all games currently registered by referring to the game's ID.
  * @author Steven Weston
  */
 @Component
