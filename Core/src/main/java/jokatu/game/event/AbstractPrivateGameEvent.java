@@ -7,6 +7,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
+/**
+ * An abstract version of a private game event that stores the collection of players for whom it is private.
+ */
 public abstract class AbstractPrivateGameEvent implements PrivateGameEvent {
 
 	protected final Collection<? extends Player> players;
