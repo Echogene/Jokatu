@@ -3,6 +3,7 @@ package jokatu.game.event;
 import jokatu.game.Game;
 
 /**
+ * An abstract {@link EventHandler} that only handles {@link GameEvent}s of certain class and ignores others.
  * @author Steven Weston
  */
 public abstract class AbstractEventHandler<E extends GameEvent> implements EventHandler {
