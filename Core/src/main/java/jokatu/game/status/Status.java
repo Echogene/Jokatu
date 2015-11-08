@@ -8,6 +8,9 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface Status {
 
+	/**
+	 * @return the text that should be displayed to all observers and players of a game.
+	 */
 	@NotNull
 	String getText();
 }
