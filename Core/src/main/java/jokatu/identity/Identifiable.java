@@ -9,5 +9,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface Identifiable<I extends Identity> {
 
+	/**
+	 * @return the unique thing that identifies this object
+	 */
 	@NotNull I getIdentifier();
 }
