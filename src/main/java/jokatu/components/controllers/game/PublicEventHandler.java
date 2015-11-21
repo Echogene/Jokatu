@@ -8,6 +8,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 /**
+ * Handle public events for a game by sending the event to the game's public channel.
  * @author Steven Weston
  */
 @Component
