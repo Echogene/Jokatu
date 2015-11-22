@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 
 	@RequestMapping("/login")
-	String home() {
+	String login() {
 		return "views/log_in";
 	}
 
