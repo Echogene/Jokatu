@@ -14,6 +14,7 @@ import jokatu.game.input.Input;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.player.Player;
+import jokatu.game.viewresolver.ViewResolver;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
@@ -79,12 +80,18 @@ public class GameController {
 	}
 
 	@RequestMapping("/game/{identity}")
-	ModelAndView game(@PathVariable("identity") GameID identity) {
-		Game<?, ?> game = gameDao.read(identity);
+	ModelAndView game(@PathVariable("identity") GameID identity, Principal principal) throws GameException {
+		Game<Player, ?> game = gameDao.read(identity);
 		if (game == null) {
 			return new ModelAndView(new RedirectView(GAME_LIST_MAPPING));
 		}
-		return new ModelAndView("views/game_view", "game", game);
+		ViewResolver<?, ?> viewResolver = gameFactories.getViewResolver(game);
+		Player player = getPlayer(principal, game);
+		if (game.hasPlayer(player)) {
+			return viewResolver.getViewForPlayer(player);
+		} else {
+			return viewResolver.getViewForObserver();
+		}
 	}
 
 	/**
