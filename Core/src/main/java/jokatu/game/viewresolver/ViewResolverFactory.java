@@ -17,6 +17,7 @@ public abstract class ViewResolverFactory<P extends Player, G extends Game<P, ?>
 		return getResolverFor(castGame);
 	}
 
+	@NotNull
 	private G castGame(Game<?, ?> game) {
 		Class<G> gameClass = handlesGame();
 		if (!gameClass.isInstance(game)) {
@@ -27,7 +28,9 @@ public abstract class ViewResolverFactory<P extends Player, G extends Game<P, ?>
 		return gameClass.cast(game);
 	}
 
+	@NotNull
 	protected abstract Class<G> handlesGame();
 
+	@NotNull
 	protected abstract ViewResolver<P, G> getResolverFor(G castGame);
 }
