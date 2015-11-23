@@ -17,7 +17,7 @@ public abstract class ViewResolver<P extends Player, G extends Game<P, ?>> {
 		this.game = game;
 	}
 
-	public ModelAndView getViewForPlayer(Player player) {
+	public final ModelAndView getViewForPlayer(Player player) {
 		P castPlayer = castPlayer(player);
 		return getViewFor(castPlayer);
 	}
