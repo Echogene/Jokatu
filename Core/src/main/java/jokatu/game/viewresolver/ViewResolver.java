@@ -11,7 +11,7 @@ import java.text.MessageFormat;
  */
 public abstract class ViewResolver<P extends Player, G extends Game<P, ?>> {
 
-	private final G game;
+	protected final G game;
 
 	protected ViewResolver(G game) {
 		this.game = game;
