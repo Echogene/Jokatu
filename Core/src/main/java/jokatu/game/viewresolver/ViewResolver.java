@@ -19,7 +19,9 @@ public abstract class ViewResolver<P extends Player, G extends Game<P, ?>> {
 
 	public final ModelAndView getViewForPlayer(Player player) {
 		P castPlayer = castPlayer(player);
-		return getViewFor(castPlayer);
+		ModelAndView modelAndView = getViewFor(castPlayer);
+		modelAndView.addObject("game", game);
+		return modelAndView;
 	}
 
 	public abstract ModelAndView getViewForObserver();
