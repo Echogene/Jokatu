@@ -9,14 +9,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * An annotation to group a set of components that create stuff within a specific game.
+ * An annotation to group a set of components that do stuff within a specific game.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Component
-public @interface Factory {
+public @interface GameComponent {
 	/**
-	 * @return the name of the game for which this is a factory
+	 * @return the name of the game for which this is a component
 	 */
 	@NotNull String gameName();
 }

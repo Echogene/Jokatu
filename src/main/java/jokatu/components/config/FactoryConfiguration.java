@@ -2,7 +2,7 @@ package jokatu.components.config;
 
 import jokatu.game.Game;
 import jokatu.game.exception.GameException;
-import jokatu.game.factory.Factory;
+import jokatu.game.factory.GameComponent;
 import jokatu.game.factory.game.GameFactory;
 import jokatu.game.factory.input.InputDeserialiser;
 import jokatu.game.factory.player.PlayerFactory;
@@ -51,9 +51,9 @@ public class FactoryConfiguration {
 
 	@NotNull
 	private String getGameNameFromFactoryAnnotation(@NotNull Object factory) {
-		Factory annotation = factory.getClass().getAnnotation(Factory.class);
+		GameComponent annotation = factory.getClass().getAnnotation(GameComponent.class);
 		if (annotation == null) {
-			throw new RuntimeException(format("{0} was not annotated with @Factory.", factory));
+			throw new RuntimeException(format("{0} was not annotated with @GameComponent.", factory));
 		}
 		return annotation.gameName();
 	}
