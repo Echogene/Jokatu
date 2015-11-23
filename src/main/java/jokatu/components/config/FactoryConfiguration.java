@@ -1,7 +1,6 @@
 package jokatu.components.config;
 
 import jokatu.game.Game;
-import jokatu.game.exception.GameException;
 import jokatu.game.factory.GameComponent;
 import jokatu.game.factory.game.GameFactory;
 import jokatu.game.factory.input.InputDeserialiser;
@@ -32,20 +31,14 @@ import static java.util.stream.Collectors.toMap;
 @ComponentScan("jokatu.game")
 public class FactoryConfiguration {
 
-	private Map<String, GameFactory> gameFactories;
-	private Map<String, PlayerFactory> playerFactories;
-	private Map<String, InputDeserialiser> inputDeserialisers;
-	private Map<String, ViewResolverFactory> viewResolverFactories;
+	private Map<String, GameConfiguration> configs;
 
 	@Autowired
 	private ApplicationContext applicationContext;
 
 	@PostConstruct
 	public void populateFactories() {
-		gameFactories = getFactoryMap(GameFactory.class);
-		playerFactories = getFactoryMap(PlayerFactory.class);
-		inputDeserialisers = getFactoryMap(InputDeserialiser.class);
-		viewResolverFactories = getFactoryMap(ViewResolverFactory.class);
+		configs = getFactoryMap(GameConfiguration.class);
 	}
 
 	private <T> Map<String, T> getFactoryMap(@NotNull Class<T> clazz) {
@@ -71,7 +64,7 @@ public class FactoryConfiguration {
 		private final List<String> gameNames;
 
 		private GameFactories() {
-			gameNames = new ArrayList<>(gameFactories.keySet());
+			gameNames = new ArrayList<>(configs.keySet());
 			Collections.sort(gameNames);
 		}
 
@@ -81,48 +74,33 @@ public class FactoryConfiguration {
 		}
 
 		@NotNull
-		public GameFactory getFactory(@NotNull String gameName) {
-			GameFactory factory = gameFactories.get(gameName);
-			if (factory == null) {
-				throw new NullPointerException(format("The game ''{0}'' has no factory.", gameName));
+		private GameConfiguration getConfig(@NotNull String gameName) {
+			GameConfiguration config = configs.get(gameName);
+			if (config == null) {
+				throw new IllegalArgumentException(format("Unrecognised game name ''{0}''.", gameName));
 			}
-			return factory;
+			return config;
 		}
 
 		@NotNull
-		public PlayerFactory getPlayerFactory(@NotNull Game<?, ?> game) throws GameException {
-			String gameName = game.getGameName();
-			PlayerFactory factory = playerFactories.get(gameName);
-			if (factory == null) {
-				throw new GameException(
-						game.getIdentifier(),
-						format("The game ''{0}'' has no player factory.", gameName)
-				);
-			}
-			return factory;
+		public GameFactory getFactory(@NotNull String gameName) {
+			return getConfig(gameName).getGameFactory();
 		}
 
-		public InputDeserialiser getInputDeserialiser(@NotNull Game<?, ?> game) throws GameException {
+		@NotNull
+		public PlayerFactory getPlayerFactory(@NotNull Game<?, ?> game) {
 			String gameName = game.getGameName();
-			InputDeserialiser factory = inputDeserialisers.get(gameName);
-			if (factory == null) {
-				throw new GameException(
-						game.getIdentifier(),
-						format("The game ''{0}'' has no input deserialiser.", gameName)
-				);
-			}
-			return factory;
+			return getConfig(gameName).getPlayerFactory();
 		}
 
-		public ViewResolver<?, ?> getViewResolver(@NotNull Game<?, ?> game) throws GameException {
+		public InputDeserialiser getInputDeserialiser(@NotNull Game<?, ?> game) {
 			String gameName = game.getGameName();
-			ViewResolverFactory<?, ?> factory = viewResolverFactories.get(gameName);
-			if (factory == null) {
-				throw new GameException(
-						game.getIdentifier(),
-						format("The game ''{0}'' has no view resolver factory.", gameName)
-				);
-			}
+			return getConfig(gameName).getInputDeserialiser();
+		}
+
+		public ViewResolver<?, ?> getViewResolver(@NotNull Game<?, ?> game) {
+			String gameName = game.getGameName();
+			ViewResolverFactory<?, ?> factory = getConfig(gameName).getViewResolverFactory();
 			return factory.getViewResolver(game);
 		}
 	}
