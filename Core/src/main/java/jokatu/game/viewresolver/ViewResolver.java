@@ -2,6 +2,7 @@ package jokatu.game.viewresolver;
 
 import jokatu.game.Game;
 import jokatu.game.player.Player;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.MessageFormat;
@@ -24,7 +25,14 @@ public abstract class ViewResolver<P extends Player, G extends Game<P, ?>> {
 		return modelAndView;
 	}
 
-	public abstract ModelAndView getViewForObserver();
+	public ModelAndView getViewForObserver() {
+		ModelAndView modelAndView = getDefaultView();
+		modelAndView.addObject("game", game);
+		return modelAndView;
+	}
+
+	@NotNull
+	protected abstract ModelAndView getDefaultView();
 
 	private P castPlayer(Player player) {
 		Class<P> playerClass = handlesPlayer();
@@ -36,7 +44,9 @@ public abstract class ViewResolver<P extends Player, G extends Game<P, ?>> {
 		return playerClass.cast(player);
 	}
 
+	@NotNull
 	protected abstract Class<P> handlesPlayer();
 
+	@NotNull
 	protected abstract ModelAndView getViewFor(P player);
 }
