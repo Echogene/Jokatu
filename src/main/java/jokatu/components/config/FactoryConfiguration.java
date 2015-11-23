@@ -6,6 +6,8 @@ import jokatu.game.factory.GameComponent;
 import jokatu.game.factory.game.GameFactory;
 import jokatu.game.factory.input.InputDeserialiser;
 import jokatu.game.factory.player.PlayerFactory;
+import jokatu.game.viewresolver.ViewResolver;
+import jokatu.game.viewresolver.ViewResolverFactory;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -33,6 +35,7 @@ public class FactoryConfiguration {
 	private Map<String, GameFactory> gameFactories;
 	private Map<String, PlayerFactory> playerFactories;
 	private Map<String, InputDeserialiser> inputDeserialisers;
+	private Map<String, ViewResolverFactory> viewResolverFactories;
 
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -42,6 +45,7 @@ public class FactoryConfiguration {
 		gameFactories = getFactoryMap(GameFactory.class);
 		playerFactories = getFactoryMap(PlayerFactory.class);
 		inputDeserialisers = getFactoryMap(InputDeserialiser.class);
+		viewResolverFactories = getFactoryMap(ViewResolverFactory.class);
 	}
 
 	private <T> Map<String, T> getFactoryMap(@NotNull Class<T> clazz) {
@@ -108,6 +112,18 @@ public class FactoryConfiguration {
 				);
 			}
 			return factory;
+		}
+
+		public ViewResolver<?, ?> getViewResolver(@NotNull Game<?, ?> game) throws GameException {
+			String gameName = game.getGameName();
+			ViewResolverFactory<?, ?> factory = viewResolverFactories.get(gameName);
+			if (factory == null) {
+				throw new GameException(
+						game.getIdentifier(),
+						format("The game ''{0}'' has no view resolver factory.", gameName)
+				);
+			}
+			return factory.getViewResolver(game);
 		}
 	}
 }
