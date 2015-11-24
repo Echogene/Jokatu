@@ -23,6 +23,13 @@ repositories {
 
 def games = project(':Games').getChildProjects().values()
 
+// Source sets for other projects are not available until after they are evaluated.
+gradle.projectsEvaluated {
+	processResources {
+		from games*.sourceSets*.main.resources.srcDirs
+	}
+}
+
 dependencies {
 	compile project(':Core'),
 			games
