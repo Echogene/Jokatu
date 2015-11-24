@@ -21,9 +21,11 @@ repositories {
 	maven { url 'http://repo.spring.io/milestone' }
 }
 
+def games = project(':Games').getChildProjects().values()
+
 dependencies {
 	compile project(':Core'),
-			project(':Games').getChildProjects().values()
+			games
 	compile 'org.springframework.boot:spring-boot-starter-web:1.2.7.RELEASE'
 	compile 'org.springframework:spring-context:4.2.2.RELEASE'
 	compile 'org.springframework:spring-web:4.2.2.RELEASE'
