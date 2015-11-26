@@ -1,13 +1,11 @@
 package jokatu.game.games.rockpaperscissors;
 
 import jokatu.game.GameID;
-import jokatu.game.factory.GameComponent;
 import jokatu.game.factory.game.AbstractGameFactory;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Component;
 
-import static jokatu.game.games.rockpaperscissors.RockPaperScissorsGame.ROCK_PAPER_SCISSORS;
-
-@GameComponent(gameName = ROCK_PAPER_SCISSORS)
+@Component
 public class RockPaperScissorsGameFactory extends AbstractGameFactory {
 
 	@NotNull

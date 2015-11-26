@@ -1,16 +1,14 @@
 package jokatu.game.games.rockpaperscissors;
 
-import jokatu.game.factory.GameComponent;
 import jokatu.game.viewresolver.ViewResolver;
 import jokatu.game.viewresolver.ViewResolverFactory;
 import org.jetbrains.annotations.NotNull;
-
-import static jokatu.game.games.rockpaperscissors.RockPaperScissorsGame.ROCK_PAPER_SCISSORS;
+import org.springframework.stereotype.Component;
 
 /**
  * @author steven
  */
-@GameComponent(gameName = ROCK_PAPER_SCISSORS)
+@Component
 public class RockPaperScissorsViewResolverFactory extends ViewResolverFactory<RockPaperScissorsPlayer,RockPaperScissorsGame> {
 	@NotNull
 	@Override

@@ -1,17 +1,15 @@
 package jokatu.game.games.echo;
 
-import jokatu.game.factory.GameComponent;
 import jokatu.game.viewresolver.ViewResolver;
 import jokatu.game.viewresolver.ViewResolverFactory;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
-
-import static jokatu.game.games.echo.EchoGame.ECHO;
 
 /**
  * @author steven
  */
-@GameComponent(gameName = ECHO)
+@Component
 public class EchoViewResolverFactory extends ViewResolverFactory<EchoPlayer, EchoGame> {
 	@NotNull
 	@Override

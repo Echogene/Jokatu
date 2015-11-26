@@ -1,12 +1,10 @@
 package jokatu.game.games.rockpaperscissors;
 
-import jokatu.game.factory.GameComponent;
 import jokatu.game.factory.input.InputDeserialiser;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Component;
 
-import static jokatu.game.games.rockpaperscissors.RockPaperScissorsGame.ROCK_PAPER_SCISSORS;
-
-@GameComponent(gameName = ROCK_PAPER_SCISSORS)
+@Component
 public class RockPaperScissorsInputDeserializer implements InputDeserialiser<RockPaperScissorsInput> {
 	@NotNull
 	@Override

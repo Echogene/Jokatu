@@ -1,15 +1,13 @@
 package jokatu.game.games.echo;
 
 import jokatu.game.GameID;
-import jokatu.game.factory.GameComponent;
 import jokatu.game.factory.game.AbstractGameFactory;
 import jokatu.game.factory.input.InputDeserialiser;
 import jokatu.game.factory.player.PlayerFactory;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Component;
 
-import static jokatu.game.games.echo.EchoGame.ECHO;
-
-@GameComponent(gameName = ECHO)
+@Component
 public class EchoGameFactory extends AbstractGameFactory
 		implements PlayerFactory<EchoPlayer>, InputDeserialiser<EchoInput> {
 
