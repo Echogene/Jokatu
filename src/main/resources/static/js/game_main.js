@@ -41,7 +41,3 @@ function handleError(e, headers) {
 		div.innerHTML = 'Unknown error: ' + JSON.stringify(e.message);
 	}
 }
-
-function choose() {
-	socket.send(`/input/game/${game.identifier}`, document.getElementById('choice').value);
-}

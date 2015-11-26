@@ -2,6 +2,10 @@ import static jokatu.util.Json.serialise
 
 layout 'views/game_view.tpl', true,
 
+	additionalHeaders: contents {
+		script(type: 'text/javascript', src: '/js/rock_paper_scissors.js') {}
+	},
+
 	mainBody: contents {
 		button(onclick: 'join()', 'Join game')
 		select(id: 'choice') {
