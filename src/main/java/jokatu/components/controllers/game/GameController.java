@@ -40,6 +40,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
+ * A big controller (that should probably be several) that controls client requests for games.
  * @author Steven Weston
  */
 @Controller
