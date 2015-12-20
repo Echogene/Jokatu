@@ -12,6 +12,7 @@ import ophelia.event.observable.Observable;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * A game has players, who can make moves in the game.
  * @author Steven Weston
  */
 public interface Game<P extends Player, I extends Input>
