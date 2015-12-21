@@ -8,6 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.text.MessageFormat;
 
 /**
+ * Determine which view a player should see when requesting a game.
  * @author steven
  */
 public abstract class ViewResolver<P extends Player, G extends Game<P, ?>> {
