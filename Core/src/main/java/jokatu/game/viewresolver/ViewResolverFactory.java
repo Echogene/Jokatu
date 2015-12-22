@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.text.MessageFormat;
 
 /**
+ * A factory for {@link ViewResolver}s.
  * @author steven
  */
 public abstract class ViewResolverFactory<P extends Player, G extends Game<P, ?>> {
