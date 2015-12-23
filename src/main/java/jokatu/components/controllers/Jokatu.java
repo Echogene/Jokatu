@@ -13,9 +13,9 @@ import org.springframework.stereotype.Controller;
 @Controller
 @EnableAutoConfiguration
 @Import(MainConfiguration.class)
-public class MainController {
+public class Jokatu {
 
 	public static void main(String[] args) throws Exception {
-		SpringApplication.run(MainController.class, args);
+		SpringApplication.run(Jokatu.class, args);
 	}
 }
