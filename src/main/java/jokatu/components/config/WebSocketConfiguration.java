@@ -3,6 +3,7 @@ package jokatu.components.config;
 import jokatu.util.Json;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.messaging.simp.annotation.support.SimpAnnotationMethodMessageHandler;
 import org.springframework.session.MapSessionRepository;
@@ -17,7 +18,7 @@ import javax.annotation.PostConstruct;
 /**
  * Set up STOMP web sockets and configure the conversion service for messages to use the default Jackson converter.
  */
-@Component
+@Configuration
 @EnableWebSocket
 // todo: secure web sockets
 @EnableWebSocketMessageBroker
