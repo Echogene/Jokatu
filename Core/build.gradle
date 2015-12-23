@@ -9,9 +9,9 @@ repositories {
 }
 
 dependencies {
-	compile 'org.springframework:spring-beans:4.2.2.RELEASE'
-	compile 'org.springframework:spring-context:4.2.2.RELEASE'
-	compile 'org.springframework:spring-webmvc:4.2.2.RELEASE'
+	compile 'org.springframework:spring-beans:4.2.4.RELEASE'
+	compile 'org.springframework:spring-context:4.2.4.RELEASE'
+	compile 'org.springframework:spring-webmvc:4.2.4.RELEASE'
 	compile 'com.fasterxml.jackson.core:jackson-annotations:2.4.0'
 	compile 'org.jetbrains:annotations:13.0'
 	compile files(System.properties['user.home'] + '/.lib/java/Ophelia/Ophelia.jar')
