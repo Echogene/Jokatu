@@ -14,6 +14,9 @@ public class HomeController {
 		return "views/log_in";
 	}
 
+	/**
+	 * Go to the home page.
+	 */
 	@RequestMapping("/")
 	String loggedIn() {
 		return "views/home";
