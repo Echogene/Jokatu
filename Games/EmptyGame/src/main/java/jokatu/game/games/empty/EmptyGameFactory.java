@@ -10,7 +10,7 @@ public class EmptyGameFactory extends AbstractGameFactory {
 
 	@NotNull
 	@Override
-	protected EmptyGame produce(GameID gameID) {
+	protected EmptyGame produce(@NotNull GameID gameID, @NotNull String creatorName) {
 		return new EmptyGame(gameID);
 	}
 }

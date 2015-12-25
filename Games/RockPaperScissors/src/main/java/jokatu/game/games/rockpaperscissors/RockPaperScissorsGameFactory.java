@@ -10,7 +10,7 @@ public class RockPaperScissorsGameFactory extends AbstractGameFactory {
 
 	@NotNull
 	@Override
-	protected RockPaperScissorsGame produce(GameID gameID) {
+	protected RockPaperScissorsGame produce(@NotNull GameID gameID, @NotNull String creatorName) {
 		return new RockPaperScissorsGame(gameID);
 	}
 }

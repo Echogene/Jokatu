@@ -13,7 +13,7 @@ public class EchoGameFactory extends AbstractGameFactory
 
 	@NotNull
 	@Override
-	protected EchoGame produce(GameID gameID) {
+	protected EchoGame produce(@NotNull GameID gameID, @NotNull String creatorName) {
 		return new EchoGame(gameID);
 	}
 

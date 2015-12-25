@@ -152,10 +152,10 @@ public class GameController {
 
 	@RequestMapping(value = "/createGame.do", method = POST)
 	@ResponseBody
-	Game createGame(@RequestParam("gameName") String gameName) {
+	Game createGame(@RequestParam("gameName") String gameName, Principal principal) {
 
 		GameFactory factory = gameFactories.getFactory(gameName);
-		Game<?, ?> game = factory.produce();
+		Game<?, ?> game = factory.produceGame(principal.getName());
 
 		game.observe(event -> sendEvent(game, event));
 		return game;
