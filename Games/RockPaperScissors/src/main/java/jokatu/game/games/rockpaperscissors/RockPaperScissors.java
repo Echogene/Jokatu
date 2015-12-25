@@ -4,6 +4,9 @@ import jokatu.game.result.Result;
 
 import static jokatu.game.result.Result.*;
 
+/**
+ * An enum that contains entries for rock, paper and scissors.
+ */
 public enum RockPaperScissors {
 	ROCK {
 		@Override
