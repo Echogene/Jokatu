@@ -1,6 +1,7 @@
 package jokatu.game.games.rockpaperscissors;
 
 import jokatu.game.result.Result;
+import org.jetbrains.annotations.NotNull;
 
 import static jokatu.game.result.Result.*;
 
@@ -11,48 +12,35 @@ public enum RockPaperScissors {
 	ROCK {
 		@Override
 		public Result resultAgainst(RockPaperScissors other) {
-			switch (other) {
-				case ROCK:
-					return DRAW;
-				case PAPER:
-					return LOSE;
-				case SCISSORS:
-					return WIN;
-				default:
-					return DRAW;
-			}
+			return result(other, DRAW, LOSE, WIN);
 		}
 	},
 	PAPER {
 		@Override
 		public Result resultAgainst(RockPaperScissors other) {
-			switch (other) {
-				case ROCK:
-					return WIN;
-				case PAPER:
-					return DRAW;
-				case SCISSORS:
-					return LOSE;
-				default:
-					return DRAW;
-			}
+			return result(other, WIN, DRAW, LOSE);
 		}
 	},
 	SCISSORS {
 		@Override
 		public Result resultAgainst(RockPaperScissors other) {
-			switch (other) {
-				case ROCK:
-					return LOSE;
-				case PAPER:
-					return WIN;
-				case SCISSORS:
-					return DRAW;
-				default:
-					return DRAW;
-			}
+			return result(other, LOSE, WIN, DRAW);
 		}
 	};
+
+	@NotNull
+	private static Result result(RockPaperScissors other, Result againstRock, Result againstPaper, Result againstScissors) {
+		switch (other) {
+			case ROCK:
+				return againstRock;
+			case PAPER:
+				return againstPaper;
+			case SCISSORS:
+				return againstScissors;
+			default:
+				return DRAW;
+		}
+	}
 
 	public abstract Result resultAgainst(final RockPaperScissors other);
 }
