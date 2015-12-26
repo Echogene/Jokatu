@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class HomeController {
 
+	/**
+	 * Go to the login page.
+	 */
 	@RequestMapping("/login")
 	String login() {
 		return "views/log_in";
