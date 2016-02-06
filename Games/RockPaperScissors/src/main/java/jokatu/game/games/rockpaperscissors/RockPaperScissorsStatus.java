@@ -26,18 +26,6 @@ public class RockPaperScissorsStatus extends AbstractSynchronousObservable<Statu
 
 	public void setText(String text) {
 		this.text = text;
-		fireEvent(new StatusUpdateEvent() {
-			@NotNull
-			@Override
-			public Status getStatus() {
-				return RockPaperScissorsStatus.this;
-			}
-
-			@NotNull
-			@Override
-			public String getMessage() {
-				return text;
-			}
-		});
+		fireEvent(() -> RockPaperScissorsStatus.this);
 	}
 }

@@ -11,4 +11,10 @@ public interface StatusUpdateEvent extends GameEvent {
 
 	@NotNull
 	Status getStatus();
+
+	@NotNull
+	@Override
+	default String getMessage() {
+		return getStatus().getText();
+	}
 }
