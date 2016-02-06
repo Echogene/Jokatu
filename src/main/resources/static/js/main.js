@@ -24,7 +24,8 @@ function post(location, params, onload, onerror) {
 		data += `${key}=${JSON.stringify(params[key])}&`
 	}
 	if (data.length > 0) {
-		request.send(data.substring(0, data.length - 1));
+		// Remove the final ampersand.
+		request.send(data.slice(0, -1));
 	} else {
 		request.send();
 	}
