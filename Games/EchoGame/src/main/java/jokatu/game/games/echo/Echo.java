@@ -8,7 +8,7 @@ public class Echo implements PublicGameEvent {
 	private final String message;
 
 	public Echo(EchoInput input, EchoPlayer player) {
-		message = player.getName() + " said: " + input;
+		message = player.getName() + " said: " + input.getString();
 	}
 
 	@NotNull
