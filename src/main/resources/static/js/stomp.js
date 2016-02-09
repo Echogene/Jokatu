@@ -81,9 +81,7 @@ Socket.prototype._message = function(command, headers, body) {
 	}
 	message += '\n';
 
-	if (typeof body === 'string') {
-		message += body;
-	} else if (typeof body !== 'undefined') {
+	if (typeof body !== 'undefined') {
 		message += JSON.stringify(body);
 	}
 
@@ -137,5 +135,5 @@ Socket.prototype.send = function(destination, body) {
 	var headers = new Map();
 	headers.set('destination', destination);
 
-	this._message('SEND', headers, JSON.stringify(body));
+	this._message('SEND', headers, body);
 };
