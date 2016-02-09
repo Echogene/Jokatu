@@ -24,19 +24,6 @@ import javax.annotation.PostConstruct;
 public class WebSocketConfiguration
 		extends AbstractSessionWebSocketMessageBrokerConfigurer {
 
-	@Autowired
-	private SimpAnnotationMethodMessageHandler simpAnnotationMethodMessageHandler;
-
-	@PostConstruct
-	public void init() {
-		// How about you use the ConversionService that already exists, rather than creating your own, and then this
-		// wouldn't be necessary?  Also how about you update your DestinationVariableMethodArgumentResolver's
-		// ConversionService when yours gets set?
-		DefaultFormattingConversionService conversionService
-				= (DefaultFormattingConversionService) simpAnnotationMethodMessageHandler.getConversionService();
-		conversionService.addConverterFactory(new Json.JacksonConverterFactory());
-	}
-
 	@Override
 	protected void configureStompEndpoints(StompEndpointRegistry registry) {
 		registry.addEndpoint("/ws");
