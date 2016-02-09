@@ -1,3 +1,3 @@
-function send() {
-	socket.send(`/input/game/${game.identifier}`, document.getElementById('text').value);
+function send(text) {
+	socket.send(`/input/game/${game.identifier}`, text);
 }
