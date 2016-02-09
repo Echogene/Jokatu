@@ -137,5 +137,5 @@ Socket.prototype.send = function(destination, body) {
 	var headers = new Map();
 	headers.set('destination', destination);
 
-	this._message('SEND', headers, body);
+	this._message('SEND', headers, JSON.stringify(body));
 };
