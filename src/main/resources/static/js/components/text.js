@@ -14,7 +14,7 @@ JTextProto.createdCallback = function() {
 
 	textField.addEventListener('keypress', (e) => {
 		if (e.keyCode == 13) {
-			submitButton.click()
+			submitButton.click();
 		}
 	});
 	submitButton.addEventListener('click', () => callback.call(null, textField.value));
