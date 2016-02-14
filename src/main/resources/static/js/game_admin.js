@@ -1,8 +1,9 @@
 function createGame() {
-	post('createGame.do', {gameName: document.getElementById('gameName').value}, function(game) {
-		games.push(game);
-		renderGames([game]);
-	});
+	post('createGame.do', {gameName: document.getElementById('gameName').value})
+		.then((game) => {
+			games.push(game);
+			renderGames([game]);
+		});
 }
 
 function renderGames(games) {
