@@ -39,6 +39,8 @@ dependencies {
 	compile 'org.springframework:spring-webmvc:4.2.4.RELEASE'
 	compile 'org.springframework:spring-websocket:4.2.4.RELEASE'
 	compile 'org.springframework:spring-messaging:4.2.4.RELEASE'
+	compile 'io.projectreactor:reactor-net:2.0.7.RELEASE'
+	compile 'io.netty:netty-all:4.0.34.Final'
 	compile 'org.springframework.security:spring-security-web:4.0.3.RELEASE'
 	compile 'org.springframework.security:spring-security-config:4.0.3.RELEASE'
 	compile 'org.springframework.security:spring-security-messaging:4.0.3.RELEASE'

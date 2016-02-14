@@ -28,6 +28,6 @@ public class PublicEventHandler extends AbstractEventHandler<PublicGameEvent> {
 
 	@Override
 	public void handleCastEvent(Game game, PublicGameEvent event) {
-		template.convertAndSend("/public/game/" + game.getIdentifier(), event.getMessage());
+		template.convertAndSend("/topic/public.game." + game.getIdentifier(), event.getMessage());
 	}
 }

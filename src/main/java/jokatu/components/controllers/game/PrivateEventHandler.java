@@ -31,7 +31,7 @@ public class PrivateEventHandler extends AbstractEventHandler<PrivateGameEvent> 
 		event.getPlayers().stream().forEach(
 				player -> template.convertAndSendToUser(
 						player.getName(),
-						"/game/" + game.getIdentifier(),
+						"/topic/private.game." + game.getIdentifier(),
 						event.getMessage()
 				)
 		);

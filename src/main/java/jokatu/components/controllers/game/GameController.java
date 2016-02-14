@@ -26,7 +26,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -104,14 +103,14 @@ public class GameController {
 	 *     <li>The results of the end of the game</li>
 	 * </ul>
 	 */
-	@SubscribeMapping("/public/game/{identity}")
+	@SubscribeMapping("/topic/public.game.{identity}")
 	void publicGameSubscription(
 			@DestinationVariable("identity") GameID identity
 	) throws GameException {
 		getGame(identity, "You cannot subscribe to a non-existent game.");
 	}
 
-	@SubscribeMapping("/status/game/{identity}")
+	@SubscribeMapping("/topic/status.game.{identity}")
 	void gameStatusSubscription(
 			@DestinationVariable("identity") GameID identity
 	) throws GameException {
@@ -134,7 +133,7 @@ public class GameController {
 		return game;
 	}
 
-	@MessageMapping("/input/game/{identity}")
+	@MessageMapping("/input.game.{identity}")
 	void input(@DestinationVariable("identity") GameID identity, @Payload String json, Principal principal)
 			throws GameException {
 
@@ -182,17 +181,11 @@ public class GameController {
 	 * Users are allowed to subscribe to a private channel for a game, but unless they're players, they probably won't
 	 * receive any messages for it.
 	 */
-	@SubscribeMapping("/user/{username}/game/{identity}")
-	void join(
-			@DestinationVariable("username") String username,
+	@SubscribeMapping("/user/topic/private.game.{identity}")
+	void privateSubscription(
 			@DestinationVariable("identity") GameID identity,
 			Principal principal
 	) throws GameException {
-
-		if (username == null || !username.equals(principal.getName())) {
-			throw new BadCredentialsException("Logged-in user did not match attempted subscription.");
-		}
-
 		getGame(identity, "You cannot subscribe to a non-existent game.");
 	}
 
@@ -215,7 +208,7 @@ public class GameController {
 				handleSubscriptionError(e, accessor, principal);
 				break;
 			default:
-				template.convertAndSendToUser(principal.getName(), "/errors/" + e.getId(), e);
+				template.convertAndSendToUser(principal.getName(), "/errors.game." + e.getId(), e);
 		}
 	}
 
@@ -225,7 +218,7 @@ public class GameController {
 		Map<String, Object> errorHeaders = new HashMap<>();
 		errorHeaders.put("subscription-id", subscriptionId);
 
-		template.convertAndSendToUser(principal.getName(), "/errors/" + e.getId(), e, errorHeaders);
+		template.convertAndSendToUser(principal.getName(), "/errors.game." + e.getId(), e, errorHeaders);
 	}
 
 	@ExceptionHandler(GameException.class)

@@ -12,7 +12,7 @@ function Socket() {
 	this._queue = [];
 
 	this._ws.onopen = () => {
-		this._queue.forEach((message) => this._ws.send(message));
+		this._message("CONNECT");
 	};
 
 	/**
@@ -59,7 +59,10 @@ Socket.prototype.onmessage = function(message) {
 	}
 
 	// todo: support other commands when needed
-	if (command === 'MESSAGE') {
+	if (command === 'CONNECTED') {
+		this._onConnect();
+
+	} else if (command === 'MESSAGE') {
 		var subscriber = this._subscribers.get(headers.get('subscription'));
 		if (subscriber) {
 			subscriber(body, headers);
@@ -67,17 +70,23 @@ Socket.prototype.onmessage = function(message) {
 	}
 };
 
+Socket.prototype._onConnect = function() {
+	this._queue.forEach((message) => this._ws.send(message));
+};
+
 /**
  * @param {string} command
- * @param {Map} headers
+ * @param {Map=} headers
  * @param {string|Object=} body
  * @private
  */
 Socket.prototype._message = function(command, headers, body) {
 	var message = `${command}\n`;
 
-	for (var [key, value] of headers) {
-		message += `${key}:${value}\n`;
+	if (typeof headers !== 'undefined') {
+		for (var [key, value] of headers) {
+			message += `${key}:${value}\n`;
+		}
 	}
 	message += '\n';
 

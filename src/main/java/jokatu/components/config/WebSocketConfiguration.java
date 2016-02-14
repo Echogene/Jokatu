@@ -1,18 +1,14 @@
 package jokatu.components.config;
 
-import jokatu.util.Json;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.format.support.DefaultFormattingConversionService;
-import org.springframework.messaging.simp.annotation.support.SimpAnnotationMethodMessageHandler;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.session.MapSessionRepository;
 import org.springframework.session.web.socket.config.annotation.AbstractSessionWebSocketMessageBrokerConfigurer;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
-
-import javax.annotation.PostConstruct;
 
 /**
  * Set up STOMP web sockets and configure the conversion service for messages to use the default Jackson converter.
@@ -27,6 +23,12 @@ public class WebSocketConfiguration
 	@Override
 	protected void configureStompEndpoints(StompEndpointRegistry registry) {
 		registry.addEndpoint("/ws");
+	}
+
+	@Override
+	public void configureMessageBroker(MessageBrokerRegistry registry) {
+		registry.enableStompBrokerRelay("/topic/", "/queue/");
+		registry.setPathMatcher(new AntPathMatcher("."));
 	}
 
 	@Bean

@@ -1,8 +1,8 @@
 var socket = new Socket();
-socket.subscribe(`/public/game/${game.identifier}`, handleMessage);
-socket.subscribe(`/status/game/${game.identifier}`, handleStatusChange);
-socket.subscribe(`/user/${username}/errors/${game.identifier}`, handleError);
-socket.subscribe(`/user/${username}/game/${game.identifier}`, handleMessage);
+socket.subscribe(`/topic/public.game.${game.identifier}`, handleMessage);
+socket.subscribe(`/topic/status.game.${game.identifier}`, handleStatusChange);
+socket.subscribe(`/user/topic/errors.game.${game.identifier}`, handleError);
+socket.subscribe(`/user/topic/private.game.${game.identifier}`, handleMessage);
 
 function join() {
 	post('/joinGame.do', {gameID: game.identifier}, (newGame) => game = newGame, handleError);
