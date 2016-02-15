@@ -133,7 +133,7 @@ public class GameController {
 		return game;
 	}
 
-	@MessageMapping("/input.game.{identity}")
+	@MessageMapping("/topic/input.game.{identity}")
 	void input(@DestinationVariable("identity") GameID identity, @Payload String json, Principal principal)
 			throws GameException {
 

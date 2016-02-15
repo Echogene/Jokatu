@@ -25,11 +25,15 @@ function Socket() {
 	 * @type {number}
 	 * @private
 	 */
-	this._subscriptionId = 0;
+	this._currentId = 0;
 }
 
 Socket.prototype.onmessage = function(message) {
 	var data = message.data;
+
+	if (data.trim().length === 0) {
+		return;
+	}
 
 	console.log(`Received:\n${data}`);
 
@@ -83,6 +87,11 @@ Socket.prototype._onConnect = function() {
 Socket.prototype._message = function(command, headers, body) {
 	var message = `${command}\n`;
 
+	if (command !== 'CONNECT') {
+		var receiptId = this._getNextId();
+		headers.set('receipt', receiptId);
+	}
+
 	if (typeof headers !== 'undefined') {
 		for (var [key, value] of headers) {
 			message += `${key}:${value}\n`;
@@ -106,12 +115,20 @@ Socket.prototype._message = function(command, headers, body) {
 };
 
 /**
+ * @returns {number}
+ * @private
+ */
+Socket.prototype._getNextId = function() {
+	return this._currentId++;
+};
+
+/**
  * @param {string} destination
  * @param {function(Object, Map=)} callback
  */
 Socket.prototype.subscribe = function(destination, callback) {
 
-	var id = this._subscriptionId++;
+	var id = this._getNextId();
 
 	this._subscribers.set(`${id}`, callback);
 
