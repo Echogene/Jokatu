@@ -3,8 +3,8 @@ import static jokatu.util.Json.serialise
 layout 'views/game_view.tpl', true,
 
 	additionalHeaders: contents {
+		include template: 'components/text.tpl'
 		script(type: 'text/javascript', src: '/js/echo.js') {}
-		script(type: 'text/javascript', src: '/js/components/text.js') {}
 	},
 
 	mainBody: contents {

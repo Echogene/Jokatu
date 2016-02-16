@@ -22,6 +22,12 @@ function Socket() {
 	this._subscribers = new Map();
 
 	/**
+	 * @type {Map}
+	 * @private
+	 */
+	this._receiptHandlers = new Map();
+
+	/**
 	 * @type {number}
 	 * @private
 	 */
@@ -71,6 +77,13 @@ Socket.prototype.onmessage = function(message) {
 		if (subscriber) {
 			subscriber(body, headers);
 		}
+	} else if (command === 'RECEIPT') {
+		var receiptId = headers.get('receipt-id');
+		var onReceipt = this._receiptHandlers.get(receiptId);
+		if (onReceipt) {
+			onReceipt._handle();
+		}
+		this._receiptHandlers.delete(receiptId);
 	}
 };
 
@@ -78,10 +91,26 @@ Socket.prototype._onConnect = function() {
 	this._queue.forEach((message) => this._ws.send(message));
 };
 
+Socket.ReceiptHandler = function() {
+	this._callback = () => {};
+};
+
+/**
+ * @private
+ */
+Socket.ReceiptHandler.prototype._handle = function() {
+	this._callback();
+};
+
+Socket.ReceiptHandler.prototype.then = function(callback) {
+	this._callback = callback;
+};
+
 /**
  * @param {string} command
  * @param {Map=} headers
  * @param {string|Object=} body
+ * @returns {Socket.ReceiptHandler|undefined}
  * @private
  */
 Socket.prototype._message = function(command, headers, body) {
@@ -89,6 +118,8 @@ Socket.prototype._message = function(command, headers, body) {
 
 	if (command !== 'CONNECT') {
 		var receiptId = this._getNextId();
+		var receiptHandler = new Socket.ReceiptHandler();
+		this._receiptHandlers.set(`${receiptId}`, receiptHandler);
 		headers.set('receipt', receiptId);
 	}
 
@@ -112,6 +143,8 @@ Socket.prototype._message = function(command, headers, body) {
 	} else {
 		this._queue.push(message);
 	}
+
+	return receiptHandler;
 };
 
 /**
@@ -125,6 +158,7 @@ Socket.prototype._getNextId = function() {
 /**
  * @param {string} destination
  * @param {function(Object, Map=)} callback
+ * @returns {Socket.ReceiptHandler}
  */
 Socket.prototype.subscribe = function(destination, callback) {
 
@@ -136,11 +170,12 @@ Socket.prototype.subscribe = function(destination, callback) {
 	headers.set('destination', destination);
 	headers.set('id', id);
 
-	this._message('SUBSCRIBE', headers);
+	return this._message('SUBSCRIBE', headers, undefined);
 };
 
 /**
  * @param {string} subscriptionId
+ * @returns {Socket.ReceiptHandler}
  */
 Socket.prototype.unsubscribe = function(subscriptionId) {
 
@@ -149,17 +184,18 @@ Socket.prototype.unsubscribe = function(subscriptionId) {
 	var headers = new Map();
 	headers.set('id', subscriptionId);
 
-	this._message('UNSUBSCRIBE', headers);
+	return this._message('UNSUBSCRIBE', headers, undefined);
 };
 
 /**
  * @param {string} destination
  * @param {string|Object} body
+ * @returns {Socket.ReceiptHandler}
  */
 Socket.prototype.send = function(destination, body) {
 
 	var headers = new Map();
 	headers.set('destination', destination);
 
-	this._message('SEND', headers, body);
+	return this._message('SEND', headers, body);
 };
