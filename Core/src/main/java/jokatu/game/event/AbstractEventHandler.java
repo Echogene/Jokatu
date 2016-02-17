@@ -15,6 +15,9 @@ public abstract class AbstractEventHandler<E extends GameEvent> implements Event
 		}
 	}
 
+	/**
+	 * @return the type of {@link GameEvent}, which would get type-erased, that this {@link EventHandler} handles
+	 */
 	protected abstract Class<E> handles();
 
 	protected abstract void handleCastEvent(Game game, E event);
