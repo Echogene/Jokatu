@@ -1,4 +1,4 @@
-package jokatu.components.controllers.game;
+package jokatu.components.eventhandlers;
 
 import jokatu.game.Game;
 import jokatu.game.event.AbstractEventHandler;
