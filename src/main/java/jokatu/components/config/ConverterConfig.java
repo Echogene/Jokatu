@@ -11,7 +11,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import javax.annotation.PostConstruct;
 
 /**
- * Adds a Jackson converter to the default FormatterRegistry.
+ * Add a Jackson converter to the default FormatterRegistry and configure the conversion service for messages to use
+ * the default Jackson converter.
  */
 @Configuration
 public class ConverterConfig extends WebMvcConfigurerAdapter {
