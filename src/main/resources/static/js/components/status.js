@@ -5,17 +5,26 @@ JStatusProto.createdCallback = function() {
 	var statusElementName = this.getAttribute('wrapperElement');
 	var destination = this.getAttribute('destination');
 
-	var element = document.createElement(statusElementName);
+	/**
+	 * @type {Element}
+	 * @private
+	 */
+	this._element = document.createElement(statusElementName);
 
-	socket.subscribe(destination, (body, headers) => {
-		if (typeof body === 'string') {
-			element.textContent = body;
-		} else {
-			element.setAttribute('data-status', JSON.stringify(body));
-		}
-	});
+	get("/last_message", {destination: destination})
+		.then(this._setStatus.bind(this));
 
-	this.createShadowRoot().appendChild(element);
+	socket.subscribe(destination, this._setStatus.bind(this));
+
+	this.createShadowRoot().appendChild(this._element);
+};
+
+JStatusProto._setStatus = function(body) {
+	if (typeof body === 'string') {
+		this._element.textContent = body;
+	} else {
+		this._element.setAttribute('data-status', JSON.stringify(body));
+	}
 };
 
 var JStatus = document.registerElement('j-status', {

@@ -5,23 +5,36 @@ JMessageBoxProto.createdCallback = function() {
 	var template = document.querySelector('#message_box_template');
 	var clone = document.importNode(template.content, true);
 
-	var messageElementName = this.getAttribute('wrapperElement');
+	/**
+	 * @type {string}
+	 * @private
+	 */
+	this._messageElementName = this.getAttribute('wrapperElement');
 	var destination = this.getAttribute('destination');
 
-	var container = clone.querySelector('div');
+	/**
+	 * @type {Element}
+	 * @private
+	 */
+	this._container = clone.querySelector('div');
 
-	socket.subscribe(destination, (body, headers) => {
-		var element = document.createElement(messageElementName);
-		element.className = 'message';
-		if (typeof body === 'string') {
-			element.textContent = body;
-		} else {
-			element.setAttribute('data-message', JSON.stringify(body));
-		}
-		container.appendChild(element);
-	});
+	get("/messages", {destination: destination})
+		.then((messages) => messages.forEach(this._createMessage.bind(this)));
+
+	socket.subscribe(destination, this._createMessage.bind(this));
 
 	this.createShadowRoot().appendChild(clone);
+};
+
+JMessageBoxProto._createMessage = function(body) {
+	var element = document.createElement(this._messageElementName);
+	element.className = 'message';
+	if (typeof body === 'string') {
+		element.textContent = body;
+	} else {
+		element.setAttribute('data-message', JSON.stringify(body));
+	}
+	this._container.appendChild(element);
 };
 
 var JMessageBox = document.registerElement('j-message-box', {
