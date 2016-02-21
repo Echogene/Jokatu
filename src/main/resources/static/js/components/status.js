@@ -22,9 +22,10 @@ JStatusProto.createdCallback = function() {
 JStatusProto._setStatus = function(body) {
 	if (typeof body === 'string') {
 		this._element.textContent = body;
-	} else {
-		this._element.setAttribute('data-status', JSON.stringify(body));
+	} else if (typeof body === 'object' && typeof body.text === 'string') {
+		this._element.textContent = body.text;
 	}
+	this._element.setAttribute('data-status', JSON.stringify(body));
 };
 
 var JStatus = document.registerElement('j-status', {

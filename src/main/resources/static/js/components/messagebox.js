@@ -31,9 +31,10 @@ JMessageBoxProto._createMessage = function(body) {
 	element.className = 'message';
 	if (typeof body === 'string') {
 		element.textContent = body;
-	} else {
-		element.setAttribute('data-message', JSON.stringify(body));
+	} else if (typeof body === 'object' && typeof body.text === 'string') {
+		element.textContent = body.text;
 	}
+	element.setAttribute('data-message', JSON.stringify(body));
 	this._container.appendChild(element);
 };
 
