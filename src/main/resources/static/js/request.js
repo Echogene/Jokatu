@@ -1,10 +1,11 @@
 /**
  * A standard asynchronous get request that expects json back.
  * @param {string} location the location on the server to get from
+ * @param {Object=} params  the parameters for the get
  * @returns {Promise}
  */
-function get(location) {
-	return _defaultRequest('get', location);
+function get(location, params = {}) {
+	return _defaultRequest('get', location + "?" + _getDataString(params));
 }
 
 /**
@@ -17,6 +18,10 @@ function post(location, params) {
 	var headers = new Map();
 	headers.set("Content-type", "application/x-www-form-urlencoded");
 
+	return _defaultRequest('post', location, headers, _getDataString(params));
+}
+
+function _getDataString(params) {
 	var data = "";
 	for (var key in params) {
 		data += `${key}=${JSON.stringify(params[key])}&`
@@ -25,11 +30,10 @@ function post(location, params) {
 		// Remove the final ampersand.
 		data = data.slice(0, -1);
 	}
-
-	return _defaultRequest('post', location, headers, data);
+	return data;
 }
 
-function _defaultRequest(method, location, headers, data) {
+function _defaultRequest(method, location, headers = new Map(), data) {
 
 	return new Promise(function(resolve, reject) {
 
