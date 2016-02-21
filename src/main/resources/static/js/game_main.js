@@ -1,6 +1,4 @@
 var socket = new Socket();
-socket.subscribe(`/topic/public.game.${game.identifier}`, handleMessage);
-socket.subscribe(`/topic/status.game.${game.identifier}`, handleStatusChange);
 socket.subscribe(`/user/topic/errors.game.${game.identifier}`, handleError);
 socket.subscribe(`/user/topic/private.game.${game.identifier}`, handleMessage);
 
@@ -8,11 +6,6 @@ function join() {
 	post('/joinGame.do', {gameID: game.identifier})
 		.then((newGame) => game = newGame)
 		.catch(handleError);
-}
-
-function handleStatusChange(e) {
-	game.status = e;
-	document.getElementById('status').innerHTML = e;
 }
 
 function handleMessage(e) {
