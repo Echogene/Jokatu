@@ -2,6 +2,7 @@ package jokatu.components.controllers.game;
 
 import jokatu.components.config.FactoryConfiguration.GameFactories;
 import jokatu.components.dao.GameDao;
+import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.event.EventHandler;
@@ -22,7 +23,6 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
@@ -49,19 +49,19 @@ public class GameController {
 
 	private final GameFactories gameFactories;
 	private final GameDao gameDao;
-	private final SimpMessagingTemplate template;
+	private final StoringMessageSender sender;
 	private final Collection<EventHandler> eventHandlers;
 
 	@Autowired
 	public GameController(
 			GameFactories gameFactories,
 			GameDao gameDao,
-			SimpMessagingTemplate template,
+			StoringMessageSender sender,
 			Collection<EventHandler> eventHandlers
 	) {
 		this.gameFactories = gameFactories;
 		this.gameDao = gameDao;
-		this.template = template;
+		this.sender = sender;
 		this.eventHandlers = eventHandlers;
 	}
 
@@ -208,7 +208,7 @@ public class GameController {
 				handleSubscriptionError(e, accessor, principal);
 				break;
 			default:
-				template.convertAndSendToUser(principal.getName(), "/errors.game." + e.getId(), e);
+				sender.sendToUser(principal.getName(), "/errors.game." + e.getId(), e);
 		}
 	}
 
@@ -218,7 +218,7 @@ public class GameController {
 		Map<String, Object> errorHeaders = new HashMap<>();
 		errorHeaders.put("subscription-id", subscriptionId);
 
-		template.convertAndSendToUser(principal.getName(), "/errors.game." + e.getId(), e, errorHeaders);
+		sender.sendToUser(principal.getName(), "/errors.game." + e.getId(), e, errorHeaders);
 	}
 
 	@ExceptionHandler(GameException.class)

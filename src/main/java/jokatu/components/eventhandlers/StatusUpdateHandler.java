@@ -1,10 +1,10 @@
 package jokatu.components.eventhandlers;
 
+import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.Game;
 import jokatu.game.event.AbstractEventHandler;
 import jokatu.game.event.StatusUpdateEvent;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,11 +14,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class StatusUpdateHandler extends AbstractEventHandler<StatusUpdateEvent> {
 
-	private final SimpMessagingTemplate template;
+	private final StoringMessageSender sender;
 
 	@Autowired
-	public StatusUpdateHandler(SimpMessagingTemplate template) {
-		this.template = template;
+	public StatusUpdateHandler(StoringMessageSender sender) {
+		this.sender = sender;
 	}
 
 	@Override
@@ -28,6 +28,6 @@ public class StatusUpdateHandler extends AbstractEventHandler<StatusUpdateEvent>
 
 	@Override
 	protected void handleCastEvent(Game game, StatusUpdateEvent event) {
-		template.convertAndSend("/topic/status.game." + game.getIdentifier(), event.getStatus());
+		sender.send("/topic/status.game." + game.getIdentifier(), event.getStatus());
 	}
 }

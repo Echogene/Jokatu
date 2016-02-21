@@ -1,10 +1,10 @@
 package jokatu.components.eventhandlers;
 
+import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.Game;
 import jokatu.game.event.AbstractEventHandler;
 import jokatu.game.event.PublicGameEvent;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,11 +14,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class PublicEventHandler extends AbstractEventHandler<PublicGameEvent> {
 
-	private final SimpMessagingTemplate template;
+	private final StoringMessageSender sender;
 
 	@Autowired
-	public PublicEventHandler(SimpMessagingTemplate template) {
-		this.template = template;
+	public PublicEventHandler(StoringMessageSender sender) {
+		this.sender = sender;
 	}
 
 	@Override
@@ -28,6 +28,6 @@ public class PublicEventHandler extends AbstractEventHandler<PublicGameEvent> {
 
 	@Override
 	public void handleCastEvent(Game game, PublicGameEvent event) {
-		template.convertAndSend("/topic/public.game." + game.getIdentifier(), event.getMessage());
+		sender.send("/topic/public.game." + game.getIdentifier(), event.getMessage());
 	}
 }
