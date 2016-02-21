@@ -73,9 +73,9 @@ Socket.prototype.onmessage = function(message) {
 		this._onConnect();
 
 	} else if (command === 'MESSAGE') {
-		var subscriber = this._subscribers.get(headers.get('subscription'));
-		if (subscriber) {
-			subscriber(body, headers);
+		var subscribers = this._subscribers.get(headers.get('destination'));
+		if (subscribers) {
+			subscribers.forEach((subscriber) => subscriber(body, headers));
 		}
 	} else if (command === 'RECEIPT') {
 		var receiptId = headers.get('receipt-id');
@@ -162,15 +162,19 @@ Socket.prototype._getNextId = function() {
  */
 Socket.prototype.subscribe = function(destination, callback) {
 
-	var id = this._getNextId();
+	if (this._subscribers.has(destination)) {
+		this._subscribers.get(destination).push(callback);
+	} else {
+		var id = this._getNextId();
 
-	this._subscribers.set(`${id}`, callback);
+		this._subscribers.set(destination, [callback]);
 
-	var headers = new Map();
-	headers.set('destination', destination);
-	headers.set('id', id);
+		var headers = new Map();
+		headers.set('destination', destination);
+		headers.set('id', id);
 
-	return this._message('SUBSCRIBE', headers, undefined);
+		return this._message('SUBSCRIBE', headers, undefined);
+	}
 };
 
 /**
