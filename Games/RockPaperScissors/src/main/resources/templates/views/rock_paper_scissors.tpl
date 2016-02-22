@@ -16,6 +16,12 @@ layout 'views/game_view.tpl', true,
 			option(value: 'SCISSORS', 'Scissors')
 		}
 		button(onclick: 'choose()', 'Choose')
-		'j-message-box'(id: 'public-messages', wrapperElement: 'div', destination: "/topic/public.game.${game.identifier}") {}
-		'j-status'(id: 'status', wrapperElement: 'div', destination: "/topic/status.game.${game.identifier}") {}
+		yieldUnescaped markupGenerator.bindHistory(
+				tag: "j-message-box", id: "public-messages",
+				wrapperElement: "div", destination: "/topic/public.game.${game.identifier}"
+		)
+		yieldUnescaped markupGenerator.bindLast(
+				tag: "j-status", id: "status",
+				wrapperElement: "div", destination: "/topic/status.game.${game.identifier}"
+		)
 	}

@@ -11,8 +11,8 @@ JStatusProto.createdCallback = function() {
 	 */
 	this._element = document.createElement(statusElementName);
 
-	get("/last_message", {destination: destination})
-		.then(this._setStatus.bind(this));
+	var initialData = JSON.parse(this.getAttribute('data-initial'));
+	this._setStatus(initialData);
 
 	socket.subscribe(destination, this._setStatus.bind(this));
 
@@ -22,7 +22,7 @@ JStatusProto.createdCallback = function() {
 JStatusProto._setStatus = function(body) {
 	if (typeof body === 'string') {
 		this._element.textContent = body;
-	} else if (typeof body === 'object' && typeof body.text === 'string') {
+	} else if (body && typeof body === 'object' && typeof body.text === 'string') {
 		this._element.textContent = body.text;
 	}
 	this._element.setAttribute('data-status', JSON.stringify(body));

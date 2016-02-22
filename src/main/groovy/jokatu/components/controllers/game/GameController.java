@@ -2,6 +2,7 @@ package jokatu.components.controllers.game;
 
 import jokatu.components.config.FactoryConfiguration.GameFactories;
 import jokatu.components.dao.GameDao;
+import jokatu.components.markup.MarkupGenerator;
 import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.Game;
 import jokatu.game.GameID;
@@ -50,6 +51,7 @@ public class GameController {
 	private final GameFactories gameFactories;
 	private final GameDao gameDao;
 	private final StoringMessageSender sender;
+	private final MarkupGenerator markupGenerator;
 	private final Collection<EventHandler> eventHandlers;
 
 	@Autowired
@@ -57,11 +59,13 @@ public class GameController {
 			GameFactories gameFactories,
 			GameDao gameDao,
 			StoringMessageSender sender,
+			MarkupGenerator markupGenerator,
 			Collection<EventHandler> eventHandlers
 	) {
 		this.gameFactories = gameFactories;
 		this.gameDao = gameDao;
 		this.sender = sender;
+		this.markupGenerator = markupGenerator;
 		this.eventHandlers = eventHandlers;
 	}
 
@@ -87,11 +91,14 @@ public class GameController {
 		}
 		ViewResolver<?, ?> viewResolver = gameFactories.getViewResolver(game);
 		Player player = getPlayer(principal, game);
+		ModelAndView modelAndView;
 		if (game.hasPlayer(player)) {
-			return viewResolver.getViewForPlayer(player);
+			modelAndView = viewResolver.getViewForPlayer(player);
 		} else {
-			return viewResolver.getViewForObserver();
+			modelAndView = viewResolver.getViewForObserver();
 		}
+		modelAndView.addObject("markupGenerator", markupGenerator);
+		return modelAndView;
 	}
 
 	/**

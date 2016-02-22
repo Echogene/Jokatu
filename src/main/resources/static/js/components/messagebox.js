@@ -18,8 +18,8 @@ JMessageBoxProto.createdCallback = function() {
 	 */
 	this._container = clone.querySelector('div');
 
-	get("/messages", {destination: destination})
-		.then((messages) => messages.forEach(this._createMessage.bind(this)));
+	var initialData = JSON.parse(this.getAttribute('data-initial'));
+	initialData.forEach(this._createMessage.bind(this));
 
 	socket.subscribe(destination, this._createMessage.bind(this));
 
@@ -31,7 +31,7 @@ JMessageBoxProto._createMessage = function(body) {
 	element.className = 'message';
 	if (typeof body === 'string') {
 		element.textContent = body;
-	} else if (typeof body === 'object' && typeof body.text === 'string') {
+	} else if (body && typeof body === 'object' && typeof body.text === 'string') {
 		element.textContent = body.text;
 	}
 	element.setAttribute('data-message', JSON.stringify(body));
