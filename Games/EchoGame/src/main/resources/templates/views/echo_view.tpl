@@ -11,7 +11,7 @@ layout 'views/game_view.tpl', true,
 
 	mainBody: contents {
 		button(onclick: 'join()', 'Join game')
-		'j-text'(id: 'text', submitName: 'Send', onSubmit: 'send') {}
+		'j-text'(id: 'text', submitName: 'Send', destination: "/topic/input.game.${game.identifier}") {}
 		yieldUnescaped markupGenerator.bindHistory(
 				tag: "j-message-box", id: "public-messages",
 				wrapperElement: "div", destination: "/topic/public.game.${game.identifier}"
