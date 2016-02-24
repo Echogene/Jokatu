@@ -6,12 +6,14 @@ layout 'views/game_view.tpl', true,
 		include template: 'components/text.tpl'
 		include template: 'components/messagebox.tpl'
 		include template: 'components/status.tpl'
+		include template: 'components/button.tpl'
 		script(type: 'text/javascript', src: '/js/echo.js') {}
 	},
 
 	mainBody: contents {
 		button(onclick: 'join()', 'Join game')
 		'j-text'(id: 'text', submitName: 'Send', destination: "/topic/input.game.${game.identifier}") {}
+		button(is: 'j-button', destination: "/topic/input.game.${game.identifier}", 'data-input': 'Echo!', 'Echo!')
 		yieldUnescaped markupGenerator.bindHistory(
 				tag: "j-message-box", id: "public-messages",
 				wrapperElement: "div", destination: "/topic/public.game.${game.identifier}"
