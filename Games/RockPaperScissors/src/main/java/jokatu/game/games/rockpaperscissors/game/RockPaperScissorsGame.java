@@ -9,6 +9,7 @@ import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.joining.GameFullException;
 import jokatu.game.result.PlayerResult;
 import jokatu.game.result.Result;
+import jokatu.game.status.StandardTextStatus;
 import jokatu.game.status.Status;
 import ophelia.collections.set.bounded.BoundedPair;
 import org.jetbrains.annotations.NotNull;
@@ -33,11 +34,11 @@ public class RockPaperScissorsGame
 
 	private final Map<RockPaperScissorsPlayer, RockPaperScissors> inputs = new ConcurrentHashMap<>();
 
-	private RockPaperScissorsStatus status;
+	private StandardTextStatus status;
 
 	protected RockPaperScissorsGame(GameID identifier) {
 		super(identifier);
-		status = new RockPaperScissorsStatus("Waiting for two players to join");
+		status = new StandardTextStatus("Waiting for two players to join");
 		status.observe(this::fireEvent);
 	}
 
