@@ -2,10 +2,14 @@ package jokatu.game.games.rockpaperscissors;
 
 import jokatu.components.config.GameConfiguration;
 import jokatu.game.factory.GameComponent;
+import jokatu.game.games.rockpaperscissors.game.RockPaperScissorsGameFactory;
+import jokatu.game.games.rockpaperscissors.input.RockPaperScissorsInputDeserializer;
+import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayerFactory;
+import jokatu.game.games.rockpaperscissors.views.RockPaperScissorsViewResolverFactory;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static jokatu.game.games.rockpaperscissors.RockPaperScissorsGame.ROCK_PAPER_SCISSORS;
+import static jokatu.game.games.rockpaperscissors.game.RockPaperScissorsGame.ROCK_PAPER_SCISSORS;
 
 /**
  * @author steven

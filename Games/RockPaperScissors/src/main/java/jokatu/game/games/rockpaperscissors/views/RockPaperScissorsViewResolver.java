@@ -1,5 +1,7 @@
-package jokatu.game.games.rockpaperscissors;
+package jokatu.game.games.rockpaperscissors.views;
 
+import jokatu.game.games.rockpaperscissors.game.RockPaperScissorsGame;
+import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayer;
 import jokatu.game.viewresolver.ViewResolver;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.servlet.ModelAndView;

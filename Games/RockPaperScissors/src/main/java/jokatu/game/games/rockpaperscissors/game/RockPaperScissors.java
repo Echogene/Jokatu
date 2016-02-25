@@ -1,4 +1,4 @@
-package jokatu.game.games.rockpaperscissors;
+package jokatu.game.games.rockpaperscissors.game;
 
 import jokatu.game.result.Result;
 import org.jetbrains.annotations.NotNull;

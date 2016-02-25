@@ -1,4 +1,4 @@
-package jokatu.game.games.rockpaperscissors;
+package jokatu.game.games.rockpaperscissors.player;
 
 import jokatu.game.player.AbstractPlayer;
 

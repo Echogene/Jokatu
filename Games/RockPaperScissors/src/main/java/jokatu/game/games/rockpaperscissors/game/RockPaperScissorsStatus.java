@@ -1,4 +1,4 @@
-package jokatu.game.games.rockpaperscissors;
+package jokatu.game.games.rockpaperscissors.game;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import jokatu.game.event.StatusUpdateEvent;

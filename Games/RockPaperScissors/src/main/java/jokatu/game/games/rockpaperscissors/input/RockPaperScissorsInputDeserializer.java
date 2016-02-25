@@ -1,6 +1,7 @@
-package jokatu.game.games.rockpaperscissors;
+package jokatu.game.games.rockpaperscissors.input;
 
 import jokatu.game.factory.input.InputDeserialiser;
+import jokatu.game.games.rockpaperscissors.game.RockPaperScissors;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
