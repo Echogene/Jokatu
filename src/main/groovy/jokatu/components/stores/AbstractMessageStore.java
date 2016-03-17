@@ -7,6 +7,10 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
+/**
+ * An abstract implementation of both {@link MessageStorer} and {@link MessageRepository}.  How the messages are stored
+ * is delegated to the subclasses of this.
+ */
 abstract class AbstractMessageStore implements MessageStorer, MessageRepository {
 
 	@Override
