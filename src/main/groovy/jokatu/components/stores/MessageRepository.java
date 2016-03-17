@@ -5,6 +5,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * A place whence messages can be retrieved.
+ */
 public interface MessageRepository {
 	@NotNull
 	List<Object> getMessageHistory(@NotNull String destination);
