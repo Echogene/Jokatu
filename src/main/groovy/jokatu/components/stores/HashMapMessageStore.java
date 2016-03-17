@@ -8,6 +8,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * An {@link AbstractMessageStore} that stores messages in a {@link ConcurrentHashMap} that is keyed by channel.
+ */
 @Component
 public class HashMapMessageStore extends AbstractMessageStore {
 
