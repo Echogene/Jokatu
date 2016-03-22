@@ -11,7 +11,6 @@ layout 'views/game_view.tpl', true,
 	},
 
 	mainBody: contents {
-		button(onclick: 'join()', 'Join game')
 		'j-text'(id: 'text', submitName: 'Send', destination: "/topic/input.game.${game.identifier}") {}
 		button(is: 'j-button', destination: "/topic/input.game.${game.identifier}", 'data-input': '{"text": "Echo!"}', 'Echo!')
 		yieldUnescaped markupGenerator.bindHistory(
