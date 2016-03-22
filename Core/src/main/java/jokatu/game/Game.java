@@ -1,6 +1,7 @@
 package jokatu.game;
 
 import jokatu.game.event.GameEvent;
+import jokatu.game.exception.GameException;
 import jokatu.game.input.Input;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
@@ -27,7 +28,7 @@ public interface Game<P extends Player>
 	@NotNull
 	Status getStatus();
 
-	void accept(@NotNull Input input, @NotNull P player) throws UnacceptableInputException;
+	void accept(@NotNull Input input, @NotNull P player) throws GameException;
 
 	default boolean hasPlayer(@NotNull P player) {
 		return getPlayers().contains(player);
