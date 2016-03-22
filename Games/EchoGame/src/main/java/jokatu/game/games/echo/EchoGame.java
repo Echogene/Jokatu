@@ -9,23 +9,18 @@ import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.status.Status;
 import ophelia.collections.BaseCollection;
-import ophelia.collections.UnmodifiableCollection;
+import ophelia.collections.set.EmptySet;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ConcurrentHashMap;
-
-import static java.util.Collections.newSetFromMap;
 
 public class EchoGame extends AbstractGame<EchoPlayer> {
 
 	public static final String ECHO = "Echo";
-	private final Collection<EchoPlayer> players = newSetFromMap(new ConcurrentHashMap<>());
 	private final Timer timer;
 
 	protected EchoGame(GameID identifier) {
@@ -52,12 +47,11 @@ public class EchoGame extends AbstractGame<EchoPlayer> {
 	@NotNull
 	@Override
 	public BaseCollection<EchoPlayer> getPlayers() {
-		return new UnmodifiableCollection<>(players);
+		return EmptySet.emptySet();
 	}
 
 	@Override
 	public void joinInternal(@NotNull EchoPlayer player) throws CannotJoinGameException {
-		players.add(player);
 	}
 
 	@NotNull
