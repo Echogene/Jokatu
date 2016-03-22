@@ -4,6 +4,7 @@ import jokatu.game.factory.game.GameFactory;
 import jokatu.game.factory.input.InputDeserialiser;
 import jokatu.game.factory.player.PlayerFactory;
 import jokatu.game.viewresolver.ViewResolverFactory;
+import ophelia.collections.BaseCollection;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -18,7 +19,7 @@ public interface GameConfiguration {
 	PlayerFactory getPlayerFactory();
 
 	@NotNull
-	InputDeserialiser getInputDeserialiser();
+	BaseCollection<? extends InputDeserialiser> getInputDeserialisers();
 
 	@NotNull
 	ViewResolverFactory getViewResolverFactory();

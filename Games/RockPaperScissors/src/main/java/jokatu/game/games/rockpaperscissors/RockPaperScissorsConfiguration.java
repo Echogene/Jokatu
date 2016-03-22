@@ -2,10 +2,13 @@ package jokatu.game.games.rockpaperscissors;
 
 import jokatu.components.config.GameConfiguration;
 import jokatu.game.factory.GameComponent;
+import jokatu.game.factory.input.InputDeserialiser;
 import jokatu.game.games.rockpaperscissors.game.RockPaperScissorsGameFactory;
 import jokatu.game.games.rockpaperscissors.input.RockPaperScissorsInputDeserializer;
 import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayerFactory;
 import jokatu.game.games.rockpaperscissors.views.RockPaperScissorsViewResolverFactory;
+import ophelia.collections.BaseCollection;
+import ophelia.collections.set.Singleton;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -49,8 +52,8 @@ public class RockPaperScissorsConfiguration implements GameConfiguration {
 
 	@NotNull
 	@Override
-	public RockPaperScissorsInputDeserializer getInputDeserialiser() {
-		return inputDeserializer;
+	public BaseCollection<? extends InputDeserialiser> getInputDeserialisers() {
+		return new Singleton<>(inputDeserializer);
 	}
 
 	@NotNull

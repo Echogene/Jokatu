@@ -17,7 +17,7 @@ import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.player.Player;
 import jokatu.game.viewresolver.ViewResolver;
-import jokatu.util.Json;
+import ophelia.collections.BaseCollection;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
@@ -33,9 +33,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.io.IOException;
 import java.security.Principal;
-import java.text.MessageFormat;
 import java.util.*;
 
 import static java.text.MessageFormat.format;
@@ -150,8 +148,11 @@ public class GameController {
 		Game<Player> game = getGame(identity, "You can't input to a game that does not exist.");
 
 		Player player = getPlayer(principal, game);
-		InputDeserialiser inputDeserialiser = gameFactories.getInputDeserialiser(game);
-		Input input = inputDeserialiser.deserialise(json);
+		BaseCollection<? extends InputDeserialiser> deserialisers = gameFactories.getInputDeserialisers(game);
+		Input input = deserialisers.stream()
+				.map(deserialiser -> deserialiser.deserialise(json))
+				.findAny()
+				.orElseThrow(() -> new UnacceptableInputException(identity, "Could not deserialise ''{0}''", json));
 		game.accept(input, player);
 	}
 

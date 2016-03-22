@@ -7,6 +7,7 @@ import jokatu.game.factory.input.InputDeserialiser;
 import jokatu.game.factory.player.PlayerFactory;
 import jokatu.game.viewresolver.ViewResolver;
 import jokatu.game.viewresolver.ViewResolverFactory;
+import ophelia.collections.BaseCollection;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -93,9 +94,9 @@ public class FactoryConfiguration {
 			return getConfig(gameName).getPlayerFactory();
 		}
 
-		public InputDeserialiser getInputDeserialiser(@NotNull Game<?> game) {
+		public BaseCollection<? extends InputDeserialiser> getInputDeserialisers(@NotNull Game<?> game) {
 			String gameName = game.getGameName();
-			return getConfig(gameName).getInputDeserialiser();
+			return getConfig(gameName).getInputDeserialisers();
 		}
 
 		public ViewResolver<?, ?> getViewResolver(@NotNull Game<?> game) {
