@@ -7,8 +7,9 @@ import jokatu.game.games.rockpaperscissors.game.RockPaperScissorsGameFactory;
 import jokatu.game.games.rockpaperscissors.input.RockPaperScissorsInputDeserializer;
 import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayerFactory;
 import jokatu.game.games.rockpaperscissors.views.RockPaperScissorsViewResolverFactory;
+import jokatu.game.joining.JoinInputDeserialiser;
 import ophelia.collections.BaseCollection;
-import ophelia.collections.set.Singleton;
+import ophelia.collections.pair.UnorderedPair;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,18 +25,20 @@ public class RockPaperScissorsConfiguration implements GameConfiguration {
 	private final RockPaperScissorsPlayerFactory playerFactory;
 	private final RockPaperScissorsInputDeserializer inputDeserializer;
 	private final RockPaperScissorsViewResolverFactory viewResolverFactory;
+	private final JoinInputDeserialiser joinInputDeserialiser;
 
 	@Autowired
 	public RockPaperScissorsConfiguration(
 			RockPaperScissorsGameFactory factory,
 			RockPaperScissorsPlayerFactory playerFactory,
 			RockPaperScissorsInputDeserializer inputDeserializer,
-			RockPaperScissorsViewResolverFactory viewResolverFactory
-	) {
+			RockPaperScissorsViewResolverFactory viewResolverFactory,
+			JoinInputDeserialiser joinInputDeserialiser) {
 		this.factory = factory;
 		this.playerFactory = playerFactory;
 		this.inputDeserializer = inputDeserializer;
 		this.viewResolverFactory = viewResolverFactory;
+		this.joinInputDeserialiser = joinInputDeserialiser;
 	}
 
 	@NotNull
@@ -53,7 +56,7 @@ public class RockPaperScissorsConfiguration implements GameConfiguration {
 	@NotNull
 	@Override
 	public BaseCollection<? extends InputDeserialiser> getInputDeserialisers() {
-		return new Singleton<>(inputDeserializer);
+		return new UnorderedPair<>(inputDeserializer, joinInputDeserialiser);
 	}
 
 	@NotNull
