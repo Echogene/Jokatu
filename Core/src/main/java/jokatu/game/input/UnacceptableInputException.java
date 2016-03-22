@@ -13,4 +13,8 @@ public class UnacceptableInputException extends GameException {
 	public UnacceptableInputException(GameID id, String message) {
 		super(id, message);
 	}
+
+	public UnacceptableInputException(GameID id, String pattern, Object... arguments) {
+		super(id, pattern, arguments);
+	}
 }
