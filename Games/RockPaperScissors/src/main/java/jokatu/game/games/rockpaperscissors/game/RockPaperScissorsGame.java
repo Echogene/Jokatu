@@ -2,12 +2,14 @@ package jokatu.game.games.rockpaperscissors.game;
 
 import jokatu.game.AbstractGame;
 import jokatu.game.GameID;
+import jokatu.game.exception.GameException;
 import jokatu.game.games.rockpaperscissors.input.RockPaperScissorsInput;
 import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayer;
 import jokatu.game.input.Input;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.joining.GameFullException;
+import jokatu.game.joining.JoinInput;
 import jokatu.game.result.PlayerResult;
 import jokatu.game.result.Result;
 import jokatu.game.status.StandardTextStatus;
@@ -80,10 +82,15 @@ public class RockPaperScissorsGame extends AbstractGame <RockPaperScissorsPlayer
 
 	@Override
 	public void accept(@NotNull Input input, @NotNull RockPaperScissorsPlayer inputter)
-			throws UnacceptableInputException {
+			throws GameException {
 
 		if (input instanceof RockPaperScissorsInput) {
 			RockPaperScissorsInput rockPaperScissorsInput = (RockPaperScissorsInput) input;
+
+			if (!hasPlayer(inputter)) {
+				throw new UnacceptableInputException(getIdentifier(), "You can't input to a game you're not playing.");
+			}
+
 			if (inputs.containsKey(inputter)) {
 				// Player has already chosen.
 				throw new UnacceptableInputException(getIdentifier(), "You can't change your mind");
@@ -109,6 +116,8 @@ public class RockPaperScissorsGame extends AbstractGame <RockPaperScissorsPlayer
 				assert other != null;
 				status.setText("Awaiting input from " + other.getName());
 			}
+		} else if (input instanceof JoinInput) {
+			joinInternal(inputter);
 		}
 	}
 }
