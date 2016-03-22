@@ -4,6 +4,7 @@ import jokatu.game.AbstractGame;
 import jokatu.game.GameID;
 import jokatu.game.event.AbstractPrivateGameEvent;
 import jokatu.game.event.StatusUpdateEvent;
+import jokatu.game.input.Input;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.status.Status;
@@ -21,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static java.util.Collections.newSetFromMap;
 
-public class EchoGame extends AbstractGame<EchoPlayer, EchoInput> {
+public class EchoGame extends AbstractGame<EchoPlayer> {
 
 	public static final String ECHO = "Echo";
 	private final Collection<EchoPlayer> players = newSetFromMap(new ConcurrentHashMap<>());
@@ -66,14 +67,17 @@ public class EchoGame extends AbstractGame<EchoPlayer, EchoInput> {
 	}
 
 	@Override
-	public void accept(@NotNull EchoInput input, @NotNull EchoPlayer player) throws UnacceptableInputException {
-		fireEvent(new Echo(input, player));
-		fireEvent(new AbstractPrivateGameEvent(Collections.singleton(player)) {
-			@NotNull
-			@Override
-			public String getMessage() {
-				return "You said: " + input.getString();
-			}
-		});
+	public void accept(@NotNull Input input, @NotNull EchoPlayer player) throws UnacceptableInputException {
+		if (input instanceof EchoInput) {
+			EchoInput echoInput = (EchoInput) input;
+			fireEvent(new Echo(echoInput, player));
+			fireEvent(new AbstractPrivateGameEvent(Collections.singleton(player)) {
+				@NotNull
+				@Override
+				public String getMessage() {
+					return "You said: " + echoInput.getString();
+				}
+			});
+		}
 	}
 }

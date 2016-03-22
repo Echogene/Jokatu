@@ -74,7 +74,7 @@ public class GameController {
 		// Pro tip: Never give the view the same name as an attribute in the model if you want to use that attribute.
 		Map<String, Object> model = new HashMap<>();
 
-		SortedSet<Game<?, ?>> games = new TreeSet<>((g, h) -> g.getIdentifier().compareTo(h.getIdentifier()));
+		SortedSet<Game<?>> games = new TreeSet<>((g, h) -> g.getIdentifier().compareTo(h.getIdentifier()));
 		games.addAll(gameDao.getAll().getUnmodifiableInnerSet());
 		model.put("games", games);
 
@@ -85,7 +85,7 @@ public class GameController {
 
 	@RequestMapping("/game/{identity}")
 	ModelAndView game(@PathVariable("identity") GameID identity, Principal principal) throws GameException {
-		Game<Player, ?> game = gameDao.read(identity);
+		Game<Player> game = gameDao.read(identity);
 		if (game == null) {
 			return new ModelAndView(new RedirectView(GAME_LIST_MAPPING));
 		}
@@ -125,12 +125,12 @@ public class GameController {
 	}
 
 	@NotNull
-	private Game<Player, Input> getGame(
+	private Game<Player> getGame(
 			GameID identity,
 			@NotNull final String errorMessage
 	) throws GameException {
 
-		Game<Player, Input> game = gameDao.read(identity);
+		Game<Player> game = gameDao.read(identity);
 		if (game == null) {
 			throw new GameException(
 					identity,
@@ -144,7 +144,7 @@ public class GameController {
 	void input(@DestinationVariable("identity") GameID identity, @Payload String json, Principal principal)
 			throws GameException {
 
-		Game<Player, Input> game = getGame(identity, "You can't input to a game that does not exist.");
+		Game<Player> game = getGame(identity, "You can't input to a game that does not exist.");
 
 		Player player = getPlayer(principal, game);
 		if (!game.hasPlayer(player)) {
@@ -161,7 +161,7 @@ public class GameController {
 	Game createGame(@RequestParam("gameName") String gameName, Principal principal) {
 
 		GameFactory factory = gameFactories.getFactory(gameName);
-		Game<?, ?> game = factory.produceGame(principal.getName());
+		Game<?> game = factory.produceGame(principal.getName());
 
 		game.observe(event -> sendEvent(game, event));
 		return game;
@@ -169,9 +169,9 @@ public class GameController {
 
 	@RequestMapping(value = "/joinGame.do", method = POST)
 	@ResponseBody
-	Game<?, ?> join(@RequestParam("gameID") GameID identity, Principal principal) throws GameException {
+	Game<?> join(@RequestParam("gameID") GameID identity, Principal principal) throws GameException {
 
-		Game<Player, ?> game = getGame(identity, "You cannot join a non-existent game.");
+		Game<Player> game = getGame(identity, "You cannot join a non-existent game.");
 		Player player = getPlayer(principal, game);
 		if (game.hasPlayer(player)) {
 			throw new CannotJoinGameException(
@@ -201,7 +201,7 @@ public class GameController {
 	}
 
 	@NotNull
-	private Player getPlayer(@NotNull Principal principal, @NotNull Game<Player, ?> game) throws GameException {
+	private Player getPlayer(@NotNull Principal principal, @NotNull Game<Player> game) throws GameException {
 		PlayerFactory factory = gameFactories.getPlayerFactory(game);
 		return factory.produce(principal.getName());
 	}

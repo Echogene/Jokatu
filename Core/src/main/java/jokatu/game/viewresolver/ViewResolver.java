@@ -11,7 +11,7 @@ import java.text.MessageFormat;
  * Determine which view a player should see when requesting a game.
  * @author steven
  */
-public abstract class ViewResolver<P extends Player, G extends Game<P, ?>> {
+public abstract class ViewResolver<P extends Player, G extends Game<P>> {
 
 	protected final G game;
 

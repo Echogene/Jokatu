@@ -16,5 +16,5 @@ public interface GameFactory {
 	 * @return a new game
 	 */
 	@NotNull
-	Game<? extends Player, ? extends Input> produceGame(@NotNull String creatorName);
+	Game<? extends Player> produceGame(@NotNull String creatorName);
 }

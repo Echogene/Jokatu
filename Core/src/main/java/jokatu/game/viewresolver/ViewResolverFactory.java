@@ -10,16 +10,16 @@ import java.text.MessageFormat;
  * A factory for {@link ViewResolver}s.
  * @author steven
  */
-public abstract class ViewResolverFactory<P extends Player, G extends Game<P, ?>> {
+public abstract class ViewResolverFactory<P extends Player, G extends Game<P>> {
 
 	@NotNull
-	public final ViewResolver<P, G> getViewResolver(Game<?, ?> game) {
+	public final ViewResolver<P, G> getViewResolver(Game<?> game) {
 		G castGame = castGame(game);
 		return getResolverFor(castGame);
 	}
 
 	@NotNull
-	private G castGame(Game<?, ?> game) {
+	private G castGame(Game<?> game) {
 		Class<G> gameClass = handlesGame();
 		if (!gameClass.isInstance(game)) {
 			throw new IllegalArgumentException(

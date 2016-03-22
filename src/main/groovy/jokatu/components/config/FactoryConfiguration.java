@@ -88,17 +88,17 @@ public class FactoryConfiguration {
 		}
 
 		@NotNull
-		public PlayerFactory getPlayerFactory(@NotNull Game<?, ?> game) {
+		public PlayerFactory getPlayerFactory(@NotNull Game<?> game) {
 			String gameName = game.getGameName();
 			return getConfig(gameName).getPlayerFactory();
 		}
 
-		public InputDeserialiser getInputDeserialiser(@NotNull Game<?, ?> game) {
+		public InputDeserialiser getInputDeserialiser(@NotNull Game<?> game) {
 			String gameName = game.getGameName();
 			return getConfig(gameName).getInputDeserialiser();
 		}
 
-		public ViewResolver<?, ?> getViewResolver(@NotNull Game<?, ?> game) {
+		public ViewResolver<?, ?> getViewResolver(@NotNull Game<?> game) {
 			String gameName = game.getGameName();
 			ViewResolverFactory<?, ?> factory = getConfig(gameName).getViewResolverFactory();
 			return factory.getViewResolver(game);

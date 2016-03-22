@@ -31,12 +31,12 @@ public abstract class AbstractGameFactory implements GameFactory {
 
 	@NotNull
 	@Override
-	public final Game<? extends Player, ? extends Input> produceGame(@NotNull String creatorName) {
-		Game<? extends Player, ? extends Input> game = produce(GAME_IDENTIFIER.get(), creatorName);
-		gameDao.register((Game<Player, Input>) game);
+	public final Game<? extends Player> produceGame(@NotNull String creatorName) {
+		Game<? extends Player> game = produce(GAME_IDENTIFIER.get(), creatorName);
+		gameDao.register((Game<Player>) game);
 		return game;
 	}
 
 	@NotNull
-	protected abstract Game<? extends Player, ? extends Input> produce(@NotNull GameID gameID, @NotNull String creatorName);
+	protected abstract Game<? extends Player> produce(@NotNull GameID gameID, @NotNull String creatorName);
 }

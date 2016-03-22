@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
  * A game has players, who can make moves in the game.
  * @author Steven Weston
  */
-public interface Game<P extends Player, I extends Input>
+public interface Game<P extends Player>
 		extends Identifiable<GameID>, Observable<GameEvent> {
 
 	@NotNull String getGameName();
@@ -27,7 +27,7 @@ public interface Game<P extends Player, I extends Input>
 	@NotNull
 	Status getStatus();
 
-	void accept(@NotNull I input, @NotNull P player) throws UnacceptableInputException;
+	void accept(@NotNull Input input, @NotNull P player) throws UnacceptableInputException;
 
 	default boolean hasPlayer(@NotNull P player) {
 		return getPlayers().contains(player);

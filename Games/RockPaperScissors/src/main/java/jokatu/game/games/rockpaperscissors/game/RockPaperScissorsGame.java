@@ -4,6 +4,7 @@ import jokatu.game.AbstractGame;
 import jokatu.game.GameID;
 import jokatu.game.games.rockpaperscissors.input.RockPaperScissorsInput;
 import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayer;
+import jokatu.game.input.Input;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.joining.GameFullException;
@@ -22,11 +23,7 @@ import static java.util.Collections.singleton;
 import static jokatu.game.result.Result.DRAW;
 import static jokatu.game.result.Result.WIN;
 
-public class RockPaperScissorsGame
-		extends AbstractGame <
-		RockPaperScissorsPlayer,
-		RockPaperScissorsInput
-		> {
+public class RockPaperScissorsGame extends AbstractGame <RockPaperScissorsPlayer> {
 
 	public static final String ROCK_PAPER_SCISSORS = "Rock/paper/scissors";
 
@@ -82,33 +79,36 @@ public class RockPaperScissorsGame
 	}
 
 	@Override
-	public void accept(@NotNull RockPaperScissorsInput input, @NotNull RockPaperScissorsPlayer inputter)
+	public void accept(@NotNull Input input, @NotNull RockPaperScissorsPlayer inputter)
 			throws UnacceptableInputException {
 
-		if (inputs.containsKey(inputter)) {
-			// Player has already chosen.
-			throw new UnacceptableInputException(getIdentifier(), "You can't change your mind");
-		}
-		inputs.put(inputter, input.getChoice());
-		if (inputs.size() == 2) {
-			RockPaperScissorsPlayer player1 = players.getFirst();
-			RockPaperScissorsPlayer player2 = players.getSecond();
-			Result result = inputs.get(player1).resultAgainst(inputs.get(player2));
-			switch (result) {
-				case WIN:
-					fireEvent(new PlayerResult(WIN, singleton(player1)));
-					break;
-				case LOSE:
-					fireEvent(new PlayerResult(WIN, singleton(player2)));
-					break;
-				default:
-					fireEvent(new PlayerResult(DRAW, asList(player1, player2)));
+		if (input instanceof RockPaperScissorsInput) {
+			RockPaperScissorsInput rockPaperScissorsInput = (RockPaperScissorsInput) input;
+			if (inputs.containsKey(inputter)) {
+				// Player has already chosen.
+				throw new UnacceptableInputException(getIdentifier(), "You can't change your mind");
 			}
-			status.setText("Game over");
-		} else {
-			RockPaperScissorsPlayer other = players.getOther(inputter);
-			assert other != null;
-			status.setText("Awaiting input from " + other.getName());
+			inputs.put(inputter, rockPaperScissorsInput.getChoice());
+			if (inputs.size() == 2) {
+				RockPaperScissorsPlayer player1 = players.getFirst();
+				RockPaperScissorsPlayer player2 = players.getSecond();
+				Result result = inputs.get(player1).resultAgainst(inputs.get(player2));
+				switch (result) {
+					case WIN:
+						fireEvent(new PlayerResult(WIN, singleton(player1)));
+						break;
+					case LOSE:
+						fireEvent(new PlayerResult(WIN, singleton(player2)));
+						break;
+					default:
+						fireEvent(new PlayerResult(DRAW, asList(player1, player2)));
+				}
+				status.setText("Game over");
+			} else {
+				RockPaperScissorsPlayer other = players.getOther(inputter);
+				assert other != null;
+				status.setText("Awaiting input from " + other.getName());
+			}
 		}
 	}
 }

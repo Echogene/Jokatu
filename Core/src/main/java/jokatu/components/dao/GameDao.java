@@ -18,22 +18,22 @@ import java.util.concurrent.ConcurrentMap;
  * @author Steven Weston
  */
 @Component
-public class GameDao implements IdentifiableDao<GameID, Game<Player, Input>> {
+public class GameDao implements IdentifiableDao<GameID, Game<Player>> {
 
-	private final ConcurrentMap<GameID, Game<Player, Input>> games = new ConcurrentHashMap<>();
+	private final ConcurrentMap<GameID, Game<Player>> games = new ConcurrentHashMap<>();
 
-	public UnmodifiableSet<Game<Player, Input>> getAll() {
+	public UnmodifiableSet<Game<Player>> getAll() {
 		return new UnmodifiableSet<>(games.values());
 	}
 
 	@Nullable
 	@Override
-	public Game<Player, Input> read(@NotNull GameID identity) {
+	public Game<Player> read(@NotNull GameID identity) {
 		return games.get(identity);
 	}
 
 	@Override
-	public void register(@NotNull Game<Player, Input> identifiable) {
+	public void register(@NotNull Game<Player> identifiable) {
 		games.put(identifiable.getIdentifier(), identifiable);
 	}
 }

@@ -12,12 +12,9 @@ import org.jetbrains.annotations.NotNull;
  * A abstract implementation of {@link Game} that has an identifier.
  * @author Steven Weston
  */
-public abstract class AbstractGame<
-		P extends Player,
-		I extends Input
->
+public abstract class AbstractGame<P extends Player>
 		extends AbstractSynchronousObservable<GameEvent>
-		implements Game<P, I> {
+		implements Game<P> {
 
 	private final GameID identifier;
 
