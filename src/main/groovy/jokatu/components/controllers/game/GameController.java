@@ -49,7 +49,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Controller
 public class GameController {
 
-	public static final String GAME_LIST_MAPPING = "/games";
+	private static final String GAME_LIST_MAPPING = "/games";
 
 	private final GameFactories gameFactories;
 	private final GameDao gameDao;
@@ -109,7 +109,7 @@ public class GameController {
 	 * <ul>
 	 *     <li>Players joining the game</li>
 	 *     <li>Players leaving the game</li>
-	 *     <li>Results of dice rolls</li>
+	 *     <li>Results of dice rolls</li>`
 	 *     <li>The results of the end of the game</li>
 	 * </ul>
 	 */
