@@ -14,7 +14,6 @@ import jokatu.game.factory.input.InputDeserialiser;
 import jokatu.game.factory.player.PlayerFactory;
 import jokatu.game.input.Input;
 import jokatu.game.input.UnacceptableInputException;
-import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.player.Player;
 import jokatu.game.viewresolver.ViewResolver;
 import ophelia.collections.BaseCollection;
@@ -170,23 +169,6 @@ public class GameController {
 		Game<?> game = factory.produceGame(principal.getName());
 
 		game.observe(event -> sendEvent(game, event));
-		return game;
-	}
-
-	@RequestMapping(value = "/joinGame.do", method = POST)
-	@ResponseBody
-	Game<?> join(@RequestParam("gameID") GameID identity, Principal principal) throws GameException {
-
-		Game<Player> game = getGame(identity, "You cannot join a non-existent game.");
-		Player player = getPlayer(principal, game);
-		if (game.hasPlayer(player)) {
-			throw new CannotJoinGameException(
-					identity,
-					format("You can''t join a game twice!  Use a different account.")
-			);
-		}
-		game.join(player);
-
 		return game;
 	}
 
