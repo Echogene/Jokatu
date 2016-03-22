@@ -18,7 +18,7 @@ JTextProto.createdCallback = function() {
 
 	submitButton.addEventListener('click', () => {
 		submitButton.classList.add('submitting');
-		socket.send(this.getAttribute('destination'), textField.value)
+		socket.send(this.getAttribute('destination'), {text: textField.value})
 			.then(() => submitButton.classList.remove('submitting'));
 	});
 

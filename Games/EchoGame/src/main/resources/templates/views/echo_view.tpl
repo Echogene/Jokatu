@@ -13,7 +13,7 @@ layout 'views/game_view.tpl', true,
 	mainBody: contents {
 		button(onclick: 'join()', 'Join game')
 		'j-text'(id: 'text', submitName: 'Send', destination: "/topic/input.game.${game.identifier}") {}
-		button(is: 'j-button', destination: "/topic/input.game.${game.identifier}", 'data-input': 'Echo!', 'Echo!')
+		button(is: 'j-button', destination: "/topic/input.game.${game.identifier}", 'data-input': '{"text": "Echo!"}', 'Echo!')
 		yieldUnescaped markupGenerator.bindHistory(
 				tag: "j-message-box", id: "public-messages",
 				wrapperElement: "div", destination: "/topic/public.game.${game.identifier}"

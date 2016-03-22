@@ -7,6 +7,8 @@ import jokatu.game.factory.player.PlayerFactory;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 @Component
 public class EchoGameFactory extends AbstractGameFactory
 		implements PlayerFactory<EchoPlayer>, InputDeserialiser<EchoInput> {
@@ -25,7 +27,7 @@ public class EchoGameFactory extends AbstractGameFactory
 
 	@NotNull
 	@Override
-	public EchoInput deserialise(String json) {
-		return new EchoInput(json);
+	public EchoInput deserialise(Map<String, Object> json) {
+		return new EchoInput((String) json.get("text"));
 	}
 }

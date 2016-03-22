@@ -4,7 +4,7 @@ JButtonProto.createdCallback = function() {
 
 	this.addEventListener('click', () => {
 		this.classList.add('submitting');
-		socket.send(this.getAttribute('destination'), this.getAttribute('data-input'))
+		socket.send(this.getAttribute('destination'), JSON.parse(this.getAttribute('data-input')))
 			.then(() => this.classList.remove('submitting'));
 	});
 };
