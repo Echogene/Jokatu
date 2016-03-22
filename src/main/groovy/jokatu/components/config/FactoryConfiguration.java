@@ -37,6 +37,7 @@ public class FactoryConfiguration {
 	@Autowired
 	private ApplicationContext applicationContext;
 
+	@SuppressWarnings("unused") // This is called by Spring
 	@PostConstruct
 	public void populateFactories() {
 		configs = getFactoryMap(GameConfiguration.class);

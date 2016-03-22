@@ -13,10 +13,12 @@ public class GameID implements Identity, Comparable<GameID> {
 
 	private long identity;
 
+	@SuppressWarnings("unused") // This is called by Jackson
 	public GameID() {}
 
 	public GameID(long identity) {setIdentity(identity);}
 
+	@SuppressWarnings("unused") // This is called by Jackson
 	@JsonValue
 	public long getIdentity() {
 		return identity;

@@ -1,10 +1,8 @@
 package jokatu.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 
@@ -19,6 +17,7 @@ public class Json {
 
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
+	@SuppressWarnings("unused") // This is called from the Groovy Templates
 	public static String serialise(Object object) throws JsonProcessingException {
 		return OBJECT_MAPPER.writeValueAsString(object);
 	}
