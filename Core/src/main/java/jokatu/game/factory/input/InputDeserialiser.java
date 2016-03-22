@@ -1,5 +1,6 @@
 package jokatu.game.factory.input;
 
+import jokatu.game.input.DeserialisationException;
 import jokatu.game.input.Input;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,5 +13,5 @@ import java.util.Map;
 public interface InputDeserialiser<I extends Input> {
 
 	@NotNull
-	I deserialise(Map<String, Object> json);
+	I deserialise(Map<String, Object> json) throws DeserialisationException;
 }

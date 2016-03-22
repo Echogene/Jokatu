@@ -1,14 +1,21 @@
 package jokatu.game.joining;
 
 import jokatu.game.factory.input.InputDeserialiser;
+import jokatu.game.input.DeserialisationException;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+@Component
 public class JoinInputDeserialiser implements InputDeserialiser<JoinInput> {
 	@NotNull
 	@Override
-	public JoinInput deserialise(Map<String, Object> json) {
-		return new JoinInput();
+	public JoinInput deserialise(Map<String, Object> json) throws DeserialisationException {
+		if (!json.containsKey("join")) {
+			throw new DeserialisationException(json, "Did not contain the key 'join'");
+		} else {
+			return new JoinInput();
+		}
 	}
 }

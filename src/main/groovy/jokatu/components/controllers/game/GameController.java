@@ -18,6 +18,8 @@ import jokatu.game.joining.CannotJoinGameException;
 import jokatu.game.player.Player;
 import jokatu.game.viewresolver.ViewResolver;
 import ophelia.collections.BaseCollection;
+import ophelia.exceptions.maybe.FailureHandler;
+import ophelia.exceptions.maybe.SuccessHandler;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
@@ -37,6 +39,7 @@ import java.security.Principal;
 import java.util.*;
 
 import static java.text.MessageFormat.format;
+import static ophelia.exceptions.maybe.Maybe.wrapOutput;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -150,7 +153,10 @@ public class GameController {
 		Player player = getPlayer(principal, game);
 		BaseCollection<? extends InputDeserialiser> deserialisers = gameFactories.getInputDeserialisers(game);
 		Input input = deserialisers.stream()
-				.map(deserialiser -> deserialiser.deserialise(json))
+				.map(wrapOutput(deserialiser -> deserialiser.deserialise(json)))
+				.map(SuccessHandler::returnOnSuccess)
+				.map(FailureHandler::nullOnFailure)
+				.filter(i -> i != null)
 				.findAny()
 				.orElseThrow(() -> new UnacceptableInputException(identity, "Could not deserialise ''{0}''", json));
 		game.accept(input, player);
