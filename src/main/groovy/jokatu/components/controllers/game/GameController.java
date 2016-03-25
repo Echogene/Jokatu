@@ -13,7 +13,6 @@ import jokatu.game.factory.game.GameFactory;
 import jokatu.game.factory.input.InputDeserialiser;
 import jokatu.game.factory.player.PlayerFactory;
 import jokatu.game.input.Input;
-import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.player.Player;
 import jokatu.game.viewresolver.ViewResolver;
 import ophelia.collections.BaseCollection;
@@ -157,7 +156,7 @@ public class GameController {
 				.map(FailureHandler::nullOnFailure)
 				.filter(i -> i != null)
 				.findAny()
-				.orElseThrow(() -> new UnacceptableInputException(identity, "Could not deserialise ''{0}''", json));
+				.orElseThrow(() -> new GameException(identity, "Could not deserialise ''{0}''", json));
 		game.accept(input, player);
 	}
 
