@@ -17,6 +17,11 @@ public class GameException extends Exception {
 		this.id = id;
 	}
 
+	public GameException(GameID id, String message, Throwable cause) {
+		super(message, cause);
+		this.id = id;
+	}
+
 	public GameException(GameID id, String pattern, Object... arguments) {
 		this(id, MessageFormat.format(pattern, arguments));
 	}
