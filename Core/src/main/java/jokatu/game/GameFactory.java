@@ -1,7 +1,5 @@
-package jokatu.game.factory.game;
+package jokatu.game;
 
-import jokatu.game.Game;
-import jokatu.game.input.Input;
 import jokatu.game.player.Player;
 import org.jetbrains.annotations.NotNull;
 

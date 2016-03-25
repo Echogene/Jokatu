@@ -1,15 +1,14 @@
 package jokatu.game.games.echo;
 
-import jokatu.game.AbstractGame;
+import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.event.AbstractPrivateGameEvent;
 import jokatu.game.event.StatusUpdateEvent;
 import jokatu.game.input.Input;
-import jokatu.game.input.UnacceptableInputException;
-import jokatu.game.joining.CannotJoinGameException;
+import jokatu.game.input.InputAcceptor;
+import jokatu.game.player.Player;
 import jokatu.game.status.Status;
 import ophelia.collections.BaseCollection;
-import ophelia.collections.set.EmptySet;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalTime;
@@ -18,7 +17,9 @@ import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class EchoGame extends AbstractGame<EchoPlayer> {
+import static ophelia.collections.set.EmptySet.emptySet;
+
+public class EchoGame extends Game<EchoPlayer> {
 
 	public static final String ECHO = "Echo";
 	private final Timer timer;
@@ -38,6 +39,11 @@ public class EchoGame extends AbstractGame<EchoPlayer> {
 		);
 	}
 
+	@Override
+	protected BaseCollection<InputAcceptor<? extends Input, ? extends Player>> getInputAcceptors() {
+		return emptySet();
+	}
+
 	@NotNull
 	@Override
 	public String getGameName() {
@@ -47,11 +53,7 @@ public class EchoGame extends AbstractGame<EchoPlayer> {
 	@NotNull
 	@Override
 	public BaseCollection<EchoPlayer> getPlayers() {
-		return EmptySet.emptySet();
-	}
-
-	@Override
-	public void joinInternal(@NotNull EchoPlayer player) throws CannotJoinGameException {
+		return emptySet();
 	}
 
 	@NotNull
@@ -61,10 +63,11 @@ public class EchoGame extends AbstractGame<EchoPlayer> {
 	}
 
 	@Override
-	public void accept(@NotNull Input input, @NotNull EchoPlayer player) throws UnacceptableInputException {
+	public void accept(@NotNull Input input, @NotNull Player player) {
+		// todo: move this to an InputAcceptor
 		if (input instanceof EchoInput) {
 			EchoInput echoInput = (EchoInput) input;
-			fireEvent(new Echo(echoInput, player));
+			fireEvent(new Echo(echoInput, (EchoPlayer) player));
 			fireEvent(new AbstractPrivateGameEvent(Collections.singleton(player)) {
 				@NotNull
 				@Override

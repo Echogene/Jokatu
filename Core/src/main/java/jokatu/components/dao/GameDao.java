@@ -2,7 +2,6 @@ package jokatu.components.dao;
 
 import jokatu.game.Game;
 import jokatu.game.GameID;
-import jokatu.game.input.Input;
 import jokatu.game.player.Player;
 import jokatu.identity.IdentifiableDao;
 import ophelia.collections.set.UnmodifiableSet;
@@ -18,22 +17,22 @@ import java.util.concurrent.ConcurrentMap;
  * @author Steven Weston
  */
 @Component
-public class GameDao implements IdentifiableDao<GameID, Game<Player>> {
+public class GameDao implements IdentifiableDao<GameID, Game<? extends Player>> {
 
-	private final ConcurrentMap<GameID, Game<Player>> games = new ConcurrentHashMap<>();
+	private final ConcurrentMap<GameID, Game<? extends Player>> games = new ConcurrentHashMap<>();
 
-	public UnmodifiableSet<Game<Player>> getAll() {
+	public UnmodifiableSet<Game<? extends Player>> getAll() {
 		return new UnmodifiableSet<>(games.values());
 	}
 
 	@Nullable
 	@Override
-	public Game<Player> read(@NotNull GameID identity) {
+	public Game<? extends Player> read(@NotNull GameID identity) {
 		return games.get(identity);
 	}
 
 	@Override
-	public void register(@NotNull Game<Player> identifiable) {
+	public void register(@NotNull Game<? extends Player> identifiable) {
 		games.put(identifiable.getIdentifier(), identifiable);
 	}
 }

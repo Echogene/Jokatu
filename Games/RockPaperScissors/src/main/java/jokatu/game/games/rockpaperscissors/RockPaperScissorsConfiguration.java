@@ -1,12 +1,12 @@
 package jokatu.game.games.rockpaperscissors;
 
+import jokatu.components.GameComponent;
 import jokatu.components.config.GameConfiguration;
-import jokatu.game.factory.GameComponent;
-import jokatu.game.factory.input.InputDeserialiser;
 import jokatu.game.games.rockpaperscissors.game.RockPaperScissorsGameFactory;
 import jokatu.game.games.rockpaperscissors.input.RockPaperScissorsInputDeserializer;
 import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayerFactory;
 import jokatu.game.games.rockpaperscissors.views.RockPaperScissorsViewResolverFactory;
+import jokatu.game.input.InputDeserialiser;
 import jokatu.game.joining.JoinInputDeserialiser;
 import ophelia.collections.BaseCollection;
 import ophelia.collections.pair.UnorderedPair;

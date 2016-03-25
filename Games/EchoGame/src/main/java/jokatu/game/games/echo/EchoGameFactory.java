@@ -1,9 +1,9 @@
 package jokatu.game.games.echo;
 
+import jokatu.game.AbstractGameFactory;
 import jokatu.game.GameID;
-import jokatu.game.factory.game.AbstractGameFactory;
-import jokatu.game.factory.input.InputDeserialiser;
-import jokatu.game.factory.player.PlayerFactory;
+import jokatu.game.input.InputDeserialiser;
+import jokatu.game.player.PlayerFactory;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 

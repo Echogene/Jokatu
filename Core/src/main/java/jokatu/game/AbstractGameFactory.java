@@ -1,9 +1,6 @@
-package jokatu.game.factory.game;
+package jokatu.game;
 
 import jokatu.components.dao.GameDao;
-import jokatu.game.Game;
-import jokatu.game.GameID;
-import jokatu.game.input.Input;
 import jokatu.game.player.Player;
 import jokatu.identity.Identifier;
 import org.jetbrains.annotations.NotNull;
@@ -33,7 +30,9 @@ public abstract class AbstractGameFactory implements GameFactory {
 	@Override
 	public final Game<? extends Player> produceGame(@NotNull String creatorName) {
 		Game<? extends Player> game = produce(GAME_IDENTIFIER.get(), creatorName);
-		gameDao.register((Game<Player>) game);
+		game.getInputAcceptors().stream()
+				.forEach(acceptor -> acceptor.observe(game::fireEvent));
+		gameDao.register(game);
 		return game;
 	}
 

@@ -5,15 +5,15 @@ import jokatu.components.dao.GameDao;
 import jokatu.components.markup.MarkupGenerator;
 import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.Game;
+import jokatu.game.GameFactory;
 import jokatu.game.GameID;
 import jokatu.game.event.EventHandler;
 import jokatu.game.event.GameEvent;
 import jokatu.game.exception.GameException;
-import jokatu.game.factory.game.GameFactory;
-import jokatu.game.factory.input.InputDeserialiser;
-import jokatu.game.factory.player.PlayerFactory;
 import jokatu.game.input.Input;
+import jokatu.game.input.InputDeserialiser;
 import jokatu.game.player.Player;
+import jokatu.game.player.PlayerFactory;
 import jokatu.game.viewresolver.ViewResolver;
 import ophelia.collections.BaseCollection;
 import ophelia.exceptions.maybe.FailureHandler;
@@ -87,7 +87,7 @@ public class GameController {
 
 	@RequestMapping("/game/{identity}")
 	ModelAndView game(@PathVariable("identity") GameID identity, Principal principal) throws GameException {
-		Game<Player> game = gameDao.read(identity);
+		Game<? extends Player> game = gameDao.read(identity);
 		if (game == null) {
 			return new ModelAndView(new RedirectView(GAME_LIST_MAPPING));
 		}
@@ -127,12 +127,12 @@ public class GameController {
 	}
 
 	@NotNull
-	private Game<Player> getGame(
+	private Game<? extends Player> getGame(
 			GameID identity,
 			@NotNull final String errorMessage
 	) throws GameException {
 
-		Game<Player> game = gameDao.read(identity);
+		Game<? extends Player> game = gameDao.read(identity);
 		if (game == null) {
 			throw new GameException(
 					identity,
@@ -146,7 +146,7 @@ public class GameController {
 	void input(@DestinationVariable("identity") GameID identity, @Payload Map<String, Object> json, Principal principal)
 			throws GameException {
 
-		Game<Player> game = getGame(identity, "You can't input to a game that does not exist.");
+		Game<? extends Player> game = getGame(identity, "You can't input to a game that does not exist.");
 
 		Player player = getPlayer(principal, game);
 		BaseCollection<? extends InputDeserialiser> deserialisers = gameFactories.getInputDeserialisers(game);
@@ -188,7 +188,7 @@ public class GameController {
 	}
 
 	@NotNull
-	private Player getPlayer(@NotNull Principal principal, @NotNull Game<Player> game) throws GameException {
+	private Player getPlayer(@NotNull Principal principal, @NotNull Game<? extends Player> game) throws GameException {
 		PlayerFactory factory = gameFactories.getPlayerFactory(game);
 		return factory.produce(principal.getName());
 	}

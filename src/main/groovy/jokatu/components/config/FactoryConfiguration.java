@@ -1,10 +1,10 @@
 package jokatu.components.config;
 
+import jokatu.components.GameComponent;
 import jokatu.game.Game;
-import jokatu.game.factory.GameComponent;
-import jokatu.game.factory.game.GameFactory;
-import jokatu.game.factory.input.InputDeserialiser;
-import jokatu.game.factory.player.PlayerFactory;
+import jokatu.game.GameFactory;
+import jokatu.game.input.InputDeserialiser;
+import jokatu.game.player.PlayerFactory;
 import jokatu.game.viewresolver.ViewResolver;
 import jokatu.game.viewresolver.ViewResolverFactory;
 import ophelia.collections.BaseCollection;

@@ -1,8 +1,8 @@
 package jokatu.game.games.echo;
 
+import jokatu.components.GameComponent;
 import jokatu.components.config.GameConfiguration;
-import jokatu.game.factory.GameComponent;
-import jokatu.game.factory.input.InputDeserialiser;
+import jokatu.game.input.InputDeserialiser;
 import ophelia.collections.BaseCollection;
 import ophelia.collections.set.Singleton;
 import org.jetbrains.annotations.NotNull;

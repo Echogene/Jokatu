@@ -10,7 +10,7 @@ import java.text.MessageFormat;
  * A factory for {@link ViewResolver}s.
  * @author steven
  */
-public abstract class ViewResolverFactory<P extends Player, G extends Game<P>> {
+public abstract class ViewResolverFactory<P extends Player, G extends jokatu.identity.Identifiable<jokatu.game.GameID> & ophelia.event.observable.Observable<jokatu.game.event.GameEvent>> {
 
 	@NotNull
 	public final ViewResolver<P, G> getViewResolver(Game<?> game) {

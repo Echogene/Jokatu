@@ -1,7 +1,7 @@
 package jokatu.game.joining;
 
-import jokatu.game.factory.input.InputDeserialiser;
 import jokatu.game.input.DeserialisationException;
+import jokatu.game.input.InputDeserialiser;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 

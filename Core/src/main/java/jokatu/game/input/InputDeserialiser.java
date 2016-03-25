@@ -1,7 +1,5 @@
-package jokatu.game.factory.input;
+package jokatu.game.input;
 
-import jokatu.game.input.DeserialisationException;
-import jokatu.game.input.Input;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
