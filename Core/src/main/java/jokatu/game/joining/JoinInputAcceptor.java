@@ -42,6 +42,7 @@ public class JoinInputAcceptor<P extends Player> extends InputAcceptor<JoinInput
 		} else {
 			status.setText("Waiting for one more player to join");
 		}
+		fireEvent(new PlayerJoinedEvent(inputter));
 	}
 
 	private void checkCanJoin() throws CannotJoinGameException {
