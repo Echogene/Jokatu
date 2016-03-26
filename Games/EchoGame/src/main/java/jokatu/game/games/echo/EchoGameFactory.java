@@ -3,6 +3,7 @@ package jokatu.game.games.echo;
 import jokatu.game.AbstractGameFactory;
 import jokatu.game.GameID;
 import jokatu.game.games.echo.input.EchoInput;
+import jokatu.game.games.echo.player.EchoPlayer;
 import jokatu.game.input.InputDeserialiser;
 import jokatu.game.player.PlayerFactory;
 import org.jetbrains.annotations.NotNull;
