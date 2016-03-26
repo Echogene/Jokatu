@@ -1,6 +1,6 @@
 package jokatu.game.games.echo.views;
 
-import jokatu.game.games.echo.EchoGame;
+import jokatu.game.games.echo.game.EchoGame;
 import jokatu.game.games.echo.player.EchoPlayer;
 import jokatu.game.viewresolver.ViewResolver;
 import jokatu.game.viewresolver.ViewResolverFactory;

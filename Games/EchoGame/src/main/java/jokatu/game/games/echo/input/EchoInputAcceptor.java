@@ -1,7 +1,7 @@
 package jokatu.game.games.echo.input;
 
 import jokatu.game.event.AbstractPrivateGameEvent;
-import jokatu.game.games.echo.Echo;
+import jokatu.game.games.echo.game.Echo;
 import jokatu.game.games.echo.player.EchoPlayer;
 import jokatu.game.input.InputAcceptor;
 import org.jetbrains.annotations.NotNull;
