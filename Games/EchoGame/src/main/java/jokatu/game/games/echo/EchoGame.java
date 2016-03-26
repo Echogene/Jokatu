@@ -3,6 +3,7 @@ package jokatu.game.games.echo;
 import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.event.StatusUpdateEvent;
+import jokatu.game.games.echo.input.EchoInputAcceptor;
 import jokatu.game.input.Input;
 import jokatu.game.input.InputAcceptor;
 import jokatu.game.player.Player;
