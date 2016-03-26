@@ -5,18 +5,19 @@ import jokatu.components.dao.GameDao;
 import jokatu.components.markup.MarkupGenerator;
 import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.Game;
+import jokatu.game.GameFactory;
 import jokatu.game.GameID;
 import jokatu.game.event.EventHandler;
 import jokatu.game.event.GameEvent;
 import jokatu.game.exception.GameException;
-import jokatu.game.factory.game.GameFactory;
-import jokatu.game.factory.input.InputDeserialiser;
-import jokatu.game.factory.player.PlayerFactory;
 import jokatu.game.input.Input;
-import jokatu.game.input.UnacceptableInputException;
-import jokatu.game.joining.CannotJoinGameException;
+import jokatu.game.input.InputDeserialiser;
 import jokatu.game.player.Player;
+import jokatu.game.player.PlayerFactory;
 import jokatu.game.viewresolver.ViewResolver;
+import ophelia.collections.BaseCollection;
+import ophelia.exceptions.maybe.FailureHandler;
+import ophelia.exceptions.maybe.SuccessHandler;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
@@ -36,6 +37,7 @@ import java.security.Principal;
 import java.util.*;
 
 import static java.text.MessageFormat.format;
+import static ophelia.exceptions.maybe.Maybe.wrapOutput;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -46,7 +48,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Controller
 public class GameController {
 
-	public static final String GAME_LIST_MAPPING = "/games";
+	private static final String GAME_LIST_MAPPING = "/games";
 
 	private final GameFactories gameFactories;
 	private final GameDao gameDao;
@@ -74,7 +76,7 @@ public class GameController {
 		// Pro tip: Never give the view the same name as an attribute in the model if you want to use that attribute.
 		Map<String, Object> model = new HashMap<>();
 
-		SortedSet<Game<?, ?>> games = new TreeSet<>((g, h) -> g.getIdentifier().compareTo(h.getIdentifier()));
+		SortedSet<Game<?>> games = new TreeSet<>((g, h) -> g.getIdentifier().compareTo(h.getIdentifier()));
 		games.addAll(gameDao.getAll().getUnmodifiableInnerSet());
 		model.put("games", games);
 
@@ -85,7 +87,7 @@ public class GameController {
 
 	@RequestMapping("/game/{identity}")
 	ModelAndView game(@PathVariable("identity") GameID identity, Principal principal) throws GameException {
-		Game<Player, ?> game = gameDao.read(identity);
+		Game<? extends Player> game = gameDao.read(identity);
 		if (game == null) {
 			return new ModelAndView(new RedirectView(GAME_LIST_MAPPING));
 		}
@@ -106,7 +108,7 @@ public class GameController {
 	 * <ul>
 	 *     <li>Players joining the game</li>
 	 *     <li>Players leaving the game</li>
-	 *     <li>Results of dice rolls</li>
+	 *     <li>Results of dice rolls</li>`
 	 *     <li>The results of the end of the game</li>
 	 * </ul>
 	 */
@@ -125,12 +127,12 @@ public class GameController {
 	}
 
 	@NotNull
-	private Game<Player, Input> getGame(
+	private Game<? extends Player> getGame(
 			GameID identity,
 			@NotNull final String errorMessage
 	) throws GameException {
 
-		Game<Player, Input> game = gameDao.read(identity);
+		Game<? extends Player> game = gameDao.read(identity);
 		if (game == null) {
 			throw new GameException(
 					identity,
@@ -141,18 +143,20 @@ public class GameController {
 	}
 
 	@MessageMapping("/topic/input.game.{identity}")
-	void input(@DestinationVariable("identity") GameID identity, @Payload String json, Principal principal)
+	void input(@DestinationVariable("identity") GameID identity, @Payload Map<String, Object> json, Principal principal)
 			throws GameException {
 
-		Game<Player, Input> game = getGame(identity, "You can't input to a game that does not exist.");
+		Game<? extends Player> game = getGame(identity, "You can't input to a game that does not exist.");
 
 		Player player = getPlayer(principal, game);
-		if (!game.hasPlayer(player)) {
-			throw new UnacceptableInputException(identity, "You can't input to a game you're not playing.");
-		}
-
-		InputDeserialiser inputDeserialiser = gameFactories.getInputDeserialiser(game);
-		Input input = inputDeserialiser.deserialise(json);
+		BaseCollection<? extends InputDeserialiser> deserialisers = gameFactories.getInputDeserialisers(game);
+		Input input = deserialisers.stream()
+				.map(wrapOutput(deserialiser -> deserialiser.deserialise(json)))
+				.map(SuccessHandler::returnOnSuccess)
+				.map(FailureHandler::nullOnFailure)
+				.filter(i -> i != null)
+				.findAny()
+				.orElseThrow(() -> new GameException(identity, "Could not deserialise ''{0}''", json));
 		game.accept(input, player);
 	}
 
@@ -161,26 +165,9 @@ public class GameController {
 	Game createGame(@RequestParam("gameName") String gameName, Principal principal) {
 
 		GameFactory factory = gameFactories.getFactory(gameName);
-		Game<?, ?> game = factory.produceGame(principal.getName());
+		Game<?> game = factory.produceGame(principal.getName());
 
 		game.observe(event -> sendEvent(game, event));
-		return game;
-	}
-
-	@RequestMapping(value = "/joinGame.do", method = POST)
-	@ResponseBody
-	Game<?, ?> join(@RequestParam("gameID") GameID identity, Principal principal) throws GameException {
-
-		Game<Player, ?> game = getGame(identity, "You cannot join a non-existent game.");
-		Player player = getPlayer(principal, game);
-		if (game.hasPlayer(player)) {
-			throw new CannotJoinGameException(
-					identity,
-					format("You can''t join a game twice!  Use a different account.")
-			);
-		}
-		game.join(player);
-
 		return game;
 	}
 
@@ -201,7 +188,7 @@ public class GameController {
 	}
 
 	@NotNull
-	private Player getPlayer(@NotNull Principal principal, @NotNull Game<Player, ?> game) throws GameException {
+	private Player getPlayer(@NotNull Principal principal, @NotNull Game<? extends Player> game) throws GameException {
 		PlayerFactory factory = gameFactories.getPlayerFactory(game);
 		return factory.produce(principal.getName());
 	}

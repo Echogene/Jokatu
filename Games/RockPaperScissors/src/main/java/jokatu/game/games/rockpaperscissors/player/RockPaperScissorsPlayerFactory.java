@@ -1,6 +1,6 @@
 package jokatu.game.games.rockpaperscissors.player;
 
-import jokatu.game.factory.player.PlayerFactory;
+import jokatu.game.player.PlayerFactory;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 

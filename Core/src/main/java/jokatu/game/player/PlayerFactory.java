@@ -1,6 +1,5 @@
-package jokatu.game.factory.player;
+package jokatu.game.player;
 
-import jokatu.game.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 /**

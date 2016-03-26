@@ -1,4 +1,4 @@
-package jokatu.game.factory;
+package jokatu.components;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;

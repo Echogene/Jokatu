@@ -1,44 +1,38 @@
 package jokatu.game.games.rockpaperscissors.game;
 
-import jokatu.game.AbstractGame;
+import jokatu.game.Game;
 import jokatu.game.GameID;
-import jokatu.game.games.rockpaperscissors.input.RockPaperScissorsInput;
+import jokatu.game.games.rockpaperscissors.input.RockPaperScissorsInputAcceptor;
 import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayer;
-import jokatu.game.input.UnacceptableInputException;
-import jokatu.game.joining.CannotJoinGameException;
-import jokatu.game.joining.GameFullException;
-import jokatu.game.result.PlayerResult;
-import jokatu.game.result.Result;
+import jokatu.game.input.Input;
+import jokatu.game.input.InputAcceptor;
+import jokatu.game.joining.JoinInputAcceptor;
+import jokatu.game.player.Player;
 import jokatu.game.status.StandardTextStatus;
 import jokatu.game.status.Status;
+import ophelia.collections.BaseCollection;
+import ophelia.collections.UnmodifiableCollection;
 import ophelia.collections.set.bounded.BoundedPair;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Arrays;
+import java.util.List;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.singleton;
-import static jokatu.game.result.Result.DRAW;
-import static jokatu.game.result.Result.WIN;
-
-public class RockPaperScissorsGame
-		extends AbstractGame <
-		RockPaperScissorsPlayer,
-		RockPaperScissorsInput
-		> {
+public class RockPaperScissorsGame extends Game<RockPaperScissorsPlayer> {
 
 	public static final String ROCK_PAPER_SCISSORS = "Rock/paper/scissors";
 
 	private final BoundedPair<RockPaperScissorsPlayer> players = new BoundedPair<>();
 
-	private final Map<RockPaperScissorsPlayer, RockPaperScissors> inputs = new ConcurrentHashMap<>();
+	private final StandardTextStatus status = new StandardTextStatus("Waiting for two players to join");
 
-	private StandardTextStatus status;
+	private final List<InputAcceptor<? extends Input, ? extends Player>> inputAcceptors = Arrays.asList(
+			new JoinInputAcceptor<>(RockPaperScissorsPlayer.class, players, status),
+			new RockPaperScissorsInputAcceptor(players, status)
+	);
 
 	protected RockPaperScissorsGame(GameID identifier) {
 		super(identifier);
-		status = new StandardTextStatus("Waiting for two players to join");
 		status.observe(this::fireEvent);
 	}
 
@@ -54,27 +48,6 @@ public class RockPaperScissorsGame
 		return players;
 	}
 
-	@Override
-	public void joinInternal(@NotNull RockPaperScissorsPlayer player) throws CannotJoinGameException {
-		checkCanJoin();
-		players.add(player);
-		if (players.size() == 2) {
-			RockPaperScissorsPlayer player1 = players.getFirst();
-			assert player1 != null;
-			RockPaperScissorsPlayer player2 = players.getSecond();
-			assert player2 != null;
-			status.setText("Awaiting input from " + player1.getName() + " and " + player2.getName());
-		} else {
-			status.setText("Waiting for one more player to join");
-		}
-	}
-
-	private void checkCanJoin() throws CannotJoinGameException {
-		if (players.size() > 1) {
-			throw new GameFullException(getIdentifier(), "Rock-paper-scissors supports two players");
-		}
-	}
-
 	@NotNull
 	@Override
 	public Status getStatus() {
@@ -82,33 +55,7 @@ public class RockPaperScissorsGame
 	}
 
 	@Override
-	public void accept(@NotNull RockPaperScissorsInput input, @NotNull RockPaperScissorsPlayer inputter)
-			throws UnacceptableInputException {
-
-		if (inputs.containsKey(inputter)) {
-			// Player has already chosen.
-			throw new UnacceptableInputException(getIdentifier(), "You can't change your mind");
-		}
-		inputs.put(inputter, input.getChoice());
-		if (inputs.size() == 2) {
-			RockPaperScissorsPlayer player1 = players.getFirst();
-			RockPaperScissorsPlayer player2 = players.getSecond();
-			Result result = inputs.get(player1).resultAgainst(inputs.get(player2));
-			switch (result) {
-				case WIN:
-					fireEvent(new PlayerResult(WIN, singleton(player1)));
-					break;
-				case LOSE:
-					fireEvent(new PlayerResult(WIN, singleton(player2)));
-					break;
-				default:
-					fireEvent(new PlayerResult(DRAW, asList(player1, player2)));
-			}
-			status.setText("Game over");
-		} else {
-			RockPaperScissorsPlayer other = players.getOther(inputter);
-			assert other != null;
-			status.setText("Awaiting input from " + other.getName());
-		}
+	protected BaseCollection<InputAcceptor<? extends Input, ? extends Player>> getInputAcceptors() {
+		return new UnmodifiableCollection<>(inputAcceptors);
 	}
 }

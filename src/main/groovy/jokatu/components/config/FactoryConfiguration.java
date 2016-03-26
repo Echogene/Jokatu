@@ -1,12 +1,13 @@
 package jokatu.components.config;
 
+import jokatu.components.GameComponent;
 import jokatu.game.Game;
-import jokatu.game.factory.GameComponent;
-import jokatu.game.factory.game.GameFactory;
-import jokatu.game.factory.input.InputDeserialiser;
-import jokatu.game.factory.player.PlayerFactory;
+import jokatu.game.GameFactory;
+import jokatu.game.input.InputDeserialiser;
+import jokatu.game.player.PlayerFactory;
 import jokatu.game.viewresolver.ViewResolver;
 import jokatu.game.viewresolver.ViewResolverFactory;
+import ophelia.collections.BaseCollection;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -36,6 +37,7 @@ public class FactoryConfiguration {
 	@Autowired
 	private ApplicationContext applicationContext;
 
+	@SuppressWarnings("unused") // This is called by Spring
 	@PostConstruct
 	public void populateFactories() {
 		configs = getFactoryMap(GameConfiguration.class);
@@ -88,17 +90,17 @@ public class FactoryConfiguration {
 		}
 
 		@NotNull
-		public PlayerFactory getPlayerFactory(@NotNull Game<?, ?> game) {
+		public PlayerFactory getPlayerFactory(@NotNull Game<?> game) {
 			String gameName = game.getGameName();
 			return getConfig(gameName).getPlayerFactory();
 		}
 
-		public InputDeserialiser getInputDeserialiser(@NotNull Game<?, ?> game) {
+		public BaseCollection<? extends InputDeserialiser> getInputDeserialisers(@NotNull Game<?> game) {
 			String gameName = game.getGameName();
-			return getConfig(gameName).getInputDeserialiser();
+			return getConfig(gameName).getInputDeserialisers();
 		}
 
-		public ViewResolver<?, ?> getViewResolver(@NotNull Game<?, ?> game) {
+		public ViewResolver<?, ?> getViewResolver(@NotNull Game<?> game) {
 			String gameName = game.getGameName();
 			ViewResolverFactory<?, ?> factory = getConfig(gameName).getViewResolverFactory();
 			return factory.getViewResolver(game);

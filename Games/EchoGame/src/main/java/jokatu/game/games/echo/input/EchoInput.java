@@ -1,4 +1,4 @@
-package jokatu.game.games.echo;
+package jokatu.game.games.echo.input;
 
 import jokatu.game.input.Input;
 

@@ -1,11 +1,16 @@
 package jokatu.game.games.echo;
 
+import jokatu.components.GameComponent;
 import jokatu.components.config.GameConfiguration;
-import jokatu.game.factory.GameComponent;
+import jokatu.game.games.echo.game.EchoGameFactory;
+import jokatu.game.games.echo.views.EchoViewResolverFactory;
+import jokatu.game.input.InputDeserialiser;
+import ophelia.collections.BaseCollection;
+import ophelia.collections.set.Singleton;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static jokatu.game.games.echo.EchoGame.ECHO;
+import static jokatu.game.games.echo.game.EchoGame.ECHO;
 
 /**
  * @author steven
@@ -36,8 +41,8 @@ public class EchoConfiguration implements GameConfiguration {
 
 	@NotNull
 	@Override
-	public EchoGameFactory getInputDeserialiser() {
-		return echoGameFactory;
+	public BaseCollection<? extends InputDeserialiser> getInputDeserialisers() {
+		return new Singleton<>(echoGameFactory);
 	}
 
 	@NotNull

@@ -1,7 +1,8 @@
-package jokatu.game.factory.input;
+package jokatu.game.input;
 
-import jokatu.game.input.Input;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
 
 /**
  * This takes JSON from the client and turns it into input.
@@ -10,5 +11,5 @@ import org.jetbrains.annotations.NotNull;
 public interface InputDeserialiser<I extends Input> {
 
 	@NotNull
-	I deserialise(String json);
+	I deserialise(Map<String, Object> json) throws DeserialisationException;
 }

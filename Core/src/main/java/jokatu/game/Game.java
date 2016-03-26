@@ -1,35 +1,69 @@
 package jokatu.game;
 
 import jokatu.game.event.GameEvent;
+import jokatu.game.exception.GameException;
 import jokatu.game.input.Input;
-import jokatu.game.input.UnacceptableInputException;
-import jokatu.game.joining.CannotJoinGameException;
+import jokatu.game.input.InputAcceptor;
 import jokatu.game.player.Player;
 import jokatu.game.status.Status;
 import jokatu.identity.Identifiable;
 import ophelia.collections.BaseCollection;
+import ophelia.event.observable.AbstractSynchronousObservable;
 import ophelia.event.observable.Observable;
+import ophelia.exceptions.voidmaybe.VoidMaybe;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.stream.Collectors;
+
 /**
- * A game has players, who can make moves in the game.
  * @author Steven Weston
  */
-public interface Game<P extends Player, I extends Input>
-		extends Identifiable<GameID>, Observable<GameEvent> {
+public abstract class Game<P extends Player>
+		extends AbstractSynchronousObservable<GameEvent>
+		implements Identifiable<GameID>, Observable<GameEvent> {
 
-	@NotNull String getGameName();
+	private final GameID identifier;
 
-	@NotNull BaseCollection<P> getPlayers();
+	protected Game(GameID identifier) {
+		this.identifier = identifier;
+	}
 
-	void join(@NotNull P player) throws CannotJoinGameException;
+	protected abstract BaseCollection<InputAcceptor<? extends Input, ? extends Player>> getInputAcceptors();
+
+	public void accept(@NotNull Input input, @NotNull Player player) throws GameException {
+		VoidMaybe.failIfSuccessNotUnique(
+				getInputAcceptors().stream()
+						.map(VoidMaybe.wrapOutput(acceptor -> acceptor.accept(input, player)))
+						.collect(Collectors.toList())
+		).throwMappedFailure(e -> new GameException(
+				getIdentifier(),
+				"Input was not accepted by a unique acceptor",
+				e
+		));
+	}
 
 	@NotNull
-	Status getStatus();
+	@Override
+	public GameID getIdentifier() {
+		return identifier;
+	}
 
-	void accept(@NotNull I input, @NotNull P player) throws UnacceptableInputException;
+	@NotNull
+	public abstract String getGameName();
 
-	default boolean hasPlayer(@NotNull P player) {
+	@NotNull
+	public abstract BaseCollection<P> getPlayers();
+
+	@NotNull
+	public abstract Status getStatus();
+
+	// This appears to do nothing, but it is here so that AbstractGameFactory has access to this protected method.
+	@Override
+	protected void fireEvent(GameEvent event) {
+		super.fireEvent(event);
+	}
+
+	public boolean hasPlayer(@NotNull Player player) {
 		return getPlayers().contains(player);
 	}
 }

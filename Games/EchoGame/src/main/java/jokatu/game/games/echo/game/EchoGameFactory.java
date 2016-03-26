@@ -1,11 +1,15 @@
-package jokatu.game.games.echo;
+package jokatu.game.games.echo.game;
 
+import jokatu.game.AbstractGameFactory;
 import jokatu.game.GameID;
-import jokatu.game.factory.game.AbstractGameFactory;
-import jokatu.game.factory.input.InputDeserialiser;
-import jokatu.game.factory.player.PlayerFactory;
+import jokatu.game.games.echo.input.EchoInput;
+import jokatu.game.games.echo.player.EchoPlayer;
+import jokatu.game.input.InputDeserialiser;
+import jokatu.game.player.PlayerFactory;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 @Component
 public class EchoGameFactory extends AbstractGameFactory
@@ -25,7 +29,7 @@ public class EchoGameFactory extends AbstractGameFactory
 
 	@NotNull
 	@Override
-	public EchoInput deserialise(String json) {
-		return new EchoInput(json);
+	public EchoInput deserialise(Map<String, Object> json) {
+		return new EchoInput((String) json.get("text"));
 	}
 }

@@ -20,6 +20,7 @@ public class ConverterConfig extends WebMvcConfigurerAdapter {
 	@Autowired
 	private SimpAnnotationMethodMessageHandler simpAnnotationMethodMessageHandler;
 
+	@SuppressWarnings("unused") // This is called by Spring
 	@PostConstruct
 	public void init() {
 		// How about you use the ConversionService that already exists, rather than creating your own, and then this
