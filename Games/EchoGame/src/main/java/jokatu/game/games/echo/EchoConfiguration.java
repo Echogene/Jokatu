@@ -2,6 +2,7 @@ package jokatu.game.games.echo;
 
 import jokatu.components.GameComponent;
 import jokatu.components.config.GameConfiguration;
+import jokatu.game.games.echo.views.EchoViewResolverFactory;
 import jokatu.game.input.InputDeserialiser;
 import ophelia.collections.BaseCollection;
 import ophelia.collections.set.Singleton;
