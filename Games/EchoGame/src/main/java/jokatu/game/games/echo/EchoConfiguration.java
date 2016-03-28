@@ -3,6 +3,8 @@ package jokatu.game.games.echo;
 import jokatu.components.GameComponent;
 import jokatu.components.config.GameConfiguration;
 import jokatu.game.games.echo.game.EchoGameFactory;
+import jokatu.game.games.echo.game.EchoInputDeserialiser;
+import jokatu.game.games.echo.game.EchoPlayerFactory;
 import jokatu.game.games.echo.views.EchoViewResolverFactory;
 import jokatu.game.input.InputDeserialiser;
 import ophelia.collections.BaseCollection;
@@ -19,11 +21,19 @@ import static jokatu.game.games.echo.game.EchoGame.ECHO;
 public class EchoConfiguration implements GameConfiguration {
 
 	private final EchoGameFactory echoGameFactory;
+	private final EchoPlayerFactory echoPlayerFactory;
+	private final EchoInputDeserialiser echoInputDeserialiser;
 	private final EchoViewResolverFactory echoViewResolverFactory;
 
 	@Autowired
-	public EchoConfiguration(EchoGameFactory echoGameFactory, EchoViewResolverFactory echoViewResolverFactory) {
+	public EchoConfiguration(EchoGameFactory echoGameFactory,
+	                         EchoPlayerFactory echoPlayerFactory,
+	                         EchoInputDeserialiser echoInputDeserialiser,
+	                         EchoViewResolverFactory echoViewResolverFactory
+	) {
 		this.echoGameFactory = echoGameFactory;
+		this.echoPlayerFactory = echoPlayerFactory;
+		this.echoInputDeserialiser = echoInputDeserialiser;
 		this.echoViewResolverFactory = echoViewResolverFactory;
 	}
 
@@ -35,14 +45,14 @@ public class EchoConfiguration implements GameConfiguration {
 
 	@NotNull
 	@Override
-	public EchoGameFactory getPlayerFactory() {
-		return echoGameFactory;
+	public EchoPlayerFactory getPlayerFactory() {
+		return echoPlayerFactory;
 	}
 
 	@NotNull
 	@Override
 	public BaseCollection<? extends InputDeserialiser> getInputDeserialisers() {
-		return new Singleton<>(echoGameFactory);
+		return new Singleton<>(echoInputDeserialiser);
 	}
 
 	@NotNull
