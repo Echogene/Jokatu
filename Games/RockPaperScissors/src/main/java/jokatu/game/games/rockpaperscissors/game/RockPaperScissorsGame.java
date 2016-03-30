@@ -36,21 +36,18 @@ public class RockPaperScissorsGame extends Game<RockPaperScissorsPlayer> {
 		status.observe(this::fireEvent);
 	}
 
-	@org.jetbrains.annotations.NotNull
 	@NotNull
 	@Override
 	public String getGameName() {
 		return ROCK_PAPER_SCISSORS;
 	}
 
-	@org.jetbrains.annotations.NotNull
 	@NotNull
 	@Override
 	public BoundedPair<RockPaperScissorsPlayer> getPlayers() {
 		return players;
 	}
 
-	@org.jetbrains.annotations.NotNull
 	@NotNull
 	@Override
 	public Status getStatus() {
