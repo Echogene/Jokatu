@@ -48,18 +48,21 @@ public class EchoGame extends Game<EchoPlayer> {
 		return inputAcceptors;
 	}
 
+	@org.jetbrains.annotations.NotNull
 	@NotNull
 	@Override
 	public String getGameName() {
 		return ECHO;
 	}
 
+	@org.jetbrains.annotations.NotNull
 	@NotNull
 	@Override
 	public BaseCollection<EchoPlayer> getPlayers() {
 		return emptySet();
 	}
 
+	@org.jetbrains.annotations.NotNull
 	@NotNull
 	@Override
 	public Status getStatus() {
