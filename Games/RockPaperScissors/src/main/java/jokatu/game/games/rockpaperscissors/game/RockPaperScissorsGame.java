@@ -31,7 +31,7 @@ public class RockPaperScissorsGame extends Game<RockPaperScissorsPlayer> {
 			new RockPaperScissorsInputAcceptor(players, status)
 	);
 
-	protected RockPaperScissorsGame(GameID identifier) {
+	RockPaperScissorsGame(GameID identifier) {
 		super(identifier);
 		status.observe(this::fireEvent);
 	}

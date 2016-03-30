@@ -28,7 +28,7 @@ public class EchoGame extends Game<EchoPlayer> {
 			new EchoInputAcceptor()
 	);
 
-	protected EchoGame(GameID identifier) {
+	EchoGame(GameID identifier) {
 		super(identifier);
 		timer = new Timer();
 		timer.scheduleAtFixedRate(
