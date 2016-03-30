@@ -188,7 +188,7 @@ public class GameController {
 	}
 
 	@NotNull
-	private Player getPlayer(@NotNull Principal principal, @NotNull Game<? extends Player> game) throws GameException {
+	private Player getPlayer(@NotNull Principal principal, @NotNull Game<? extends Player> game) {
 		PlayerFactory factory = gameFactories.getPlayerFactory(game);
 		return factory.produce(principal.getName());
 	}
