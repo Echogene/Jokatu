@@ -41,6 +41,7 @@ public class EchoGame extends Game<EchoPlayer> {
 		);
 	}
 
+	@NotNull
 	@Override
 	protected BaseCollection<InputAcceptor<? extends Input, ? extends Player>> getInputAcceptors() {
 		return inputAcceptors;

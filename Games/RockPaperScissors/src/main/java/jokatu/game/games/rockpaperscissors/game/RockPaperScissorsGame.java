@@ -54,6 +54,7 @@ public class RockPaperScissorsGame extends Game<RockPaperScissorsPlayer> {
 		return status;
 	}
 
+	@NotNull
 	@Override
 	protected BaseCollection<InputAcceptor<? extends Input, ? extends Player>> getInputAcceptors() {
 		return new UnmodifiableCollection<>(inputAcceptors);

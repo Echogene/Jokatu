@@ -28,6 +28,7 @@ public abstract class Game<P extends Player>
 		this.identifier = identifier;
 	}
 
+	@NotNull
 	protected abstract BaseCollection<InputAcceptor<? extends Input, ? extends Player>> getInputAcceptors();
 
 	public void accept(@NotNull Input input, @NotNull Player player) throws GameException {
