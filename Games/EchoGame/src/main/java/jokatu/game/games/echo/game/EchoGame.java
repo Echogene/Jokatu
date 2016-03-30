@@ -23,15 +23,13 @@ import static ophelia.collections.set.EmptySet.emptySet;
 public class EchoGame extends Game<EchoPlayer> {
 
 	public static final String ECHO = "Echo";
-	private final Timer timer;
 	private final Singleton<InputAcceptor<? extends Input, ? extends Player>> inputAcceptors = new Singleton<>(
 			new EchoInputAcceptor()
 	);
 
 	EchoGame(GameID identifier) {
 		super(identifier);
-		timer = new Timer();
-		timer.scheduleAtFixedRate(
+		new Timer().scheduleAtFixedRate(
 				new TimerTask() {
 					@Override
 					public void run() {
