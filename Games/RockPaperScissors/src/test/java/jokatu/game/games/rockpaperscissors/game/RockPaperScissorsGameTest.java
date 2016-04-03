@@ -6,6 +6,7 @@ import jokatu.game.exception.GameException;
 import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayer;
 import jokatu.game.joining.GameFullException;
 import jokatu.game.joining.JoinInput;
+import jokatu.game.joining.PlayerAlreadyJoinedException;
 import jokatu.game.joining.PlayerJoinedEvent;
 import ophelia.collections.list.UnmodifiableList;
 import ophelia.exceptions.CollectedException;
@@ -23,6 +24,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
+import static org.junit.Assert.fail;
 
 public class RockPaperScissorsGameTest {
 
@@ -82,14 +84,40 @@ public class RockPaperScissorsGameTest {
 
 		try {
 			game.accept(new JoinInput(), new RockPaperScissorsPlayer("Player 3"));
+			fail("Should not accept a third player's joining.");
 		} catch (GameException e) {
-			assertThat(events, is(empty()));
-			assertThat(e.getCause(), instanceOf(StackedException.class));
-			UnmodifiableList<Exception> causes = CollectedException.flatten((Exception) e.getCause());
-			assertThat(causes, hasSize(1));
-			Exception cause = causes.get(0);
+			Exception cause = extractRootCause(e);
 			assertThat(cause, instanceOf(GameFullException.class));
 		}
+		assertThat(events, is(empty()));
+		assertThat(game.getPlayers(), hasSize(2));
+	}
+
+	@Test
+	public void should_fail_to_add_player_who_tries_to_join_twice() throws Exception {
+
+		game.accept(new JoinInput(), player1);
+		assertThat(game.getPlayers(), hasSize(1));
+
+		List<GameEvent> events = new ArrayList<>();
+		game.observe(events::add);
+
+		try {
+			game.accept(new JoinInput(), player1);
+			fail("Should not accept a the same player joining twice.");
+		} catch (GameException e) {
+			Exception cause = extractRootCause(e);
+			assertThat(cause, instanceOf(PlayerAlreadyJoinedException.class));
+		}
+		assertThat(events, is(empty()));
+		assertThat(game.getPlayers(), hasSize(1));
+	}
+
+	private Exception extractRootCause(GameException e) {
+		assertThat(e.getCause(), instanceOf(StackedException.class));
+		UnmodifiableList<Exception> causes = CollectedException.flatten((Exception) e.getCause());
+		assertThat(causes, hasSize(1));
+		return causes.get(0);
 	}
 
 	private PlayerJoinedEvent getUniqueEventFromList(Class<PlayerJoinedEvent> eventClass, List<GameEvent> events) throws StackedException {

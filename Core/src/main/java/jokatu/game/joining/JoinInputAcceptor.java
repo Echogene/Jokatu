@@ -6,7 +6,9 @@ import jokatu.game.player.Player;
 import jokatu.game.status.StandardTextStatus;
 import ophelia.collections.set.bounded.BoundedPair;
 
-// todo: make this accept more than bounded pairs and change the status code so that it doesn't refer to input
+// todo: make this accept more than bounded pairs
+// todo: change the status code so that it doesn't refer to input
+// todo: change the game full exception to not refer to R/P/S
 public class JoinInputAcceptor<P extends Player> extends InputAcceptor<JoinInput, P> {
 
 	private final Class<P> playerClass;
@@ -32,7 +34,7 @@ public class JoinInputAcceptor<P extends Player> extends InputAcceptor<JoinInput
 
 	@Override
 	protected void acceptCastInputAndPlayer(JoinInput input, P inputter) throws Exception {
-		checkCanJoin();
+		checkCanJoin(inputter);
 		players.add(inputter);
 		if (players.size() == 2) {
 			P player1 = players.getFirst();
@@ -47,9 +49,12 @@ public class JoinInputAcceptor<P extends Player> extends InputAcceptor<JoinInput
 		fireEvent(new PlayerJoinedEvent(inputter));
 	}
 
-	private void checkCanJoin() throws CannotJoinGameException {
+	private void checkCanJoin(P inputter) throws CannotJoinGameException {
 		if (players.size() > 1) {
-			throw new GameFullException("Rock-paper-scissors supports two players");
+			throw new GameFullException("Rock-paper-scissors supports two players.");
+		}
+		if (players.contains(inputter)) {
+			throw new PlayerAlreadyJoinedException(inputter.getName() + " cannot join the game twice.");
 		}
 	}
 }
