@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * This creates games of a specific type.
  */
-public interface GameFactory {
+public interface GameFactory<G extends Game<? extends Player>> {
 
 	/**
 	 * @param creatorName the name of the user who is creating the game.  They can get special options while setting up
@@ -14,5 +14,5 @@ public interface GameFactory {
 	 * @return a new game
 	 */
 	@NotNull
-	Game<? extends Player> produceGame(@NotNull String creatorName);
+	G produceGame(@NotNull String creatorName);
 }

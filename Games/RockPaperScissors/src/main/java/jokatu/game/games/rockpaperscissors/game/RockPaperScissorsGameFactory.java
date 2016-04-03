@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RockPaperScissorsGameFactory extends AbstractGameFactory {
+public class RockPaperScissorsGameFactory extends AbstractGameFactory<RockPaperScissorsGame> {
 
 	@NotNull
 	@Override

@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EchoGameFactory extends AbstractGameFactory {
+public class EchoGameFactory extends AbstractGameFactory<EchoGame> {
 
 	@NotNull
 	@Override
