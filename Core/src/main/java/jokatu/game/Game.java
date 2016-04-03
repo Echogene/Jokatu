@@ -3,17 +3,14 @@ package jokatu.game;
 import jokatu.game.event.GameEvent;
 import jokatu.game.exception.GameException;
 import jokatu.game.input.Input;
-import jokatu.game.input.InputAcceptor;
 import jokatu.game.player.Player;
 import jokatu.game.status.Status;
 import jokatu.identity.Identifiable;
 import ophelia.collections.BaseCollection;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import ophelia.event.observable.Observable;
-import ophelia.exceptions.voidmaybe.VoidMaybe;
+import ophelia.exceptions.StackedException;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.stream.Collectors;
 
 /**
  * @author Steven Weston
@@ -29,18 +26,18 @@ public abstract class Game<P extends Player>
 	}
 
 	@NotNull
-	protected abstract BaseCollection<InputAcceptor<? extends Input, ? extends Player>> getInputAcceptors();
+	protected abstract Stage getCurrentStage();
 
 	public void accept(@NotNull Input input, @NotNull Player player) throws GameException {
-		VoidMaybe.failIfSuccessNotUnique(
-				getInputAcceptors().stream()
-						.map(VoidMaybe.wrapOutput(acceptor -> acceptor.accept(input, player)))
-						.collect(Collectors.toList())
-		).throwMappedFailure(e -> new GameException(
-				getIdentifier(),
-				"Input was not accepted by a unique acceptor",
-				e
-		));
+		try {
+			getCurrentStage().accept(input, player);
+		} catch (StackedException e) {
+			throw new GameException(
+					getIdentifier(),
+					"Input was not accepted by a unique acceptor",
+					e
+			);
+		}
 	}
 
 	@NotNull
@@ -67,4 +64,6 @@ public abstract class Game<P extends Player>
 	public boolean hasPlayer(@NotNull Player player) {
 		return getPlayers().contains(player);
 	}
+
+	public abstract void advanceStage();
 }

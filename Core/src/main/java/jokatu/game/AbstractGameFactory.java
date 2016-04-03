@@ -30,8 +30,6 @@ public abstract class AbstractGameFactory implements GameFactory {
 	@Override
 	public final Game<? extends Player> produceGame(@NotNull String creatorName) {
 		Game<? extends Player> game = produce(GAME_IDENTIFIER.get(), creatorName);
-		game.getInputAcceptors().stream()
-				.forEach(acceptor -> acceptor.observe(game::fireEvent));
 		gameDao.register(game);
 		return game;
 	}

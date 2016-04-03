@@ -2,21 +2,12 @@ package jokatu.game.games.rockpaperscissors.game;
 
 import jokatu.game.Game;
 import jokatu.game.GameID;
-import jokatu.game.games.rockpaperscissors.input.RockPaperScissorsInputAcceptor;
+import jokatu.game.Stage;
 import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayer;
-import jokatu.game.input.Input;
-import jokatu.game.input.InputAcceptor;
-import jokatu.game.joining.JoinInputAcceptor;
-import jokatu.game.player.Player;
 import jokatu.game.status.StandardTextStatus;
 import jokatu.game.status.Status;
-import ophelia.collections.BaseCollection;
-import ophelia.collections.UnmodifiableCollection;
 import ophelia.collections.set.bounded.BoundedPair;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class RockPaperScissorsGame extends Game<RockPaperScissorsPlayer> {
 
@@ -26,14 +17,23 @@ public class RockPaperScissorsGame extends Game<RockPaperScissorsPlayer> {
 
 	private final StandardTextStatus status = new StandardTextStatus("Waiting for two players to join");
 
-	private final List<InputAcceptor<? extends Input, ? extends Player>> inputAcceptors = Arrays.asList(
-			new JoinInputAcceptor<>(RockPaperScissorsPlayer.class, players, status),
-			new RockPaperScissorsInputAcceptor(players, status)
-	);
+	private final JoiningStage joiningStage = new JoiningStage(players, status);
+	private final InputStage inputStage = new InputStage(players, status);
+
+	private Stage currentStage = joiningStage;
 
 	RockPaperScissorsGame(GameID identifier) {
 		super(identifier);
+		// Forward events from everything.
 		status.observe(this::fireEvent);
+		joiningStage.observe(this::fireEvent);
+		inputStage.observe(this::fireEvent);
+	}
+
+	@NotNull
+	@Override
+	protected Stage getCurrentStage() {
+		return currentStage;
 	}
 
 	@NotNull
@@ -54,9 +54,9 @@ public class RockPaperScissorsGame extends Game<RockPaperScissorsPlayer> {
 		return status;
 	}
 
-	@NotNull
 	@Override
-	protected BaseCollection<InputAcceptor<? extends Input, ? extends Player>> getInputAcceptors() {
-		return new UnmodifiableCollection<>(inputAcceptors);
+	public void advanceStage() {
+		// Move to the second stage.
+		currentStage = inputStage;
 	}
 }

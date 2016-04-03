@@ -1,11 +1,12 @@
 package jokatu.game.joining;
 
+import jokatu.game.event.StageOverEvent;
 import jokatu.game.input.InputAcceptor;
 import jokatu.game.player.Player;
 import jokatu.game.status.StandardTextStatus;
 import ophelia.collections.set.bounded.BoundedPair;
 
-// todo: make this accept more than bounded pairs
+// todo: make this accept more than bounded pairs and change the status code so that it doesn't refer to input
 public class JoinInputAcceptor<P extends Player> extends InputAcceptor<JoinInput, P> {
 
 	private final Class<P> playerClass;
@@ -39,6 +40,7 @@ public class JoinInputAcceptor<P extends Player> extends InputAcceptor<JoinInput
 			P player2 = players.getSecond();
 			assert player2 != null;
 			status.setText("Awaiting input from " + player1.getName() + " and " + player2.getName());
+			fireEvent(new StageOverEvent());
 		} else {
 			status.setText("Waiting for one more player to join");
 		}
