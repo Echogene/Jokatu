@@ -104,7 +104,7 @@ public class RockPaperScissorsGameTest {
 
 		try {
 			game.accept(new JoinInput(), player1);
-			fail("Should not accept a the same player joining twice.");
+			fail("Should not accept the same player joining twice.");
 		} catch (GameException e) {
 			Exception cause = extractRootCause(e);
 			assertThat(cause, instanceOf(PlayerAlreadyJoinedException.class));
