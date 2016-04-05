@@ -5,4 +5,6 @@ include 'Games:EchoGame'
 findProject(':Games:EchoGame')?.name = 'EchoGame'
 include 'Games:RockPaperScissors'
 findProject(':Games:RockPaperScissors')?.name = 'RockPaperScissors'
+include 'Games:NoughtsAndCrosses'
+findProject(':Games:NoughtsAndCrosses')?.name = 'NoughtsAndCrosses'
 
