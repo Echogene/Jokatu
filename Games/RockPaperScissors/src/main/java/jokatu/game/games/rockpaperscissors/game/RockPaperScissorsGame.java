@@ -2,6 +2,7 @@ package jokatu.game.games.rockpaperscissors.game;
 
 import jokatu.game.Game;
 import jokatu.game.GameID;
+import jokatu.game.JoiningStage;
 import jokatu.game.Stage;
 import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayer;
 import jokatu.game.status.StandardTextStatus;
@@ -17,7 +18,7 @@ public class RockPaperScissorsGame extends Game<RockPaperScissorsPlayer> {
 
 	private final StandardTextStatus status = new StandardTextStatus("Waiting for two players to join");
 
-	private final JoiningStage joiningStage = new JoiningStage(players, status);
+	private final JoiningStage<RockPaperScissorsPlayer> joiningStage = new JoiningStage<>(RockPaperScissorsPlayer.class, players, status);
 	private final InputStage inputStage = new InputStage(players, status);
 
 	private Stage currentStage = joiningStage;
