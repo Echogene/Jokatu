@@ -1,7 +1,7 @@
 package jokatu.game.games.noughtsandcrosses.input;
 
 public enum NoughtOrCross {
-	NOUGHT("⭕"), CROSS("❌");
+	NOUGHT("⭕"), CROSS("✕");
 
 	private final String displayText;
 
