@@ -3,7 +3,7 @@ build
 .idea
 gradle
 
-src/main/resources/static/css
+*.css
 
 Notes
 
