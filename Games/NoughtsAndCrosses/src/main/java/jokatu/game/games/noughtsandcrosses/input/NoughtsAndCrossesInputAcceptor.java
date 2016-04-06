@@ -6,7 +6,15 @@ import jokatu.game.input.InputAcceptor;
 import jokatu.game.status.StandardTextStatus;
 import ophelia.collections.set.bounded.BoundedPair;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static jokatu.game.games.noughtsandcrosses.input.NoughtOrCross.CROSS;
+import static jokatu.game.games.noughtsandcrosses.input.NoughtOrCross.other;
+
 public class NoughtsAndCrossesInputAcceptor extends InputAcceptor<NoughtsAndCrossesInput, NoughtsAndCrossesPlayer> {
+
+	private final Map<Integer, NoughtOrCross> inputs = new HashMap<>();
 
 	public NoughtsAndCrossesInputAcceptor(BoundedPair<NoughtsAndCrossesPlayer> players, StandardTextStatus status) {
 		super();
@@ -24,6 +32,12 @@ public class NoughtsAndCrossesInputAcceptor extends InputAcceptor<NoughtsAndCros
 
 	@Override
 	protected void acceptCastInputAndPlayer(NoughtsAndCrossesInput input, NoughtsAndCrossesPlayer inputter) throws Exception {
-		fireEvent(new CellChosenEvent(input.getCellId()));
+		Integer cell = input.getCellId();
+		if (inputs.containsKey(cell)) {
+			inputs.put(cell, other(inputs.get(cell)));
+		} else {
+			inputs.put(cell, CROSS);
+		}
+		fireEvent(new CellChosenEvent(cell, inputs.get(cell)));
 	}
 }
