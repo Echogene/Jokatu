@@ -13,7 +13,7 @@ layout 'views/game_view.tpl', true,
 	mainBody: contents {
 		button(is: 'j-button', destination: "/topic/input.game.${game.identifier}", 'data-input': '{"join": true}', 'Join game')
 		div(class: 'grid') {
-			(1..9).each { cell ->
+			(0..8).each { cell ->
 				button(is: 'j-button', destination: "/topic/input.game.${game.identifier}", 'data-input': "{\"choice\": ${cell}}") {
 					yieldUnescaped markupGenerator.bindLast(
 						tag: "j-status", id: "cell_${cell}_status",
