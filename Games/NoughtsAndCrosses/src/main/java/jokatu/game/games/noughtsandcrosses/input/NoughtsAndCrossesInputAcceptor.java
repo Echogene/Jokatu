@@ -62,6 +62,7 @@ public class NoughtsAndCrossesInputAcceptor extends InputAcceptor<NoughtsAndCros
 		fireLineCompletedEvents();
 	}
 
+	// todo: don't bother firing events for lines that haven't changed
 	private void fireLineCompletedEvents() {
 		stream(NoughtOrCross.values()).forEach(this::fireLineCompletedEventsForPlayer);
 	}
