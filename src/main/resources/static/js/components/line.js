@@ -1,10 +1,11 @@
 var JLineProto = Object.create(HTMLDivElement.prototype);
 
 JLineProto.createdCallback = function() {
-	this._thickness = 2;
+	this._thickness = 4;
 	this.style.height = `${this._thickness}px`;
 	this.style.backgroundColor = 'black';
 	this.style.position = 'absolute';
+	this.style.pointerEvents = 'none';
 
 	var observer = new MutationObserver(mutations => {
 		mutations.filter(mutation => mutation.attributeName == 'data-status')
