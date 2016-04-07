@@ -34,5 +34,9 @@ public class CellChosenEventHandler extends AbstractEventHandler<CellChosenEvent
 				format("/topic/substatus.game.{0}.cell_{1}", game.getIdentifier(), event.getCell()),
 				event.getMessage()
 		);
+		sender.send(
+				format("/topic/substatus.game.{0}.lines", game.getIdentifier()),
+				event.getLines()
+		);
 	}
 }

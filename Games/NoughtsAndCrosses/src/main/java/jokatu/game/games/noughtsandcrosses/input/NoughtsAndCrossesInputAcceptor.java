@@ -1,7 +1,7 @@
 package jokatu.game.games.noughtsandcrosses.input;
 
 import jokatu.game.games.noughtsandcrosses.event.CellChosenEvent;
-import jokatu.game.games.noughtsandcrosses.event.LineCompletedEvent;
+import jokatu.game.games.noughtsandcrosses.game.Line;
 import jokatu.game.games.noughtsandcrosses.player.NoughtsAndCrossesPlayer;
 import jokatu.game.input.InputAcceptor;
 import jokatu.game.status.StandardTextStatus;
@@ -10,7 +10,10 @@ import ophelia.collections.set.HashSet;
 import ophelia.collections.set.UnmodifiableSet;
 import ophelia.collections.set.bounded.BoundedPair;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -58,21 +61,22 @@ public class NoughtsAndCrossesInputAcceptor extends InputAcceptor<NoughtsAndCros
 		} else {
 			inputs.put(cell, CROSS);
 		}
-		fireEvent(new CellChosenEvent(cell, inputs.get(cell)));
-		fireLineCompletedEvents();
+		List<Line> lines = fireLineCompletedEvents();
+		fireEvent(new CellChosenEvent(cell, inputs.get(cell), lines));
 	}
 
-	// todo: don't bother firing events for lines that haven't changed
-	private void fireLineCompletedEvents() {
-		stream(NoughtOrCross.values()).forEach(this::fireLineCompletedEventsForPlayer);
+	private List<Line> fireLineCompletedEvents() {
+		return stream(NoughtOrCross.values()).map(this::fireLineCompletedEventsForPlayer)
+				.flatMap(List::stream)
+				.map(Line::new)
+				.collect(Collectors.toList());
 	}
 
-	private void fireLineCompletedEventsForPlayer(NoughtOrCross noughtOrCross) {
+	private List<UnmodifiableList<Integer>> fireLineCompletedEventsForPlayer(NoughtOrCross noughtOrCross) {
 		Set<Integer> cellsForPlayer = getCellsForPlayer(noughtOrCross);
-		LINES.stream()
+		return LINES.stream()
 				.filter(line -> line.stream().allMatch(cellsForPlayer::contains))
-				.map(LineCompletedEvent::new)
-				.forEach(this::fireEvent);
+				.collect(Collectors.toList());
 	}
 
 	private Set<Integer> getCellsForPlayer(NoughtOrCross noughtOrCross) {
