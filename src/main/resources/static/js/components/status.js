@@ -34,7 +34,16 @@ JStatusProto._ensureEnoughElements = function(number) {
 	var elementsNeeded = number - this._shadowRoot.childNodes.length;
 	if (elementsNeeded > 0) {
 		for (var i = 0; i < elementsNeeded; i++) {
-			this._shadowRoot.appendChild(document.createElement(this._statusElementName));
+			var firstChar = this._statusElementName.charAt(0);
+			var newElement;
+			if (firstChar == firstChar.toUpperCase()) {
+				// If the first character is uppercase, assume we want to wrap a JavaScript object.
+				newElement = new window[this._statusElementName];
+			} else {
+				// Otherwise, we want to wrap a normal element.
+				newElement = document.createElement(this._statusElementName);
+			}
+			this._shadowRoot.appendChild(newElement);
 		}
 	}
 };
