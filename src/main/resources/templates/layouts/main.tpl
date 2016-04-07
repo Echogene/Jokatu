@@ -6,6 +6,7 @@ html {
 		script(type: 'text/javascript',
 				"_csrf = '${_csrf.token}', _csrf_header = '${_csrf.headerName}', username = '${SPRING_SECURITY_CONTEXT?.authentication?.principal?.username}';")
 		script(type: 'text/javascript', src: '/js/request.js') {}
+		script(type: 'text/javascript', src: '/js/events.js') {}
 		headers()
 	}
 	body {
