@@ -14,17 +14,22 @@ layout 'views/game_view.tpl', true,
 	mainBody: contents {
 		button(is: 'j-button', destination: "/topic/input.game.${game.identifier}", 'data-input': '{"join": true}', 'Join game')
 		div(class: 'grid') {
-			yieldUnescaped markupGenerator.bindLast(
-				tag: "j-status", id: "lines",
-				wrapperElement: "JLine", destination: "/topic/substatus.game.${game.identifier}.lines"
-			)
 			(0..8).each { cell ->
-				button(is: 'j-button', id: "cell_${cell}", destination: "/topic/input.game.${game.identifier}", 'data-input': "{\"choice\": ${cell}}") {
-					yieldUnescaped markupGenerator.bindLast(
-						tag: "j-status", id: "cell_${cell}_status",
-						wrapperElement: "div", destination: "/topic/substatus.game.${game.identifier}.cell_${cell}"
-					)
-				}
+				yieldUnescaped markupGenerator.bindLast(
+					tag: 'j-status',
+					class: 'button',
+					id: "cell_${cell}",
+					wrapperElement: 'JButton',
+					showAll: true,
+					'data-wrapperAttributes': "{\"destination\": \"/topic/input.game.${game.identifier}\", \"data-input\": {\"choice\": ${cell}}}",
+					destination: "/topic/substatus.game.${game.identifier}.cell_${cell}"
+				)
 			}
 		}
+		yieldUnescaped markupGenerator.bindLast(
+			tag: "j-status",
+			id: "lines",
+			wrapperElement: "JLine",
+			destination: "/topic/substatus.game.${game.identifier}.lines"
+		)
 	}
