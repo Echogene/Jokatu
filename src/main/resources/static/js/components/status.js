@@ -80,6 +80,15 @@ JStatusProto._updateElement = function(element, status) {
 	element.setAttribute('data-status', JSON.stringify(status));
 };
 
+/**
+ * A JStatus is an element that listens to updates on a STOMP destination and manages its child elements with the data
+ * received from that destination.  If the data returned is an array, it spawns/hides children per array element.  If
+ * the data is not an array, it is treated as a singleton array.
+ *
+ * When it has spawned/hidden the appropriate children, it passes the corresponding array element into each child's
+ * <code>data-status</code> attribute and updates the child's text content if the array element is a string or is an
+ * object with a <code>text</code> string field.
+ */
 var JStatus = document.registerElement('j-status', {
 	prototype: JStatusProto
 });
