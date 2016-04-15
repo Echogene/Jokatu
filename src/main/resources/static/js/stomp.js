@@ -200,6 +200,7 @@ Socket.prototype.send = function(destination, body) {
 
 	var headers = new Map();
 	headers.set('destination', destination);
+	headers.set('content-type', 'application/json');
 
 	return this._message('SEND', headers, body);
 };
