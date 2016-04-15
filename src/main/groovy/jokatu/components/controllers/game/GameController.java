@@ -205,22 +205,24 @@ public class GameController {
 	void handleException(GameException e, Message originalMessage, Principal principal) {
 		StompHeaderAccessor accessor = StompHeaderAccessor.wrap(originalMessage);
 		StompCommand stompCommand = accessor.getCommand();
+		Map<String, Object> errorHeaders = new HashMap<>();
 		switch (stompCommand) {
 			case SUBSCRIBE:
-				handleSubscriptionError(e, accessor, principal);
-				break;
-			default:
-				sender.sendToUser(principal.getName(), "/errors.game." + e.getId(), e);
+				addSubscribeHeaders(accessor, errorHeaders);
+			case SEND:
+				addSendHeaders(accessor, errorHeaders);
 		}
+		sender.sendToUser(principal.getName(), "/topic/errors.game." + e.getId(), e, errorHeaders);
 	}
 
-	private void handleSubscriptionError(GameException e, StompHeaderAccessor accessor, Principal principal) {
+	private void addSendHeaders(StompHeaderAccessor accessor, Map<String, Object> errorHeaders) {
+		String subscriptionId = accessor.getNativeHeader("receipt").get(0);
+		errorHeaders.put("send-receipt", subscriptionId);
+	}
+
+	private void addSubscribeHeaders(StompHeaderAccessor accessor, Map<String, Object> errorHeaders) {
 		String subscriptionId = accessor.getNativeHeader("id").get(0);
-
-		Map<String, Object> errorHeaders = new HashMap<>();
 		errorHeaders.put("subscription-id", subscriptionId);
-
-		sender.sendToUser(principal.getName(), "/errors.game." + e.getId(), e, errorHeaders);
 	}
 
 	@ExceptionHandler(GameException.class)
