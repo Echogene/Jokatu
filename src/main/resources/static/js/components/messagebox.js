@@ -27,7 +27,15 @@ JMessageBoxProto.createdCallback = function() {
 };
 
 JMessageBoxProto._createMessage = function(body) {
-	var element = document.createElement(this._messageElementName);
+	var firstChar = this._messageElementName.charAt(0);
+	var element;
+	if (firstChar == firstChar.toUpperCase()) {
+		// If the first character is uppercase, assume we want to wrap a JavaScript object.
+		element = new window[this._messageElementName];
+	} else {
+		// Otherwise, we want to wrap a normal element.
+		element = document.createElement(this._messageElementName);
+	}
 	element.className = 'message';
 	if (typeof body === 'string') {
 		element.textContent = body;
