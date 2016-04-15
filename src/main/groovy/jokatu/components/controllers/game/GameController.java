@@ -19,6 +19,8 @@ import ophelia.collections.BaseCollection;
 import ophelia.exceptions.maybe.FailureHandler;
 import ophelia.exceptions.maybe.SuccessHandler;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -34,6 +36,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.security.Principal;
+import java.text.MessageFormat;
 import java.util.*;
 
 import static java.text.MessageFormat.format;
@@ -47,6 +50,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  */
 @Controller
 public class GameController {
+
+	private static final Logger log = LoggerFactory.getLogger(GameController.class);
 
 	private static final String GAME_LIST_MAPPING = "/games";
 
@@ -213,6 +218,13 @@ public class GameController {
 				addSendHeaders(accessor, errorHeaders);
 		}
 		sender.sendToUser(principal.getName(), "/topic/errors.game." + e.getId(), e, errorHeaders);
+		log.error(
+				MessageFormat.format(
+					"Exception occurred when receiving message\n{0}",
+					accessor.getDetailedLogMessage(originalMessage.getPayload())
+				),
+				e
+		);
 	}
 
 	private void addSendHeaders(StompHeaderAccessor accessor, Map<String, Object> errorHeaders) {
