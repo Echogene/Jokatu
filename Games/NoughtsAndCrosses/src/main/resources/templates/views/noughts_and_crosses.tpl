@@ -7,6 +7,7 @@ layout 'views/game_view.tpl', true,
 		include template: 'components/status.tpl'
 		include template: 'components/button.tpl'
 		include template: 'components/line.tpl'
+		include template: 'components/errormessage.tpl'
 		link(rel: 'stylesheet', href: '/css/noughts_and_crosses.css')
 		script(type: 'text/javascript', src: '/js/noughts_and_crosses.js') {}
 	},
@@ -31,5 +32,12 @@ layout 'views/game_view.tpl', true,
 			id: "lines",
 			wrapperElement: "JLine",
 			destination: "/topic/substatus.game.${game.identifier}.lines"
+		)
+		yieldUnescaped markupGenerator.bindUserHistory(
+				tag: "j-message-box",
+				id: "errors",
+				wrapperElement: "JErrorMessage",
+				destination: "/user/topic/errors.game.${game.identifier}",
+				user: "${username}"
 		)
 	}
