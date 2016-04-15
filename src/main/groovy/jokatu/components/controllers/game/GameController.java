@@ -100,6 +100,7 @@ public class GameController {
 			modelAndView = viewResolver.getViewForObserver();
 		}
 		modelAndView.addObject("markupGenerator", markupGenerator);
+		modelAndView.addObject("username", principal.getName());
 		return modelAndView;
 	}
 
