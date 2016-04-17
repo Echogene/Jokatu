@@ -1,4 +1,3 @@
-var socket = new Socket();
 socket.subscribe(`/user/topic/private.game.${game.identifier}`, handleMessage);
 
 function handleMessage(e) {

@@ -160,17 +160,19 @@ Socket.prototype._getNextId = function() {
 
 /**
  * @param {string} destination
- * @param {function(Object, Map=)} callback
+ * @param {function(Object, Map=)=} callback
  * @returns {Socket.ReceiptHandler}
  */
 Socket.prototype.subscribe = function(destination, callback) {
 
-	if (this._subscribers.has(destination)) {
+	if (this._subscribers.has(destination) && callback) {
 		this._subscribers.get(destination).push(callback);
 	} else {
 		var id = this._getNextId();
 
-		this._subscribers.set(destination, [callback]);
+		if (callback) {
+			this._subscribers.set(destination, [callback]);
+		}
 
 		var headers = new Map();
 		headers.set('destination', destination);
@@ -207,3 +209,5 @@ Socket.prototype.send = function(destination, body) {
 
 	return this._message('SEND', headers, body);
 };
+
+var socket = new Socket();
