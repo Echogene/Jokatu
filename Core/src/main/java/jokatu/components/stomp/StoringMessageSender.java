@@ -1,6 +1,7 @@
 package jokatu.components.stomp;
 
 import jokatu.components.stores.MessageStorer;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessagingException;
@@ -20,20 +21,20 @@ public class StoringMessageSender {
 		this.simpMessagingTemplate = simpMessagingTemplate;
 	}
 
-	public void sendToUser(String user, String destination, Object payload) throws MessagingException {
+	public void sendToUser(@NotNull String user, @NotNull String destination, @NotNull Object payload) throws MessagingException {
 		sendMessageToUser(user, destination, new GenericMessage<>(payload));
 	}
 
-	public void sendMessageToUser(String user, String destination, Message message) throws MessagingException {
+	public void sendMessageToUser(@NotNull String user, @NotNull String destination, @NotNull Message message) throws MessagingException {
 		messageStore.storeForUser(user, destination, message);
 		simpMessagingTemplate.convertAndSendToUser(user, destination, message.getPayload(), message.getHeaders());
 	}
 
-	public void send(String destination, Object payload) throws MessagingException {
+	public void send(@NotNull String destination, @NotNull Object payload) throws MessagingException {
 		sendMessage(destination, new GenericMessage<>(payload));
 	}
 
-	public void sendMessage(String destination, Message message) throws MessagingException {
+	public void sendMessage(@NotNull String destination, @NotNull Message message) throws MessagingException {
 		messageStore.store(destination, message);
 		simpMessagingTemplate.convertAndSend(destination, message.getPayload(), message.getHeaders());
 	}
