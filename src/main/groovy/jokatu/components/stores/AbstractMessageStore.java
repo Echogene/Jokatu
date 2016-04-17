@@ -3,6 +3,7 @@ package jokatu.components.stores;
 import ophelia.util.ListUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.messaging.Message;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 abstract class AbstractMessageStore implements MessageStorer, MessageRepository {
 
 	@Override
-	public void storeForUser(@NotNull String user, @NotNull String destination, @NotNull Object message) {
+	public void storeForUser(@NotNull String user, @NotNull String destination, @NotNull Message message) {
 		store(getUserDestination(user, destination), message);
 	}
 
@@ -27,21 +28,23 @@ abstract class AbstractMessageStore implements MessageStorer, MessageRepository 
 
 	@NotNull
 	@Override
-	public List<Object> getMessageHistoryForUser(@NotNull String user, @NotNull String destination) {
+	public List<Message> getMessageHistoryForUser(@NotNull String user, @NotNull String destination) {
 		return getMessageHistory(getUserDestination(user, destination));
 	}
 
 	@Override
 	@Nullable
-	public Object getLastMessage(@NotNull String destination) {
+	public Message getLastMessage(@NotNull String destination) {
 		return ListUtils.maybeLast(getMessageHistory(destination))
 				.returnOnSuccess()
 				.nullOnFailure();
 	}
 
-	@NotNull
+	@Nullable
 	@Override
-	public Object getLastMessageForUser(@NotNull String user, @NotNull String destination) {
-		return getMessageHistory(getUserDestination(user, destination));
+	public Message getLastMessageForUser(@NotNull String user, @NotNull String destination) {
+		return ListUtils.maybeLast(getMessageHistoryForUser(user, destination))
+				.returnOnSuccess()
+				.nullOnFailure();
 	}
 }
