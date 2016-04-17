@@ -15,6 +15,8 @@ import jokatu.game.input.InputDeserialiser;
 import jokatu.game.player.Player;
 import jokatu.game.player.PlayerFactory;
 import jokatu.game.viewresolver.ViewResolver;
+import jokatu.stomp.SendErrorMessage;
+import jokatu.stomp.SubscriptionErrorMessage;
 import ophelia.collections.BaseCollection;
 import ophelia.exceptions.maybe.FailureHandler;
 import ophelia.exceptions.maybe.SuccessHandler;
@@ -28,8 +30,8 @@ import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
-import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -209,15 +211,8 @@ public class GameController {
 	@MessageExceptionHandler(GameException.class)
 	void handleException(GameException e, Message originalMessage, Principal principal) {
 		StompHeaderAccessor accessor = StompHeaderAccessor.wrap(originalMessage);
-		StompCommand stompCommand = accessor.getCommand();
-		Map<String, Object> errorHeaders = new HashMap<>();
-		switch (stompCommand) {
-			case SUBSCRIBE:
-				addSubscribeHeaders(accessor, errorHeaders);
-			case SEND:
-				addSendHeaders(accessor, errorHeaders);
-		}
-		sender.sendToUser(principal.getName(), "/topic/errors.game." + e.getId(), e, errorHeaders);
+		ErrorMessage errorMessage = getErrorMessage(e, accessor);
+		sender.sendMessageToUser(principal.getName(), "/topic/errors.game." + e.getId(), errorMessage);
 		log.error(
 				MessageFormat.format(
 					"Exception occurred when receiving message\n{0}",
@@ -227,14 +222,17 @@ public class GameController {
 		);
 	}
 
-	private void addSendHeaders(StompHeaderAccessor accessor, Map<String, Object> errorHeaders) {
-		String subscriptionId = accessor.getNativeHeader("receipt").get(0);
-		errorHeaders.put("send-receipt", subscriptionId);
-	}
-
-	private void addSubscribeHeaders(StompHeaderAccessor accessor, Map<String, Object> errorHeaders) {
-		String subscriptionId = accessor.getNativeHeader("id").get(0);
-		errorHeaders.put("subscription-id", subscriptionId);
+	private ErrorMessage getErrorMessage(GameException e, StompHeaderAccessor accessor) {
+		switch (accessor.getCommand()) {
+			case SUBSCRIBE:
+				String subscribeId = accessor.getNativeHeader("id").get(0);
+				return new SubscriptionErrorMessage(e, subscribeId);
+			case SEND:
+				String sendReceipt = accessor.getNativeHeader("receipt").get(0);
+				return new SendErrorMessage(e, sendReceipt);
+			default:
+				return new ErrorMessage(e);
+		}
 	}
 
 	@ExceptionHandler(GameException.class)

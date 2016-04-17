@@ -14,7 +14,7 @@ JStatusProto.createdCallback = function() {
 	this._wrapperAttributes = JSON.parse(this.getAttribute('data-wrapperAttributes'));
 
 	var initialData = JSON.parse(this.getAttribute('data-initial'));
-	this._setStatus(initialData);
+	this._setStatus(initialData && initialData.payload);
 
 	socket.subscribe(destination, this._setStatus.bind(this));
 };

@@ -1,12 +1,28 @@
 /**
  * @typedef {{
+ *     className: string,
+ *     methodName: string,
+ *     fileName: string,
+ *     lineNumber: number
+ * }}
+ */
+var StackTraceElement;
+/**
+ * @typedef {{
  *     message: string,
  *     localisedMessage: string,
- *     stackTrace: Array
+ *     stackTrace: Array.<StackTraceElement>
  *     cause: Error|null
  * }}
  */
-Error;
+var Error;
+/**
+ * @typedef {{
+ *     headers: Object,
+ *     payload: Error
+ * }}
+ */
+var ErrorMessage;
 
 var JErrorMessageProto = Object.create(HTMLButtonElement.prototype);
 
@@ -24,21 +40,25 @@ JErrorMessageProto.createdCallback = function() {
 };
 
 JErrorMessageProto._updateMessage = function() {
-	var error = JSON.parse(this.getAttribute('data-message'));
-	if (!error) {
+	/**
+	 * @type ErrorMessage
+	 */
+	var message = JSON.parse(this.getAttribute('data-message'));
+	if (!message) {
 		return;
 	}
-	this.textContent = error.message;
+	this.textContent = message.payload.message;
 };
 
 JErrorMessageProto._showStacktrace = function() {
 	/**
-	 * @type Error
+	 * @type ErrorMessage
 	 */
-	var error = JSON.parse(this.getAttribute('data-message'));
-	if (!error) {
+	var message = JSON.parse(this.getAttribute('data-message'));
+	if (!message) {
 		return;
 	}
+	var error = message.payload;
 
 	var causes = 0;
 	var stacktrace = '';

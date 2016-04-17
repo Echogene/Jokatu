@@ -2,11 +2,11 @@ package jokatu.components.stomp;
 
 import jokatu.components.stores.MessageStorer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.support.GenericMessage;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 @Component
 public class StoringMessageSender {
@@ -21,17 +21,20 @@ public class StoringMessageSender {
 	}
 
 	public void sendToUser(String user, String destination, Object payload) throws MessagingException {
-		messageStore.storeForUser(user, destination, payload);
-		simpMessagingTemplate.convertAndSendToUser(user, destination, payload);
+		sendMessageToUser(user, destination, new GenericMessage<>(payload));
+	}
+
+	public void sendMessageToUser(String user, String destination, Message message) throws MessagingException {
+		messageStore.storeForUser(user, destination, message);
+		simpMessagingTemplate.convertAndSendToUser(user, destination, message.getPayload(), message.getHeaders());
 	}
 
 	public void send(String destination, Object payload) throws MessagingException {
-		messageStore.store(destination, payload);
-		simpMessagingTemplate.convertAndSend(destination, payload);
+		sendMessage(destination, new GenericMessage<>(payload));
 	}
 
-	public void sendToUser(String user, String destination, Object payload, Map<String, Object> headers) {
-		messageStore.storeForUser(user, destination, payload); // todo: headers aren't stored
-		simpMessagingTemplate.convertAndSendToUser(user, destination, payload, headers);
+	public void sendMessage(String destination, Message message) throws MessagingException {
+		messageStore.store(destination, message);
+		simpMessagingTemplate.convertAndSend(destination, message.getPayload(), message.getHeaders());
 	}
 }

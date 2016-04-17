@@ -19,14 +19,14 @@ JMessageBoxProto.createdCallback = function() {
 	this._container = clone.querySelector('div');
 
 	var initialData = JSON.parse(this.getAttribute('data-initial'));
-	initialData.forEach(this._createMessage.bind(this));
+	initialData.forEach(datum => this._createMessage(datum.payload, datum.headers));
 
 	socket.subscribe(destination, this._createMessage.bind(this));
 
 	this.createShadowRoot().appendChild(clone);
 };
 
-JMessageBoxProto._createMessage = function(body) {
+JMessageBoxProto._createMessage = function(body, headers) {
 	var firstChar = this._messageElementName.charAt(0);
 	var element;
 	if (firstChar == firstChar.toUpperCase()) {
@@ -42,7 +42,7 @@ JMessageBoxProto._createMessage = function(body) {
 	} else if (body && typeof body === 'object' && typeof body.text === 'string') {
 		element.textContent = body.text;
 	}
-	element.setAttribute('data-message', JSON.stringify(body));
+	element.setAttribute('data-message', JSON.stringify({payload: body, headers: headers}));
 	this._container.appendChild(element);
 };
 
