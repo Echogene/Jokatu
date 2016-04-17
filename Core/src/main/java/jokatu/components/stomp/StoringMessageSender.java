@@ -30,8 +30,8 @@ public class StoringMessageSender {
 		simpMessagingTemplate.convertAndSend(destination, payload);
 	}
 
-	public void sendToUser(String user, String destination, Object payload, Map<String, Object> errorHeaders) {
-		messageStore.storeForUser(user, destination, payload);
-		simpMessagingTemplate.convertAndSendToUser(user, destination, payload, errorHeaders);
+	public void sendToUser(String user, String destination, Object payload, Map<String, Object> headers) {
+		messageStore.storeForUser(user, destination, payload); // todo: headers aren't stored
+		simpMessagingTemplate.convertAndSendToUser(user, destination, payload, headers);
 	}
 }
