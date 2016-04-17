@@ -67,6 +67,9 @@ Socket.prototype.onmessage = function(message) {
 	if (headers.has('content-type') && headers.get('content-type').includes('application/json')) {
 		body = JSON.parse(body);
 	}
+	
+	var receiptId = headers.get('receipt-id');
+	var onReceipt = this._receiptHandlers.get(receiptId);
 
 	// todo: support other commands when needed
 	if (command === 'CONNECTED') {
@@ -77,13 +80,13 @@ Socket.prototype.onmessage = function(message) {
 		if (subscribers) {
 			subscribers.forEach((subscriber) => subscriber(body, headers));
 		}
-	} else if (command === 'RECEIPT') {
-		var receiptId = headers.get('receipt-id');
-		var onReceipt = this._receiptHandlers.get(receiptId);
 		if (onReceipt) {
-			onReceipt._handle();
+			onReceipt._errorCallback(body, headers);
 		}
-		this._receiptHandlers.delete(receiptId);
+	} else if (command === 'RECEIPT') {
+		if (onReceipt) {
+			onReceipt._callback();
+		}
 	}
 };
 
@@ -93,17 +96,17 @@ Socket.prototype._onConnect = function() {
 
 Socket.ReceiptHandler = function() {
 	this._callback = () => {};
-};
-
-/**
- * @private
- */
-Socket.ReceiptHandler.prototype._handle = function() {
-	this._callback();
+	this._errorCallback = () => {};
 };
 
 Socket.ReceiptHandler.prototype.then = function(callback) {
 	this._callback = callback;
+	return this;
+};
+
+Socket.ReceiptHandler.prototype.catch = function(callback) {
+	this._errorCallback = callback;
+	return this;
 };
 
 /**
