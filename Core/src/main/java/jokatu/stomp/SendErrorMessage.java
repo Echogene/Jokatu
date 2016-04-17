@@ -5,6 +5,6 @@ import org.springframework.messaging.support.ErrorMessage;
 
 public class SendErrorMessage extends ErrorMessage {
 	public SendErrorMessage(Throwable e, String receipt) {
-		super(e, MapUtils.createMap("send-receipt", receipt));
+		super(e, MapUtils.createMap("receipt-id", receipt));
 	}
 }
