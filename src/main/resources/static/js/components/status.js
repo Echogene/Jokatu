@@ -57,6 +57,7 @@ JStatusProto._createStatusElement = function() {
 			newElement.setAttribute(key, attribute);
 		});
 	}
+	newElement.id = `${this.id}_${this.childNodes.length}`;
 	this.appendChild(newElement);
 };
 
