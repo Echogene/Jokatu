@@ -29,7 +29,7 @@ public abstract class Stage extends AbstractSynchronousObservable<GameEvent> {
 	}
 
 	void accept(@NotNull Input input, @NotNull Player player) throws StackedException {
-		VoidMaybe.failIfSuccessNotUnique(
+		VoidMaybe.mergeFailures(
 				inputAcceptors.stream()
 						.map(VoidMaybe.wrapOutput(acceptor -> acceptor.accept(input, player)))
 						.collect(Collectors.toList())
