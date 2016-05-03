@@ -13,6 +13,8 @@ JLineProto.createdCallback = function() {
 	});
 	observer.observe(this, { attributes: true });
 
+	this._endsObserver = new MutationObserver(this._updatePosition.bind(this));
+
 	this.innerHTML = '&nbsp;';
 
 	window.addEventListener("optimizedResize", this._updatePosition.bind(this), false);
@@ -21,6 +23,7 @@ JLineProto.createdCallback = function() {
 };
 
 JLineProto._updatePosition = function() {
+	this._endsObserver.disconnect();
 	var status = JSON.parse(this.getAttribute('data-status'));
 	if (!status) {
 		return;
@@ -30,6 +33,10 @@ JLineProto._updatePosition = function() {
 	if (!startElement || !endElement) {
 		return;
 	}
+
+	this._endsObserver.observe(startElement.parentNode, { childList: true });
+	this._endsObserver.observe(endElement.parentNode, { childList: true });
+
 	var startOffset = this._getOffset(startElement);
 	var endOffset = this._getOffset(endElement);
 	// bottom right
