@@ -14,7 +14,6 @@ JPopupProto.createdCallback = function() {
 		['data-cover', this._updatePosition.bind(this)]
 	]));
 
-	// todo: on middle click
 	this._titleBar.addEventListener('mouseup', (e) => {
 		if (e.button === 1) {
 			this.hide();
