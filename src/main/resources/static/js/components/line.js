@@ -22,6 +22,10 @@ JLineProto.createdCallback = function() {
 	this._updatePosition();
 };
 
+JLineProto.setEnds = function(start, end) {
+	this.setAttribute('data-status', JSON.stringify({start: start.id, end: end.id}));
+};
+
 JLineProto._updatePosition = function() {
 	this._endsObserver.disconnect();
 	var status = JSON.parse(this.getAttribute('data-status'));

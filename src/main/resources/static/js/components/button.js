@@ -6,9 +6,17 @@ JButtonProto.createdCallback = function() {
 		this.classList.add('submitting');
 		socket.send(this.getAttribute('destination'), JSON.parse(this.getAttribute('data-input')))
 			.then(() => this.classList.remove('submitting'))
-			.catch(() => {
+			.catch((error, headers) => {
 				this.classList.add('error');
-				setTimeout(() => this.classList.remove('error'), 1000);
+				clearTimeout(this._errorTimeout);
+				this._errorTimeout = setTimeout(() => this.classList.remove('error'), 1000);
+
+				var popup = new JPopup();
+				popup.id = headers.get('receipt-id');
+				popup.setAttribute('data-title', 'Error');
+				popup.setAttribute('data-message', error.message);
+				popup.setAttribute('data-cover', this.id);
+				popup.initialise();
 			});
 	});
 };
