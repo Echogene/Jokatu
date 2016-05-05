@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-public class NoughtsAndCrossesInputDeserializer implements InputDeserialiser<NoughtsAndCrossesInput> {
+public class NoughtsAndCrossesInputDeserialiser implements InputDeserialiser<NoughtsAndCrossesInput> {
 	@NotNull
 	@Override
 	public NoughtsAndCrossesInput deserialise(Map<String, Object> json) throws DeserialisationException {

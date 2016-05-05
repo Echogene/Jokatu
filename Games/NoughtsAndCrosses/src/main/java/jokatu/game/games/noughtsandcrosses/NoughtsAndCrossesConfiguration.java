@@ -4,7 +4,7 @@ import jokatu.components.GameComponent;
 import jokatu.components.config.GameConfiguration;
 import jokatu.game.games.noughtsandcrosses.game.NoughtsAndCrossesGame;
 import jokatu.game.games.noughtsandcrosses.game.NoughtsAndCrossesGameFactory;
-import jokatu.game.games.noughtsandcrosses.input.NoughtsAndCrossesInputDeserializer;
+import jokatu.game.games.noughtsandcrosses.input.NoughtsAndCrossesInputDeserialiser;
 import jokatu.game.games.noughtsandcrosses.player.NoughtsAndCrossesPlayerFactory;
 import jokatu.game.games.noughtsandcrosses.views.NoughtsAndCrossesViewResolverFactory;
 import jokatu.game.input.InputDeserialiser;
@@ -22,7 +22,7 @@ public class NoughtsAndCrossesConfiguration implements GameConfiguration {
 
 	private final NoughtsAndCrossesGameFactory factory;
 	private final NoughtsAndCrossesPlayerFactory playerFactory;
-	private final NoughtsAndCrossesInputDeserializer inputDeserializer;
+	private final NoughtsAndCrossesInputDeserialiser inputDeserializer;
 	private final JoinInputDeserialiser joinInputDeserialiser;
 	private final NoughtsAndCrossesViewResolverFactory viewResolverFactory;
 
@@ -30,7 +30,7 @@ public class NoughtsAndCrossesConfiguration implements GameConfiguration {
 	public NoughtsAndCrossesConfiguration(
 			NoughtsAndCrossesGameFactory factory,
 			NoughtsAndCrossesPlayerFactory playerFactory,
-			NoughtsAndCrossesInputDeserializer inputDeserializer,
+			NoughtsAndCrossesInputDeserialiser inputDeserializer,
 			JoinInputDeserialiser joinInputDeserialiser,
 			NoughtsAndCrossesViewResolverFactory viewResolverFactory
 	) {
