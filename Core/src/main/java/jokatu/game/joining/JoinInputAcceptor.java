@@ -4,20 +4,22 @@ import jokatu.game.event.StageOverEvent;
 import jokatu.game.input.InputAcceptor;
 import jokatu.game.player.Player;
 import jokatu.game.status.StandardTextStatus;
-import ophelia.collections.set.bounded.BoundedPair;
 
-// todo: make this accept more than bounded pairs
+import java.text.MessageFormat;
+import java.util.Map;
+
 // todo: change the status code so that it doesn't refer to input
-// todo: change the game full exception to not refer to R/P/S
 public class JoinInputAcceptor<P extends Player> extends InputAcceptor<JoinInput, P> {
 
 	private final Class<P> playerClass;
-	private final BoundedPair<P> players;
+	private final Map<String, P> players;
+	private final int limit;
 	private final StandardTextStatus status;
 
-	public JoinInputAcceptor(Class<P> playerClass, BoundedPair<P> players, StandardTextStatus status) {
+	public JoinInputAcceptor(Class<P> playerClass, Map<String, P> players, int limit, StandardTextStatus status) {
 		this.playerClass = playerClass;
 		this.players = players;
+		this.limit = limit;
 		this.status = status;
 	}
 
@@ -35,25 +37,26 @@ public class JoinInputAcceptor<P extends Player> extends InputAcceptor<JoinInput
 	@Override
 	protected void acceptCastInputAndPlayer(JoinInput input, P inputter) throws Exception {
 		checkCanJoin(inputter);
-		players.add(inputter);
-		if (players.size() == 2) {
-			P player1 = players.getFirst();
-			assert player1 != null;
-			P player2 = players.getSecond();
-			assert player2 != null;
-			status.setText("Awaiting input from " + player1.getName() + " and " + player2.getName());
+		players.put(inputter.getName(), inputter);
+		if (players.size() == limit) {
+			status.setText("Awaiting input from players");
 			fireEvent(new StageOverEvent());
 		} else {
-			status.setText("Waiting for one more player to join");
+			int more = limit - players.size();
+			status.setText(MessageFormat.format(
+					"Waiting for {0} more player{1} to join",
+					more,
+					more == 1 ? "" : "s"
+			));
 		}
 		fireEvent(new PlayerJoinedEvent(inputter));
 	}
 
 	private void checkCanJoin(P inputter) throws CannotJoinGameException {
-		if (players.size() > 1) {
-			throw new GameFullException("Rock-paper-scissors supports two players.");
+		if (players.size() > limit - 1) {
+			throw new GameFullException("No more players can join.");
 		}
-		if (players.contains(inputter)) {
+		if (players.containsKey(inputter.getName())) {
 			throw new PlayerAlreadyJoinedException(inputter.getName() + " cannot join the game twice.");
 		}
 	}

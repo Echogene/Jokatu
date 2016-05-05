@@ -9,6 +9,7 @@ import jokatu.game.result.Result;
 import jokatu.game.status.StandardTextStatus;
 import ophelia.collections.set.bounded.BoundedPair;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -25,8 +26,9 @@ public class RockPaperScissorsInputAcceptor extends InputAcceptor<RockPaperSciss
 
 	private final StandardTextStatus status;
 
-	public RockPaperScissorsInputAcceptor(BoundedPair<RockPaperScissorsPlayer> players, StandardTextStatus status) {
-		this.players = players;
+	public RockPaperScissorsInputAcceptor(Collection<RockPaperScissorsPlayer> players, StandardTextStatus status) {
+		this.players = new BoundedPair<>();
+		players.forEach(this.players::add);
 		this.status = status;
 	}
 

@@ -6,15 +6,13 @@ import jokatu.game.Stage;
 import jokatu.game.event.StatusUpdateEvent;
 import jokatu.game.games.echo.player.EchoPlayer;
 import jokatu.game.status.Status;
-import ophelia.collections.BaseCollection;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static ophelia.collections.set.EmptySet.emptySet;
 
 public class EchoGame extends Game<EchoPlayer> {
 
@@ -49,10 +47,10 @@ public class EchoGame extends Game<EchoPlayer> {
 		return ECHO;
 	}
 
-	@NotNull
+	@Nullable
 	@Override
-	public BaseCollection<EchoPlayer> getPlayers() {
-		return emptySet();
+	public EchoPlayer getPlayerByName(@NotNull String name) {
+		return null;
 	}
 
 	@NotNull

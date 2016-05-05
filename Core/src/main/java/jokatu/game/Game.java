@@ -6,11 +6,11 @@ import jokatu.game.input.Input;
 import jokatu.game.player.Player;
 import jokatu.game.status.Status;
 import jokatu.identity.Identifiable;
-import ophelia.collections.BaseCollection;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import ophelia.event.observable.Observable;
 import ophelia.exceptions.StackedException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.text.MessageFormat;
 
@@ -53,20 +53,14 @@ public abstract class Game<P extends Player>
 	@NotNull
 	public abstract String getGameName();
 
-	@NotNull
-	public abstract BaseCollection<P> getPlayers();
+	@Nullable
+	public abstract P getPlayerByName(@NotNull String name);
 
 	@NotNull
 	public abstract Status getStatus();
 
-	// This appears to do nothing, but it is here so that AbstractGameFactory has access to this protected method.
-	@Override
-	protected void fireEvent(GameEvent event) {
-		super.fireEvent(event);
-	}
-
 	public boolean hasPlayer(@NotNull Player player) {
-		return getPlayers().contains(player);
+		return getPlayerByName(player.getName()) != null;
 	}
 
 	public abstract void advanceStage();

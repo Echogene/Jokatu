@@ -99,7 +99,7 @@ public class GameController {
 			return new ModelAndView(new RedirectView(GAME_LIST_MAPPING));
 		}
 		ViewResolver<?, ?> viewResolver = gameFactories.getViewResolver(game);
-		Player player = getPlayer(principal, game);
+		Player player = getPlayer(game, principal.getName());
 		ModelAndView modelAndView;
 		if (game.hasPlayer(player)) {
 			modelAndView = viewResolver.getViewForPlayer(player);
@@ -163,7 +163,7 @@ public class GameController {
 
 		Game<? extends Player> game = getGame(identity, "You can't input to a game that does not exist.");
 
-		Player player = getPlayer(principal, game);
+		Player player = getPlayer(game, principal.getName());
 		BaseCollection<? extends InputDeserialiser> deserialisers = gameFactories.getInputDeserialisers(game);
 		Input input = deserialisers.stream()
 				.map(wrapOutput(deserialiser -> deserialiser.deserialise(json)))
@@ -203,9 +203,14 @@ public class GameController {
 	}
 
 	@NotNull
-	private Player getPlayer(@NotNull Principal principal, @NotNull Game<? extends Player> game) {
-		PlayerFactory factory = gameFactories.getPlayerFactory(game);
-		return factory.produce(principal.getName());
+	private Player getPlayer(@NotNull Game<? extends Player> game, String name) {
+		Player player = game.getPlayerByName(name);
+		if (player == null) {
+			PlayerFactory factory = gameFactories.getPlayerFactory(game);
+			return factory.produce(name);
+		} else {
+			return player;
+		}
 	}
 
 	@MessageExceptionHandler(GameException.class)
