@@ -8,12 +8,8 @@ import jokatu.game.status.StandardTextStatus;
 import ophelia.collections.list.UnmodifiableList;
 import ophelia.collections.set.HashSet;
 import ophelia.collections.set.UnmodifiableSet;
-import ophelia.collections.set.bounded.BoundedPair;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -23,8 +19,6 @@ import static jokatu.game.games.noughtsandcrosses.input.NoughtOrCross.CROSS;
 import static jokatu.game.games.noughtsandcrosses.input.NoughtOrCross.other;
 
 public class NoughtsAndCrossesInputAcceptor extends InputAcceptor<NoughtsAndCrossesInput, NoughtsAndCrossesPlayer> {
-
-	private final Map<Integer, NoughtOrCross> inputs = new HashMap<>();
 
 	private static final UnmodifiableSet<UnmodifiableList<Integer>> LINES;
 	static {
@@ -39,7 +33,9 @@ public class NoughtsAndCrossesInputAcceptor extends InputAcceptor<NoughtsAndCros
 		LINES = new UnmodifiableSet<>(lines);
 	}
 
-	public NoughtsAndCrossesInputAcceptor(BoundedPair<NoughtsAndCrossesPlayer> players, StandardTextStatus status) {
+	private final Map<Integer, NoughtOrCross> inputs = new HashMap<>();
+
+	public NoughtsAndCrossesInputAcceptor(Collection<NoughtsAndCrossesPlayer> players, StandardTextStatus status) {
 		super();
 	}
 
