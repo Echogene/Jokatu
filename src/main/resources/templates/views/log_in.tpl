@@ -12,10 +12,10 @@ layout 'layouts/main.tpl', true,
 			input(type: 'hidden', name: "${_csrf.parameterName}", value: "${_csrf.token}")
 
 			label(for: 'username') {yield 'Username:'}
-			input(id: 'username', name: 'username', type: 'text')
+			input(id: 'username', name: 'username', type: 'text', autocomplete: 'username', autofocus: 'true')
 
 			label(for: 'password') {yield 'Password:'}
-			input(id: 'password', name: 'password', type: 'password')
+			input(id: 'password', name: 'password', type: 'password', autocomplete: 'current-password')
 
 			button(id: 'submit', type: 'submit') {yield 'Log in'}
 		}

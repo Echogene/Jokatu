@@ -1,0 +1,42 @@
+div.grid {
+
+	@lines: 3px solid #444;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-content: center;
+	flex-wrap: wrap;
+
+	>.button {
+		width: 33%;
+
+		&:nth-child(3n+2) {
+			border-left: @lines;
+			border-right: @lines;
+		}
+		&:nth-child(n+4):nth-child(-n+6) {
+			border-top: @lines;
+			border-bottom: @lines;
+		}
+
+		>button {
+			width: 100%;
+			height: 100%;
+			font-size: 60px;
+			border: none;
+			background-color: #eee;
+
+			&:hover {
+				background-color: #ddd;
+			}
+
+			&[data-status*="⭕"] {
+				background-color: #fee;
+			}
+			&[data-status*="✕"] {
+				background-color: #eef;
+			}
+		}
+	}
+}

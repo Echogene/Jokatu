@@ -67,6 +67,9 @@ Socket.prototype.onmessage = function(message) {
 	if (headers.has('content-type') && headers.get('content-type').includes('application/json')) {
 		body = JSON.parse(body);
 	}
+	
+	var receiptId = headers.get('receipt-id');
+	var onReceipt = this._receiptHandlers.get(receiptId);
 
 	// todo: support other commands when needed
 	if (command === 'CONNECTED') {
@@ -77,13 +80,13 @@ Socket.prototype.onmessage = function(message) {
 		if (subscribers) {
 			subscribers.forEach((subscriber) => subscriber(body, headers));
 		}
-	} else if (command === 'RECEIPT') {
-		var receiptId = headers.get('receipt-id');
-		var onReceipt = this._receiptHandlers.get(receiptId);
 		if (onReceipt) {
-			onReceipt._handle();
+			onReceipt._errorCallback(body, headers);
 		}
-		this._receiptHandlers.delete(receiptId);
+	} else if (command === 'RECEIPT') {
+		if (onReceipt) {
+			onReceipt._callback();
+		}
 	}
 };
 
@@ -93,17 +96,17 @@ Socket.prototype._onConnect = function() {
 
 Socket.ReceiptHandler = function() {
 	this._callback = () => {};
-};
-
-/**
- * @private
- */
-Socket.ReceiptHandler.prototype._handle = function() {
-	this._callback();
+	this._errorCallback = () => {};
 };
 
 Socket.ReceiptHandler.prototype.then = function(callback) {
 	this._callback = callback;
+	return this;
+};
+
+Socket.ReceiptHandler.prototype.catch = function(callback) {
+	this._errorCallback = callback;
+	return this;
 };
 
 /**
@@ -157,17 +160,19 @@ Socket.prototype._getNextId = function() {
 
 /**
  * @param {string} destination
- * @param {function(Object, Map=)} callback
+ * @param {function(Object, Map=)=} callback
  * @returns {Socket.ReceiptHandler}
  */
 Socket.prototype.subscribe = function(destination, callback) {
 
-	if (this._subscribers.has(destination)) {
+	if (this._subscribers.has(destination) && callback) {
 		this._subscribers.get(destination).push(callback);
 	} else {
 		var id = this._getNextId();
 
-		this._subscribers.set(destination, [callback]);
+		if (callback) {
+			this._subscribers.set(destination, [callback]);
+		}
 
 		var headers = new Map();
 		headers.set('destination', destination);
@@ -200,6 +205,9 @@ Socket.prototype.send = function(destination, body) {
 
 	var headers = new Map();
 	headers.set('destination', destination);
+	headers.set('content-type', 'application/json');
 
 	return this._message('SEND', headers, body);
 };
+
+var socket = new Socket();

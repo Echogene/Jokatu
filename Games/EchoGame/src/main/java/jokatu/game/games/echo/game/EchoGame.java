@@ -2,25 +2,20 @@ package jokatu.game.games.echo.game;
 
 import jokatu.game.Game;
 import jokatu.game.GameID;
-import jokatu.game.Stage;
 import jokatu.game.event.StatusUpdateEvent;
 import jokatu.game.games.echo.player.EchoPlayer;
 import jokatu.game.status.Status;
-import ophelia.collections.BaseCollection;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static ophelia.collections.set.EmptySet.emptySet;
-
 public class EchoGame extends Game<EchoPlayer> {
 
 	public static final String ECHO = "Echo";
-
-	private final EchoStage stage = new EchoStage();
 
 	EchoGame(GameID identifier) {
 		super(identifier);
@@ -34,13 +29,6 @@ public class EchoGame extends Game<EchoPlayer> {
 				0,
 				1000
 		);
-		stage.observe(this::fireEvent);
-	}
-
-	@NotNull
-	@Override
-	protected Stage getCurrentStage() {
-		return stage;
 	}
 
 	@NotNull
@@ -49,10 +37,10 @@ public class EchoGame extends Game<EchoPlayer> {
 		return ECHO;
 	}
 
-	@NotNull
+	@Nullable
 	@Override
-	public BaseCollection<EchoPlayer> getPlayers() {
-		return emptySet();
+	public EchoPlayer getPlayerByName(@NotNull String name) {
+		return null;
 	}
 
 	@NotNull
@@ -62,7 +50,7 @@ public class EchoGame extends Game<EchoPlayer> {
 	}
 
 	@Override
-	public void advanceStage() {
-		// Do nothing.
+	public void advanceStageInner() {
+		currentStage = new EchoStage();
 	}
 }

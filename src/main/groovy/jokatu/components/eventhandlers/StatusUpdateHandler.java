@@ -28,6 +28,6 @@ public class StatusUpdateHandler extends AbstractEventHandler<StatusUpdateEvent>
 
 	@Override
 	protected void handleCastEvent(Game game, StatusUpdateEvent event) {
-		sender.send("/topic/status.game." + game.getIdentifier(), event.getStatus());
+		sender.send("/topic/status.game." + game.getIdentifier(), event.getStatus().getText());
 	}
 }

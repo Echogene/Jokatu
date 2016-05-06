@@ -15,10 +15,14 @@ import jokatu.game.input.InputDeserialiser;
 import jokatu.game.player.Player;
 import jokatu.game.player.PlayerFactory;
 import jokatu.game.viewresolver.ViewResolver;
+import jokatu.stomp.SendErrorMessage;
+import jokatu.stomp.SubscriptionErrorMessage;
 import ophelia.collections.BaseCollection;
 import ophelia.exceptions.maybe.FailureHandler;
 import ophelia.exceptions.maybe.SuccessHandler;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -26,14 +30,15 @@ import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
-import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.security.Principal;
+import java.text.MessageFormat;
 import java.util.*;
 
 import static java.text.MessageFormat.format;
@@ -47,6 +52,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  */
 @Controller
 public class GameController {
+
+	private static final Logger log = LoggerFactory.getLogger(GameController.class);
 
 	private static final String GAME_LIST_MAPPING = "/games";
 
@@ -92,7 +99,7 @@ public class GameController {
 			return new ModelAndView(new RedirectView(GAME_LIST_MAPPING));
 		}
 		ViewResolver<?, ?> viewResolver = gameFactories.getViewResolver(game);
-		Player player = getPlayer(principal, game);
+		Player player = getPlayer(game, principal.getName());
 		ModelAndView modelAndView;
 		if (game.hasPlayer(player)) {
 			modelAndView = viewResolver.getViewForPlayer(player);
@@ -100,6 +107,7 @@ public class GameController {
 			modelAndView = viewResolver.getViewForObserver();
 		}
 		modelAndView.addObject("markupGenerator", markupGenerator);
+		modelAndView.addObject("username", principal.getName());
 		return modelAndView;
 	}
 
@@ -121,6 +129,13 @@ public class GameController {
 
 	@SubscribeMapping("/topic/status.game.{identity}")
 	void gameStatusSubscription(
+			@DestinationVariable("identity") GameID identity
+	) throws GameException {
+		getGame(identity, "You cannot subscribe to a non-existent game.");
+	}
+
+	@SubscribeMapping("/topic/substatus.game.{identity}.*")
+	void gameSubstatusSubscription(
 			@DestinationVariable("identity") GameID identity
 	) throws GameException {
 		getGame(identity, "You cannot subscribe to a non-existent game.");
@@ -148,7 +163,7 @@ public class GameController {
 
 		Game<? extends Player> game = getGame(identity, "You can't input to a game that does not exist.");
 
-		Player player = getPlayer(principal, game);
+		Player player = getPlayer(game, principal.getName());
 		BaseCollection<? extends InputDeserialiser> deserialisers = gameFactories.getInputDeserialisers(game);
 		Input input = deserialisers.stream()
 				.map(wrapOutput(deserialiser -> deserialiser.deserialise(json)))
@@ -168,6 +183,10 @@ public class GameController {
 		Game<?> game = factory.produceGame(principal.getName());
 
 		game.observe(event -> sendEvent(game, event));
+
+		// Now we are observing events, start the game.
+		game.advanceStage();
+
 		return game;
 	}
 
@@ -188,31 +207,41 @@ public class GameController {
 	}
 
 	@NotNull
-	private Player getPlayer(@NotNull Principal principal, @NotNull Game<? extends Player> game) {
-		PlayerFactory factory = gameFactories.getPlayerFactory(game);
-		return factory.produce(principal.getName());
+	private Player getPlayer(@NotNull Game<? extends Player> game, String name) {
+		Player player = game.getPlayerByName(name);
+		if (player == null) {
+			PlayerFactory factory = gameFactories.getPlayerFactory(game);
+			return factory.produce(name);
+		} else {
+			return player;
+		}
 	}
 
 	@MessageExceptionHandler(GameException.class)
 	void handleException(GameException e, Message originalMessage, Principal principal) {
 		StompHeaderAccessor accessor = StompHeaderAccessor.wrap(originalMessage);
-		StompCommand stompCommand = accessor.getCommand();
-		switch (stompCommand) {
-			case SUBSCRIBE:
-				handleSubscriptionError(e, accessor, principal);
-				break;
-			default:
-				sender.sendToUser(principal.getName(), "/errors.game." + e.getId(), e);
-		}
+		ErrorMessage errorMessage = getErrorMessage(e, accessor);
+		sender.sendMessageToUser(principal.getName(), "/topic/errors.game." + e.getId(), errorMessage);
+		log.error(
+				MessageFormat.format(
+					"Exception occurred when receiving message\n{0}",
+					accessor.getDetailedLogMessage(originalMessage.getPayload())
+				),
+				e
+		);
 	}
 
-	private void handleSubscriptionError(GameException e, StompHeaderAccessor accessor, Principal principal) {
-		String subscriptionId = accessor.getNativeHeader("id").get(0);
-
-		Map<String, Object> errorHeaders = new HashMap<>();
-		errorHeaders.put("subscription-id", subscriptionId);
-
-		sender.sendToUser(principal.getName(), "/errors.game." + e.getId(), e, errorHeaders);
+	private ErrorMessage getErrorMessage(GameException e, StompHeaderAccessor accessor) {
+		switch (accessor.getCommand()) {
+			case SUBSCRIBE:
+				String subscribeId = accessor.getNativeHeader("id").get(0);
+				return new SubscriptionErrorMessage(e, subscribeId);
+			case SEND:
+				String sendReceipt = accessor.getNativeHeader("receipt").get(0);
+				return new SendErrorMessage(e, sendReceipt);
+			default:
+				return new ErrorMessage(e);
+		}
 	}
 
 	@ExceptionHandler(GameException.class)

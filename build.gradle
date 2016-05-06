@@ -31,6 +31,8 @@ gradle.projectsEvaluated {
 	}
 }
 
+compileJava.options.encoding = 'UTF-8'
+
 dependencies {
 	compile project(':Core'),
 			games

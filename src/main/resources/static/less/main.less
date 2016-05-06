@@ -8,3 +8,30 @@ body {
 	height: 100%;
 	width: 100%;
 }
+
+#popup_container {
+	margin: 0;
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	pointer-events: none;
+}
+
+@keyframes error {
+	0% {
+		background: red
+	}
+	100% {
+		background: none;
+	}
+}
+
+.error {
+	animation: error 1s;
+}

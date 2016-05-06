@@ -4,11 +4,12 @@ import jokatu.game.Stage;
 import jokatu.game.games.rockpaperscissors.input.RockPaperScissorsInputAcceptor;
 import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayer;
 import jokatu.game.status.StandardTextStatus;
-import ophelia.collections.set.bounded.BoundedPair;
+
+import java.util.Map;
 
 class InputStage extends Stage {
 
-	InputStage(BoundedPair<RockPaperScissorsPlayer> players, StandardTextStatus status) {
-		super(new RockPaperScissorsInputAcceptor(players, status));
+	InputStage(Map<String, RockPaperScissorsPlayer> players, StandardTextStatus status) {
+		super(new RockPaperScissorsInputAcceptor(players.values(), status));
 	}
 }

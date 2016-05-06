@@ -5,9 +5,8 @@ layout 'layouts/main.tpl', true,
 	pageTitle: "Game $game.identifier",
 
 	headers: contents {
-		script(type: 'text/javascript', src: '/js/request.js') {}
-		script(type: 'text/javascript', src: '/js/stomp.js') {}
 		script(type: 'text/javascript', "game = ${serialise(game)};")
 		script(type: 'text/javascript', src: '/js/game_main.js') {}
+		script(type: 'text/javascript', "socket.subscribe(\"/user/topic/errors.game.${game.identifier}\");")
 		additionalHeaders()
 	}
