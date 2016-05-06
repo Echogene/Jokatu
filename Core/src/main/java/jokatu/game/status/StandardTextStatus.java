@@ -12,6 +12,8 @@ public class StandardTextStatus extends AbstractSynchronousObservable<StatusUpda
 
 	private String text;
 
+	public StandardTextStatus() {}
+
 	public StandardTextStatus(String text) {
 		this.text = text;
 	}
