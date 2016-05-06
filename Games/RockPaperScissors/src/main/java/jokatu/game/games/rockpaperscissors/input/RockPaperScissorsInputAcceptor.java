@@ -27,8 +27,7 @@ public class RockPaperScissorsInputAcceptor extends InputAcceptor<RockPaperSciss
 	private final StandardTextStatus status;
 
 	public RockPaperScissorsInputAcceptor(Collection<RockPaperScissorsPlayer> players, StandardTextStatus status) {
-		this.players = new BoundedPair<>();
-		players.forEach(this.players::add);
+		this.players = new BoundedPair<>(players);
 		this.status = status;
 	}
 
