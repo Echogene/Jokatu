@@ -2,15 +2,15 @@ package jokatu.game.games.noughtsandcrosses.input;
 
 import jokatu.game.input.Input;
 
-public class NoughtsAndCrossesInput implements Input {
+class NoughtsAndCrossesInput implements Input {
 
 	private final Integer cellId;
 
-	protected NoughtsAndCrossesInput(Integer cellId) {
+	NoughtsAndCrossesInput(Integer cellId) {
 		this.cellId = cellId;
 	}
 
-	public Integer getCellId() {
+	Integer getCellId() {
 		return cellId;
 	}
 }
