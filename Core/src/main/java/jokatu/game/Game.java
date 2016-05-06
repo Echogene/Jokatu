@@ -23,19 +23,22 @@ public abstract class Game<P extends Player>
 
 	private final GameID identifier;
 
+	@Nullable
+	protected Stage currentStage;
+
 	protected Game(GameID identifier) {
 		this.identifier = identifier;
 	}
 
-	@NotNull
-	protected abstract Stage getCurrentStage();
-
-	public void accept(@NotNull Input input, @NotNull Player player) throws GameException {
+	public final void accept(@NotNull Input input, @NotNull Player player) throws GameException {
+		if (currentStage == null) {
+			throw new GameException(identifier, "The game hasn't started yet");
+		}
 		try {
-			getCurrentStage().accept(input, player);
+			currentStage.accept(input, player);
 		} catch (StackedException e) {
 			throw new GameException(
-					getIdentifier(),
+					identifier,
 					MessageFormat.format(
 							"Input was not accepted because {0}", e.getMessage()
 					),
@@ -46,7 +49,7 @@ public abstract class Game<P extends Player>
 
 	@NotNull
 	@Override
-	public GameID getIdentifier() {
+	public final GameID getIdentifier() {
 		return identifier;
 	}
 
@@ -63,5 +66,14 @@ public abstract class Game<P extends Player>
 		return getPlayerByName(player.getName()) != null;
 	}
 
-	public abstract void advanceStage();
+	public final void advanceStage() {
+		advanceStageInner();
+		assert currentStage != null;
+		currentStage.observe(this::fireEvent);
+	}
+
+	/**
+	 * Set the {@link Game#currentStage} field to the next (not-null) stage.
+	 */
+	protected abstract void advanceStageInner();
 }

@@ -3,7 +3,6 @@ package jokatu.game.games.rockpaperscissors.game;
 import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.JoiningStage;
-import jokatu.game.Stage;
 import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayer;
 import jokatu.game.status.StandardTextStatus;
 import jokatu.game.status.Status;
@@ -20,25 +19,12 @@ public class RockPaperScissorsGame extends Game<RockPaperScissorsPlayer> {
 
 	private final Map<String, RockPaperScissorsPlayer> players = new HashMap<>();
 
-	private final StandardTextStatus status = new StandardTextStatus("Waiting for two players to join");
-
-	private final JoiningStage<RockPaperScissorsPlayer> joiningStage = new JoiningStage<>(RockPaperScissorsPlayer.class, players, 2, status);
-	private final InputStage inputStage = new InputStage(players, status);
-
-	private Stage currentStage = joiningStage;
+	private final StandardTextStatus status = new StandardTextStatus();
 
 	RockPaperScissorsGame(GameID identifier) {
 		super(identifier);
-		// Forward events from everything.
-		status.observe(this::fireEvent);
-		joiningStage.observe(this::fireEvent);
-		inputStage.observe(this::fireEvent);
-	}
 
-	@NotNull
-	@Override
-	protected Stage getCurrentStage() {
-		return currentStage;
+		status.observe(this::fireEvent);
 	}
 
 	@NotNull
@@ -65,8 +51,11 @@ public class RockPaperScissorsGame extends Game<RockPaperScissorsPlayer> {
 	}
 
 	@Override
-	public void advanceStage() {
-		// Move to the second stage.
-		currentStage = inputStage;
+	public void advanceStageInner() {
+		if (currentStage == null) {
+			currentStage = new JoiningStage<>(RockPaperScissorsPlayer.class, players, 2, status);
+		} else {
+			currentStage = new InputStage(players, status);
+		}
 	}
 }

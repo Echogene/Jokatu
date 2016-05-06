@@ -37,6 +37,8 @@ public class NoughtsAndCrossesInputAcceptor extends InputAcceptor<NoughtsAndCros
 
 	public NoughtsAndCrossesInputAcceptor(Collection<NoughtsAndCrossesPlayer> players, StandardTextStatus status) {
 		super();
+
+		status.setText("Waiting for input from players");
 	}
 
 	@Override

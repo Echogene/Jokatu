@@ -2,7 +2,6 @@ package jokatu.game.games.echo.game;
 
 import jokatu.game.Game;
 import jokatu.game.GameID;
-import jokatu.game.Stage;
 import jokatu.game.event.StatusUpdateEvent;
 import jokatu.game.games.echo.player.EchoPlayer;
 import jokatu.game.status.Status;
@@ -18,8 +17,6 @@ public class EchoGame extends Game<EchoPlayer> {
 
 	public static final String ECHO = "Echo";
 
-	private final EchoStage stage = new EchoStage();
-
 	EchoGame(GameID identifier) {
 		super(identifier);
 		new Timer().scheduleAtFixedRate(
@@ -32,13 +29,6 @@ public class EchoGame extends Game<EchoPlayer> {
 				0,
 				1000
 		);
-		stage.observe(this::fireEvent);
-	}
-
-	@NotNull
-	@Override
-	protected Stage getCurrentStage() {
-		return stage;
 	}
 
 	@NotNull
@@ -60,7 +50,7 @@ public class EchoGame extends Game<EchoPlayer> {
 	}
 
 	@Override
-	public void advanceStage() {
-		// Do nothing.
+	public void advanceStageInner() {
+		currentStage = new EchoStage();
 	}
 }

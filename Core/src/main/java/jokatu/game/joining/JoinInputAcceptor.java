@@ -8,7 +8,6 @@ import jokatu.game.status.StandardTextStatus;
 import java.text.MessageFormat;
 import java.util.Map;
 
-// todo: change the status code so that it doesn't refer to input
 public class JoinInputAcceptor<P extends Player> extends InputAcceptor<JoinInput, P> {
 
 	private final Class<P> playerClass;
@@ -21,6 +20,12 @@ public class JoinInputAcceptor<P extends Player> extends InputAcceptor<JoinInput
 		this.players = players;
 		this.limit = limit;
 		this.status = status;
+
+		status.setText(MessageFormat.format(
+				"Waiting for {0} player{1} to join",
+				limit,
+				limit == 1 ? "" : "s"
+		));
 	}
 
 
@@ -39,7 +44,6 @@ public class JoinInputAcceptor<P extends Player> extends InputAcceptor<JoinInput
 		checkCanJoin(inputter);
 		players.put(inputter.getName(), inputter);
 		if (players.size() == limit) {
-			status.setText("Awaiting input from players");
 			fireEvent(new StageOverEvent());
 		} else {
 			int more = limit - players.size();

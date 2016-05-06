@@ -183,6 +183,10 @@ public class GameController {
 		Game<?> game = factory.produceGame(principal.getName());
 
 		game.observe(event -> sendEvent(game, event));
+
+		// Now we are observing events, start the game.
+		game.advanceStage();
+
 		return game;
 	}
 
