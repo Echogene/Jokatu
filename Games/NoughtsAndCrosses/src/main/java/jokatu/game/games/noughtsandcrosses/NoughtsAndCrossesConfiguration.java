@@ -4,15 +4,18 @@ import jokatu.components.GameComponent;
 import jokatu.components.config.GameConfiguration;
 import jokatu.game.games.noughtsandcrosses.game.NoughtsAndCrossesGame;
 import jokatu.game.games.noughtsandcrosses.game.NoughtsAndCrossesGameFactory;
+import jokatu.game.games.noughtsandcrosses.input.AllegianceInputDeserialiser;
 import jokatu.game.games.noughtsandcrosses.input.NoughtsAndCrossesInputDeserialiser;
 import jokatu.game.games.noughtsandcrosses.player.NoughtsAndCrossesPlayerFactory;
 import jokatu.game.games.noughtsandcrosses.views.NoughtsAndCrossesViewResolverFactory;
 import jokatu.game.input.InputDeserialiser;
 import jokatu.game.joining.JoinInputDeserialiser;
 import ophelia.collections.BaseCollection;
-import ophelia.collections.pair.UnorderedPair;
+import ophelia.collections.list.StandardList;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Arrays;
 
 /**
  * @author steven
@@ -22,22 +25,25 @@ public class NoughtsAndCrossesConfiguration implements GameConfiguration {
 
 	private final NoughtsAndCrossesGameFactory factory;
 	private final NoughtsAndCrossesPlayerFactory playerFactory;
-	private final NoughtsAndCrossesInputDeserialiser inputDeserializer;
 	private final JoinInputDeserialiser joinInputDeserialiser;
+	private final AllegianceInputDeserialiser allegianceInputDeserialiser;
+	private final NoughtsAndCrossesInputDeserialiser inputDeserializer;
 	private final NoughtsAndCrossesViewResolverFactory viewResolverFactory;
 
 	@Autowired
 	public NoughtsAndCrossesConfiguration(
 			NoughtsAndCrossesGameFactory factory,
 			NoughtsAndCrossesPlayerFactory playerFactory,
-			NoughtsAndCrossesInputDeserialiser inputDeserializer,
 			JoinInputDeserialiser joinInputDeserialiser,
+			AllegianceInputDeserialiser allegianceInputDeserialiser,
+			NoughtsAndCrossesInputDeserialiser inputDeserializer,
 			NoughtsAndCrossesViewResolverFactory viewResolverFactory
 	) {
 		this.factory = factory;
 		this.playerFactory = playerFactory;
-		this.inputDeserializer = inputDeserializer;
 		this.joinInputDeserialiser = joinInputDeserialiser;
+		this.allegianceInputDeserialiser = allegianceInputDeserialiser;
+		this.inputDeserializer = inputDeserializer;
 		this.viewResolverFactory = viewResolverFactory;
 	}
 
@@ -56,7 +62,7 @@ public class NoughtsAndCrossesConfiguration implements GameConfiguration {
 	@NotNull
 	@Override
 	public BaseCollection<? extends InputDeserialiser> getInputDeserialisers() {
-		return new UnorderedPair<>(joinInputDeserialiser, inputDeserializer);
+		return new StandardList<>(Arrays.asList(joinInputDeserialiser, allegianceInputDeserialiser, inputDeserializer));
 	}
 
 	@NotNull
