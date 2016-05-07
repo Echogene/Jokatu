@@ -15,7 +15,6 @@ public class AllegianceInputAcceptor extends InputAcceptor<AllegianceInput, Noug
 
 	private final BoundedPair<NoughtsAndCrossesPlayer> players;
 
-	// todo: change the status
 	public AllegianceInputAcceptor(Collection<NoughtsAndCrossesPlayer> players, StandardTextStatus status) {
 		this.players = new BoundedPair<>(players);
 
