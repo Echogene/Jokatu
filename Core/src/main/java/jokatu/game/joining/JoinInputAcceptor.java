@@ -21,7 +21,7 @@ public class JoinInputAcceptor<P extends Player> extends InputAcceptor<JoinInput
 		this.status = status;
 
 		status.setText(
-				"Waiting for {0} player{1} to join",
+				"Waiting for {0} player{1} to join.",
 				limit,
 				limit == 1 ? "" : "s"
 		);
@@ -47,7 +47,7 @@ public class JoinInputAcceptor<P extends Player> extends InputAcceptor<JoinInput
 		} else {
 			int more = limit - players.size();
 			status.setText(
-					"Waiting for {0} more player{1} to join",
+					"Waiting for {0} more player{1} to join.",
 					more,
 					more == 1 ? "" : "s"
 			);
