@@ -32,7 +32,7 @@ public abstract class Game<P extends Player>
 
 	public final void accept(@NotNull Input input, @NotNull Player player) throws GameException {
 		if (currentStage == null) {
-			throw new GameException(identifier, "The game hasn't started yet");
+			throw new GameException(identifier, "The game hasn't started yet.");
 		}
 		try {
 			currentStage.accept(input, player);

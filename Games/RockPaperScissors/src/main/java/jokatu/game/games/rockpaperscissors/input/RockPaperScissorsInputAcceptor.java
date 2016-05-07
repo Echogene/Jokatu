@@ -56,7 +56,7 @@ public class RockPaperScissorsInputAcceptor extends InputAcceptor<RockPaperSciss
 
 		if (inputs.containsKey(inputter)) {
 			// Player has already chosen.
-			throw new UnacceptableInputException("You can't change your mind");
+			throw new UnacceptableInputException("You can't change your mind.");
 		}
 		inputs.put(inputter, input.getChoice());
 		if (inputs.size() == 2) {
