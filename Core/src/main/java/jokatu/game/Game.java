@@ -12,8 +12,6 @@ import ophelia.exceptions.StackedException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.text.MessageFormat;
-
 /**
  * @author Steven Weston
  */
@@ -39,9 +37,7 @@ public abstract class Game<P extends Player>
 		} catch (StackedException e) {
 			throw new GameException(
 					identifier,
-					MessageFormat.format(
-							"Input was not accepted because {0}", e.getMessage()
-					),
+					e.getMessage(),
 					e
 			);
 		}
