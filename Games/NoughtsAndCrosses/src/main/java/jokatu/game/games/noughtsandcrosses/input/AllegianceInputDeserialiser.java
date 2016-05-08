@@ -12,6 +12,15 @@ public class AllegianceInputDeserialiser implements InputDeserialiser<Allegiance
 	@NotNull
 	@Override
 	public AllegianceInput deserialise(Map<String, Object> json) throws DeserialisationException {
-		return new AllegianceInput(NoughtOrCross.valueOf((String) json.get("allegiance")));
+		if (!json.containsKey("allegiance")) {
+			throw new DeserialisationException(json, "Did not contain the key 'allegiance'.");
+		}
+		Object value = json.get("allegiance");
+		if (!(value instanceof String)) {
+			throw new DeserialisationException(json, "The value for 'allegiance' was not a string.");
+		}
+		String allegiance = (String) value;
+		NoughtOrCross noughtOrCross = NoughtOrCross.displayValueOf(allegiance);
+		return new AllegianceInput(noughtOrCross);
 	}
 }
