@@ -5,6 +5,8 @@ import jokatu.game.event.StatusUpdateEvent;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.MessageFormat;
+
 /**
  * @author steven
  */
@@ -25,8 +27,8 @@ public class StandardTextStatus extends AbstractSynchronousObservable<StatusUpda
 		return text;
 	}
 
-	public void setText(String text) {
-		this.text = text;
+	public void setText(String text, Object... arguments) {
+		this.text = MessageFormat.format(text, arguments);
 		fireEvent(() -> StandardTextStatus.this);
 	}
 }

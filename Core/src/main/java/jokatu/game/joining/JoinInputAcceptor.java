@@ -5,7 +5,6 @@ import jokatu.game.input.InputAcceptor;
 import jokatu.game.player.Player;
 import jokatu.game.status.StandardTextStatus;
 
-import java.text.MessageFormat;
 import java.util.Map;
 
 public class JoinInputAcceptor<P extends Player> extends InputAcceptor<JoinInput, P> {
@@ -21,11 +20,11 @@ public class JoinInputAcceptor<P extends Player> extends InputAcceptor<JoinInput
 		this.limit = limit;
 		this.status = status;
 
-		status.setText(MessageFormat.format(
-				"Waiting for {0} player{1} to join",
+		status.setText(
+				"Waiting for {0} player{1} to join.",
 				limit,
 				limit == 1 ? "" : "s"
-		));
+		);
 	}
 
 
@@ -47,11 +46,11 @@ public class JoinInputAcceptor<P extends Player> extends InputAcceptor<JoinInput
 			fireEvent(new StageOverEvent());
 		} else {
 			int more = limit - players.size();
-			status.setText(MessageFormat.format(
-					"Waiting for {0} more player{1} to join",
+			status.setText(
+					"Waiting for {0} more player{1} to join.",
 					more,
 					more == 1 ? "" : "s"
-			));
+			);
 		}
 		fireEvent(new PlayerJoinedEvent(inputter));
 	}

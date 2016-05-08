@@ -23,7 +23,7 @@ public abstract class ViewResolverFactory<P extends Player, G extends jokatu.ide
 		Class<G> gameClass = handlesGame();
 		if (!gameClass.isInstance(game)) {
 			throw new IllegalArgumentException(
-					MessageFormat.format("Game was not of the right type.  Expected {0}", gameClass)
+					MessageFormat.format("Game was not of the right type.  Expected {0}.", gameClass)
 			);
 		}
 		return gameClass.cast(game);

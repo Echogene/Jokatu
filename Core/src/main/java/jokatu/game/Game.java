@@ -12,8 +12,6 @@ import ophelia.exceptions.StackedException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.text.MessageFormat;
-
 /**
  * @author Steven Weston
  */
@@ -32,16 +30,14 @@ public abstract class Game<P extends Player>
 
 	public final void accept(@NotNull Input input, @NotNull Player player) throws GameException {
 		if (currentStage == null) {
-			throw new GameException(identifier, "The game hasn't started yet");
+			throw new GameException(identifier, "The game hasn't started yet.");
 		}
 		try {
 			currentStage.accept(input, player);
 		} catch (StackedException e) {
 			throw new GameException(
 					identifier,
-					MessageFormat.format(
-							"Input was not accepted because {0}", e.getMessage()
-					),
+					e.getMessage(),
 					e
 			);
 		}

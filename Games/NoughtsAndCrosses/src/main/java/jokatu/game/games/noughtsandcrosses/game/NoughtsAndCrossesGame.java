@@ -2,6 +2,7 @@ package jokatu.game.games.noughtsandcrosses.game;
 
 import jokatu.game.Game;
 import jokatu.game.GameID;
+import jokatu.game.JoiningStage;
 import jokatu.game.games.noughtsandcrosses.player.NoughtsAndCrossesPlayer;
 import jokatu.game.status.StandardTextStatus;
 import jokatu.game.status.Status;
@@ -45,7 +46,14 @@ public class NoughtsAndCrossesGame extends Game<NoughtsAndCrossesPlayer> {
 
 	@Override
 	protected void advanceStageInner() {
-		// todo: the starting stage should be a JoiningStage
-		currentStage = new InputStage(players, status);
+		if (currentStage == null) {
+			currentStage = new JoiningStage<>(NoughtsAndCrossesPlayer.class, players, 2, status);
+
+		} else if (currentStage instanceof JoiningStage) {
+			currentStage = new AllegianceStage(players, status);
+
+		} else if (currentStage instanceof AllegianceStage) {
+			currentStage = new InputStage(players, status);
+		}
 	}
 }

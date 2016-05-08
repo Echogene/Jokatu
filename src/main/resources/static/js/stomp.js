@@ -3,7 +3,7 @@ function Socket() {
 	 * @type {WebSocket}
 	 * @private
 	 */
-	this._ws = new WebSocket('ws://' + window.location.host + '/ws');
+	this._ws = new WebSocket(`ws://${window.location.host}/ws`);
 	this._ws.onmessage = this.onmessage.bind(this);
 	/**
 	 * @type {Array.<String>}

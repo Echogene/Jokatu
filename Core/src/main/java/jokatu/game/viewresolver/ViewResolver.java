@@ -38,7 +38,7 @@ public abstract class ViewResolver<P extends Player, G extends jokatu.identity.I
 		Class<P> playerClass = handlesPlayer();
 		if (!playerClass.isInstance(player)) {
 			throw new IllegalArgumentException(
-					MessageFormat.format("Player was not of the right type.  Expected {0}", playerClass)
+					MessageFormat.format("Player was not of the right type.  Expected {0}.", playerClass)
 			);
 		}
 		return playerClass.cast(player);

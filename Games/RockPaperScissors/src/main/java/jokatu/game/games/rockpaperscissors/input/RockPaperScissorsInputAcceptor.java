@@ -9,7 +9,6 @@ import jokatu.game.result.Result;
 import jokatu.game.status.StandardTextStatus;
 import ophelia.collections.set.bounded.BoundedPair;
 
-import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,11 +30,11 @@ public class RockPaperScissorsInputAcceptor extends InputAcceptor<RockPaperSciss
 		this.players = new BoundedPair<>(players);
 		this.status = status;
 
-		status.setText(MessageFormat.format(
-				"Waiting for input from {0} and {1}",
+		status.setText(
+				"Waiting for inputs from {0} and {1}.",
 				this.players.getFirst(),
 				this.players.getSecond()
-		));
+		);
 	}
 
 	@Override
@@ -57,7 +56,7 @@ public class RockPaperScissorsInputAcceptor extends InputAcceptor<RockPaperSciss
 
 		if (inputs.containsKey(inputter)) {
 			// Player has already chosen.
-			throw new UnacceptableInputException("You can't change your mind");
+			throw new UnacceptableInputException("You can't change your mind.");
 		}
 		inputs.put(inputter, input.getChoice());
 		if (inputs.size() == 2) {
@@ -74,11 +73,11 @@ public class RockPaperScissorsInputAcceptor extends InputAcceptor<RockPaperSciss
 				default:
 					fireEvent(new PlayerResult(DRAW, asList(player1, player2)));
 			}
-			status.setText("Game over");
+			status.setText("Game over.");
 		} else {
 			RockPaperScissorsPlayer other = players.getOther(inputter);
 			assert other != null;
-			status.setText("Awaiting input from " + other.getName());
+			status.setText("Waiting for input from {0}.", other.getName());
 		}
 	}
 }
