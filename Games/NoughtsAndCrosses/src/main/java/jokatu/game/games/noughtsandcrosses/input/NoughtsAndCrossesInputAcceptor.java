@@ -1,13 +1,16 @@
 package jokatu.game.games.noughtsandcrosses.input;
 
+import jokatu.game.event.StageOverEvent;
 import jokatu.game.games.noughtsandcrosses.event.CellChosenEvent;
 import jokatu.game.games.noughtsandcrosses.game.Line;
 import jokatu.game.games.noughtsandcrosses.player.NoughtsAndCrossesPlayer;
 import jokatu.game.input.InputAcceptor;
+import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.status.StandardTextStatus;
 import ophelia.collections.list.UnmodifiableList;
 import ophelia.collections.set.HashSet;
 import ophelia.collections.set.UnmodifiableSet;
+import ophelia.collections.set.bounded.BoundedPair;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -16,7 +19,6 @@ import java.util.stream.IntStream;
 import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
 import static jokatu.game.games.noughtsandcrosses.input.NoughtOrCross.CROSS;
-import static jokatu.game.games.noughtsandcrosses.input.NoughtOrCross.other;
 
 public class NoughtsAndCrossesInputAcceptor extends InputAcceptor<NoughtsAndCrossesInput, NoughtsAndCrossesPlayer> {
 
@@ -35,10 +37,22 @@ public class NoughtsAndCrossesInputAcceptor extends InputAcceptor<NoughtsAndCros
 
 	private final Map<Integer, NoughtOrCross> inputs = new HashMap<>();
 
-	public NoughtsAndCrossesInputAcceptor(Collection<NoughtsAndCrossesPlayer> players, StandardTextStatus status) {
-		super();
+	private final BoundedPair<NoughtsAndCrossesPlayer> players;
+	private final StandardTextStatus status;
 
-		status.setText("Waiting for input from players.");
+	private NoughtsAndCrossesPlayer currentPlayer;
+
+	public NoughtsAndCrossesInputAcceptor(Collection<NoughtsAndCrossesPlayer> players, StandardTextStatus status) {
+		this.players = new BoundedPair<>(players);
+		this.status = status;
+
+		// Crosses go first.
+		currentPlayer = players.stream()
+				.filter(player -> player.getAllegiance() == CROSS)
+				.findAny()
+				.orElseThrow(() -> new RuntimeException("No player was aligned to crosses."));
+
+		this.status.setText("Waiting for input from {0}.", currentPlayer);
 	}
 
 	@Override
@@ -55,15 +69,25 @@ public class NoughtsAndCrossesInputAcceptor extends InputAcceptor<NoughtsAndCros
 	protected void acceptCastInputAndPlayer(NoughtsAndCrossesInput input, NoughtsAndCrossesPlayer inputter) throws Exception {
 		Integer cell = input.getCellId();
 		if (inputs.containsKey(cell)) {
-			inputs.put(cell, other(inputs.get(cell)));
+			throw new UnacceptableInputException("Cell {0} already contained a {1}.", cell, inputs.get(cell));
+
+		} else if (inputter != currentPlayer) {
+			throw new UnacceptableInputException("It''s not your turn!  Wait for {0}.", currentPlayer);
+
 		} else {
-			inputs.put(cell, CROSS);
+			inputs.put(cell, inputter.getAllegiance());
+			currentPlayer = players.getOther(currentPlayer);
+			this.status.setText("Waiting for input from {0}.", currentPlayer);
 		}
-		List<Line> lines = fireLineCompletedEvents();
+		List<Line> lines = getCompletedLines();
 		fireEvent(new CellChosenEvent(cell, inputs.get(cell), lines));
+		if (!lines.isEmpty()) {
+			this.status.setText("{0} wins!", inputter);
+			fireEvent(new StageOverEvent());
+		}
 	}
 
-	private List<Line> fireLineCompletedEvents() {
+	private List<Line> getCompletedLines() {
 		return stream(NoughtOrCross.values()).map(this::fireLineCompletedEventsForPlayer)
 				.flatMap(List::stream)
 				.map(Line::new)
