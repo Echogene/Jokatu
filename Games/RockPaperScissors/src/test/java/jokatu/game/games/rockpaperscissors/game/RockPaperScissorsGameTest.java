@@ -18,10 +18,10 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ophelia.collections.matchers.IsCollectionWithSize.hasSize;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.junit.Assert.fail;
@@ -35,6 +35,8 @@ public class RockPaperScissorsGameTest {
 	@Before
 	public void setUp() throws Exception {
 		game = new RockPaperScissorsGame(new GameID(0L));
+		// Start the game.
+		game.advanceStage();
 		player1 = new RockPaperScissorsPlayer("Player 1");
 		player2 = new RockPaperScissorsPlayer("Player 2");
 	}
@@ -116,7 +118,7 @@ public class RockPaperScissorsGameTest {
 	private Exception extractRootCause(GameException e) {
 		assertThat(e.getCause(), instanceOf(StackedException.class));
 		UnmodifiableList<Exception> causes = CollectedException.flatten((Exception) e.getCause());
-		assertThat(causes, hasSize(1));
+		assertThat(causes, ophelia.collections.matchers.IsCollectionWithSize.hasSize(1));
 		return causes.get(0);
 	}
 
