@@ -32,4 +32,16 @@ layout 'views/game_view.tpl', true,
 			wrapperElement: "JLine",
 			destination: "/topic/substatus.game.${game.identifier}.lines"
 		)
+		yieldUnescaped markupGenerator.bindHistory(
+				tag: "j-message-box",
+				id: "public-messages",
+				wrapperElement: "div",
+				destination: "/topic/public.game.${game.identifier}"
+		)
+		yieldUnescaped markupGenerator.bindLast(
+				tag: "j-status",
+				id: "status",
+				wrapperElement: "div",
+				destination: "/topic/status.game.${game.identifier}"
+		)
 	}
