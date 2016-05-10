@@ -21,6 +21,7 @@ import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
 import static java.util.Collections.singleton;
 import static jokatu.game.games.noughtsandcrosses.input.NoughtOrCross.CROSS;
+import static jokatu.game.result.Result.DRAW;
 import static jokatu.game.result.Result.WIN;
 
 public class NoughtsAndCrossesInputAcceptor extends InputAcceptor<NoughtsAndCrossesInput, NoughtsAndCrossesPlayer> {
@@ -86,6 +87,10 @@ public class NoughtsAndCrossesInputAcceptor extends InputAcceptor<NoughtsAndCros
 		fireEvent(new CellChosenEvent(cell, inputs.get(cell), lines));
 		if (!lines.isEmpty()) {
 			fireEvent(new PlayerResult(WIN, singleton(inputter)));
+			fireEvent(new StageOverEvent());
+		}
+		if (inputs.size() == 9) {
+			fireEvent(new PlayerResult(DRAW, asList(players.getFirst(), players.getSecond())));
 			fireEvent(new StageOverEvent());
 		}
 	}
