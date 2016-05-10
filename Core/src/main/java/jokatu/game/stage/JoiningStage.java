@@ -1,5 +1,6 @@
-package jokatu.game;
+package jokatu.game.stage;
 
+import jokatu.game.Stage;
 import jokatu.game.joining.JoinInputAcceptor;
 import jokatu.game.player.Player;
 import jokatu.game.status.StandardTextStatus;

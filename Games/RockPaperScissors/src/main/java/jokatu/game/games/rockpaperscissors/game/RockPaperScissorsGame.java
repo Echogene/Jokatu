@@ -2,7 +2,7 @@ package jokatu.game.games.rockpaperscissors.game;
 
 import jokatu.game.Game;
 import jokatu.game.GameID;
-import jokatu.game.JoiningStage;
+import jokatu.game.stage.JoiningStage;
 import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayer;
 import jokatu.game.status.StandardTextStatus;
 import jokatu.game.status.Status;
