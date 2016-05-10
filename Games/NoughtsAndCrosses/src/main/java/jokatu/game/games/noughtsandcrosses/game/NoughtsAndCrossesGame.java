@@ -57,7 +57,7 @@ public class NoughtsAndCrossesGame extends Game<NoughtsAndCrossesPlayer> {
 			currentStage = new InputStage(players, status);
 
 		} else {
-			currentStage = new GameOverStage();
+			currentStage = new GameOverStage(status);
 		}
 	}
 }

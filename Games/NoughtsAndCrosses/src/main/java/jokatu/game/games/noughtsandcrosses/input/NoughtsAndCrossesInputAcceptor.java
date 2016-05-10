@@ -6,6 +6,7 @@ import jokatu.game.games.noughtsandcrosses.game.Line;
 import jokatu.game.games.noughtsandcrosses.player.NoughtsAndCrossesPlayer;
 import jokatu.game.input.InputAcceptor;
 import jokatu.game.input.UnacceptableInputException;
+import jokatu.game.result.PlayerResult;
 import jokatu.game.status.StandardTextStatus;
 import ophelia.collections.list.UnmodifiableList;
 import ophelia.collections.set.HashSet;
@@ -18,7 +19,9 @@ import java.util.stream.IntStream;
 
 import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
+import static java.util.Collections.singleton;
 import static jokatu.game.games.noughtsandcrosses.input.NoughtOrCross.CROSS;
+import static jokatu.game.result.Result.WIN;
 
 public class NoughtsAndCrossesInputAcceptor extends InputAcceptor<NoughtsAndCrossesInput, NoughtsAndCrossesPlayer> {
 
@@ -82,7 +85,7 @@ public class NoughtsAndCrossesInputAcceptor extends InputAcceptor<NoughtsAndCros
 		List<Line> lines = getCompletedLines();
 		fireEvent(new CellChosenEvent(cell, inputs.get(cell), lines));
 		if (!lines.isEmpty()) {
-			this.status.setText("{0} wins!", inputter);
+			fireEvent(new PlayerResult(WIN, singleton(inputter)));
 			fireEvent(new StageOverEvent());
 		}
 	}

@@ -74,7 +74,6 @@ public class RockPaperScissorsInputAcceptor extends InputAcceptor<RockPaperSciss
 				default:
 					fireEvent(new PlayerResult(DRAW, asList(player1, player2)));
 			}
-			status.setText("Game over.");
 			fireEvent(new StageOverEvent());
 		} else {
 			RockPaperScissorsPlayer other = players.getOther(inputter);

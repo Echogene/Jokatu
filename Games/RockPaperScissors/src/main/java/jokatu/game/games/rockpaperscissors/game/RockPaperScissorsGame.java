@@ -60,7 +60,7 @@ public class RockPaperScissorsGame extends Game<RockPaperScissorsPlayer> {
 			currentStage = new InputStage(players, status);
 
 		} else {
-			currentStage = new GameOverStage();
+			currentStage = new GameOverStage(status);
 		}
 	}
 }
