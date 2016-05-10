@@ -2,6 +2,7 @@ package jokatu.game.games.rockpaperscissors.game;
 
 import jokatu.game.Game;
 import jokatu.game.GameID;
+import jokatu.game.stage.GameOverStage;
 import jokatu.game.stage.JoiningStage;
 import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayer;
 import jokatu.game.status.StandardTextStatus;
@@ -54,8 +55,12 @@ public class RockPaperScissorsGame extends Game<RockPaperScissorsPlayer> {
 	public void advanceStageInner() {
 		if (currentStage == null) {
 			currentStage = new JoiningStage<>(RockPaperScissorsPlayer.class, players, 2, status);
-		} else {
+
+		} else if (currentStage instanceof JoiningStage) {
 			currentStage = new InputStage(players, status);
+
+		} else {
+			currentStage = new GameOverStage();
 		}
 	}
 }

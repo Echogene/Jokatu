@@ -1,5 +1,6 @@
 package jokatu.game.games.rockpaperscissors.input;
 
+import jokatu.game.event.StageOverEvent;
 import jokatu.game.games.rockpaperscissors.game.RockPaperScissors;
 import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayer;
 import jokatu.game.input.InputAcceptor;
@@ -74,6 +75,7 @@ public class RockPaperScissorsInputAcceptor extends InputAcceptor<RockPaperSciss
 					fireEvent(new PlayerResult(DRAW, asList(player1, player2)));
 			}
 			status.setText("Game over.");
+			fireEvent(new StageOverEvent());
 		} else {
 			RockPaperScissorsPlayer other = players.getOther(inputter);
 			assert other != null;
