@@ -8,6 +8,48 @@ body {
 		flex-direction: column;
 		width: 350px;
 		background-color: #ddd;
+
+		.header {
+			font-size: 150%;
+			font-weight: bold;
+			padding-left: .5em;
+		}
+
+		>* {
+			padding-top: .5em;
+			padding-bottom: .5em;
+
+			>* {
+				padding-left: .8em;
+				padding-top: .3em;
+				padding-bottom: .3em;
+				border-bottom: 1px solid #ccc;
+
+				&:last-child {
+					border-bottom: none;
+				}
+			}
+
+			&:not(:empty) {
+				border-bottom: 1px solid #bbb;
+
+				&::before {
+					.header()
+				}
+			}
+		}
+
+		>#status {
+			&:not(:empty)::before {
+				content: "Status";
+			}
+		}
+
+		>#public-messages {
+			&:not(:empty)::before {
+				content: "Public messages";
+			}
+		}
 	}
 
 	>#contents {
