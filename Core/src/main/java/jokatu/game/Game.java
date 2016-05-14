@@ -1,5 +1,6 @@
 package jokatu.game;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jokatu.game.event.GameEvent;
 import jokatu.game.exception.GameException;
 import jokatu.game.input.Input;
@@ -72,4 +73,10 @@ public abstract class Game<P extends Player>
 	 * Set the {@link Game#currentStage} field to the next (not-null) stage.
 	 */
 	protected abstract void advanceStageInner();
+
+	@JsonIgnore
+	@Nullable
+	public Stage getCurrentStage() {
+		return currentStage;
+	}
 }
