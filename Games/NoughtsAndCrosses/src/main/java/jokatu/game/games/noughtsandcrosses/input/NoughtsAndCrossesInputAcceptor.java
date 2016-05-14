@@ -88,8 +88,7 @@ public class NoughtsAndCrossesInputAcceptor extends InputAcceptor<NoughtsAndCros
 		if (!lines.isEmpty()) {
 			fireEvent(new PlayerResult(WIN, singleton(inputter)));
 			fireEvent(new StageOverEvent());
-		}
-		if (inputs.size() == 9) {
+		} else if (inputs.size() == 9) {
 			fireEvent(new PlayerResult(DRAW, asList(players.getFirst(), players.getSecond())));
 			fireEvent(new StageOverEvent());
 		}
