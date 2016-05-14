@@ -9,7 +9,7 @@ layout 'views/game_view.tpl', true,
 		script(type: 'text/javascript', src: '/js/rock_paper_scissors.js') {}
 	},
 
-	mainBody: contents {
+	mainContents: contents {
 		button(is: 'j-button', destination: "/topic/input.game.${game.identifier}", 'data-input': '{"join": true}', 'Join game')
 		select(id: 'choice') {
 			option(value: 'ROCK', 'Rock')
@@ -17,12 +17,4 @@ layout 'views/game_view.tpl', true,
 			option(value: 'SCISSORS', 'Scissors')
 		}
 		button(onclick: 'choose()', 'Choose')
-		yieldUnescaped markupGenerator.bindHistory(
-				tag: "j-message-box", id: "public-messages",
-				wrapperElement: "div", destination: "/topic/public.game.${game.identifier}"
-		)
-		yieldUnescaped markupGenerator.bindLast(
-				tag: "j-status", id: "status",
-				wrapperElement: "div", destination: "/topic/status.game.${game.identifier}"
-		)
 	}

@@ -11,7 +11,7 @@ layout 'views/game_view.tpl', true,
 		script(type: 'text/javascript', src: '/js/noughts_and_crosses.js') {}
 	},
 
-	mainBody: contents {
+	mainContents: contents {
 		div(class: 'grid') {
 			(0..8).each { cell ->
 				yieldUnescaped markupGenerator.bindLast(
@@ -30,17 +30,5 @@ layout 'views/game_view.tpl', true,
 			id: "lines",
 			wrapperElement: "JLine",
 			destination: "/topic/substatus.game.${game.identifier}.lines"
-		)
-		yieldUnescaped markupGenerator.bindHistory(
-				tag: "j-message-box",
-				id: "public-messages",
-				wrapperElement: "div",
-				destination: "/topic/public.game.${game.identifier}"
-		)
-		yieldUnescaped markupGenerator.bindLast(
-				tag: "j-status",
-				id: "status",
-				wrapperElement: "div",
-				destination: "/topic/status.game.${game.identifier}"
 		)
 	}
