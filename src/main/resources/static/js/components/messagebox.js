@@ -1,10 +1,6 @@
 var JMessageBoxProto = Object.create(HTMLElement.prototype);
 
 JMessageBoxProto.createdCallback = function() {
-
-	var template = document.querySelector('#message_box_template');
-	var clone = document.importNode(template.content, true);
-
 	/**
 	 * @type {string}
 	 * @private
@@ -12,18 +8,10 @@ JMessageBoxProto.createdCallback = function() {
 	this._messageElementName = this.getAttribute('wrapperElement');
 	var destination = this.getAttribute('destination');
 
-	/**
-	 * @type {Element}
-	 * @private
-	 */
-	this._container = clone.querySelector('div');
-
 	var initialData = JSON.parse(this.getAttribute('data-initial'));
 	initialData.forEach(datum => this._createMessage(datum.payload, datum.headers));
 
 	socket.subscribe(destination, this._createMessage.bind(this));
-
-	this.createShadowRoot().appendChild(clone);
 };
 
 JMessageBoxProto._createMessage = function(body, headers) {
@@ -43,7 +31,7 @@ JMessageBoxProto._createMessage = function(body, headers) {
 		element.textContent = body.text;
 	}
 	element.setAttribute('data-message', JSON.stringify({payload: body, headers: headers}));
-	this._container.appendChild(element);
+	this.appendChild(element);
 };
 
 var JMessageBox = document.registerElement('j-message-box', {
