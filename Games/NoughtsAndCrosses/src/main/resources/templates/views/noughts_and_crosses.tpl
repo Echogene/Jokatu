@@ -1,4 +1,3 @@
-import static jokatu.util.Json.serialise
 import jokatu.game.games.noughtsandcrosses.input.NoughtOrCross
 
 layout 'views/game_view.tpl', true,
@@ -13,10 +12,6 @@ layout 'views/game_view.tpl', true,
 	},
 
 	mainBody: contents {
-		button(is: 'j-button', destination: "/topic/input.game.${game.identifier}", 'data-input': '{"join": true}', 'Join game')
-		NoughtOrCross.values().each { allegiance ->
-			button(is: 'j-button', destination: "/topic/input.game.${game.identifier}", 'data-input': "{\"allegiance\": \"${allegiance}\"}", "${allegiance}")
-		}
 		div(class: 'grid') {
 			(0..8).each { cell ->
 				yieldUnescaped markupGenerator.bindLast(

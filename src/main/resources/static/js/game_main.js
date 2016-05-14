@@ -1,0 +1,1 @@
+socket.subscribe(`/topic/advance.game.${game.identifier}`, () => document.location.reload());
