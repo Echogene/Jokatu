@@ -4,6 +4,7 @@ JStatusProto.createdCallback = function() {
 
 	this._statusElementName = this.getAttribute('wrapperElement');
 	this._showAll = this.getAttribute('showAll');
+	this._removeOldChildren = this.getAttribute('removeOldChildren');
 	var destination = this.getAttribute('destination');
 
 	/**
@@ -29,11 +30,14 @@ JStatusProto._setStatus = function(statuses) {
 		var status = statuses[i];
 		if (status) {
 			this._updateElement(element, status);
-		} else if (!this._showAll) {
+		} else if (this._showAll) {
+			element.innerHTML = '&nbsp;'
+		} else if (this._removeOldChildren) {
+			// Remove the element.
+			this.removeChild(element);
+		} else {
 			// Hide the element.
 			element.style.display = 'none';
-		} else {
-			element.innerHTML = '&nbsp;'
 		}
 	}
 };
