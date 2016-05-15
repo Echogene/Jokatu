@@ -59,8 +59,8 @@ public abstract class Game<P extends Player>
 	@NotNull
 	public abstract Status getStatus();
 
-	public boolean hasPlayer(@NotNull Player player) {
-		return getPlayerByName(player.getName()) != null;
+	public boolean hasPlayer(String name) {
+		return getPlayerByName(name) != null;
 	}
 
 	public final void advanceStage() {

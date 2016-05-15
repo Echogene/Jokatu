@@ -101,7 +101,7 @@ public class GameController {
 		ViewResolver<?, ?> viewResolver = gameFactories.getViewResolver(game);
 		Player player = getPlayer(game, principal.getName());
 		ModelAndView modelAndView;
-		if (game.hasPlayer(player)) {
+		if (game.hasPlayer(player.getName())) {
 			modelAndView = viewResolver.getViewForPlayer(player);
 		} else {
 			modelAndView = viewResolver.getViewForObserver();
