@@ -16,9 +16,6 @@ body {
 		}
 
 		>* {
-			padding-top: .5em;
-			padding-bottom: .5em;
-
 			>* {
 				padding-left: .8em;
 				padding-top: .3em;
@@ -32,6 +29,8 @@ body {
 
 			&:not(:empty) {
 				border-bottom: 1px solid #bbb;
+				padding-top: .5em;
+				padding-bottom: .5em;
 
 				&::before {
 					.header()
@@ -39,22 +38,17 @@ body {
 			}
 		}
 
-		>#status {
-			&:not(:empty)::before {
-				content: "Status";
-			}
+		>#status:not(:empty)::before {
+			content: "Status";
 		}
-
-		>#public-messages {
-			&:not(:empty)::before {
-				content: "Public messages";
-			}
+		>#public-messages:not(:empty)::before {
+			content: "Public messages";
 		}
-
-		>#observers {
-			&:not(:empty)::before {
-				content: "Observers";
-			}
+		>#players:not(:empty)::before {
+			content: "Players";
+		}
+		>#observers:not(:empty)::before {
+			content: "Observers";
 		}
 	}
 

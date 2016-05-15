@@ -11,6 +11,7 @@ layout 'layouts/main.tpl', true,
 		link(rel: 'stylesheet', href: '/css/game.css')
 		include template: 'components/messagebox.tpl'
 		include template: 'components/status.tpl'
+		include template: 'components/player.tpl'
 		additionalHeaders()
 	},
 
@@ -27,6 +28,13 @@ layout 'layouts/main.tpl', true,
 					id: "public-messages",
 					wrapperElement: "div",
 					destination: "/topic/public.game.${game.identifier}"
+			)
+			yieldUnescaped markupGenerator.bindLast(
+					tag: 'j-status',
+					id: 'players',
+					wrapperElement: 'JPlayer',
+					removeOldChildren: 'true',
+					destination: "/topic/players.game.${game.identifier}"
 			)
 			yieldUnescaped markupGenerator.bindLast(
 					tag: 'j-status',

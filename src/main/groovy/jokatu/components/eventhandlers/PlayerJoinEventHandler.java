@@ -6,6 +6,7 @@ import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.event.AbstractEventHandler;
 import jokatu.game.joining.PlayerJoinedEvent;
+import jokatu.game.player.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -24,6 +25,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.text.MessageFormat.format;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.stream.Collectors.toSet;
 import static ophelia.util.FunctionUtils.not;
@@ -104,14 +106,20 @@ public class PlayerJoinEventHandler extends AbstractEventHandler<PlayerJoinedEve
 		// reappear so soon.
 		ScheduledFuture<?> future = executorService.schedule(() -> {
 			gameUpdates.remove(gameId);
-			Game game = gameDao.read(gameId);
-			if (game != null) {
-				Set<String> observers = userNames.stream()
-						.filter(not(game::hasPlayer))
-						.collect(toSet());
-
-				sender.send("/topic/observers.game." + gameId, observers);
+			Game<? extends Player> game = gameDao.read(gameId);
+			if (game == null) {
+				return;
 			}
+			Set<String> observers = userNames.stream()
+					.filter(not(game::hasPlayer))
+					.collect(toSet());
+			sender.send(format("/topic/observers.game.{0}", gameId), observers);
+
+			Set<PlayerStatus> playerStatuses = game.getPlayers().stream()
+					.map(Player::getName)
+					.map(name -> new PlayerStatus(userNames.contains(name), name))
+					.collect(toSet());
+			sender.send(format("/topic/players.game.{0}", gameId), playerStatuses);
 		}, 500, MILLISECONDS);
 		gameUpdates.put(gameId, future);
 	}
@@ -119,5 +127,23 @@ public class PlayerJoinEventHandler extends AbstractEventHandler<PlayerJoinedEve
 	@Override
 	protected void handleCastEvent(Game game, PlayerJoinedEvent event) {
 		scheduleUpdate(game.getIdentifier());
+	}
+
+	private static class PlayerStatus {
+		private final boolean online;
+		private final String name;
+
+		private PlayerStatus(boolean online, String name) {
+			this.online = online;
+			this.name = name;
+		}
+
+		public boolean isOnline() {
+			return online;
+		}
+
+		public String getName() {
+			return name;
+		}
 	}
 }
