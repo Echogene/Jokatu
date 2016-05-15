@@ -9,6 +9,8 @@ layout 'layouts/main.tpl', true,
 		script(type: 'text/javascript', src: '/js/game_main.js') {}
 		script(type: 'text/javascript', "socket.subscribe(\"/user/topic/errors.game.${game.identifier}\");")
 		link(rel: 'stylesheet', href: '/css/game.css')
+		include template: 'components/messagebox.tpl'
+		include template: 'components/status.tpl'
 		additionalHeaders()
 	},
 
