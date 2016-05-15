@@ -2,15 +2,16 @@ package jokatu.game.games.rockpaperscissors.game;
 
 import jokatu.game.Game;
 import jokatu.game.GameID;
+import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayer;
 import jokatu.game.stage.GameOverStage;
 import jokatu.game.stage.JoiningStage;
-import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayer;
 import jokatu.game.status.StandardTextStatus;
 import jokatu.game.status.Status;
+import ophelia.collections.BaseCollection;
+import ophelia.collections.UnmodifiableCollection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,8 +42,9 @@ public class RockPaperScissorsGame extends Game<RockPaperScissorsPlayer> {
 	}
 
 	@NotNull
-	Collection<RockPaperScissorsPlayer> getPlayers() {
-		return players.values();
+	@Override
+	public BaseCollection<RockPaperScissorsPlayer> getPlayers() {
+		return new UnmodifiableCollection<>(players.values());
 	}
 
 	@NotNull

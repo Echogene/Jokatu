@@ -5,6 +5,7 @@ import jokatu.game.GameID;
 import jokatu.game.event.StatusUpdateEvent;
 import jokatu.game.games.echo.player.EchoPlayer;
 import jokatu.game.status.Status;
+import ophelia.collections.BaseCollection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,6 +13,8 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static ophelia.collections.set.EmptySet.emptySet;
 
 public class EchoGame extends Game<EchoPlayer> {
 
@@ -52,5 +55,10 @@ public class EchoGame extends Game<EchoPlayer> {
 	@Override
 	public void advanceStageInner() {
 		currentStage = new EchoStage();
+	}
+
+	@Override
+	public BaseCollection<EchoPlayer> getPlayers() {
+		return emptySet();
 	}
 }

@@ -7,6 +7,8 @@ import jokatu.game.stage.JoiningStage;
 import jokatu.game.games.noughtsandcrosses.player.NoughtsAndCrossesPlayer;
 import jokatu.game.status.StandardTextStatus;
 import jokatu.game.status.Status;
+import ophelia.collections.BaseCollection;
+import ophelia.collections.UnmodifiableCollection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -59,5 +61,10 @@ public class NoughtsAndCrossesGame extends Game<NoughtsAndCrossesPlayer> {
 		} else {
 			currentStage = new GameOverStage(status);
 		}
+	}
+
+	@Override
+	public BaseCollection<NoughtsAndCrossesPlayer> getPlayers() {
+		return new UnmodifiableCollection<>(players.values());
 	}
 }

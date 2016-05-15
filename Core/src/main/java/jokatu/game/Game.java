@@ -7,6 +7,7 @@ import jokatu.game.input.Input;
 import jokatu.game.player.Player;
 import jokatu.game.status.Status;
 import jokatu.identity.Identifiable;
+import ophelia.collections.BaseCollection;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import ophelia.event.observable.Observable;
 import ophelia.exceptions.StackedException;
@@ -79,4 +80,6 @@ public abstract class Game<P extends Player>
 	public Stage getCurrentStage() {
 		return currentStage;
 	}
+
+	public abstract BaseCollection<P> getPlayers();
 }
