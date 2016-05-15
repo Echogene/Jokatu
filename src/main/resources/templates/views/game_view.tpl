@@ -26,6 +26,13 @@ layout 'layouts/main.tpl', true,
 					wrapperElement: "div",
 					destination: "/topic/public.game.${game.identifier}"
 			)
+			yieldUnescaped markupGenerator.bindLast(
+					tag: 'j-status',
+					id: 'observers',
+					wrapperElement: 'div',
+					removeOldChildren: 'true',
+					destination: "/topic/observers.game.${game.identifier}"
+			)
 		}
 		div(id: 'contents') {
 			mainContents()

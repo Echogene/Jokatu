@@ -50,6 +50,12 @@ body {
 				content: "Public messages";
 			}
 		}
+
+		>#observers {
+			&:not(:empty)::before {
+				content: "Observers";
+			}
+		}
 	}
 
 	>#contents {

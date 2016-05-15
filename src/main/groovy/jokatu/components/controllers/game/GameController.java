@@ -127,6 +127,13 @@ public class GameController {
 		getGame(identity, "You cannot subscribe to a non-existent game.");
 	}
 
+	@SubscribeMapping("/topic/observers.game.{identity}")
+	void usersSubscription(
+			@DestinationVariable("identity") GameID identity
+	) throws GameException {
+		getGame(identity, "You cannot subscribe to a non-existent game.");
+	}
+
 	@SubscribeMapping("/topic/status.game.{identity}")
 	void gameStatusSubscription(
 			@DestinationVariable("identity") GameID identity
