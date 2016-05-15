@@ -31,7 +31,7 @@ import static ophelia.util.FunctionUtils.not;
 @Component
 public class PlayerJoinEventHandler extends AbstractEventHandler<PlayerJoinedEvent> implements ApplicationListener {
 
-	private static final Pattern STATUS_REGEX = Pattern.compile("/topic/status\\.game\\.(\\d+)");
+	private static final Pattern STATUS_REGEX = Pattern.compile("/topic/observers\\.game\\.(\\d+)");
 
 	private final Map<GameID, Map<String, String>> gameUsers = new ConcurrentHashMap<>();
 	private final Map<GameID, ScheduledFuture<?>> gameUpdates = new ConcurrentHashMap<>();
