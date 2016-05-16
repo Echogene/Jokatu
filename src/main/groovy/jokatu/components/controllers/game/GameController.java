@@ -5,10 +5,7 @@ import jokatu.components.dao.GameDao;
 import jokatu.components.markup.MarkupGenerator;
 import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.Game;
-import jokatu.game.GameFactory;
 import jokatu.game.GameID;
-import jokatu.game.event.EventHandler;
-import jokatu.game.event.GameEvent;
 import jokatu.game.exception.GameException;
 import jokatu.game.input.Input;
 import jokatu.game.input.InputDeserialiser;
@@ -39,12 +36,11 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.security.Principal;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.Map;
 
 import static java.text.MessageFormat.format;
 import static ophelia.exceptions.maybe.Maybe.wrapOutput;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * A big controller (that should probably be several) that controls client requests for games.
@@ -55,48 +51,29 @@ public class GameController {
 
 	private static final Logger log = LoggerFactory.getLogger(GameController.class);
 
-	private static final String GAME_LIST_MAPPING = "/games";
-
 	private final GameFactories gameFactories;
 	private final GameDao gameDao;
 	private final StoringMessageSender sender;
 	private final MarkupGenerator markupGenerator;
-	private final Collection<EventHandler> eventHandlers;
 
 	@Autowired
 	public GameController(
 			GameFactories gameFactories,
 			GameDao gameDao,
 			StoringMessageSender sender,
-			MarkupGenerator markupGenerator,
-			Collection<EventHandler> eventHandlers
+			MarkupGenerator markupGenerator
 	) {
 		this.gameFactories = gameFactories;
 		this.gameDao = gameDao;
 		this.sender = sender;
 		this.markupGenerator = markupGenerator;
-		this.eventHandlers = eventHandlers;
-	}
-
-	@RequestMapping(GAME_LIST_MAPPING)
-	ModelAndView games() {
-		// Pro tip: Never give the view the same name as an attribute in the model if you want to use that attribute.
-		Map<String, Object> model = new HashMap<>();
-
-		SortedSet<Game<?>> games = new TreeSet<>((g, h) -> g.getIdentifier().compareTo(h.getIdentifier()));
-		games.addAll(gameDao.getAll().getUnmodifiableInnerSet());
-		model.put("games", games);
-
-		model.put("gameNames", gameFactories.getGameNames());
-
-		return new ModelAndView("views/game_list", model);
 	}
 
 	@RequestMapping("/game/{identity}")
 	ModelAndView game(@PathVariable("identity") GameID identity, Principal principal) throws GameException {
 		Game<? extends Player> game = gameDao.read(identity);
 		if (game == null) {
-			return new ModelAndView(new RedirectView(GAME_LIST_MAPPING));
+			return new ModelAndView(new RedirectView("/game/0"));
 		}
 		ViewResolver<?, ?> viewResolver = gameFactories.getViewResolver(game);
 		Player player = getPlayer(game, principal.getName());
@@ -108,6 +85,7 @@ public class GameController {
 		}
 		modelAndView.addObject("markupGenerator", markupGenerator);
 		modelAndView.addObject("username", principal.getName());
+		modelAndView.addObject("games", gameFactories.getGameNames());
 		return modelAndView;
 	}
 
@@ -189,21 +167,6 @@ public class GameController {
 		game.accept(input, player);
 	}
 
-	@RequestMapping(value = "/createGame.do", method = POST)
-	@ResponseBody
-	Game createGame(@RequestParam("gameName") String gameName, Principal principal) {
-
-		GameFactory factory = gameFactories.getFactory(gameName);
-		Game<?> game = factory.produceGame(principal.getName());
-
-		game.observe(event -> sendEvent(game, event));
-
-		// Now we are observing events, start the game.
-		game.advanceStage();
-
-		return game;
-	}
-
 	/**
 	 * Users are allowed to subscribe to a private channel for a game, but unless they're players, they probably won't
 	 * receive any messages for it.
@@ -214,10 +177,6 @@ public class GameController {
 			Principal principal
 	) throws GameException {
 		getGame(identity, "You cannot subscribe to a non-existent game.");
-	}
-
-	private void sendEvent(@NotNull Game game, @NotNull GameEvent event) {
-		eventHandlers.forEach(eventHandler -> eventHandler.handle(game, event));
 	}
 
 	@NotNull

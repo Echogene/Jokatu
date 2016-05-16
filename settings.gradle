@@ -7,4 +7,6 @@ include 'Games:RockPaperScissors'
 findProject(':Games:RockPaperScissors')?.name = 'RockPaperScissors'
 include 'Games:NoughtsAndCrosses'
 findProject(':Games:NoughtsAndCrosses')?.name = 'NoughtsAndCrosses'
+include 'Games:GameOfGames'
+findProject(':Games:GameOfGames')?.name = 'GameOfGames'
 
