@@ -7,8 +7,7 @@ import jokatu.game.stage.GameOverStage;
 import jokatu.game.stage.JoiningStage;
 import jokatu.game.status.StandardTextStatus;
 import jokatu.game.status.Status;
-import ophelia.collections.BaseCollection;
-import ophelia.collections.UnmodifiableCollection;
+import ophelia.collections.set.UnmodifiableSet;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,8 +42,8 @@ public class RockPaperScissorsGame extends Game<RockPaperScissorsPlayer> {
 
 	@NotNull
 	@Override
-	public BaseCollection<RockPaperScissorsPlayer> getPlayers() {
-		return new UnmodifiableCollection<>(players.values());
+	public UnmodifiableSet<RockPaperScissorsPlayer> getPlayers() {
+		return new UnmodifiableSet<>(players.values());
 	}
 
 	@NotNull
