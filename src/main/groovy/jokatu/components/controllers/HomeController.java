@@ -22,6 +22,6 @@ public class HomeController {
 	 */
 	@RequestMapping("/")
 	String loggedIn() {
-		return "redirect:/games";
+		return "redirect:/game/0";
 	}
 }
