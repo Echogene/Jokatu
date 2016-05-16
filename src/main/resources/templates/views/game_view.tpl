@@ -1,6 +1,6 @@
 layout 'layouts/main.tpl', true,
 
-	pageTitle: "Game $gameId",
+	pageTitle: "$gameName $gameId",
 
 	headers: contents {
 		script(type: 'text/javascript', "gameId = ${gameId};")
