@@ -2,6 +2,7 @@ package jokatu.game.games.gameofgames.game;
 
 import jokatu.game.Game;
 import jokatu.game.GameID;
+import jokatu.game.event.StatusUpdateEvent;
 import jokatu.game.player.Player;
 import jokatu.game.status.Status;
 import ophelia.collections.BaseCollection;
@@ -44,6 +45,7 @@ public class GameOfGames extends Game<Player> {
 	protected void advanceStageInner() {
 		if (currentStage == null) {
 			currentStage = new GameOfGameStage();
+			fireEvent((StatusUpdateEvent) GameOfGames.this::getStatus);
 		}
 	}
 
