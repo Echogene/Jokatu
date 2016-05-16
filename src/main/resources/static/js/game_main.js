@@ -1,1 +1,1 @@
-socket.subscribe(`/topic/advance.game.${game.identifier}`, () => document.location.reload());
+socket.subscribe(`/topic/advance.game.${gameId}`, () => document.location.reload());

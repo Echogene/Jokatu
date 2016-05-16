@@ -11,7 +11,7 @@ layout 'views/game_view.tpl', true,
 		button(
 			is: 'j-button',
 			id: 'join',
-			destination: "/topic/input.game.${game.identifier}",
+			destination: "/topic/input.game.${gameId}",
 			'data-input': '{"join": true}',
 			'Join game'
 		)

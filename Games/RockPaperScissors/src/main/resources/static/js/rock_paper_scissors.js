@@ -1,3 +1,3 @@
 function choose() {
-	socket.send(`/topic/input.game.${game.identifier}`, {choice: document.getElementById('choice').value});
+	socket.send(`/topic/input.game.${gameId}`, {choice: document.getElementById('choice').value});
 }

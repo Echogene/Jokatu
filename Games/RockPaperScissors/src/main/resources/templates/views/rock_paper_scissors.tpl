@@ -8,7 +8,7 @@ layout 'views/game_view.tpl', true,
 	},
 
 	mainContents: contents {
-		button(is: 'j-button', destination: "/topic/input.game.${game.identifier}", 'data-input': '{"join": true}', 'Join game')
+		button(is: 'j-button', destination: "/topic/input.game.${gameId}", 'data-input': '{"join": true}', 'Join game')
 		select(id: 'choice') {
 			option(value: 'ROCK', 'Rock')
 			option(value: 'PAPER', 'Paper')

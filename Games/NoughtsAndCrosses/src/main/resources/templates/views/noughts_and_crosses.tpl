@@ -18,8 +18,8 @@ layout 'views/game_view.tpl', true,
 					id: "cell_${cell}",
 					wrapperElement: 'JButton',
 					showAll: true,
-					'data-wrapperAttributes': "{\"destination\": \"/topic/input.game.${game.identifier}\", \"data-input\": {\"choice\": ${cell}}}",
-					destination: "/topic/substatus.game.${game.identifier}.cell_${cell}"
+					'data-wrapperAttributes': "{\"destination\": \"/topic/input.game.${gameId}\", \"data-input\": {\"choice\": ${cell}}}",
+					destination: "/topic/substatus.game.${gameId}.cell_${cell}"
 				)
 			}
 		}
@@ -27,6 +27,6 @@ layout 'views/game_view.tpl', true,
 			tag: "j-status",
 			id: "lines",
 			wrapperElement: "JLine",
-			destination: "/topic/substatus.game.${game.identifier}.lines"
+			destination: "/topic/substatus.game.${gameId}.lines"
 		)
 	}

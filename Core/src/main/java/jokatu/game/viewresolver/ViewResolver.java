@@ -20,15 +20,11 @@ public abstract class ViewResolver<P extends Player, G extends jokatu.identity.I
 
 	public final ModelAndView getViewForPlayer(Player player) {
 		P castPlayer = castPlayer(player);
-		ModelAndView modelAndView = getViewFor(castPlayer);
-		modelAndView.addObject("game", game);
-		return modelAndView;
+		return getViewFor(castPlayer);
 	}
 
 	public ModelAndView getViewForObserver() {
-		ModelAndView modelAndView = getDefaultView();
-		modelAndView.addObject("game", game);
-		return modelAndView;
+		return getDefaultView();
 	}
 
 	@NotNull

@@ -12,7 +12,7 @@ layout 'views/game_view.tpl', true,
 		NoughtOrCross.values().each { allegiance ->
 			button(
 				is: 'j-button',
-				destination: "/topic/input.game.${game.identifier}",
+				destination: "/topic/input.game.${gameId}",
 				'data-input': "{\"allegiance\": \"${allegiance}\"}",
 				"${allegiance}"
 			)
