@@ -1,12 +1,15 @@
 package jokatu.components.eventhandlers;
 
 import jokatu.components.config.FactoryConfiguration.GameFactories;
+import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.Game;
 import jokatu.game.GameFactory;
+import jokatu.game.GameID;
 import jokatu.game.event.AbstractEventHandler;
 import jokatu.game.event.EventHandler;
 import jokatu.game.event.GameEvent;
 import jokatu.game.games.gameofgames.event.GameCreatedEvent;
+import ophelia.util.MapUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -14,6 +17,11 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static java.text.MessageFormat.format;
 
 
 @Component
@@ -23,7 +31,13 @@ public class GameCreatedEventHandler extends AbstractEventHandler<GameCreatedEve
 	private GameFactories gameFactories;
 
 	@Autowired
+	private StoringMessageSender messageSender;
+
+	@Autowired
 	private ApplicationContext applicationContext;
+
+	// todo: move this map to its own bean
+	private final Map<GameID, List<GameEntry>> entries = new HashMap<>();
 
 	private Collection<EventHandler> eventHandlers;
 
@@ -39,10 +53,18 @@ public class GameCreatedEventHandler extends AbstractEventHandler<GameCreatedEve
 
 	@Override
 	protected void handleCastEvent(Game gameOfGames, GameCreatedEvent gameCreatedEvent) {
-		createGame(gameCreatedEvent.getGameName(), gameCreatedEvent.getPlayer().getName());
+		Game<?> game = createGame(gameCreatedEvent.getGameName(), gameCreatedEvent.getPlayer().getName());
+
+		GameID id = gameOfGames.getIdentifier();
+		MapUtils.updateListBasedMap(entries, id, new GameEntry(game));
+
+		messageSender.send(
+				format("/topic/games.game.{0}", id),
+				entries.get(id)
+		);
 	}
 
-	public void createGame(String gameName, String playerNawe) {
+	public Game<?> createGame(String gameName, String playerNawe) {
 		GameFactory factory = gameFactories.getFactory(gameName);
 
 		Game<?> game = factory.produceGame(playerNawe);
@@ -51,9 +73,29 @@ public class GameCreatedEventHandler extends AbstractEventHandler<GameCreatedEve
 
 		// Now we are observing events, start the game.
 		game.advanceStage();
+
+		return game;
 	}
 
 	private void sendEvent(@NotNull Game game, @NotNull GameEvent event) {
 		eventHandlers.forEach(eventHandler -> eventHandler.handle(game, event));
+	}
+
+	private class GameEntry {
+		private final GameID gameId;
+		private final String gameName;
+
+		GameEntry(Game<?> game) {
+			this.gameId = game.getIdentifier();
+			this.gameName = game.getGameName();
+		}
+
+		public GameID getGameId() {
+			return gameId;
+		}
+
+		public String getGameName() {
+			return gameName;
+		}
 	}
 }
