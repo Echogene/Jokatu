@@ -4,9 +4,10 @@ import jokatu.components.dao.GameDao;
 import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.Game;
 import jokatu.game.GameID;
-import jokatu.game.event.AbstractEventHandler;
+import jokatu.game.event.EventHandler;
 import jokatu.game.joining.PlayerJoinedEvent;
 import jokatu.game.player.Player;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -31,7 +32,7 @@ import static java.util.stream.Collectors.toSet;
 import static ophelia.util.FunctionUtils.not;
 
 @Component
-public class PlayerJoinEventHandler extends AbstractEventHandler<PlayerJoinedEvent> implements ApplicationListener {
+public class PlayerJoinEventHandler extends EventHandler<PlayerJoinedEvent> implements ApplicationListener {
 
 	private static final Pattern STATUS_REGEX = Pattern.compile("/topic/observers\\.game\\.(\\d+)");
 
@@ -50,8 +51,9 @@ public class PlayerJoinEventHandler extends AbstractEventHandler<PlayerJoinedEve
 		this.gameDao = gameDao;
 	}
 
+	@NotNull
 	@Override
-	protected Class<PlayerJoinedEvent> handles() {
+	protected Class<PlayerJoinedEvent> getEventClass() {
 		return PlayerJoinedEvent.class;
 	}
 
@@ -125,7 +127,7 @@ public class PlayerJoinEventHandler extends AbstractEventHandler<PlayerJoinedEve
 	}
 
 	@Override
-	protected void handleCastEvent(Game game, PlayerJoinedEvent event) {
+	protected void handleCastEvent(@NotNull Game game, @NotNull PlayerJoinedEvent event) {
 		scheduleUpdate(game.getIdentifier());
 	}
 

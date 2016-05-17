@@ -1,13 +1,25 @@
 package jokatu.game.event;
 
 import jokatu.game.Game;
-import org.springframework.stereotype.Component;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * An event handler that is annotated with {@link Component} is passed events when they are emitted from a game.
- * @author steven
+ * An abstract {@link EventHandler} that only handles {@link GameEvent}s of certain class and ignores others.
+ * @author Steven Weston
  */
-public interface EventHandler {
+public abstract class EventHandler<E extends GameEvent> {
 
-	void handle(Game game, GameEvent e);
+	public void handle(@NotNull Game game, @NotNull GameEvent e) {
+		if (getEventClass().isInstance(e)) {
+			handleCastEvent(game, getEventClass().cast(e));
+		}
+	}
+
+	/**
+	 * @return the type of {@link GameEvent}, which would get type-erased, that this {@link EventHandler} handles
+	 */
+	@NotNull
+	protected abstract Class<E> getEventClass();
+
+	protected abstract void handleCastEvent(@NotNull Game game, @NotNull E event);
 }

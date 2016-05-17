@@ -2,7 +2,8 @@ package jokatu.game.games.noughtsandcrosses.event;
 
 import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.Game;
-import jokatu.game.event.AbstractEventHandler;
+import jokatu.game.event.EventHandler;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +14,7 @@ import static java.text.MessageFormat.format;
  * @author Steven Weston
  */
 @Component
-public class CellChosenEventHandler extends AbstractEventHandler<CellChosenEvent> {
+public class CellChosenEventHandler extends EventHandler<CellChosenEvent> {
 
 	private final StoringMessageSender sender;
 
@@ -22,13 +23,14 @@ public class CellChosenEventHandler extends AbstractEventHandler<CellChosenEvent
 		this.sender = sender;
 	}
 
+	@NotNull
 	@Override
-	protected Class<CellChosenEvent> handles() {
+	protected Class<CellChosenEvent> getEventClass() {
 		return CellChosenEvent.class;
 	}
 
 	@Override
-	protected void handleCastEvent(Game game, CellChosenEvent event) {
+	protected void handleCastEvent(@NotNull Game game, @NotNull CellChosenEvent event) {
 
 		sender.send(
 				format("/topic/substatus.game.{0}.cell_{1}", game.getIdentifier(), event.getCell()),
