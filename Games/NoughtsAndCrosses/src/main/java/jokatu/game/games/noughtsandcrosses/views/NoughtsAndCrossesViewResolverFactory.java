@@ -20,7 +20,7 @@ public class NoughtsAndCrossesViewResolverFactory extends ViewResolverFactory<No
 
 	@NotNull
 	@Override
-	protected ViewResolver<NoughtsAndCrossesPlayer, NoughtsAndCrossesGame> getResolverFor(NoughtsAndCrossesGame castGame) {
+	protected ViewResolver<NoughtsAndCrossesPlayer, NoughtsAndCrossesGame> getResolverFor(@NotNull NoughtsAndCrossesGame castGame) {
 		return new NoughtsAndCrossesViewResolver(castGame);
 	}
 }

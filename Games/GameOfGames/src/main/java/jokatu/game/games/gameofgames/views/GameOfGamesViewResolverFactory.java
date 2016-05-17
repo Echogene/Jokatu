@@ -17,7 +17,7 @@ public class GameOfGamesViewResolverFactory extends ViewResolverFactory<GameOfGa
 
 	@NotNull
 	@Override
-	protected ViewResolver<GameOfGamesPlayer, GameOfGames> getResolverFor(GameOfGames castGame) {
+	protected ViewResolver<GameOfGamesPlayer, GameOfGames> getResolverFor(@NotNull GameOfGames castGame) {
 		return new GameOfGamesViewResolver(castGame);
 	}
 }

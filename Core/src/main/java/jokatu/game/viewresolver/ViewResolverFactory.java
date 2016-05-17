@@ -10,16 +10,16 @@ import java.text.MessageFormat;
  * A factory for {@link ViewResolver}s.
  * @author steven
  */
-public abstract class ViewResolverFactory<P extends Player, G extends jokatu.identity.Identifiable<jokatu.game.GameID> & ophelia.event.observable.Observable<jokatu.game.event.GameEvent>> {
+public abstract class ViewResolverFactory<P extends Player, G extends Game<P>> {
 
 	@NotNull
-	public final ViewResolver<P, G> getViewResolver(Game<?> game) {
+	public final ViewResolver<P, G> getViewResolver(@NotNull Game<?> game) {
 		G castGame = castGame(game);
 		return getResolverFor(castGame);
 	}
 
 	@NotNull
-	private G castGame(Game<?> game) {
+	private G castGame(@NotNull Game<?> game) {
 		Class<G> gameClass = getGameClass();
 		if (!gameClass.isInstance(game)) {
 			throw new IllegalArgumentException(
@@ -33,5 +33,5 @@ public abstract class ViewResolverFactory<P extends Player, G extends jokatu.ide
 	protected abstract Class<G> getGameClass();
 
 	@NotNull
-	protected abstract ViewResolver<P, G> getResolverFor(G castGame);
+	protected abstract ViewResolver<P, G> getResolverFor(@NotNull G castGame);
 }

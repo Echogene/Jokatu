@@ -21,7 +21,7 @@ public class EchoViewResolverFactory extends ViewResolverFactory<EchoPlayer, Ech
 
 	@NotNull
 	@Override
-	protected ViewResolver<EchoPlayer, EchoGame> getResolverFor(EchoGame castGame) {
+	protected ViewResolver<EchoPlayer, EchoGame> getResolverFor(@NotNull EchoGame castGame) {
 		return new ViewResolver<EchoPlayer, EchoGame>(castGame) {
 			@NotNull
 			@Override

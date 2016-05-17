@@ -20,7 +20,7 @@ public class RockPaperScissorsViewResolverFactory extends ViewResolverFactory<Ro
 
 	@NotNull
 	@Override
-	protected ViewResolver<RockPaperScissorsPlayer, RockPaperScissorsGame> getResolverFor(RockPaperScissorsGame castGame) {
+	protected ViewResolver<RockPaperScissorsPlayer, RockPaperScissorsGame> getResolverFor(@NotNull RockPaperScissorsGame castGame) {
 		return new RockPaperScissorsViewResolver(castGame);
 	}
 }
