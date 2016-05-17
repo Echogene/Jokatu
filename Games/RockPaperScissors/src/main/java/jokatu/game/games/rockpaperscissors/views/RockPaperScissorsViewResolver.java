@@ -23,7 +23,7 @@ public class RockPaperScissorsViewResolver extends ViewResolver<RockPaperScissor
 
 	@NotNull
 	@Override
-	protected Class<RockPaperScissorsPlayer> handlesPlayer() {
+	protected Class<RockPaperScissorsPlayer> getPlayerClass() {
 		return RockPaperScissorsPlayer.class;
 	}
 

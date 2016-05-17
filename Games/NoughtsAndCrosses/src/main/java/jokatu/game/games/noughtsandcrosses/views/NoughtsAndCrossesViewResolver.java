@@ -35,7 +35,7 @@ class NoughtsAndCrossesViewResolver extends ViewResolver<NoughtsAndCrossesPlayer
 
 	@NotNull
 	@Override
-	protected Class<NoughtsAndCrossesPlayer> handlesPlayer() {
+	protected Class<NoughtsAndCrossesPlayer> getPlayerClass() {
 		return NoughtsAndCrossesPlayer.class;
 	}
 

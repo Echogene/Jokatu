@@ -32,7 +32,7 @@ public abstract class ViewResolver<P extends Player, G extends Game<P>> {
 	protected abstract ModelAndView getDefaultView();
 
 	private P castPlayer(Player player) {
-		Class<P> playerClass = handlesPlayer();
+		Class<P> playerClass = getPlayerClass();
 		if (!playerClass.isInstance(player)) {
 			throw new IllegalArgumentException(
 					MessageFormat.format("Player was not of the right type.  Expected {0}.", playerClass)
@@ -42,7 +42,7 @@ public abstract class ViewResolver<P extends Player, G extends Game<P>> {
 	}
 
 	@NotNull
-	protected abstract Class<P> handlesPlayer();
+	protected abstract Class<P> getPlayerClass();
 
 	@NotNull
 	protected abstract ModelAndView getViewFor(P player);

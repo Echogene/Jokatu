@@ -31,7 +31,7 @@ public class EchoViewResolverFactory extends ViewResolverFactory<EchoPlayer, Ech
 
 			@NotNull
 			@Override
-			protected Class<EchoPlayer> handlesPlayer() {
+			protected Class<EchoPlayer> getPlayerClass() {
 				return EchoPlayer.class;
 			}
 

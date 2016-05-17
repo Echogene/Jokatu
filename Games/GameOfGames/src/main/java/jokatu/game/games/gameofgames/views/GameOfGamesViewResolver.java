@@ -19,7 +19,7 @@ class GameOfGamesViewResolver extends ViewResolver<GameOfGamesPlayer, GameOfGame
 
 	@NotNull
 	@Override
-	protected Class<GameOfGamesPlayer> handlesPlayer() {
+	protected Class<GameOfGamesPlayer> getPlayerClass() {
 		return GameOfGamesPlayer.class;
 	}
 
