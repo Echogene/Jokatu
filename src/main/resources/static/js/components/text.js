@@ -22,7 +22,7 @@ JTextProto.createdCallback = function() {
 			.then(() => submitButton.classList.remove('submitting'));
 	});
 
-	this.createShadowRoot().appendChild(clone);
+	this.appendChild(clone);
 };
 
 var JText = document.registerElement('j-text', {

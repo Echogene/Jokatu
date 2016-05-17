@@ -1,8 +1,6 @@
 script(type: 'text/javascript', src: '/js/components/popup.js') {}
+link(rel: 'stylesheet', href: '/css/components/popup.css')
 template(id: 'popup_template') {
-	style {
-		include unescaped: 'static/css/components/popup.css'
-	}
 	div(class: 'titleBar') {}
 	div(class: 'message') {}
 }
