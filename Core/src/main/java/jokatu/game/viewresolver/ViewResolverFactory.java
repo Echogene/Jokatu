@@ -20,7 +20,7 @@ public abstract class ViewResolverFactory<P extends Player, G extends jokatu.ide
 
 	@NotNull
 	private G castGame(Game<?> game) {
-		Class<G> gameClass = handlesGame();
+		Class<G> gameClass = getGameClass();
 		if (!gameClass.isInstance(game)) {
 			throw new IllegalArgumentException(
 					MessageFormat.format("Game was not of the right type.  Expected {0}.", gameClass)
@@ -30,7 +30,7 @@ public abstract class ViewResolverFactory<P extends Player, G extends jokatu.ide
 	}
 
 	@NotNull
-	protected abstract Class<G> handlesGame();
+	protected abstract Class<G> getGameClass();
 
 	@NotNull
 	protected abstract ViewResolver<P, G> getResolverFor(G castGame);

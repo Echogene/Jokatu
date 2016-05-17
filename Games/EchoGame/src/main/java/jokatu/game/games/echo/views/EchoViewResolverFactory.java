@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class EchoViewResolverFactory extends ViewResolverFactory<EchoPlayer, EchoGame> {
 	@NotNull
 	@Override
-	protected Class<EchoGame> handlesGame() {
+	protected Class<EchoGame> getGameClass() {
 		return EchoGame.class;
 	}
 

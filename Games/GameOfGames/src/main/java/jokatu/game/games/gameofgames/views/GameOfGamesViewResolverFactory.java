@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class GameOfGamesViewResolverFactory extends ViewResolverFactory<GameOfGamesPlayer, GameOfGames> {
 	@NotNull
 	@Override
-	protected Class<GameOfGames> handlesGame() {
+	protected Class<GameOfGames> getGameClass() {
 		return GameOfGames.class;
 	}
 

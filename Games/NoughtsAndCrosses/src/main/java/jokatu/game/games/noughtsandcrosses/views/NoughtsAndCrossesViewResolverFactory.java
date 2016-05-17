@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class NoughtsAndCrossesViewResolverFactory extends ViewResolverFactory<NoughtsAndCrossesPlayer,NoughtsAndCrossesGame> {
 	@NotNull
 	@Override
-	protected Class<NoughtsAndCrossesGame> handlesGame() {
+	protected Class<NoughtsAndCrossesGame> getGameClass() {
 		return NoughtsAndCrossesGame.class;
 	}
 

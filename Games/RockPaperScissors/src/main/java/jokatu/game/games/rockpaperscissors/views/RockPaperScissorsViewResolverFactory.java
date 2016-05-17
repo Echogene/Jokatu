@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class RockPaperScissorsViewResolverFactory extends ViewResolverFactory<RockPaperScissorsPlayer,RockPaperScissorsGame> {
 	@NotNull
 	@Override
-	protected Class<RockPaperScissorsGame> handlesGame() {
+	protected Class<RockPaperScissorsGame> getGameClass() {
 		return RockPaperScissorsGame.class;
 	}
 
