@@ -37,7 +37,7 @@ public class EchoViewResolverFactory extends ViewResolverFactory<EchoPlayer, Ech
 
 			@NotNull
 			@Override
-			protected ModelAndView getViewFor(EchoPlayer player) {
+			protected ModelAndView getViewFor(@NotNull EchoPlayer player) {
 				return getDefaultView();
 			}
 		};

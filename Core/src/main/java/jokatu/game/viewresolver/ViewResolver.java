@@ -15,15 +15,17 @@ public abstract class ViewResolver<P extends Player, G extends Game<P>> {
 
 	protected final G game;
 
-	protected ViewResolver(G game) {
+	protected ViewResolver(@NotNull G game) {
 		this.game = game;
 	}
 
-	public final ModelAndView getViewForPlayer(Player player) {
+	@NotNull
+	public final ModelAndView getViewForPlayer(@NotNull Player player) {
 		P castPlayer = castPlayer(player);
 		return getViewFor(castPlayer);
 	}
 
+	@NotNull
 	public ModelAndView getViewForObserver() {
 		return getDefaultView();
 	}
@@ -31,7 +33,7 @@ public abstract class ViewResolver<P extends Player, G extends Game<P>> {
 	@NotNull
 	protected abstract ModelAndView getDefaultView();
 
-	private P castPlayer(Player player) {
+	private P castPlayer(@NotNull Player player) {
 		Class<P> playerClass = getPlayerClass();
 		if (!playerClass.isInstance(player)) {
 			throw new IllegalArgumentException(
@@ -45,5 +47,5 @@ public abstract class ViewResolver<P extends Player, G extends Game<P>> {
 	protected abstract Class<P> getPlayerClass();
 
 	@NotNull
-	protected abstract ModelAndView getViewFor(P player);
+	protected abstract ModelAndView getViewFor(@NotNull P player);
 }

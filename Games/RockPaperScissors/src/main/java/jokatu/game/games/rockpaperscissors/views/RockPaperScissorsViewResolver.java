@@ -29,7 +29,7 @@ public class RockPaperScissorsViewResolver extends ViewResolver<RockPaperScissor
 
 	@NotNull
 	@Override
-	protected ModelAndView getViewFor(RockPaperScissorsPlayer player) {
+	protected ModelAndView getViewFor(@NotNull RockPaperScissorsPlayer player) {
 		return getDefaultView();
 	}
 }

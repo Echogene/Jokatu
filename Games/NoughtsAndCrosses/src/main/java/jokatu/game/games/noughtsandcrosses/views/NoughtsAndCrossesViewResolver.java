@@ -41,7 +41,7 @@ class NoughtsAndCrossesViewResolver extends ViewResolver<NoughtsAndCrossesPlayer
 
 	@NotNull
 	@Override
-	protected ModelAndView getViewFor(NoughtsAndCrossesPlayer player) {
+	protected ModelAndView getViewFor(@NotNull NoughtsAndCrossesPlayer player) {
 		return getDefaultView();
 	}
 }

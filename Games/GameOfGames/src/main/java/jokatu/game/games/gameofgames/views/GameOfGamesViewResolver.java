@@ -25,7 +25,7 @@ class GameOfGamesViewResolver extends ViewResolver<GameOfGamesPlayer, GameOfGame
 
 	@NotNull
 	@Override
-	protected ModelAndView getViewFor(GameOfGamesPlayer player) {
+	protected ModelAndView getViewFor(@NotNull GameOfGamesPlayer player) {
 		return getDefaultView();
 	}
 }
