@@ -64,7 +64,7 @@ public class GameCreatedEventHandler extends EventHandler<GameCreatedEvent> {
 		);
 	}
 
-	public Game<?> createGame(String gameName, String playerName) {
+	public Game<?> createGame(@NotNull String gameName, @NotNull String playerName) {
 		GameFactory factory = gameFactories.getFactory(gameName);
 
 		Game<?> game = factory.produceGame(playerName);
@@ -85,7 +85,7 @@ public class GameCreatedEventHandler extends EventHandler<GameCreatedEvent> {
 		private final GameID gameId;
 		private final String gameName;
 
-		GameEntry(Game<?> game) {
+		GameEntry(@NotNull Game<?> game) {
 			this.gameId = game.getIdentifier();
 			this.gameName = game.getGameName();
 		}
