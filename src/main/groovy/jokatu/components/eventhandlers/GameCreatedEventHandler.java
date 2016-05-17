@@ -64,10 +64,10 @@ public class GameCreatedEventHandler extends EventHandler<GameCreatedEvent> {
 		);
 	}
 
-	public Game<?> createGame(String gameName, String playerNawe) {
+	public Game<?> createGame(String gameName, String playerName) {
 		GameFactory factory = gameFactories.getFactory(gameName);
 
-		Game<?> game = factory.produceGame(playerNawe);
+		Game<?> game = factory.produceGame(playerName);
 
 		game.observe(event -> sendEvent(game, event));
 
