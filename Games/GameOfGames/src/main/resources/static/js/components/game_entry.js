@@ -15,8 +15,7 @@ JGameEntryProto.createdCallback = function() {
 	this.appendChild(this._content);
 };
 
-JGameEntryProto._updateStatus = function() {
-	var status = JSON.parse(this.getAttribute('data-status'));
+JGameEntryProto._updateStatus = function(status) {
 	if (!status) {
 		return;
 	}

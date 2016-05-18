@@ -23,15 +23,25 @@
 function observeAttributes(element, attributeListeners) {
 	// Invoke the listeners when the attribute to which they're bound changes.
 	var observer = new MutationObserver(mutations => {
-		mutations.map(mutation => ({
-					mutation: mutation,
-					listener: attributeListeners.get(mutation.attributeName)
-			}))
+		mutations.map(mutation => {
+			var attributeValue = element.getAttribute(mutation.attributeName);
+			try {
+				attributeValue = JSON.parse(attributeValue)
+			} catch (e) {}
+			return {
+				mutation: mutation,
+				listener: attributeListeners.get(mutation.attributeName),
+				attributeValue: attributeValue
+			};
+		})
 			.filter(o => typeof o.listener != 'undefined')
-			.forEach(o => o.listener(o.mutation));
+			.forEach(o => o.listener(o.attributeValue, o.mutation));
 	});
 	observer.observe(element, { attributes: true });
 
 	// Trigger the listeners now.
-	attributeListeners.forEach(listener => listener());
+	for (var [attribute, listener] of attributeListeners) {
+		var attributeValue = JSON.parse(element.getAttribute(attribute));
+		listener(attributeValue);
+	}
 }

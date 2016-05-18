@@ -40,16 +40,16 @@ JPopupProto.initialise = function() {
 	container.appendChild(this);
 };
 
-JPopupProto._updateMessage = function() {
-	this._titleBar.innerText = this.getAttribute('data-title');
+JPopupProto._updateTitle = function(title) {
+	this._titleBar.innerText = title;
 };
 
-JPopupProto._updateTitle = function() {
-	this._message.innerText = this.getAttribute('data-message');
+JPopupProto._updateMessage = function(message) {
+	this._message.innerText = message;
 };
 
-JPopupProto._updatePosition = function() {
-	var covee = document.getElementById(this.getAttribute('data-cover'));
+JPopupProto._updatePosition = function(coveeId) {
+	var covee = document.getElementById(coveeId);
 	if (covee) {
 		if (!this._line) {
 			this._line = new JLine();

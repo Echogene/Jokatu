@@ -15,8 +15,7 @@ JPlayerProto.createdCallback = function() {
 	this.appendChild(this._content);
 };
 
-JPlayerProto._updateStatus = function() {
-	var status = JSON.parse(this.getAttribute('data-status'));
+JPlayerProto._updateStatus = function(status) {
 	if (!status) {
 		return;
 	}
