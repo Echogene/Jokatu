@@ -1,5 +1,3 @@
-import jokatu.game.games.noughtsandcrosses.input.NoughtOrCross
-
 layout 'views/game_view.tpl', true,
 
 	additionalHeaders: contents {
