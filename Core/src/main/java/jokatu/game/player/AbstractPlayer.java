@@ -6,9 +6,9 @@ import org.jetbrains.annotations.NotNull;
  * An abstract player has a name.
  */
 public class AbstractPlayer implements Player {
-	protected final String name;
+	private final String name;
 
-	public AbstractPlayer(String username) {
+	protected AbstractPlayer(String username) {
 		this.name = username;
 	}
 

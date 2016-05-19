@@ -12,7 +12,7 @@ import java.util.Collection;
  */
 public abstract class AbstractPrivateGameEvent implements PrivateGameEvent {
 
-	protected final Collection<? extends Player> players;
+	private final Collection<? extends Player> players;
 
 	protected AbstractPrivateGameEvent(Collection<? extends Player> players) {
 		this.players = players;
