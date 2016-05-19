@@ -8,7 +8,6 @@ layout 'views/game_view.tpl', true,
 	},
 
 	mainContents: contents {
-		button(is: 'j-button', destination: "/topic/input.game.${gameId}", 'data-input': '{"join": true}', 'Join game')
 		'j-options'(
 			id: 'choice',
 			destination: "/topic/input.game.${gameId}",

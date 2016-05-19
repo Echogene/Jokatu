@@ -2,6 +2,7 @@ package jokatu.game.games.rockpaperscissors.views;
 
 import jokatu.game.games.rockpaperscissors.game.RockPaperScissorsGame;
 import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayer;
+import jokatu.game.stage.JoiningStage;
 import jokatu.game.viewresolver.ViewResolver;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.servlet.ModelAndView;
@@ -9,16 +10,23 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * @author steven
  */
-public class RockPaperScissorsViewResolver extends ViewResolver<RockPaperScissorsPlayer,RockPaperScissorsGame> {
+class RockPaperScissorsViewResolver extends ViewResolver<RockPaperScissorsPlayer,RockPaperScissorsGame> {
 
-	public RockPaperScissorsViewResolver(RockPaperScissorsGame game) {
+	RockPaperScissorsViewResolver(RockPaperScissorsGame game) {
 		super(game);
 	}
 
 	@NotNull
 	@Override
 	public ModelAndView getDefaultView() {
-		return new ModelAndView("views/rock_paper_scissors");
+		String view;
+		if (game.getCurrentStage() instanceof JoiningStage) {
+			view = "views/game_join";
+
+		} else {
+			view = "views/rock_paper_scissors";
+		}
+		return new ModelAndView(view);
 	}
 
 	@NotNull
