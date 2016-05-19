@@ -1,5 +1,7 @@
 package jokatu.game.input;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.MessageFormat;
 
 /**
@@ -9,15 +11,15 @@ import java.text.MessageFormat;
  */
 public class UnacceptableInputException extends Exception {
 
-	public UnacceptableInputException(String message) {
+	public UnacceptableInputException(@NotNull String message) {
 		super(message);
 	}
 
-	public UnacceptableInputException(String message, Throwable cause) {
+	public UnacceptableInputException(@NotNull String message, @NotNull Throwable cause) {
 		super(message, cause);
 	}
 
-	public UnacceptableInputException(String pattern, Object... arguments) {
+	public UnacceptableInputException(@NotNull String pattern, Object... arguments) {
 		super(MessageFormat.format(pattern, arguments));
 	}
 }

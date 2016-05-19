@@ -12,7 +12,7 @@ public class EchoInputDeserialiser implements InputDeserialiser<EchoInput> {
 
 	@NotNull
 	@Override
-	public EchoInput deserialise(Map<String, Object> json) {
+	public EchoInput deserialise(@NotNull Map<String, Object> json) {
 		return new EchoInput((String) json.get("text"));
 	}
 }

@@ -11,7 +11,7 @@ import java.util.Map;
 public class AllegianceInputDeserialiser implements InputDeserialiser<AllegianceInput> {
 	@NotNull
 	@Override
-	public AllegianceInput deserialise(Map<String, Object> json) throws DeserialisationException {
+	public AllegianceInput deserialise(@NotNull Map<String, Object> json) throws DeserialisationException {
 		if (!json.containsKey("allegiance")) {
 			throw new DeserialisationException(json, "Did not contain the key 'allegiance'.");
 		}

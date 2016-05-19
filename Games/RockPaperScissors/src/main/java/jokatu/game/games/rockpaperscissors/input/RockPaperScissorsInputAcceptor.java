@@ -9,6 +9,7 @@ import jokatu.game.result.PlayerResult;
 import jokatu.game.result.Result;
 import jokatu.game.status.StandardTextStatus;
 import ophelia.collections.set.bounded.BoundedPair;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Map;
@@ -38,18 +39,20 @@ public class RockPaperScissorsInputAcceptor extends InputAcceptor<RockPaperSciss
 		);
 	}
 
+	@NotNull
 	@Override
 	protected Class<RockPaperScissorsInput> getInputClass() {
 		return RockPaperScissorsInput.class;
 	}
 
+	@NotNull
 	@Override
 	protected Class<RockPaperScissorsPlayer> getPlayerClass() {
 		return RockPaperScissorsPlayer.class;
 	}
 
 	@Override
-	protected void acceptCastInputAndPlayer(RockPaperScissorsInput input, RockPaperScissorsPlayer inputter) throws Exception {
+	protected void acceptCastInputAndPlayer(@NotNull RockPaperScissorsInput input, @NotNull RockPaperScissorsPlayer inputter) throws Exception {
 
 		if (!players.contains(inputter)) {
 			throw new UnacceptableInputException("You can't input to a game you're not playing.");

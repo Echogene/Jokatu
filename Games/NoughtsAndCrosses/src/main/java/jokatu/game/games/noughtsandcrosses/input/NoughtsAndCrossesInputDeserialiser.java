@@ -11,7 +11,7 @@ import java.util.Map;
 public class NoughtsAndCrossesInputDeserialiser implements InputDeserialiser<NoughtsAndCrossesInput> {
 	@NotNull
 	@Override
-	public NoughtsAndCrossesInput deserialise(Map<String, Object> json) throws DeserialisationException {
+	public NoughtsAndCrossesInput deserialise(@NotNull Map<String, Object> json) throws DeserialisationException {
 		return new NoughtsAndCrossesInput((Integer) json.get("choice"));
 	}
 }

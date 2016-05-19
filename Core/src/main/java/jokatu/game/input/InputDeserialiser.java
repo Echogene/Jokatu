@@ -11,5 +11,5 @@ import java.util.Map;
 public interface InputDeserialiser<I extends Input> {
 
 	@NotNull
-	I deserialise(Map<String, Object> json) throws DeserialisationException;
+	I deserialise(@NotNull Map<String, Object> json) throws DeserialisationException;
 }

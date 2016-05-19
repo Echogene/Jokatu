@@ -11,7 +11,7 @@ import java.util.Map;
 public class RockPaperScissorsInputDeserializer implements InputDeserialiser<RockPaperScissorsInput> {
 	@NotNull
 	@Override
-	public RockPaperScissorsInput deserialise(Map<String, Object> json) {
+	public RockPaperScissorsInput deserialise(@NotNull Map<String, Object> json) {
 		return new RockPaperScissorsInput(RockPaperScissors.valueOf((String) json.get("choice")));
 	}
 }

@@ -4,6 +4,7 @@ import jokatu.game.event.StageOverEvent;
 import jokatu.game.input.InputAcceptor;
 import jokatu.game.player.Player;
 import jokatu.game.status.StandardTextStatus;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -28,18 +29,20 @@ public class JoinInputAcceptor<P extends Player> extends InputAcceptor<JoinInput
 	}
 
 
+	@NotNull
 	@Override
 	protected Class<JoinInput> getInputClass() {
 		return JoinInput.class;
 	}
 
+	@NotNull
 	@Override
 	protected Class<P> getPlayerClass() {
 		return playerClass;
 	}
 
 	@Override
-	protected void acceptCastInputAndPlayer(JoinInput input, P inputter) throws Exception {
+	protected void acceptCastInputAndPlayer(@NotNull JoinInput input, @NotNull P inputter) throws Exception {
 		checkCanJoin(inputter);
 		players.put(inputter.getName(), inputter);
 		if (players.size() == limit) {

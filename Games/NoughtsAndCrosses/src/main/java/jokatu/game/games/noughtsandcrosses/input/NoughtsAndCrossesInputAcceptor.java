@@ -12,6 +12,7 @@ import ophelia.collections.list.UnmodifiableList;
 import ophelia.collections.set.HashSet;
 import ophelia.collections.set.UnmodifiableSet;
 import ophelia.collections.set.bounded.BoundedPair;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -59,18 +60,20 @@ public class NoughtsAndCrossesInputAcceptor extends InputAcceptor<NoughtsAndCros
 		this.status.setText("Waiting for input from {0}.", currentPlayer);
 	}
 
+	@NotNull
 	@Override
 	protected Class<NoughtsAndCrossesInput> getInputClass() {
 		return NoughtsAndCrossesInput.class;
 	}
 
+	@NotNull
 	@Override
 	protected Class<NoughtsAndCrossesPlayer> getPlayerClass() {
 		return NoughtsAndCrossesPlayer.class;
 	}
 
 	@Override
-	protected void acceptCastInputAndPlayer(NoughtsAndCrossesInput input, NoughtsAndCrossesPlayer inputter) throws Exception {
+	protected void acceptCastInputAndPlayer(@NotNull NoughtsAndCrossesInput input, @NotNull NoughtsAndCrossesPlayer inputter) throws Exception {
 		Integer cell = input.getCellId();
 		if (inputs.containsKey(cell)) {
 			throw new UnacceptableInputException("Cell {0} already contained a {1}.", cell, inputs.get(cell));

@@ -9,18 +9,20 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 
 public class EchoInputAcceptor extends InputAcceptor<EchoInput, EchoPlayer> {
+	@NotNull
 	@Override
 	protected Class<EchoInput> getInputClass() {
 		return EchoInput.class;
 	}
 
+	@NotNull
 	@Override
 	protected Class<EchoPlayer> getPlayerClass() {
 		return EchoPlayer.class;
 	}
 
 	@Override
-	protected void acceptCastInputAndPlayer(EchoInput input, EchoPlayer inputter) throws Exception {
+	protected void acceptCastInputAndPlayer(@NotNull EchoInput input, @NotNull EchoPlayer inputter) throws Exception {
 		fireEvent(new Echo(input, inputter));
 		fireEvent(new AbstractPrivateGameEvent(Collections.singleton(inputter)) {
 			@NotNull

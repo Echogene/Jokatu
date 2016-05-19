@@ -5,6 +5,7 @@ import jokatu.game.games.noughtsandcrosses.player.NoughtsAndCrossesPlayer;
 import jokatu.game.input.InputAcceptor;
 import jokatu.game.status.StandardTextStatus;
 import ophelia.collections.set.bounded.BoundedPair;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
@@ -25,18 +26,20 @@ public class AllegianceInputAcceptor extends InputAcceptor<AllegianceInput, Noug
 		);
 	}
 
+	@NotNull
 	@Override
 	protected Class<AllegianceInput> getInputClass() {
 		return AllegianceInput.class;
 	}
 
+	@NotNull
 	@Override
 	protected Class<NoughtsAndCrossesPlayer> getPlayerClass() {
 		return NoughtsAndCrossesPlayer.class;
 	}
 
 	@Override
-	protected void acceptCastInputAndPlayer(AllegianceInput input, NoughtsAndCrossesPlayer inputter) throws Exception {
+	protected void acceptCastInputAndPlayer(@NotNull AllegianceInput input, @NotNull NoughtsAndCrossesPlayer inputter) throws Exception {
 		if (inputter.getAllegiance() == null) {
 			NoughtOrCross allegiance = input.getNoughtOrCross();
 			NoughtsAndCrossesPlayer other = players.getOther(inputter);

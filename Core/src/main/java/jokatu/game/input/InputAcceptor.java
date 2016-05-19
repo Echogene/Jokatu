@@ -13,15 +13,19 @@ public abstract class InputAcceptor<I extends Input, P extends Player> extends A
 
 	private final Log log = LogFactory.getLog(getClass());
 
+	@NotNull
 	protected abstract Class<I> getInputClass();
 
-	private I castInput(Input input) {
+	@NotNull
+	private I castInput(@NotNull Input input) {
 		return getInputClass().cast(input);
 	}
 
+	@NotNull
 	protected abstract Class<P> getPlayerClass();
 
-	private P castPlayer(Player player) {
+	@NotNull
+	private P castPlayer(@NotNull Player player) {
 		return getPlayerClass().cast(player);
 	}
 
@@ -47,5 +51,5 @@ public abstract class InputAcceptor<I extends Input, P extends Player> extends A
 		acceptCastInputAndPlayer(castInput(input), castPlayer(player));
 	}
 
-	protected abstract void acceptCastInputAndPlayer(I input, P inputter) throws Exception;
+	protected abstract void acceptCastInputAndPlayer(@NotNull I input, @NotNull P inputter) throws Exception;
 }

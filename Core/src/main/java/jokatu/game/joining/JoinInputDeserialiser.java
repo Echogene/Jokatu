@@ -11,7 +11,7 @@ import java.util.Map;
 public class JoinInputDeserialiser implements InputDeserialiser<JoinInput> {
 	@NotNull
 	@Override
-	public JoinInput deserialise(Map<String, Object> json) throws DeserialisationException {
+	public JoinInput deserialise(@NotNull Map<String, Object> json) throws DeserialisationException {
 		if (!json.containsKey("join")) {
 			throw new DeserialisationException(json, "Did not contain the key 'join'.");
 		} else {
