@@ -1,6 +1,7 @@
 package jokatu.game.exception;
 
 import jokatu.game.GameID;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.MessageFormat;
 
@@ -12,20 +13,21 @@ public class GameException extends Exception {
 
 	private final GameID id;
 
-	public GameException(GameID id, String message) {
+	public GameException(@NotNull GameID id, @NotNull String message) {
 		super(message);
 		this.id = id;
 	}
 
-	public GameException(GameID id, String message, Throwable cause) {
+	public GameException(@NotNull GameID id, @NotNull String message, @NotNull Throwable cause) {
 		super(message, cause);
 		this.id = id;
 	}
 
-	public GameException(GameID id, String pattern, Object... arguments) {
+	public GameException(@NotNull GameID id, @NotNull String pattern, Object... arguments) {
 		this(id, MessageFormat.format(pattern, arguments));
 	}
 
+	@NotNull
 	public GameID getId() {
 		return id;
 	}
