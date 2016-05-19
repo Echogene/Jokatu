@@ -1,18 +1,19 @@
-import static jokatu.util.Json.serialise
+import jokatu.game.games.rockpaperscissors.game.RockPaperScissors
+import java.util.stream.Collectors
 
 layout 'views/game_view.tpl', true,
 
 	additionalHeaders: contents {
-		include template: 'components/button.tpl'
-		script(type: 'text/javascript', src: '/js/rock_paper_scissors.js') {}
+		include template: 'components/options.tpl'
 	},
 
 	mainContents: contents {
 		button(is: 'j-button', destination: "/topic/input.game.${gameId}", 'data-input': '{"join": true}', 'Join game')
-		select(id: 'choice') {
-			option(value: 'ROCK', 'Rock')
-			option(value: 'PAPER', 'Paper')
-			option(value: 'SCISSORS', 'Scissors')
-		}
-		button(onclick: 'choose()', 'Choose')
+		'j-options'(
+			id: 'choice',
+			destination: "/topic/input.game.${gameId}",
+			'data-options': Arrays.stream(RockPaperScissors.values())
+					.map { rps -> "{\"input\": {\"choice\": \"${rps}\"}, \"display\": \"${rps}\"}" }
+					.collect(Collectors.joining(', ', '[', ']'))
+		)
 	}
