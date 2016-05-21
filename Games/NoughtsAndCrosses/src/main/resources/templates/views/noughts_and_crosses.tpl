@@ -6,7 +6,6 @@ layout 'views/game_view.tpl', true,
 		include template: 'components/button.tpl'
 		include template: 'components/line.tpl'
 		link(rel: 'stylesheet', href: '/css/noughts_and_crosses.css')
-		script(type: 'text/javascript', src: '/js/noughts_and_crosses.js') {}
 	},
 
 	mainContents: contents {
