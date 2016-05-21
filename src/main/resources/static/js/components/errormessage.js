@@ -28,22 +28,17 @@ var JErrorMessageProto = Object.create(HTMLButtonElement.prototype);
 
 JErrorMessageProto.createdCallback = function() {
 
-	var observer = new MutationObserver(mutations => {
-		mutations.filter(mutation => mutation.attributeName == 'data-message')
-			.forEach(this._updateMessage.bind(this));
-	});
-	observer.observe(this, { attributes: true });
-
-	this._updateMessage();
+	observeAttributes(this, new Map([
+		['data-message', this._updateMessage.bind(this)]
+	]));
 
 	this.addEventListener('click', this._showStacktrace.bind(this));
 };
 
-JErrorMessageProto._updateMessage = function() {
-	/**
-	 * @type ErrorMessage
-	 */
-	var message = JSON.parse(this.getAttribute('data-message'));
+/**
+ * @param {ErrorMessage} message
+ */
+JErrorMessageProto._updateMessage = function(message) {
 	if (!message) {
 		return;
 	}

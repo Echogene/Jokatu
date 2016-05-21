@@ -7,28 +7,23 @@ JLineProto.createdCallback = function() {
 	this.style.position = 'absolute';
 	this.style.pointerEvents = 'none';
 
-	var observer = new MutationObserver(mutations => {
-		mutations.filter(mutation => mutation.attributeName == 'data-status')
-				.forEach(this._updatePosition.bind(this));
-	});
-	observer.observe(this, { attributes: true });
+	observeAttributes(this, new Map([
+		['data-status', this._updatePosition.bind(this)]
+	]));
 
 	this._endsObserver = new MutationObserver(this._updatePosition.bind(this));
 
 	this.innerHTML = '&nbsp;';
 
 	window.addEventListener("optimizedResize", this._updatePosition.bind(this), false);
-
-	this._updatePosition();
 };
 
 JLineProto.setEnds = function(start, end) {
 	this.setAttribute('data-status', JSON.stringify({start: start.id, end: end.id}));
 };
 
-JLineProto._updatePosition = function() {
+JLineProto._updatePosition = function(status) {
 	this._endsObserver.disconnect();
-	var status = JSON.parse(this.getAttribute('data-status'));
 	if (!status) {
 		return;
 	}
