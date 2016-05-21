@@ -4,16 +4,15 @@ import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.event.StatusUpdateEvent;
 import jokatu.game.games.echo.player.EchoPlayer;
-import jokatu.game.status.Status;
 import ophelia.collections.BaseCollection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static java.time.LocalTime.now;
+import static java.time.format.DateTimeFormatter.ofPattern;
 import static ophelia.collections.set.EmptySet.emptySet;
 
 public class EchoGame extends Game<EchoPlayer> {
@@ -26,7 +25,7 @@ public class EchoGame extends Game<EchoPlayer> {
 				new TimerTask() {
 					@Override
 					public void run() {
-						fireEvent((StatusUpdateEvent) EchoGame.this::getStatus);
+						fireEvent((StatusUpdateEvent) () -> () -> "The time is: " + now().format(ofPattern("HH:mm:ss")));
 					}
 				},
 				0,
@@ -44,12 +43,6 @@ public class EchoGame extends Game<EchoPlayer> {
 	@Override
 	public EchoPlayer getPlayerByName(@NotNull String name) {
 		return null;
-	}
-
-	@NotNull
-	@Override
-	public Status getStatus() {
-		return () -> "The time is: " + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}
 
 	@Override

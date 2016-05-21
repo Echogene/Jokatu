@@ -4,7 +4,6 @@ import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.event.StatusUpdateEvent;
 import jokatu.game.games.gameofgames.player.GameOfGamesPlayer;
-import jokatu.game.status.Status;
 import ophelia.collections.BaseCollection;
 import ophelia.collections.set.EmptySet;
 import org.jetbrains.annotations.NotNull;
@@ -35,17 +34,11 @@ public class GameOfGames extends Game<GameOfGamesPlayer> {
 		return null;
 	}
 
-	@NotNull
-	@Override
-	public Status getStatus() {
-		return () -> "Create some games!";
-	}
-
 	@Override
 	protected void advanceStageInner() {
 		if (currentStage == null) {
 			currentStage = new GameOfGameStage();
-			fireEvent((StatusUpdateEvent) GameOfGames.this::getStatus);
+			fireEvent((StatusUpdateEvent) () -> () -> "Create some games!");
 		}
 	}
 

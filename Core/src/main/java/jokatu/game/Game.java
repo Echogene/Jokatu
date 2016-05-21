@@ -5,7 +5,6 @@ import jokatu.game.event.GameEvent;
 import jokatu.game.exception.GameException;
 import jokatu.game.input.Input;
 import jokatu.game.player.Player;
-import jokatu.game.status.Status;
 import jokatu.identity.Identifiable;
 import ophelia.collections.BaseCollection;
 import ophelia.event.observable.AbstractSynchronousObservable;
@@ -56,9 +55,6 @@ public abstract class Game<P extends Player>
 
 	@Nullable
 	public abstract P getPlayerByName(@NotNull String name);
-
-	@NotNull
-	public abstract Status getStatus();
 
 	public boolean hasPlayer(@NotNull String name) {
 		return getPlayerByName(name) != null;

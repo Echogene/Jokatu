@@ -6,7 +6,6 @@ import jokatu.game.stage.GameOverStage;
 import jokatu.game.stage.JoiningStage;
 import jokatu.game.games.noughtsandcrosses.player.NoughtsAndCrossesPlayer;
 import jokatu.game.status.StandardTextStatus;
-import jokatu.game.status.Status;
 import ophelia.collections.BaseCollection;
 import ophelia.collections.UnmodifiableCollection;
 import org.jetbrains.annotations.NotNull;
@@ -39,12 +38,6 @@ public class NoughtsAndCrossesGame extends Game<NoughtsAndCrossesPlayer> {
 	@Override
 	public NoughtsAndCrossesPlayer getPlayerByName(@NotNull String name) {
 		return players.get(name);
-	}
-
-	@NotNull
-	@Override
-	public Status getStatus() {
-		return status;
 	}
 
 	@Override
