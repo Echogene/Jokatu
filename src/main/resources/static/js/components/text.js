@@ -8,7 +8,7 @@ JTextProto.createdCallback = function() {
 	var textField = clone.querySelector('input');
 
 	var submitButton = clone.querySelector('button');
-	submitButton.textContent = this.getAttribute('submitName') || 'Submit';
+	submitButton.textContent = this.getAttribute('submitLabel') || 'Submit';
 
 	textField.addEventListener('keypress', e => {
 		if (e.keyCode == 13) {

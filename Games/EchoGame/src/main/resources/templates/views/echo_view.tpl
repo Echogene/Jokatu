@@ -9,6 +9,6 @@ layout 'views/game_view.tpl', true,
 	},
 
 	mainContents: contents {
-		'j-text'(id: 'text', submitName: 'Send', destination: "/topic/input.game.${gameId}") {}
+		'j-text'(id: 'text', submitLabel: 'Send', destination: "/topic/input.game.${gameId}") {}
 		button(is: 'j-button', destination: "/topic/input.game.${gameId}", 'data-input': '{"text": "Echo!"}', 'Echo!')
 	}
