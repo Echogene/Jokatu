@@ -14,6 +14,7 @@ layout 'layouts/main.tpl', true,
 				tag: "j-message-box",
 				id: "errors",
 				wrapperElement: "JErrorMessage",
+				attributeName: 'data-message',
 				destination: "/user/topic/errors.game.${gameId}",
 				user: "${username}"
 		)
