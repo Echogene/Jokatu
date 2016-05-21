@@ -9,4 +9,5 @@ include 'Games:NoughtsAndCrosses'
 findProject(':Games:NoughtsAndCrosses')?.name = 'NoughtsAndCrosses'
 include 'Games:GameOfGames'
 findProject(':Games:GameOfGames')?.name = 'GameOfGames'
-
+include 'Games:Cards'
+findProject(':Games:Cards')?.name = 'Cards'
