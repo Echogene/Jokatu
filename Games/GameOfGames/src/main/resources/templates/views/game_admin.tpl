@@ -20,6 +20,7 @@ layout 'views/game_view.tpl', true,
 			tag: 'j-status',
 			id: 'games',
 			wrapperElement: 'JGameEntry',
+			attributeName: 'data-game',
 			destination: "/topic/games.game.${gameId}"
 		)
 	}

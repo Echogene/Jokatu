@@ -9,7 +9,7 @@ JGameEntryProto.createdCallback = function() {
 	this._name = this._content.querySelector('.name');
 
 	observeAttributes(this, new Map([
-		['data-status', this._updateStatus.bind(this)]
+		['data-game', this._updateStatus.bind(this)]
 	]));
 
 	this.appendChild(this._content);

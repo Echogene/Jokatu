@@ -31,6 +31,7 @@ layout 'layouts/main.tpl', true,
 					tag: 'j-status',
 					id: 'players',
 					wrapperElement: 'JPlayer',
+					attributeName: 'data-player',
 					removeOldChildren: 'true',
 					destination: "/topic/players.game.${gameId}"
 			)

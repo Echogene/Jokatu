@@ -8,7 +8,7 @@ JLineProto.createdCallback = function() {
 	this.style.pointerEvents = 'none';
 
 	observeAttributes(this, new Map([
-		['data-status', this._updatePosition.bind(this)]
+		['data-ends', this._updatePosition.bind(this)]
 	]));
 
 	this._endsObserver = new MutationObserver(this._updatePosition.bind(this));
@@ -19,7 +19,7 @@ JLineProto.createdCallback = function() {
 };
 
 JLineProto.setEnds = function(start, end) {
-	this.setAttribute('data-status', JSON.stringify({start: start.id, end: end.id}));
+	this.setAttribute('data-ends', JSON.stringify({start: start.id, end: end.id}));
 };
 
 JLineProto._updatePosition = function(status) {

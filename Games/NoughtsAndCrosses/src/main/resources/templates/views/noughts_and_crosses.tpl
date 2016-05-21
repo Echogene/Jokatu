@@ -24,9 +24,10 @@ layout 'views/game_view.tpl', true,
 			}
 		}
 		yieldUnescaped markupGenerator.bindLast(
-			tag: "j-status",
-			id: "lines",
-			wrapperElement: "JLine",
+			tag: 'j-status',
+			id: 'lines',
+			wrapperElement: 'JLine',
+			attributeName: 'data-ends',
 			destination: "/topic/substatus.game.${gameId}.lines"
 		)
 	}

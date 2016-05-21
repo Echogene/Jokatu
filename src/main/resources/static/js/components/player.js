@@ -9,7 +9,7 @@ JPlayerProto.createdCallback = function() {
 	this._status = this._content.querySelector('.status');
 
 	observeAttributes(this, new Map([
-		['data-status', this._updateStatus.bind(this)]
+		['data-player', this._updateStatus.bind(this)]
 	]));
 
 	this.appendChild(this._content);
