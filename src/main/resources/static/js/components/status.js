@@ -82,8 +82,10 @@ JStatusProto._updateElement = function(element, status) {
 	} else if (status && typeof status === 'object' && typeof status.text === 'string') {
 		element.textContent = status.text;
 	}
-	var attributeName = this.getAttribute('attributeName') || 'data-status';
-	element.setAttribute(attributeName, JSON.stringify(status));
+	var attributeName = this.getAttribute('attributeName');
+	if (attributeName) {
+		element.setAttribute(attributeName, JSON.stringify(status));
+	}
 };
 
 /**
