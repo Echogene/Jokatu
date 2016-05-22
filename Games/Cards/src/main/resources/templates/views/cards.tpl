@@ -1,4 +1,4 @@
-import jokatu.game.cards.StandardCard
+import jokatu.game.cards.StandardCards
 
 layout 'views/game_view.tpl', true,
 
@@ -7,8 +7,8 @@ layout 'views/game_view.tpl', true,
 	},
 
 	mainContents: contents {
-		span(StandardCard.PRIVATE_CARD)
-		StandardCard.ALL_CARDS.each { card ->
+		span(StandardCards.PRIVATE_CARD)
+		StandardCards.ALL_CARDS.each { card ->
 			span(card)
 		}
 	}
