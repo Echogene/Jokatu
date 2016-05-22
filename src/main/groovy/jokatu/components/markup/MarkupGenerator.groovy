@@ -41,4 +41,15 @@ class MarkupGenerator {
 
 		return "<${tag} ${properties.inject("", {s, k, v -> "${s}${k}='${v}' "})} data-initial='${initialData}'></${tag}>"
 	}
+
+	String bindUserLast(Map properties) {
+		String destination = properties.destination.replaceFirst("^/user", "")
+
+		String username = properties.remove("user")
+		def initialData = Json.serialise(messageRepository.getLastMessageForUser(username, destination));
+
+		def tag = properties.remove("tag")
+
+		return "<${tag} ${properties.inject("", {s, k, v -> "${s}${k}='${v}' "})} data-initial='${initialData}'></${tag}>"
+	}
 }

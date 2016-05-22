@@ -1,8 +1,11 @@
 package jokatu.game.cards;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.*;
+import java.util.function.Function;
+
+import static java.util.stream.Collectors.toMap;
 
 public interface StandardCards {
 
@@ -128,10 +131,18 @@ public interface StandardCards {
 			KING_OF_CLUBS
 	);
 
-	List<Card> ALL_CARDS = new ArrayList<Card>() {{
-		addAll(SPADES);
-		addAll(HEARTS);
-		addAll(DIAMONDS);
-		addAll(CLUBS);
+	@NotNull
+	static List<Card> getNewDeck() {
+		return new ArrayList<Card>() {{
+			addAll(SPADES);
+			addAll(HEARTS);
+			addAll(DIAMONDS);
+			addAll(CLUBS);
+		}};
+	}
+
+	Map<String, Card> ALL_CARDS = new HashMap<String, Card>() {{
+		getNewDeck().stream()
+				.collect(toMap(Card::toString, Function.identity()));
 	}};
 }

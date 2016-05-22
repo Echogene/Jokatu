@@ -7,8 +7,12 @@ layout 'views/game_view.tpl', true,
 	},
 
 	mainContents: contents {
-		span(StandardCards.PRIVATE_CARD)
-		StandardCards.ALL_CARDS.each { card ->
-			span(card)
-		}
+		yieldUnescaped markupGenerator.bindUserLast(
+			tag: 'j-status',
+			id: 'hand',
+			wrapperElement: 'JCard',
+			attributeName: 'data-hand',
+			destination: "/user/topic/hand.game.${gameId}",
+			user: "${username}"
+		)
 	}
