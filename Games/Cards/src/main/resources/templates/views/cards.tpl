@@ -7,5 +7,8 @@ layout 'views/game_view.tpl', true,
 	},
 
 	mainContents: contents {
-		div(StandardCard.PRIVATE_CARD)
+		span(StandardCard.PRIVATE_CARD)
+		StandardCard.ALL_CARDS.each { card ->
+			span(card)
+		}
 	}
