@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EchoPlayerFactory implements PlayerFactory<EchoPlayer> {
+public class EchoPlayerFactory extends PlayerFactory<EchoPlayer> {
 
 	@NotNull
 	@Override

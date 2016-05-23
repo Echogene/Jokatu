@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NoughtsAndCrossesPlayerFactory implements PlayerFactory<NoughtsAndCrossesPlayer> {
+public class NoughtsAndCrossesPlayerFactory extends PlayerFactory<NoughtsAndCrossesPlayer> {
 	@NotNull
 	@Override
 	public NoughtsAndCrossesPlayer produce(@NotNull Game<? extends NoughtsAndCrossesPlayer> game, @NotNull String username) {

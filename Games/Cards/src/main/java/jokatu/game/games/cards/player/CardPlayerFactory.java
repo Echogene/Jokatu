@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CardPlayerFactory implements PlayerFactory<CardPlayer> {
+public class CardPlayerFactory extends PlayerFactory<CardPlayer> {
 
 	@NotNull
 	@Override

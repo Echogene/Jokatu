@@ -7,8 +7,8 @@ import org.jetbrains.annotations.NotNull;
  * Given a username, this constructs a player for its respective game.
  * @param <P>
  */
-public interface PlayerFactory<P extends Player> {
+public abstract class PlayerFactory<P extends Player> {
 
 	@NotNull
-	P produce(@NotNull Game<? extends P> game, @NotNull String username);
+	public abstract P produce(@NotNull Game<? extends P> game, @NotNull String username);
 }
