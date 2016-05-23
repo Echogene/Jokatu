@@ -27,6 +27,13 @@ layout 'layouts/main.tpl', true,
 					wrapperElement: "div",
 					destination: "/topic/public.game.${gameId}"
 			)
+			yieldUnescaped markupGenerator.bindUserHistory(
+					tag: "j-message-box",
+					id: "private-messages",
+					wrapperElement: "div",
+					destination: "/topic/private.game.${gameId}",
+					user: "${username}"
+			)
 			yieldUnescaped markupGenerator.bindLast(
 					tag: 'j-status',
 					id: 'players',

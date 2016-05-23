@@ -16,6 +16,9 @@ body {
 		}
 
 		>* {
+			max-height: 20%;
+			overflow-y: auto;
+
 			>* {
 				padding-left: .8em;
 				padding-top: .3em;
@@ -43,6 +46,9 @@ body {
 		}
 		>#public-messages:not(:empty)::before {
 			content: "Public messages";
+		}
+		>#private-messages:not(:empty)::before {
+			content: "Private messages";
 		}
 		>#players:not(:empty)::before {
 			content: "Players";
