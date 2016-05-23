@@ -10,11 +10,8 @@ import jokatu.game.games.gameofgames.event.GameCreatedEvent;
 import ophelia.util.MapUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,23 +22,18 @@ import static java.text.MessageFormat.format;
 @Component
 public class GameCreatedEventHandler extends EventHandler<GameCreatedEvent> {
 
-	@Autowired
-	private GameFactories gameFactories;
-
-	@Autowired
-	private StoringMessageSender messageSender;
-
-	@Autowired
-	private ApplicationContext applicationContext;
+	private final GameFactories gameFactories;
+	private final StoringMessageSender messageSender;
+	private final EventBroadcaster eventBroadcaster;
 
 	// todo: move this map to its own bean
 	private final Map<GameID, List<GameEntry>> entries = new HashMap<>();
 
-	private Collection<EventHandler> eventHandlers;
-
-	@PostConstruct
-	public void wireEventListeners() {
-		eventHandlers = applicationContext.getBeansOfType(EventHandler.class).values();
+	@Autowired
+	public GameCreatedEventHandler(GameFactories gameFactories, StoringMessageSender messageSender, EventBroadcaster eventBroadcaster) {
+		this.gameFactories = gameFactories;
+		this.messageSender = messageSender;
+		this.eventBroadcaster = eventBroadcaster;
 	}
 
 	@NotNull
@@ -63,12 +55,12 @@ public class GameCreatedEventHandler extends EventHandler<GameCreatedEvent> {
 		);
 	}
 
-	public Game<?> createGame(@NotNull String gameName, @NotNull String playerName) {
+	private Game<?> createGame(@NotNull String gameName, @NotNull String playerName) {
 		GameFactory factory = gameFactories.getFactory(gameName);
 
 		Game<?> game = factory.produceGame(playerName);
 
-		eventHandlers.forEach(handler -> game.observe(event -> handler.handle(game, event)));
+		game.observe(event -> eventBroadcaster.broadcast(game, event));
 
 		// Now we are observing events, start the game.
 		game.advanceStage();

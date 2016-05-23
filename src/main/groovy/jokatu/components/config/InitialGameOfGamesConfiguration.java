@@ -1,7 +1,8 @@
 package jokatu.components.config;
 
-import jokatu.components.eventhandlers.GameCreatedEventHandler;
-import org.springframework.beans.factory.annotation.Autowired;
+import jokatu.components.eventhandlers.EventBroadcaster;
+import jokatu.game.Game;
+import jokatu.game.GameFactory;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
@@ -14,11 +15,23 @@ import static jokatu.game.games.gameofgames.game.GameOfGames.GAME_OF_GAMES;
 @Configuration
 public class InitialGameOfGamesConfiguration {
 
-	@Autowired
-	private GameCreatedEventHandler gameCreatedEventHandler;
+	private final FactoryConfiguration.GameFactories gameFactories;
+	private final EventBroadcaster eventBroadcaster;
+
+	public InitialGameOfGamesConfiguration(FactoryConfiguration.GameFactories gameFactories, EventBroadcaster eventBroadcaster) {
+		this.gameFactories = gameFactories;
+		this.eventBroadcaster = eventBroadcaster;
+	}
 
 	@PostConstruct
 	public void createGameOfGames() {
-		gameCreatedEventHandler.createGame(GAME_OF_GAMES, "");
+		GameFactory factory = gameFactories.getFactory(GAME_OF_GAMES);
+
+		Game<?> game = factory.produceGame("");
+
+		game.observe(event -> eventBroadcaster.broadcast(game, event));
+
+		// Now we are observing events, start the game.
+		game.advanceStage();
 	}
 }
