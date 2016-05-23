@@ -17,6 +17,8 @@ public class CardPlayerFactory extends AbstractPlayerFactory<CardPlayer, CardGam
 	@NotNull
 	@Override
 	protected CardPlayer produceInCastGame(@NotNull CardGame cardGame, @NotNull String username) {
-		return new CardPlayer(username);
+		CardPlayer player = new CardPlayer(username);
+		cardGame.register(player);
+		return player;
 	}
 }

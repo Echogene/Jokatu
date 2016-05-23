@@ -59,4 +59,8 @@ public class CardGame extends Game<CardPlayer> {
 	public BaseCollection<CardPlayer> getPlayers() {
 		return emptySet();
 	}
+
+	public void register(CardPlayer player) {
+		player.observe(this::fireEvent);
+	}
 }
