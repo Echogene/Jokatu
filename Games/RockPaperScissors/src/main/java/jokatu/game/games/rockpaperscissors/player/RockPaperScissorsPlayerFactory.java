@@ -1,12 +1,12 @@
 package jokatu.game.games.rockpaperscissors.player;
 
 import jokatu.game.games.rockpaperscissors.game.RockPaperScissorsGame;
-import jokatu.game.player.PlayerFactory;
+import jokatu.game.player.AbstractPlayerFactory;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RockPaperScissorsPlayerFactory extends PlayerFactory<RockPaperScissorsPlayer, RockPaperScissorsGame> {
+public class RockPaperScissorsPlayerFactory extends AbstractPlayerFactory<RockPaperScissorsPlayer, RockPaperScissorsGame> {
 	@NotNull
 	@Override
 	protected Class<RockPaperScissorsGame> getGameClass() {

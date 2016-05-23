@@ -2,6 +2,7 @@ package jokatu.components.config;
 
 import jokatu.game.GameFactory;
 import jokatu.game.input.InputDeserialiser;
+import jokatu.game.player.AbstractPlayerFactory;
 import jokatu.game.player.PlayerFactory;
 import jokatu.game.viewresolver.ViewResolverFactory;
 import ophelia.collections.BaseCollection;
@@ -20,7 +21,7 @@ public interface GameConfiguration {
 	GameFactory getGameFactory();
 
 	/**
-	 * @return the {@link PlayerFactory} that will be used to create players for games of this type
+	 * @return the {@link AbstractPlayerFactory} that will be used to create players for games of this type
 	 */
 	@NotNull
 	PlayerFactory getPlayerFactory();

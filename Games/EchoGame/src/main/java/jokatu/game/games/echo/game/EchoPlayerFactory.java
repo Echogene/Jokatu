@@ -1,12 +1,12 @@
 package jokatu.game.games.echo.game;
 
 import jokatu.game.games.echo.player.EchoPlayer;
-import jokatu.game.player.PlayerFactory;
+import jokatu.game.player.AbstractPlayerFactory;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EchoPlayerFactory extends PlayerFactory<EchoPlayer, EchoGame> {
+public class EchoPlayerFactory extends AbstractPlayerFactory<EchoPlayer, EchoGame> {
 
 	@NotNull
 	@Override

@@ -1,12 +1,12 @@
 package jokatu.game.games.noughtsandcrosses.player;
 
 import jokatu.game.games.noughtsandcrosses.game.NoughtsAndCrossesGame;
-import jokatu.game.player.PlayerFactory;
+import jokatu.game.player.AbstractPlayerFactory;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NoughtsAndCrossesPlayerFactory extends PlayerFactory<NoughtsAndCrossesPlayer, NoughtsAndCrossesGame> {
+public class NoughtsAndCrossesPlayerFactory extends AbstractPlayerFactory<NoughtsAndCrossesPlayer, NoughtsAndCrossesGame> {
 	@NotNull
 	@Override
 	protected Class<NoughtsAndCrossesGame> getGameClass() {
