@@ -186,7 +186,7 @@ public class GameController {
 		Player player = game.getPlayerByName(name);
 		if (player == null) {
 			PlayerFactory factory = gameFactories.getPlayerFactory(game);
-			return factory.produce(name);
+			return factory.produce(game, name);
 		} else {
 			return player;
 		}
