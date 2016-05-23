@@ -6,7 +6,6 @@ import jokatu.game.Game;
 import jokatu.game.GameFactory;
 import jokatu.game.GameID;
 import jokatu.game.event.EventHandler;
-import jokatu.game.event.GameEvent;
 import jokatu.game.games.gameofgames.event.GameCreatedEvent;
 import ophelia.util.MapUtils;
 import org.jetbrains.annotations.NotNull;
@@ -69,16 +68,12 @@ public class GameCreatedEventHandler extends EventHandler<GameCreatedEvent> {
 
 		Game<?> game = factory.produceGame(playerName);
 
-		game.observe(event -> sendEvent(game, event));
+		eventHandlers.forEach(handler -> game.observe(event -> handler.handle(game, event)));
 
 		// Now we are observing events, start the game.
 		game.advanceStage();
 
 		return game;
-	}
-
-	private void sendEvent(@NotNull Game game, @NotNull GameEvent event) {
-		eventHandlers.forEach(eventHandler -> eventHandler.handle(game, event));
 	}
 
 	private class GameEntry {
