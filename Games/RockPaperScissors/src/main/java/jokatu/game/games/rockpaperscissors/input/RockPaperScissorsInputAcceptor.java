@@ -2,9 +2,9 @@ package jokatu.game.games.rockpaperscissors.input;
 
 import jokatu.game.event.StageOverEvent;
 import jokatu.game.games.rockpaperscissors.game.RockPaperScissors;
-import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayer;
 import jokatu.game.input.InputAcceptor;
 import jokatu.game.input.UnacceptableInputException;
+import jokatu.game.player.StandardPlayer;
 import jokatu.game.result.PlayerResult;
 import jokatu.game.result.Result;
 import jokatu.game.status.StandardTextStatus;
@@ -20,15 +20,15 @@ import static java.util.Collections.singleton;
 import static jokatu.game.result.Result.DRAW;
 import static jokatu.game.result.Result.WIN;
 
-public class RockPaperScissorsInputAcceptor extends InputAcceptor<RockPaperScissorsInput, RockPaperScissorsPlayer> {
+public class RockPaperScissorsInputAcceptor extends InputAcceptor<RockPaperScissorsInput, StandardPlayer> {
 
-	private final BoundedPair<RockPaperScissorsPlayer> players;
+	private final BoundedPair<StandardPlayer> players;
 
-	private final Map<RockPaperScissorsPlayer, RockPaperScissors> inputs = new ConcurrentHashMap<>();
+	private final Map<StandardPlayer, RockPaperScissors> inputs = new ConcurrentHashMap<>();
 
 	private final StandardTextStatus status;
 
-	public RockPaperScissorsInputAcceptor(Collection<RockPaperScissorsPlayer> players, StandardTextStatus status) {
+	public RockPaperScissorsInputAcceptor(Collection<StandardPlayer> players, StandardTextStatus status) {
 		this.players = new BoundedPair<>(players);
 		this.status = status;
 
@@ -47,12 +47,12 @@ public class RockPaperScissorsInputAcceptor extends InputAcceptor<RockPaperSciss
 
 	@NotNull
 	@Override
-	protected Class<RockPaperScissorsPlayer> getPlayerClass() {
-		return RockPaperScissorsPlayer.class;
+	protected Class<StandardPlayer> getPlayerClass() {
+		return StandardPlayer.class;
 	}
 
 	@Override
-	protected void acceptCastInputAndPlayer(@NotNull RockPaperScissorsInput input, @NotNull RockPaperScissorsPlayer inputter) throws Exception {
+	protected void acceptCastInputAndPlayer(@NotNull RockPaperScissorsInput input, @NotNull StandardPlayer inputter) throws Exception {
 
 		if (!players.contains(inputter)) {
 			throw new UnacceptableInputException("You can't input to a game you're not playing.");
@@ -64,8 +64,8 @@ public class RockPaperScissorsInputAcceptor extends InputAcceptor<RockPaperSciss
 		}
 		inputs.put(inputter, input.getChoice());
 		if (inputs.size() == 2) {
-			RockPaperScissorsPlayer player1 = players.getFirst();
-			RockPaperScissorsPlayer player2 = players.getSecond();
+			StandardPlayer player1 = players.getFirst();
+			StandardPlayer player2 = players.getSecond();
 			Result result = inputs.get(player1).resultAgainst(inputs.get(player2));
 			switch (result) {
 				case WIN:
@@ -79,7 +79,7 @@ public class RockPaperScissorsInputAcceptor extends InputAcceptor<RockPaperSciss
 			}
 			fireEvent(new StageOverEvent());
 		} else {
-			RockPaperScissorsPlayer other = players.getOther(inputter);
+			StandardPlayer other = players.getOther(inputter);
 			assert other != null;
 			status.setText("Waiting for input from {0}.", other.getName());
 		}

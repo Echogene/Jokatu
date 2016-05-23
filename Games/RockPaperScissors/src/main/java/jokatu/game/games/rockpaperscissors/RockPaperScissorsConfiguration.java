@@ -4,11 +4,11 @@ import jokatu.components.GameComponent;
 import jokatu.components.config.GameConfiguration;
 import jokatu.game.games.rockpaperscissors.game.RockPaperScissorsGameFactory;
 import jokatu.game.games.rockpaperscissors.input.RockPaperScissorsInputDeserializer;
-import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayer;
 import jokatu.game.games.rockpaperscissors.views.RockPaperScissorsViewResolverFactory;
 import jokatu.game.input.InputDeserialiser;
 import jokatu.game.joining.JoinInputDeserialiser;
 import jokatu.game.player.PlayerFactory;
+import jokatu.game.player.StandardPlayer;
 import ophelia.collections.BaseCollection;
 import ophelia.collections.pair.UnorderedPair;
 import org.jetbrains.annotations.NotNull;
@@ -48,7 +48,7 @@ public class RockPaperScissorsConfiguration implements GameConfiguration {
 	@NotNull
 	@Override
 	public PlayerFactory getPlayerFactory() {
-		return ((game, username) -> new RockPaperScissorsPlayer(username));
+		return ((game, username) -> new StandardPlayer(username));
 	}
 
 	@NotNull

@@ -1,7 +1,7 @@
 package jokatu.game.games.gameofgames.event;
 
 import jokatu.game.event.PublicGameEvent;
-import jokatu.game.games.gameofgames.player.GameOfGamesPlayer;
+import jokatu.game.player.StandardPlayer;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.MessageFormat;
@@ -9,10 +9,10 @@ import java.text.MessageFormat;
 
 public class GameCreatedEvent implements PublicGameEvent {
 
-	private final GameOfGamesPlayer player;
+	private final StandardPlayer player;
 	private final String gameName;
 
-	public GameCreatedEvent(GameOfGamesPlayer player, String gameName) {
+	public GameCreatedEvent(StandardPlayer player, String gameName) {
 		this.player = player;
 		this.gameName = gameName;
 	}
@@ -27,7 +27,7 @@ public class GameCreatedEvent implements PublicGameEvent {
 		return gameName;
 	}
 
-	public GameOfGamesPlayer getPlayer() {
+	public StandardPlayer getPlayer() {
 		return player;
 	}
 }

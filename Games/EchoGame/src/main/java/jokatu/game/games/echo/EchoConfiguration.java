@@ -4,7 +4,7 @@ import jokatu.components.GameComponent;
 import jokatu.components.config.GameConfiguration;
 import jokatu.game.games.echo.game.EchoGameFactory;
 import jokatu.game.games.echo.game.EchoInputDeserialiser;
-import jokatu.game.games.echo.player.EchoPlayer;
+import jokatu.game.player.StandardPlayer;
 import jokatu.game.games.echo.views.EchoViewResolverFactory;
 import jokatu.game.input.InputDeserialiser;
 import jokatu.game.player.PlayerFactory;
@@ -44,7 +44,7 @@ public class EchoConfiguration implements GameConfiguration {
 	@NotNull
 	@Override
 	public PlayerFactory getPlayerFactory() {
-		return (game, username) -> new EchoPlayer(username);
+		return (game, username) -> new StandardPlayer(username);
 	}
 
 	@NotNull

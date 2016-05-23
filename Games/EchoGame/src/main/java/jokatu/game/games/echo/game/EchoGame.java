@@ -3,7 +3,7 @@ package jokatu.game.games.echo.game;
 import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.event.StatusUpdateEvent;
-import jokatu.game.games.echo.player.EchoPlayer;
+import jokatu.game.player.StandardPlayer;
 import ophelia.collections.BaseCollection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -15,7 +15,7 @@ import static java.time.LocalTime.now;
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static ophelia.collections.set.EmptySet.emptySet;
 
-public class EchoGame extends Game<EchoPlayer> {
+public class EchoGame extends Game<StandardPlayer> {
 
 	public static final String ECHO = "Echo";
 
@@ -41,7 +41,7 @@ public class EchoGame extends Game<EchoPlayer> {
 
 	@Nullable
 	@Override
-	public EchoPlayer getPlayerByName(@NotNull String name) {
+	public StandardPlayer getPlayerByName(@NotNull String name) {
 		return null;
 	}
 
@@ -51,7 +51,7 @@ public class EchoGame extends Game<EchoPlayer> {
 	}
 
 	@Override
-	public BaseCollection<EchoPlayer> getPlayers() {
+	public BaseCollection<StandardPlayer> getPlayers() {
 		return emptySet();
 	}
 }

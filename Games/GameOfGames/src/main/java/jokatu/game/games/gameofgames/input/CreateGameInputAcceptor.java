@@ -1,11 +1,11 @@
 package jokatu.game.games.gameofgames.input;
 
 import jokatu.game.games.gameofgames.event.GameCreatedEvent;
-import jokatu.game.games.gameofgames.player.GameOfGamesPlayer;
 import jokatu.game.input.InputAcceptor;
+import jokatu.game.player.StandardPlayer;
 import org.jetbrains.annotations.NotNull;
 
-public class CreateGameInputAcceptor extends InputAcceptor<CreateGameInput, GameOfGamesPlayer> {
+public class CreateGameInputAcceptor extends InputAcceptor<CreateGameInput, StandardPlayer> {
 	@NotNull
 	@Override
 	protected Class<CreateGameInput> getInputClass() {
@@ -14,12 +14,12 @@ public class CreateGameInputAcceptor extends InputAcceptor<CreateGameInput, Game
 
 	@NotNull
 	@Override
-	protected Class<GameOfGamesPlayer> getPlayerClass() {
-		return GameOfGamesPlayer.class;
+	protected Class<StandardPlayer> getPlayerClass() {
+		return StandardPlayer.class;
 	}
 
 	@Override
-	protected void acceptCastInputAndPlayer(@NotNull CreateGameInput input, @NotNull GameOfGamesPlayer inputter) throws Exception {
+	protected void acceptCastInputAndPlayer(@NotNull CreateGameInput input, @NotNull StandardPlayer inputter) throws Exception {
 		String gameName = input.getGameName();
 		fireEvent(new GameCreatedEvent(inputter, gameName));
 	}

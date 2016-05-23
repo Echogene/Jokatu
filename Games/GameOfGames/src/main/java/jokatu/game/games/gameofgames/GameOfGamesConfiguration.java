@@ -5,10 +5,10 @@ import jokatu.components.config.GameConfiguration;
 import jokatu.game.games.gameofgames.game.GameOfGames;
 import jokatu.game.games.gameofgames.game.GameOfGamesFactory;
 import jokatu.game.games.gameofgames.input.CreateGameInputDeserialiser;
-import jokatu.game.games.gameofgames.player.GameOfGamesPlayer;
 import jokatu.game.games.gameofgames.views.GameOfGamesViewResolverFactory;
 import jokatu.game.input.InputDeserialiser;
 import jokatu.game.player.PlayerFactory;
+import jokatu.game.player.StandardPlayer;
 import ophelia.collections.BaseCollection;
 import ophelia.collections.set.Singleton;
 import org.jetbrains.annotations.NotNull;
@@ -44,7 +44,7 @@ public class GameOfGamesConfiguration implements GameConfiguration {
 	@NotNull
 	@Override
 	public PlayerFactory getPlayerFactory() {
-		return ((game, username) -> new GameOfGamesPlayer(username));
+		return ((game, username) -> new StandardPlayer(username));
 	}
 
 	@NotNull

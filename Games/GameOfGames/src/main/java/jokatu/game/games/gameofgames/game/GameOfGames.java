@@ -3,7 +3,7 @@ package jokatu.game.games.gameofgames.game;
 import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.event.StatusUpdateEvent;
-import jokatu.game.games.gameofgames.player.GameOfGamesPlayer;
+import jokatu.game.player.StandardPlayer;
 import ophelia.collections.BaseCollection;
 import ophelia.collections.set.EmptySet;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * A game you play to create games.
  */
-public class GameOfGames extends Game<GameOfGamesPlayer> {
+public class GameOfGames extends Game<StandardPlayer> {
 
 	public static final String GAME_OF_GAMES = "Game of games";
 
@@ -30,7 +30,7 @@ public class GameOfGames extends Game<GameOfGamesPlayer> {
 
 	@Nullable
 	@Override
-	public GameOfGamesPlayer getPlayerByName(@NotNull String name) {
+	public StandardPlayer getPlayerByName(@NotNull String name) {
 		return null;
 	}
 
@@ -43,7 +43,7 @@ public class GameOfGames extends Game<GameOfGamesPlayer> {
 	}
 
 	@Override
-	public BaseCollection<GameOfGamesPlayer> getPlayers() {
+	public BaseCollection<StandardPlayer> getPlayers() {
 		return EmptySet.emptySet();
 	}
 }

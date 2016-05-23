@@ -1,7 +1,7 @@
 package jokatu.game.games.echo.views;
 
 import jokatu.game.games.echo.game.EchoGame;
-import jokatu.game.games.echo.player.EchoPlayer;
+import jokatu.game.player.StandardPlayer;
 import jokatu.game.viewresolver.ViewResolver;
 import jokatu.game.viewresolver.ViewResolverFactory;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author steven
  */
 @Component
-public class EchoViewResolverFactory extends ViewResolverFactory<EchoPlayer, EchoGame> {
+public class EchoViewResolverFactory extends ViewResolverFactory<StandardPlayer, EchoGame> {
 	@NotNull
 	@Override
 	protected Class<EchoGame> getGameClass() {
@@ -21,8 +21,8 @@ public class EchoViewResolverFactory extends ViewResolverFactory<EchoPlayer, Ech
 
 	@NotNull
 	@Override
-	protected ViewResolver<EchoPlayer, EchoGame> getResolverFor(@NotNull EchoGame castGame) {
-		return new ViewResolver<EchoPlayer, EchoGame>(castGame) {
+	protected ViewResolver<StandardPlayer, EchoGame> getResolverFor(@NotNull EchoGame castGame) {
+		return new ViewResolver<StandardPlayer, EchoGame>(castGame) {
 			@NotNull
 			@Override
 			protected ModelAndView getDefaultView() {
@@ -31,13 +31,13 @@ public class EchoViewResolverFactory extends ViewResolverFactory<EchoPlayer, Ech
 
 			@NotNull
 			@Override
-			protected Class<EchoPlayer> getPlayerClass() {
-				return EchoPlayer.class;
+			protected Class<StandardPlayer> getPlayerClass() {
+				return StandardPlayer.class;
 			}
 
 			@NotNull
 			@Override
-			protected ModelAndView getViewFor(@NotNull EchoPlayer player) {
+			protected ModelAndView getViewFor(@NotNull StandardPlayer player) {
 				return getDefaultView();
 			}
 		};

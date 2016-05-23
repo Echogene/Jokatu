@@ -3,11 +3,11 @@ package jokatu.game.games.rockpaperscissors.game;
 import jokatu.game.GameID;
 import jokatu.game.event.GameEvent;
 import jokatu.game.exception.GameException;
-import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayer;
 import jokatu.game.joining.GameFullException;
 import jokatu.game.joining.JoinInput;
 import jokatu.game.joining.PlayerAlreadyJoinedException;
 import jokatu.game.joining.PlayerJoinedEvent;
+import jokatu.game.player.StandardPlayer;
 import ophelia.collections.list.UnmodifiableList;
 import ophelia.exceptions.CollectedException;
 import ophelia.exceptions.StackedException;
@@ -18,10 +18,10 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ophelia.collections.matchers.IsCollectionWithSize.hasSize;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
-import static ophelia.collections.matchers.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.junit.Assert.fail;
@@ -29,16 +29,16 @@ import static org.junit.Assert.fail;
 public class RockPaperScissorsGameTest {
 
 	private RockPaperScissorsGame game;
-	private RockPaperScissorsPlayer player1;
-	private RockPaperScissorsPlayer player2;
+	private StandardPlayer player1;
+	private StandardPlayer player2;
 
 	@Before
 	public void setUp() throws Exception {
 		game = new RockPaperScissorsGame(new GameID(0L));
 		// Start the game.
 		game.advanceStage();
-		player1 = new RockPaperScissorsPlayer("Player 1");
-		player2 = new RockPaperScissorsPlayer("Player 2");
+		player1 = new StandardPlayer("Player 1");
+		player2 = new StandardPlayer("Player 2");
 	}
 
 	@Test
@@ -85,7 +85,7 @@ public class RockPaperScissorsGameTest {
 		game.observe(events::add);
 
 		try {
-			game.accept(new JoinInput(), new RockPaperScissorsPlayer("Player 3"));
+			game.accept(new JoinInput(), new StandardPlayer("Player 3"));
 			fail("Should not accept a third player's joining.");
 		} catch (GameException e) {
 			Exception cause = extractRootCause(e);
