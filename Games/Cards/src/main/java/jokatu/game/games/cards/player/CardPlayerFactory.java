@@ -16,7 +16,7 @@ public class CardPlayerFactory extends PlayerFactory<CardPlayer, CardGame> {
 
 	@NotNull
 	@Override
-	protected CardPlayer produceInCastGame(CardGame cardGame, String username) {
+	protected CardPlayer produceInCastGame(@NotNull CardGame cardGame, @NotNull String username) {
 		return new CardPlayer(username);
 	}
 }

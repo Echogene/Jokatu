@@ -31,5 +31,5 @@ public abstract class PlayerFactory<P extends Player, G extends Game<P>> {
 	}
 
 	@NotNull
-	protected abstract P produceInCastGame(G g, String username);
+	protected abstract P produceInCastGame(@NotNull G g, @NotNull String username);
 }

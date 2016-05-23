@@ -15,7 +15,7 @@ public class NoughtsAndCrossesPlayerFactory extends PlayerFactory<NoughtsAndCros
 
 	@NotNull
 	@Override
-	protected NoughtsAndCrossesPlayer produceInCastGame(NoughtsAndCrossesGame noughtsAndCrossesGame, String username) {
+	protected NoughtsAndCrossesPlayer produceInCastGame(@NotNull NoughtsAndCrossesGame noughtsAndCrossesGame, @NotNull String username) {
 		return new NoughtsAndCrossesPlayer(username);
 	}
 }

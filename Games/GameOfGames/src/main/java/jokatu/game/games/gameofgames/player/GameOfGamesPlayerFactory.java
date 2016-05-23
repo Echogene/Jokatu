@@ -15,7 +15,7 @@ public class GameOfGamesPlayerFactory extends PlayerFactory<GameOfGamesPlayer, G
 
 	@NotNull
 	@Override
-	protected GameOfGamesPlayer produceInCastGame(GameOfGames game, String username) {
+	protected GameOfGamesPlayer produceInCastGame(@NotNull GameOfGames game, @NotNull String username) {
 		return new GameOfGamesPlayer(username);
 	}
 }
