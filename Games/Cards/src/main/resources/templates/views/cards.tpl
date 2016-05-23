@@ -10,7 +10,7 @@ layout 'views/game_view.tpl', true,
 		yieldUnescaped markupGenerator.bindUserLast(
 			tag: 'j-status',
 			id: 'hand',
-			wrapperElement: 'JCard',
+			wrapperElement: 'span',
 			attributeName: 'data-hand',
 			destination: "/user/topic/hand.game.${gameId}",
 			user: "${username}"
