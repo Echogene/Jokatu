@@ -1,15 +1,21 @@
 package jokatu.game.games.gameofgames.player;
 
-import jokatu.game.Game;
+import jokatu.game.games.gameofgames.game.GameOfGames;
 import jokatu.game.player.PlayerFactory;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GameOfGamesPlayerFactory extends PlayerFactory<GameOfGamesPlayer> {
+public class GameOfGamesPlayerFactory extends PlayerFactory<GameOfGamesPlayer, GameOfGames> {
 	@NotNull
 	@Override
-	public GameOfGamesPlayer produce(@NotNull Game<? extends GameOfGamesPlayer> game, @NotNull String username) {
+	protected Class<GameOfGames> getGameClass() {
+		return GameOfGames.class;
+	}
+
+	@NotNull
+	@Override
+	protected GameOfGamesPlayer produceInCastGame(GameOfGames game, String username) {
 		return new GameOfGamesPlayer(username);
 	}
 }
