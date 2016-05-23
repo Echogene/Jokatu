@@ -7,13 +7,12 @@ import jokatu.game.stage.GameOverStage;
 import jokatu.game.stage.JoiningStage;
 import jokatu.game.status.StandardTextStatus;
 import ophelia.collections.BaseCollection;
+import ophelia.collections.set.UnmodifiableSet;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static ophelia.collections.set.EmptySet.emptySet;
 
 public class CardGame extends Game<CardPlayer> {
 
@@ -57,7 +56,7 @@ public class CardGame extends Game<CardPlayer> {
 
 	@Override
 	public BaseCollection<CardPlayer> getPlayers() {
-		return emptySet();
+		return new UnmodifiableSet<>(players.values());
 	}
 
 	public void register(CardPlayer player) {
