@@ -2,12 +2,17 @@ package jokatu.game.games.rockpaperscissors.game;
 
 import jokatu.game.GameID;
 import jokatu.game.event.GameEvent;
+import jokatu.game.event.StageOverEvent;
+import jokatu.game.event.StatusUpdateEvent;
 import jokatu.game.exception.GameException;
+import jokatu.game.games.rockpaperscissors.input.RockPaperScissorsInput;
+import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.joining.GameFullException;
 import jokatu.game.joining.JoinInput;
 import jokatu.game.joining.PlayerAlreadyJoinedException;
 import jokatu.game.joining.PlayerJoinedEvent;
 import jokatu.game.player.StandardPlayer;
+import jokatu.game.result.PlayerResult;
 import ophelia.collections.list.UnmodifiableList;
 import ophelia.exceptions.CollectedException;
 import ophelia.exceptions.StackedException;
@@ -18,7 +23,11 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jokatu.game.games.rockpaperscissors.game.RockPaperScissors.PAPER;
+import static jokatu.game.games.rockpaperscissors.game.RockPaperScissors.ROCK;
 import static ophelia.collections.matchers.IsCollectionWithSize.hasSize;
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
@@ -72,6 +81,8 @@ public class RockPaperScissorsGameTest {
 		assertThat(events, hasItem(instanceOf(PlayerJoinedEvent.class)));
 		PlayerJoinedEvent playerJoinedEvent = getUniqueEventFromList(PlayerJoinedEvent.class, events);
 		assertThat(playerJoinedEvent.getMessage(), is("Player 2 joined the game."));
+
+		assertThat(events, hasItem(instanceOf(StageOverEvent.class)));
 	}
 
 	@Test
@@ -115,6 +126,80 @@ public class RockPaperScissorsGameTest {
 		assertThat(game.getPlayers(), hasSize(1));
 	}
 
+	@Test
+	public void should_be_accept_input_from_a_player_after_joining_stage_is_over() throws Exception {
+		game.accept(new JoinInput(), player1);
+		game.accept(new JoinInput(), player2);
+
+		List<GameEvent> events = new ArrayList<>();
+		game.observe(events::add);
+
+		game.advanceStage();
+
+		assertThat(events, hasItem(instanceOf(StatusUpdateEvent.class)));
+		StatusUpdateEvent statusUpdateEvent = getUniqueEventFromList(StatusUpdateEvent.class, events);
+		assertThat(statusUpdateEvent.getMessage(), allOf(
+				containsString("Waiting for inputs from"),
+				containsString(player1.getName()),
+				containsString(player2.getName())
+		));
+		events.clear();
+
+		game.accept(new RockPaperScissorsInput(ROCK), player1);
+
+		assertThat(events, hasItem(instanceOf(StatusUpdateEvent.class)));
+		StatusUpdateEvent statusUpdateEvent2 = getUniqueEventFromList(StatusUpdateEvent.class, events);
+		assertThat(statusUpdateEvent2.getMessage(), is("Waiting for input from Player 2."));
+		events.clear();
+	}
+
+	@Test
+	public void should_not_allow_player_to_change_mind() throws Exception {
+		game.accept(new JoinInput(), player1);
+		game.accept(new JoinInput(), player2);
+
+		game.advanceStage();
+
+		game.accept(new RockPaperScissorsInput(ROCK), player1);
+
+		List<GameEvent> events = new ArrayList<>();
+		game.observe(events::add);
+
+		try {
+			game.accept(new RockPaperScissorsInput(PAPER), player1);
+			fail("Should not let player change mind.");
+		} catch (GameException e) {
+			Exception cause = extractRootCause(e);
+			assertThat(cause, instanceOf(UnacceptableInputException.class));
+		}
+		assertThat(events, is(empty()));
+	}
+
+	@Test
+	public void should_draw_game() throws Exception {
+		game.accept(new JoinInput(), player1);
+		game.accept(new JoinInput(), player2);
+
+		game.advanceStage();
+
+		game.accept(new RockPaperScissorsInput(ROCK), player1);
+
+		List<GameEvent> events = new ArrayList<>();
+		game.observe(events::add);
+
+		game.accept(new RockPaperScissorsInput(ROCK), player2);
+
+		assertThat(events, hasItem(instanceOf(StageOverEvent.class)));
+
+		assertThat(events, hasItem(instanceOf(PlayerResult.class)));
+		PlayerResult result = getUniqueEventFromList(PlayerResult.class, events);
+		assertThat(result.getMessage(), allOf(
+				containsString("DRAW"),
+				containsString(player1.getName()),
+				containsString(player2.getName())
+		));
+	}
+
 	private Exception extractRootCause(GameException e) {
 		assertThat(e.getCause(), instanceOf(StackedException.class));
 		UnmodifiableList<Exception> causes = CollectedException.flatten((Exception) e.getCause());
@@ -122,7 +207,7 @@ public class RockPaperScissorsGameTest {
 		return causes.get(0);
 	}
 
-	private PlayerJoinedEvent getUniqueEventFromList(Class<PlayerJoinedEvent> eventClass, List<GameEvent> events) throws StackedException {
+	private <E extends GameEvent> E getUniqueEventFromList(Class<E> eventClass, List<GameEvent> events) throws StackedException {
 		return events.stream()
 				.filter(eventClass::isInstance)
 				.map(eventClass::cast)
