@@ -16,21 +16,21 @@ layout 'layouts/main.tpl', true,
 	mainBody: contents {
 		div(id: 'sidebar') {
 			yieldUnescaped markupGenerator.bindLast(
-					tag: "j-status",
-					id: "status",
-					wrapperElement: "div",
+					tag: 'j-status',
+					id: 'status',
+					wrapperElement: 'div',
 					destination: "/topic/status.game.${gameId}"
 			)
 			yieldUnescaped markupGenerator.bindHistory(
-					tag: "j-message-box",
-					id: "public-messages",
-					wrapperElement: "div",
+					tag: 'j-message-box',
+					id: 'public-messages',
+					wrapperElement: 'div',
 					destination: "/topic/public.game.${gameId}"
 			)
 			yieldUnescaped markupGenerator.bindUserHistory(
-					tag: "j-message-box",
-					id: "private-messages",
-					wrapperElement: "div",
+					tag: 'j-message-box',
+					id: 'private-messages',
+					wrapperElement: 'div',
 					destination: "/topic/private.game.${gameId}",
 					user: "${username}"
 			)
