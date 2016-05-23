@@ -4,9 +4,10 @@ import jokatu.components.GameComponent;
 import jokatu.components.config.GameConfiguration;
 import jokatu.game.games.echo.game.EchoGameFactory;
 import jokatu.game.games.echo.game.EchoInputDeserialiser;
-import jokatu.game.games.echo.game.EchoPlayerFactory;
+import jokatu.game.games.echo.player.EchoPlayer;
 import jokatu.game.games.echo.views.EchoViewResolverFactory;
 import jokatu.game.input.InputDeserialiser;
+import jokatu.game.player.PlayerFactory;
 import ophelia.collections.BaseCollection;
 import ophelia.collections.set.Singleton;
 import org.jetbrains.annotations.NotNull;
@@ -21,18 +22,15 @@ import static jokatu.game.games.echo.game.EchoGame.ECHO;
 public class EchoConfiguration implements GameConfiguration {
 
 	private final EchoGameFactory echoGameFactory;
-	private final EchoPlayerFactory echoPlayerFactory;
 	private final EchoInputDeserialiser echoInputDeserialiser;
 	private final EchoViewResolverFactory echoViewResolverFactory;
 
 	@Autowired
 	public EchoConfiguration(EchoGameFactory echoGameFactory,
-	                         EchoPlayerFactory echoPlayerFactory,
 	                         EchoInputDeserialiser echoInputDeserialiser,
 	                         EchoViewResolverFactory echoViewResolverFactory
 	) {
 		this.echoGameFactory = echoGameFactory;
-		this.echoPlayerFactory = echoPlayerFactory;
 		this.echoInputDeserialiser = echoInputDeserialiser;
 		this.echoViewResolverFactory = echoViewResolverFactory;
 	}
@@ -45,8 +43,8 @@ public class EchoConfiguration implements GameConfiguration {
 
 	@NotNull
 	@Override
-	public EchoPlayerFactory getPlayerFactory() {
-		return echoPlayerFactory;
+	public PlayerFactory getPlayerFactory() {
+		return (game, username) -> new EchoPlayer(username);
 	}
 
 	@NotNull

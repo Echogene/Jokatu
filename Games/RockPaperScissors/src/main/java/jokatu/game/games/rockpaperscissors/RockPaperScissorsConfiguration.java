@@ -4,10 +4,11 @@ import jokatu.components.GameComponent;
 import jokatu.components.config.GameConfiguration;
 import jokatu.game.games.rockpaperscissors.game.RockPaperScissorsGameFactory;
 import jokatu.game.games.rockpaperscissors.input.RockPaperScissorsInputDeserializer;
-import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayerFactory;
+import jokatu.game.games.rockpaperscissors.player.RockPaperScissorsPlayer;
 import jokatu.game.games.rockpaperscissors.views.RockPaperScissorsViewResolverFactory;
 import jokatu.game.input.InputDeserialiser;
 import jokatu.game.joining.JoinInputDeserialiser;
+import jokatu.game.player.PlayerFactory;
 import ophelia.collections.BaseCollection;
 import ophelia.collections.pair.UnorderedPair;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +23,6 @@ import static jokatu.game.games.rockpaperscissors.game.RockPaperScissorsGame.ROC
 public class RockPaperScissorsConfiguration implements GameConfiguration {
 
 	private final RockPaperScissorsGameFactory factory;
-	private final RockPaperScissorsPlayerFactory playerFactory;
 	private final RockPaperScissorsInputDeserializer inputDeserializer;
 	private final RockPaperScissorsViewResolverFactory viewResolverFactory;
 	private final JoinInputDeserialiser joinInputDeserialiser;
@@ -30,12 +30,10 @@ public class RockPaperScissorsConfiguration implements GameConfiguration {
 	@Autowired
 	public RockPaperScissorsConfiguration(
 			RockPaperScissorsGameFactory factory,
-			RockPaperScissorsPlayerFactory playerFactory,
 			RockPaperScissorsInputDeserializer inputDeserializer,
 			RockPaperScissorsViewResolverFactory viewResolverFactory,
 			JoinInputDeserialiser joinInputDeserialiser) {
 		this.factory = factory;
-		this.playerFactory = playerFactory;
 		this.inputDeserializer = inputDeserializer;
 		this.viewResolverFactory = viewResolverFactory;
 		this.joinInputDeserialiser = joinInputDeserialiser;
@@ -49,8 +47,8 @@ public class RockPaperScissorsConfiguration implements GameConfiguration {
 
 	@NotNull
 	@Override
-	public RockPaperScissorsPlayerFactory getPlayerFactory() {
-		return playerFactory;
+	public PlayerFactory getPlayerFactory() {
+		return ((game, username) -> new RockPaperScissorsPlayer(username));
 	}
 
 	@NotNull

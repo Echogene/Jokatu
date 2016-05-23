@@ -9,7 +9,7 @@ public class NoughtsAndCrossesPlayer extends AbstractPlayer {
 
 	private NoughtOrCross allegiance;
 
-	NoughtsAndCrossesPlayer(String username) {
+	public NoughtsAndCrossesPlayer(String username) {
 		super(username);
 	}
 
