@@ -25,6 +25,8 @@ public class CardGame extends Game<CardPlayer> {
 
 	CardGame(GameID identifier) {
 		super(identifier);
+
+		status.observe(this::fireEvent);
 	}
 
 	@NotNull
