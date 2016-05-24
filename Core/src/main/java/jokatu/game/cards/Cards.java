@@ -2,7 +2,11 @@ package jokatu.game.cards;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toMap;
 import static jokatu.game.cards.Rank.*;
 import static jokatu.game.cards.Suit.*;
 
@@ -67,6 +71,12 @@ public interface Cards {
 	Card JACK_OF_CLUBS  = createCard("\ud83c\udcdb", JACK, CLUBS);
 	Card QUEEN_OF_CLUBS = createCard("\ud83c\udcdd", QUEEN, CLUBS);
 	Card KING_OF_CLUBS  = createCard("\ud83c\udcde", KING, CLUBS);
+
+	Map<Suit, Map<Rank, Card>> CARDS_BY_SUIT_AND_RANK = ALL_CARDS.stream()
+			.collect(groupingBy(Card::getSuit, toMap(Card::getRank, identity())));
+
+	Map<Rank, Map<Suit, Card>> CARDS_BY_RANK_AND_SUIT = ALL_CARDS.stream()
+			.collect(groupingBy(Card::getRank, toMap(Card::getSuit, identity())));
 
 	static Card createCard(String display, Rank rank, Suit suit) {
 		Card card = new Card(display, rank, suit);
