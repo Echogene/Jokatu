@@ -37,6 +37,8 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.security.Principal;
 import java.text.MessageFormat;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.text.MessageFormat.format;
 import static ophelia.exceptions.maybe.Maybe.wrapOutput;
@@ -50,6 +52,8 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 public class GameController {
 
 	private static final Logger log = LoggerFactory.getLogger(GameController.class);
+
+	private static final Pattern GAME_CHANNEL_PATTERN = Pattern.compile(".*\\.game\\.(\\d+).*");
 
 	private final GameFactories gameFactories;
 	private final GameDao gameDao;
@@ -192,11 +196,15 @@ public class GameController {
 		}
 	}
 
-	@MessageExceptionHandler(GameException.class)
-	void handleException(GameException e, Message originalMessage, Principal principal) {
+	@MessageExceptionHandler(Exception.class)
+	void handleException(Exception e, Message originalMessage, Principal principal) {
 		StompHeaderAccessor accessor = StompHeaderAccessor.wrap(originalMessage);
-		ErrorMessage errorMessage = getErrorMessage(e, accessor);
-		sender.sendMessageToUser(principal.getName(), "/topic/errors.game." + e.getId(), errorMessage);
+		String destination = accessor.getDestination();
+		Matcher matcher = GAME_CHANNEL_PATTERN.matcher(destination);
+		if (matcher.matches()) {
+			ErrorMessage errorMessage = getErrorMessage(e, accessor);
+			sender.sendMessageToUser(principal.getName(), "/topic/errors.game." + matcher.group(1), errorMessage);
+		}
 		log.error(
 				MessageFormat.format(
 					"Exception occurred when receiving message\n{0}",
@@ -206,7 +214,7 @@ public class GameController {
 		);
 	}
 
-	private ErrorMessage getErrorMessage(GameException e, StompHeaderAccessor accessor) {
+	private ErrorMessage getErrorMessage(Throwable e, StompHeaderAccessor accessor) {
 		switch (accessor.getCommand()) {
 			case SUBSCRIBE:
 				String subscribeId = accessor.getNativeHeader("id").get(0);
