@@ -7,11 +7,11 @@ JLineProto.createdCallback = function() {
 	this.style.position = 'absolute';
 	this.style.pointerEvents = 'none';
 
+	this._endsObserver = new MutationObserver(this._updatePosition.bind(this));
+
 	observeAttributes(this, new Map([
 		['data-ends', this._updatePosition.bind(this)]
 	]));
-
-	this._endsObserver = new MutationObserver(this._updatePosition.bind(this));
 
 	this.innerHTML = '&nbsp;';
 
