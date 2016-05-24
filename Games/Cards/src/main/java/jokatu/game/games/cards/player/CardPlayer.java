@@ -35,7 +35,7 @@ public class CardPlayer extends AbstractSynchronousObservable<GameEvent> impleme
 		return hand;
 	}
 
-	public void playCard(Card card) {
+	public void playCard(@NotNull Card card) {
 		boolean removed = hand.remove(card);
 		if (removed) {
 			fireEvent(new CardPlayedEvent(this, card));
