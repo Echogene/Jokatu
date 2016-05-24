@@ -9,7 +9,7 @@ import static java.util.stream.Collectors.toMap;
 
 public interface Cards {
 
-	Card PRIVATE_CARD    = new Card("\ud83c\udca0");
+	String PRIVATE_CARD = "\ud83c\udca0";
 
 	Card ACE_OF_SPADES   = new Card("\ud83c\udca1");
 	Card TWO_OF_SPADES   = new Card("\ud83c\udca2");
