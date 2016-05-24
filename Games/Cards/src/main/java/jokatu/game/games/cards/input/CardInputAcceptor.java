@@ -8,6 +8,7 @@ import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.status.StandardTextStatus;
 import ophelia.collections.set.HashSet;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.Set;
 import static java.text.MessageFormat.format;
 import static java.util.Collections.shuffle;
 import static jokatu.game.cards.Cards.SEVEN_OF_DIAMONDS;
+import static jokatu.game.cards.Rank.SEVEN;
 
 public class CardInputAcceptor extends InputAcceptor<CardInput, CardPlayer> {
 
@@ -47,7 +49,7 @@ public class CardInputAcceptor extends InputAcceptor<CardInput, CardPlayer> {
 			player.drawCard(card);
 			if (card == SEVEN_OF_DIAMONDS) {
 				currentPlayer = player;
-				status.setText(format("Waiting for the {0} to play the seven of diamonds.", currentPlayer));
+				status.setText(format("Waiting for {0} to play the seven of diamonds.", currentPlayer));
 			}
 		}
 	}
@@ -73,22 +75,39 @@ public class CardInputAcceptor extends InputAcceptor<CardInput, CardPlayer> {
 		if (!inputter.getHand().contains(card)) {
 			throw new UnacceptableInputException("Stop cheating!  You can't play a card that's not in your hand.");
 		}
-		if (hasAdjacentExtremeCard(card)) {
-			inputter.playCard(card);
+		Card adjacentExtremeCard = getAdjacentExtremeCard(card);
+		if (adjacentExtremeCard == null) {
+			throw new UnacceptableInputException("There is nowhere to play that card.");
 		}
+		if (adjacentExtremeCard.getRank() != SEVEN) {
+			extremeCards.remove(adjacentExtremeCard);
+		}
+		extremeCards.add(card);
+		inputter.playCard(card);
 
 		completeTurn();
 	}
 
-	private boolean hasAdjacentExtremeCard(@NotNull Card card) {
+	@Nullable
+	private Card getAdjacentExtremeCard(@NotNull Card card) {
 		if (extremeCards.isEmpty()) {
-			return card == SEVEN_OF_DIAMONDS;
+			return card == SEVEN_OF_DIAMONDS ? SEVEN_OF_DIAMONDS : null;
 		}
-		return false;
+		return extremeCards.stream()
+				.filter(extreme -> isAdjacent(card, extreme))
+				.findAny()
+				.orElse(null);
+	}
+
+	private boolean isAdjacent(Card card, Card extreme) {
+		return card.getSuit() == extreme.getSuit()
+				&& (card.getRank().getValue() == extreme.getRank().getValue() - 1
+						|| card.getRank().getValue() == extreme.getRank().getValue() + 1);
 	}
 
 	private void completeTurn() {
 		int i = players.indexOf(currentPlayer);
 		currentPlayer = players.get((i + 1) % players.size());
+		status.setText(format("Waiting for {0} to play a card or pass.", currentPlayer));
 	}
 }
