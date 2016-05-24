@@ -84,7 +84,12 @@ JStatusProto._updateElement = function(element, status) {
 	}
 	var attributeName = this.getAttribute('attributeName');
 	if (attributeName) {
-		element.setAttribute(attributeName, JSON.stringify(status));
+		var statusString = JSON.stringify(status);
+		var attributeWrapper = this.getAttribute('attributeWrapper');
+		if (attributeWrapper) {
+			statusString = attributeWrapper.replace(/\$status/g, statusString);
+		}
+		element.setAttribute(attributeName, statusString);
 	}
 };
 
