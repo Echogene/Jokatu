@@ -7,7 +7,7 @@ JLineProto.createdCallback = function() {
 	this.style.position = 'absolute';
 	this.style.pointerEvents = 'none';
 
-	this._endsObserver = new MutationObserver(this._updatePosition.bind(this));
+	this._endsObserver = new MutationObserver(this._updatePositionFromEnds.bind(this));
 
 	observeAttributes(this, new Map([
 		['data-ends', this._updatePosition.bind(this)]
@@ -15,20 +15,24 @@ JLineProto.createdCallback = function() {
 
 	this.innerHTML = '&nbsp;';
 
-	window.addEventListener("optimizedResize", this._updatePosition.bind(this), false);
+	window.addEventListener("optimizedResize", this._updatePositionFromEnds.bind(this), false);
 };
 
 JLineProto.setEnds = function(start, end) {
 	this.setAttribute('data-ends', JSON.stringify({start: start.id, end: end.id}));
 };
 
-JLineProto._updatePosition = function(status) {
+JLineProto._updatePositionFromEnds = function() {
+	this._updatePosition(JSON.parse(this.getAttribute('data-ends')));
+};
+
+JLineProto._updatePosition = function(ends) {
 	this._endsObserver.disconnect();
-	if (!status) {
+	if (!ends) {
 		return;
 	}
-	var startElement = document.getElementById(status.start);
-	var endElement = document.getElementById(status.end);
+	var startElement = document.getElementById(ends.start);
+	var endElement = document.getElementById(ends.end);
 	if (!startElement || !endElement) {
 		return;
 	}
