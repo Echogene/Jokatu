@@ -4,7 +4,6 @@ layout 'views/game_view.tpl', true,
 
 	additionalHeaders: contents {
 		include template: 'components/button.tpl'
-		include template: 'components/line.tpl'
 		link(rel: 'stylesheet', href: '/css/noughts_and_crosses.css')
 	},
 
