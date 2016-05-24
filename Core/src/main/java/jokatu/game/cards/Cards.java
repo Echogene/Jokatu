@@ -83,4 +83,8 @@ public interface Cards {
 		ALL_CARDS.add(card);
 		return card;
 	}
+
+	static List<Card> getNewDeck() {
+		return new ArrayList<>(ALL_CARDS);
+	}
 }
