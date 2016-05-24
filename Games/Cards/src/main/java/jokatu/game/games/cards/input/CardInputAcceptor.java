@@ -1,7 +1,7 @@
 package jokatu.game.games.cards.input;
 
 import jokatu.game.cards.Card;
-import jokatu.game.cards.StandardCards;
+import jokatu.game.cards.Cards;
 import jokatu.game.games.cards.player.CardPlayer;
 import jokatu.game.input.InputAcceptor;
 import jokatu.game.input.UnacceptableInputException;
@@ -16,7 +16,7 @@ import java.util.Set;
 
 import static java.text.MessageFormat.format;
 import static java.util.Collections.shuffle;
-import static jokatu.game.cards.StandardCards.SEVEN_OF_DIAMONDS;
+import static jokatu.game.cards.Cards.SEVEN_OF_DIAMONDS;
 
 public class CardInputAcceptor extends InputAcceptor<CardInput, CardPlayer> {
 
@@ -39,7 +39,7 @@ public class CardInputAcceptor extends InputAcceptor<CardInput, CardPlayer> {
 	}
 
 	private void dealHands() {
-		List<Card> deck = StandardCards.getNewDeck();
+		List<Card> deck = Cards.getNewDeck();
 		shuffle(deck);
 		for (int i = 0; i < deck.size(); i++) {
 			Card card = deck.get(i);

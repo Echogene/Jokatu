@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-import static jokatu.game.cards.StandardCards.ALL_CARDS;
+import static jokatu.game.cards.Cards.ALL_CARDS;
 
 @Component
 public class CardInputDeserialiser implements InputDeserialiser<CardInput> {

@@ -7,7 +7,7 @@ import java.util.function.Function;
 
 import static java.util.stream.Collectors.toMap;
 
-public interface StandardCards {
+public interface Cards {
 
 	Card PRIVATE_CARD    = new Card("\ud83c\udca0");
 
