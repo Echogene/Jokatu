@@ -43,7 +43,7 @@ JLineProto._updatePosition = function(status) {
 	var y1 = startOffset.top + startOffset.height / 2;
 	// top right
 	var x2 = endOffset.left + endOffset.width / 2;
-	var y2 = endOffset.top + startOffset.height / 2;
+	var y2 = endOffset.top + endOffset.height / 2;
 	// distance
 	var length = Math.sqrt(((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1)));
 	// center
