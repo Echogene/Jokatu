@@ -2,9 +2,11 @@ package jokatu.game.games.cards.input;
 
 import jokatu.game.cards.Card;
 import jokatu.game.cards.Cards;
+import jokatu.game.event.StageOverEvent;
 import jokatu.game.games.cards.player.CardPlayer;
 import jokatu.game.input.InputAcceptor;
 import jokatu.game.input.UnacceptableInputException;
+import jokatu.game.result.PlayerResult;
 import jokatu.game.status.StandardTextStatus;
 import ophelia.collections.set.HashSet;
 import org.jetbrains.annotations.NotNull;
@@ -17,8 +19,10 @@ import java.util.Set;
 
 import static java.text.MessageFormat.format;
 import static java.util.Collections.shuffle;
+import static java.util.Collections.singleton;
 import static jokatu.game.cards.Cards.SEVEN_OF_DIAMONDS;
 import static jokatu.game.cards.Rank.SEVEN;
+import static jokatu.game.result.Result.WIN;
 
 public class CardInputAcceptor extends InputAcceptor<CardInput, CardPlayer> {
 
@@ -85,13 +89,23 @@ public class CardInputAcceptor extends InputAcceptor<CardInput, CardPlayer> {
 		extremeCards.add(card);
 		inputter.playCard(card);
 
-		completeTurn();
+		if (inputter.getHand().isEmpty()) {
+			fireEvent(new PlayerResult(WIN, singleton(inputter)));
+			fireEvent(new StageOverEvent());
+		} else {
+			completeTurn();
+		}
 	}
 
 	@Nullable
 	private Card getAdjacentExtremeCard(@NotNull Card card) {
-		if (extremeCards.isEmpty()) {
-			return card == SEVEN_OF_DIAMONDS ? SEVEN_OF_DIAMONDS : null;
+		if (card.getRank() == SEVEN) {
+			if (extremeCards.isEmpty()) {
+				// You can only start the game with the seven of diamonds.
+				return card == SEVEN_OF_DIAMONDS ? SEVEN_OF_DIAMONDS : null;
+			} else {
+				return card;
+			}
 		}
 		return extremeCards.stream()
 				.filter(extreme -> isAdjacent(card, extreme))
