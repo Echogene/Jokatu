@@ -41,4 +41,9 @@ public class CardPlayer extends AbstractSynchronousObservable<GameEvent> impleme
 			fireEvent(new CardPlayedEvent(this, card));
 		}
 	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
 }
