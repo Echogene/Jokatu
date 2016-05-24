@@ -12,10 +12,7 @@ import ophelia.collections.set.HashSet;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static java.text.MessageFormat.format;
 import static java.util.Collections.shuffle;
@@ -38,6 +35,7 @@ public class CardInputAcceptor extends InputAcceptor<CardInput, CardPlayer> {
 		this.status = status;
 
 		dealHands();
+		sortHands();
 	}
 
 	private List<CardPlayer> assignDealOrder(Map<String, CardPlayer> players) {
@@ -56,6 +54,19 @@ public class CardInputAcceptor extends InputAcceptor<CardInput, CardPlayer> {
 				status.setText(format("Waiting for {0} to play the seven of diamonds.", currentPlayer));
 			}
 		}
+	}
+
+	private void sortHands() {
+		players.stream()
+				.map(CardPlayer::getHand)
+				.forEach(hand -> Collections.sort(hand, (card1, card2) -> {
+					int suitComparison = card1.getSuit().compareTo(card2.getSuit());
+					if (suitComparison == 0) {
+						return card1.getRank().compareTo(card2.getRank());
+					} else {
+						return suitComparison;
+					}
+				}));
 	}
 
 	@NotNull
