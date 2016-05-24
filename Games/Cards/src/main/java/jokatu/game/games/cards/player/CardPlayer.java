@@ -3,6 +3,7 @@ package jokatu.game.games.cards.player;
 import jokatu.game.cards.Card;
 import jokatu.game.event.GameEvent;
 import jokatu.game.games.cards.event.CardDrawnEvent;
+import jokatu.game.games.cards.event.CardPlayedEvent;
 import jokatu.game.player.Player;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import org.jetbrains.annotations.NotNull;
@@ -32,5 +33,12 @@ public class CardPlayer extends AbstractSynchronousObservable<GameEvent> impleme
 
 	public List<Card> getHand() {
 		return hand;
+	}
+
+	public void playCard(Card card) {
+		boolean removed = hand.remove(card);
+		if (removed) {
+			fireEvent(new CardPlayedEvent(this, card));
+		}
 	}
 }
