@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.MessageFormat;
 
-public class CardDrawnEvent implements PrivateGameEvent {
+public class CardDrawnEvent implements PrivateGameEvent, HandChangedEvent {
 
 	private final CardPlayer player;
 	private final Card drawn;
@@ -29,5 +29,11 @@ public class CardDrawnEvent implements PrivateGameEvent {
 	@Override
 	public BaseCollection<CardPlayer> getPlayers() {
 		return new Singleton<>(player);
+	}
+
+	@NotNull
+	@Override
+	public CardPlayer getPlayer() {
+		return player;
 	}
 }
