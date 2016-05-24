@@ -1,5 +1,3 @@
-import jokatu.game.cards.StandardCards
-
 layout 'views/game_view.tpl', true,
 
 	additionalHeaders: contents {
