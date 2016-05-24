@@ -72,6 +72,9 @@ public interface Cards {
 	Card QUEEN_OF_CLUBS = createCard("\ud83c\udcdd", QUEEN, CLUBS);
 	Card KING_OF_CLUBS  = createCard("\ud83c\udcde", KING, CLUBS);
 
+	Map<String, Card> CARDS_BY_DISPLAY = ALL_CARDS.stream()
+			.collect(toMap(Card::toString, identity()));
+
 	Map<Suit, Map<Rank, Card>> CARDS_BY_SUIT_AND_RANK = ALL_CARDS.stream()
 			.collect(groupingBy(Card::getSuit, toMap(Card::getRank, identity())));
 

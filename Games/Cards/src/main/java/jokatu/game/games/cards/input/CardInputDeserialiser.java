@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-import static jokatu.game.cards.Cards.ALL_CARDS;
+import static jokatu.game.cards.Cards.CARDS_BY_DISPLAY;
 
 @Component
 public class CardInputDeserialiser implements InputDeserialiser<CardInput> {
@@ -23,9 +23,9 @@ public class CardInputDeserialiser implements InputDeserialiser<CardInput> {
 			throw new DeserialisationException(json, "The value for 'card' was not a string.");
 		}
 		String cardDisplay = (String) value;
-		if (!ALL_CARDS.containsKey(cardDisplay)) {
+		if (!CARDS_BY_DISPLAY.containsKey(cardDisplay)) {
 			throw new DeserialisationException(json, "The value for 'card' was not a valid card.");
 		}
-		return new CardInput(ALL_CARDS.get(cardDisplay));
+		return new CardInput(CARDS_BY_DISPLAY.get(cardDisplay));
 	}
 }
