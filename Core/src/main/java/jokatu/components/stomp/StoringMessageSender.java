@@ -9,6 +9,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.stereotype.Component;
 
+/**
+ * Sends messages to STOMP destinations and stores a history of them.
+ */
 @Component
 public class StoringMessageSender {
 
