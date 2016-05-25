@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.Collection;
 
+/**
+ * Broadcasts a game event to all event handlers in the application context.
+ */
 @Component
 public class EventBroadcaster {
 
