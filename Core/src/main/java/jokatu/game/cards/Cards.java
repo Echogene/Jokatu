@@ -10,6 +10,9 @@ import static java.util.stream.Collectors.toMap;
 import static jokatu.game.cards.Rank.*;
 import static jokatu.game.cards.Suit.*;
 
+/**
+ * Contains constants for all of the 52 standard playingcards.
+ */
 public interface Cards {
 
 	String PRIVATE_CARD = "\ud83c\udca0";
