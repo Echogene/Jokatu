@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.text.MessageFormat;
 
+/**
+ * Instances of this class represent one of the 52 standard playingcards.
+ */
 public class Card {
 
 	private final String display;
