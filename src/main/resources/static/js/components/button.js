@@ -4,7 +4,7 @@ JButtonProto.createdCallback = function() {
 
 	this.addEventListener('click', () => {
 		this.classList.add('submitting');
-		socket.send(this.getAttribute('destination'), JSON.parse(this.getAttribute('data-input')))
+		socket.send(this.getAttribute('destination'), this._getInput())
 			.then(() => this.classList.remove('submitting'))
 			.catch((error, headers) => {
 				this.classList.add('error');
@@ -19,6 +19,10 @@ JButtonProto.createdCallback = function() {
 				popup.initialise();
 			});
 	});
+};
+
+JButtonProto._getInput = function() {
+	return JSON.parse(this.getAttribute('data-input'));
 };
 
 var JButton = document.registerElement('j-button', {
