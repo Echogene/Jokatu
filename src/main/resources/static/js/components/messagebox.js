@@ -34,7 +34,11 @@ JMessageBoxProto._createMessage = function(body, headers) {
 	if (attributeName) {
 		element.setAttribute(attributeName, JSON.stringify({payload: body, headers: headers}));
 	}
-	this.appendChild(element);
+	if (this.getAttribute('toppost')) {
+		this.insertBefore(element, this.firstChild)
+	} else {
+		this.appendChild(element);
+	}
 };
 
 var JMessageBox = document.registerElement('j-message-box', {

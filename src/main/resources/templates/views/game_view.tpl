@@ -25,12 +25,14 @@ layout 'layouts/main.tpl', true,
 					tag: 'j-message-box',
 					id: 'public-messages',
 					wrapperElement: 'div',
+					toppost: true,
 					destination: "/topic/public.game.${gameId}"
 			)
 			yieldUnescaped markupGenerator.bindUserHistory(
 					tag: 'j-message-box',
 					id: 'private-messages',
 					wrapperElement: 'div',
+					toppost: true,
 					destination: "/topic/private.game.${gameId}",
 					user: "${username}"
 			)
