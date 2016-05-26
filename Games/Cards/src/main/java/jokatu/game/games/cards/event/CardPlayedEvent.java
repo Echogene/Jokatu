@@ -14,7 +14,7 @@ public class CardPlayedEvent implements PublicGameEvent, HandChangedEvent {
 
 	public CardPlayedEvent(CardPlayer player, Card card) {
 		this.player = player;
-		message = MessageFormat.format("{0} played {1}", player, card);
+		message = MessageFormat.format("{0} played {1}", player, card.getLabel());
 	}
 
 	@NotNull

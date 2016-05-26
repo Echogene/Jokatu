@@ -1,6 +1,7 @@
 package jokatu.game.cards;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.MessageFormat;
 
@@ -20,7 +21,7 @@ public class Card {
 		this.suit = suit;
 
 		label = MessageFormat.format(
-				"{0} of {1}",
+				"the {0} of {1}",
 				rank.toString().toLowerCase(),
 				suit.toString().toLowerCase()
 		);
@@ -32,11 +33,18 @@ public class Card {
 		return display;
 	}
 
+	@NotNull
 	public Rank getRank() {
 		return rank;
 	}
 
+	@NotNull
 	public Suit getSuit() {
 		return suit;
+	}
+
+	@NotNull
+	public String getLabel() {
+		return label;
 	}
 }

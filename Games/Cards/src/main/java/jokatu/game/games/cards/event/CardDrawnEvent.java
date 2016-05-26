@@ -22,7 +22,7 @@ public class CardDrawnEvent implements PrivateGameEvent, HandChangedEvent {
 	@NotNull
 	@Override
 	public String getMessage() {
-		return MessageFormat.format("You drew {0}.", drawn);
+		return MessageFormat.format("You drew {0}.", drawn.getLabel());
 	}
 
 	@NotNull
