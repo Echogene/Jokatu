@@ -6,7 +6,6 @@ import jokatu.game.exception.GameException;
 import jokatu.game.input.Input;
 import jokatu.game.player.Player;
 import jokatu.identity.Identifiable;
-import ophelia.collections.BaseCollection;
 import ophelia.collections.set.UnmodifiableSet;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import ophelia.event.observable.Observable;
@@ -90,7 +89,7 @@ public abstract class Game<P extends Player>
 	}
 
 	@NotNull
-	public BaseCollection<P> getPlayers() {
+	public UnmodifiableSet<P> getPlayers() {
 		return new UnmodifiableSet<>(players.values());
 	}
 
