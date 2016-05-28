@@ -1,4 +1,8 @@
 #contents {
+	display: inline-flex;
+	flex-direction: column;
+	justify-content: space-between;
+
 	>#board {
 		display: flex;
 		justify-content: center;
@@ -8,8 +12,27 @@
 			flex-direction: column;
 			justify-content: center;
 
-			>button {
-				font-size: 5vh;
+			>div {
+				font-size: 10vh;
+				padding: 0;
+				overflow-y: hidden;
+				&:not(:last-child) {
+					margin-bottom: -2.8vh;
+					height: 5vh;
+				}
+			}
+
+			&#suit_SPADES {
+				color: #111;
+			}
+			&#suit_HEARTS {
+				color: #600;
+			}
+			&#suit_DIAMONDS {
+				color: #811;
+			}
+			&#suit_CLUBS {
+				color: #223;
 			}
 		}
 	}
@@ -21,6 +44,7 @@
 
 		>button {
 			font-size: 10vh;
+			padding: 0;
 		}
 	}
 }

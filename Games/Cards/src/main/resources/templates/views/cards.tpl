@@ -14,8 +14,7 @@ layout 'views/game_view.tpl', true,
 					tag: 'j-status',
 					id: "suit_${suit}",
 					class: 'suit',
-					wrapperElement: 'JCard',
-					attributeName: 'data-card',
+					wrapperElement: 'div',
 					destination: "/topic/substatus.game.${gameId}.${suit}"
 				)
 			}
