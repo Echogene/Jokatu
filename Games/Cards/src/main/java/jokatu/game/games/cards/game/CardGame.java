@@ -42,7 +42,7 @@ public class CardGame extends Game<CardPlayer> {
 	public void advanceStageInner() {
 		if (currentStage == null) {
 			// todo: this should have a minimum and a maximum
-			currentStage = new JoiningStage<>(CardPlayer.class, players, 1, status);
+			currentStage = new JoiningStage<>(CardPlayer.class, players, 2, status);
 
 		} else if (currentStage instanceof JoiningStage) {
 			currentStage = new CardStage(players, status, playedCards);
