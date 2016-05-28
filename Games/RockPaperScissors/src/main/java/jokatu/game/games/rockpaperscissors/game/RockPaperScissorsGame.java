@@ -6,9 +6,7 @@ import jokatu.game.player.StandardPlayer;
 import jokatu.game.stage.GameOverStage;
 import jokatu.game.stage.JoiningStage;
 import jokatu.game.status.StandardTextStatus;
-import ophelia.collections.set.UnmodifiableSet;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,18 +29,6 @@ public class RockPaperScissorsGame extends Game<StandardPlayer> {
 	@Override
 	public String getGameName() {
 		return ROCK_PAPER_SCISSORS;
-	}
-
-	@Nullable
-	@Override
-	public StandardPlayer getPlayerByName(@NotNull String name) {
-		return players.get(name);
-	}
-
-	@NotNull
-	@Override
-	public UnmodifiableSet<StandardPlayer> getPlayers() {
-		return new UnmodifiableSet<>(players.values());
 	}
 
 	@Override

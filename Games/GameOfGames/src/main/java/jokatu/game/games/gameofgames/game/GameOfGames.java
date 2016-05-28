@@ -4,10 +4,7 @@ import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.event.StatusUpdateEvent;
 import jokatu.game.player.StandardPlayer;
-import ophelia.collections.BaseCollection;
-import ophelia.collections.set.EmptySet;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * The game of games.  The beginning.  The end.
@@ -28,22 +25,11 @@ public class GameOfGames extends Game<StandardPlayer> {
 		return GAME_OF_GAMES;
 	}
 
-	@Nullable
-	@Override
-	public StandardPlayer getPlayerByName(@NotNull String name) {
-		return null;
-	}
-
 	@Override
 	protected void advanceStageInner() {
 		if (currentStage == null) {
 			currentStage = new GameOfGameStage();
 			fireEvent((StatusUpdateEvent) () -> () -> "Create some games!");
 		}
-	}
-
-	@Override
-	public BaseCollection<StandardPlayer> getPlayers() {
-		return EmptySet.emptySet();
 	}
 }

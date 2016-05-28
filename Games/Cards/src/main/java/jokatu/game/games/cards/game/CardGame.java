@@ -8,10 +8,8 @@ import jokatu.game.games.cards.player.CardPlayer;
 import jokatu.game.stage.GameOverStage;
 import jokatu.game.stage.JoiningStage;
 import jokatu.game.status.StandardTextStatus;
-import ophelia.collections.BaseCollection;
 import ophelia.collections.set.UnmodifiableSet;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,8 +19,6 @@ import java.util.TreeSet;
 public class CardGame extends Game<CardPlayer> {
 
 	public static final String CARDS = "Cards";
-
-	private final Map<String, CardPlayer> players = new HashMap<>();
 
 	private final StandardTextStatus status = new StandardTextStatus();
 	private final Map<Suit, TreeSet<Card>> playedCards = new HashMap<Suit, TreeSet<Card>>() {{
@@ -42,12 +38,6 @@ public class CardGame extends Game<CardPlayer> {
 		return CARDS;
 	}
 
-	@Nullable
-	@Override
-	public CardPlayer getPlayerByName(@NotNull String name) {
-		return players.get(name);
-	}
-
 	@Override
 	public void advanceStageInner() {
 		if (currentStage == null) {
@@ -60,11 +50,6 @@ public class CardGame extends Game<CardPlayer> {
 		} else {
 			currentStage = new GameOverStage(status);
 		}
-	}
-
-	@Override
-	public BaseCollection<CardPlayer> getPlayers() {
-		return new UnmodifiableSet<>(players.values());
 	}
 
 	public void register(CardPlayer player) {

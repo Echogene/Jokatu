@@ -7,11 +7,15 @@ import jokatu.game.input.Input;
 import jokatu.game.player.Player;
 import jokatu.identity.Identifiable;
 import ophelia.collections.BaseCollection;
+import ophelia.collections.set.UnmodifiableSet;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import ophelia.event.observable.Observable;
 import ophelia.exceptions.StackedException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Steven Weston
@@ -21,6 +25,8 @@ public abstract class Game<P extends Player>
 		implements Identifiable<GameID>, Observable<GameEvent> {
 
 	private final GameID identifier;
+
+	protected final Map<String, P> players = new HashMap<>();
 
 	@Nullable
 	protected Stage currentStage;
@@ -54,7 +60,9 @@ public abstract class Game<P extends Player>
 	public abstract String getGameName();
 
 	@Nullable
-	public abstract P getPlayerByName(@NotNull String name);
+	public P getPlayerByName(@NotNull String name) {
+		return players.get(name);
+	}
 
 	public boolean hasPlayer(@NotNull String name) {
 		return getPlayerByName(name) != null;
@@ -77,5 +85,8 @@ public abstract class Game<P extends Player>
 		return currentStage;
 	}
 
-	public abstract BaseCollection<P> getPlayers();
+	@NotNull
+	public BaseCollection<P> getPlayers() {
+		return new UnmodifiableSet<>(players.values());
+	}
 }

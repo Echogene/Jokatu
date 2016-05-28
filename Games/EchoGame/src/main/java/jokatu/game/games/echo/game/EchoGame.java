@@ -4,16 +4,13 @@ import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.event.StatusUpdateEvent;
 import jokatu.game.player.StandardPlayer;
-import ophelia.collections.BaseCollection;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 import static java.time.LocalTime.now;
 import static java.time.format.DateTimeFormatter.ofPattern;
-import static ophelia.collections.set.EmptySet.emptySet;
 
 public class EchoGame extends Game<StandardPlayer> {
 
@@ -39,19 +36,8 @@ public class EchoGame extends Game<StandardPlayer> {
 		return ECHO;
 	}
 
-	@Nullable
-	@Override
-	public StandardPlayer getPlayerByName(@NotNull String name) {
-		return null;
-	}
-
 	@Override
 	public void advanceStageInner() {
 		currentStage = new EchoStage();
-	}
-
-	@Override
-	public BaseCollection<StandardPlayer> getPlayers() {
-		return emptySet();
 	}
 }

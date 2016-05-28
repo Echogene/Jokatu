@@ -2,14 +2,11 @@ package jokatu.game.games.noughtsandcrosses.game;
 
 import jokatu.game.Game;
 import jokatu.game.GameID;
+import jokatu.game.games.noughtsandcrosses.player.NoughtsAndCrossesPlayer;
 import jokatu.game.stage.GameOverStage;
 import jokatu.game.stage.JoiningStage;
-import jokatu.game.games.noughtsandcrosses.player.NoughtsAndCrossesPlayer;
 import jokatu.game.status.StandardTextStatus;
-import ophelia.collections.BaseCollection;
-import ophelia.collections.UnmodifiableCollection;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,12 +31,6 @@ public class NoughtsAndCrossesGame extends Game<NoughtsAndCrossesPlayer> {
 		return NOUGHTS_AND_CROSSES;
 	}
 
-	@Nullable
-	@Override
-	public NoughtsAndCrossesPlayer getPlayerByName(@NotNull String name) {
-		return players.get(name);
-	}
-
 	@Override
 	protected void advanceStageInner() {
 		if (currentStage == null) {
@@ -54,10 +45,5 @@ public class NoughtsAndCrossesGame extends Game<NoughtsAndCrossesPlayer> {
 		} else {
 			currentStage = new GameOverStage(status);
 		}
-	}
-
-	@Override
-	public BaseCollection<NoughtsAndCrossesPlayer> getPlayers() {
-		return new UnmodifiableCollection<>(players.values());
 	}
 }
