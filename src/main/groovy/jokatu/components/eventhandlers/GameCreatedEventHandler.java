@@ -5,7 +5,7 @@ import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.Game;
 import jokatu.game.GameFactory;
 import jokatu.game.GameID;
-import jokatu.game.event.EventHandler;
+import jokatu.game.event.AnyGameEventHandler;
 import jokatu.game.games.gameofgames.event.GameCreatedEvent;
 import ophelia.util.MapUtils;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +20,7 @@ import static java.text.MessageFormat.format;
 
 
 @Component
-public class GameCreatedEventHandler extends EventHandler<GameCreatedEvent> {
+public class GameCreatedEventHandler extends AnyGameEventHandler<GameCreatedEvent> {
 
 	private final GameFactories gameFactories;
 	private final StoringMessageSender messageSender;
@@ -43,7 +43,7 @@ public class GameCreatedEventHandler extends EventHandler<GameCreatedEvent> {
 	}
 
 	@Override
-	protected void handleCastEvent(@NotNull Game gameOfGames, @NotNull GameCreatedEvent gameCreatedEvent) {
+	protected void handleCastGameAndEvent(@NotNull Game gameOfGames, @NotNull GameCreatedEvent gameCreatedEvent) {
 		Game<?> game = createGame(gameCreatedEvent.getGameName(), gameCreatedEvent.getPlayer().getName());
 
 		GameID id = gameOfGames.getIdentifier();

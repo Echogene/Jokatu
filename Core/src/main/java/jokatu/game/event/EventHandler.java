@@ -7,11 +7,11 @@ import org.jetbrains.annotations.NotNull;
  * An abstract {@link EventHandler} that only handles {@link GameEvent}s of certain class and ignores others.
  * @author Steven Weston
  */
-public abstract class EventHandler<E extends GameEvent> {
+public abstract class EventHandler<G extends Game, E extends GameEvent> {
 
 	public void handle(@NotNull Game game, @NotNull GameEvent e) {
-		if (getEventClass().isInstance(e)) {
-			handleCastEvent(game, getEventClass().cast(e));
+		if (getEventClass().isInstance(e) && getGameClass().isInstance(game)) {
+			handleCastGameAndEvent(getGameClass().cast(game), getEventClass().cast(e));
 		}
 	}
 
@@ -21,5 +21,8 @@ public abstract class EventHandler<E extends GameEvent> {
 	@NotNull
 	protected abstract Class<E> getEventClass();
 
-	protected abstract void handleCastEvent(@NotNull Game game, @NotNull E event);
+	@NotNull
+	protected abstract Class<G> getGameClass();
+
+	protected abstract void handleCastGameAndEvent(@NotNull G game, @NotNull E event);
 }

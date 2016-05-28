@@ -2,7 +2,7 @@ package jokatu.components.eventhandlers;
 
 import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.Game;
-import jokatu.game.event.EventHandler;
+import jokatu.game.event.AnyGameEventHandler;
 import jokatu.game.event.StatusUpdateEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * @author Steven Weston
  */
 @Component
-public class StatusUpdateHandler extends EventHandler<StatusUpdateEvent> {
+public class StatusUpdateHandler extends AnyGameEventHandler<StatusUpdateEvent> {
 
 	private final StoringMessageSender sender;
 
@@ -29,7 +29,7 @@ public class StatusUpdateHandler extends EventHandler<StatusUpdateEvent> {
 	}
 
 	@Override
-	protected void handleCastEvent(@NotNull Game game, @NotNull StatusUpdateEvent event) {
+	protected void handleCastGameAndEvent(@NotNull Game game, @NotNull StatusUpdateEvent event) {
 		sender.send("/topic/status.game." + game.getIdentifier(), event.getStatus().getText());
 	}
 }

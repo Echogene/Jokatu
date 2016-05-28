@@ -2,14 +2,14 @@ package jokatu.components.eventhandlers;
 
 import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.Game;
-import jokatu.game.event.EventHandler;
+import jokatu.game.event.AnyGameEventHandler;
 import jokatu.game.event.StageOverEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AdvanceStageEventHandler extends EventHandler<StageOverEvent> {
+public class AdvanceStageEventHandler extends AnyGameEventHandler<StageOverEvent> {
 
 	private final StoringMessageSender sender;
 
@@ -25,7 +25,7 @@ public class AdvanceStageEventHandler extends EventHandler<StageOverEvent> {
 	}
 
 	@Override
-	protected void handleCastEvent(@NotNull Game game, @NotNull StageOverEvent event) {
+	protected void handleCastGameAndEvent(@NotNull Game game, @NotNull StageOverEvent event) {
 		game.advanceStage();
 
 		sender.send("/topic/advance.game." + game.getIdentifier(), event.getMessage());

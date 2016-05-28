@@ -2,7 +2,7 @@ package jokatu.game.games.cards.event;
 
 import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.Game;
-import jokatu.game.event.EventHandler;
+import jokatu.game.event.AnyGameEventHandler;
 import jokatu.game.games.cards.player.CardPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import static java.text.MessageFormat.format;
  * @author Steven Weston
  */
 @Component
-public class HandChangedEventHandler extends EventHandler<HandChangedEvent> {
+public class HandChangedEventHandler extends AnyGameEventHandler<HandChangedEvent> {
 
 	private final StoringMessageSender sender;
 
@@ -30,7 +30,7 @@ public class HandChangedEventHandler extends EventHandler<HandChangedEvent> {
 	}
 
 	@Override
-	protected void handleCastEvent(@NotNull Game game, @NotNull HandChangedEvent event) {
+	protected void handleCastGameAndEvent(@NotNull Game game, @NotNull HandChangedEvent event) {
 		CardPlayer player = event.getPlayer();
 		sender.sendToUser(
 				player.getName(),
