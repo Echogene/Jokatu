@@ -7,7 +7,7 @@ public abstract class AnyGameEventHandler<E extends GameEvent> extends EventHand
 
 	@NotNull
 	@Override
-	protected Class<Game> getGameClass() {
+	protected final Class<Game> getGameClass() {
 		return Game.class;
 	}
 }

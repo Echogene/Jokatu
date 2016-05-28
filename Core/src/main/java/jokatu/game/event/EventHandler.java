@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class EventHandler<G extends Game, E extends GameEvent> {
 
-	public void handle(@NotNull Game game, @NotNull GameEvent e) {
+	public final void handle(@NotNull Game game, @NotNull GameEvent e) {
 		if (getEventClass().isInstance(e) && getGameClass().isInstance(game)) {
 			handleCastGameAndEvent(getGameClass().cast(game), getEventClass().cast(e));
 		}
