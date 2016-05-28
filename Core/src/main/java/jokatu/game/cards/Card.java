@@ -9,13 +9,13 @@ import java.text.MessageFormat;
  */
 public class Card {
 
-	private final String display;
+	private final String text;
 	private final String label;
 	private final Rank rank;
 	private final Suit suit;
 
-	Card(@NotNull String display, @NotNull Rank rank, @NotNull Suit suit) {
-		this.display = display;
+	Card(@NotNull String text, @NotNull Rank rank, @NotNull Suit suit) {
+		this.text = text;
 		this.rank = rank;
 		this.suit = suit;
 
@@ -27,13 +27,13 @@ public class Card {
 	}
 
 	@NotNull
-	public String getDisplay() {
-		return display;
+	public String getText() {
+		return text;
 	}
 
 	@Override
 	public String toString() {
-		return display;
+		return text;
 	}
 
 	@NotNull
