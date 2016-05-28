@@ -1,13 +1,30 @@
 import jokatu.game.cards.Suit
+import jokatu.game.cards.Cards
 
 layout 'views/game_view.tpl', true,
 
 	additionalHeaders: contents {
 		include template: 'components/card.tpl'
+		include template: 'components/counter.tpl'
 		link(rel: 'stylesheet', href: '/css/cards.css')
 	},
 
 	mainContents: contents {
+		div(id: 'others') {
+			otherPlayersNames.each { name ->
+				div() {
+					span("${name}")
+					yieldUnescaped markupGenerator.bindLast(
+						tag: 'j-counter',
+						id: "hand_${name}",
+						class: 'hand',
+						wrapperElement: 'span',
+						'data-wrapperAttributes': "{\"text\": \"${Cards.PRIVATE_CARD}\"}",
+						destination: "/topic/handcount.game.${gameId}.${name}"
+					)
+				}
+			}
+		}
 		div(id: 'board') {
 			Suit.values().each { suit ->
 				yieldUnescaped markupGenerator.bindLast(

@@ -3,6 +3,37 @@
 	flex-direction: column;
 	justify-content: space-between;
 
+	>#others {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+
+		>div {
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
+
+			>span {
+
+			}
+
+			>j-counter {
+				overflow-x: auto;
+
+				>span {
+					font-size: 6vh;
+					overflow-x: hidden;
+					display: inline-block;
+
+					&:not(:last-child) {
+						margin-right: -0.2vh;
+						width: 2vh;
+					}
+				}
+			}
+		}
+	}
+
 	>#board {
 		display: flex;
 		justify-content: center;

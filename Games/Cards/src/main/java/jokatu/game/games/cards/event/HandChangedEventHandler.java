@@ -37,5 +37,10 @@ public class HandChangedEventHandler extends AnyGameEventHandler<HandChangedEven
 				format("/topic/hand.game.{0}", game.getIdentifier()),
 				player.getHand()
 		);
+
+		sender.send(
+				format("/topic/handcount.game.{0}.{1}", game.getIdentifier(), player),
+				player.getHand().size()
+		);
 	}
 }
