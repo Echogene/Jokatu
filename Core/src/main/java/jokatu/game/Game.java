@@ -16,6 +16,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static ophelia.util.FunctionUtils.not;
 
 /**
  * @author Steven Weston
@@ -31,7 +35,7 @@ public abstract class Game<P extends Player>
 	@Nullable
 	protected Stage currentStage;
 
-	protected Game(GameID identifier) {
+	protected Game(@NotNull GameID identifier) {
 		this.identifier = identifier;
 	}
 
@@ -88,5 +92,13 @@ public abstract class Game<P extends Player>
 	@NotNull
 	public BaseCollection<P> getPlayers() {
 		return new UnmodifiableSet<>(players.values());
+	}
+
+	@NotNull
+	public Set<String> getOtherPlayersNames(@NotNull String name) {
+		return players.values().stream()
+				.map(Player::getName)
+				.filter(not(name::equals))
+				.collect(Collectors.toSet());
 	}
 }
