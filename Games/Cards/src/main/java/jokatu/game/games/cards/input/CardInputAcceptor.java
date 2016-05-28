@@ -2,6 +2,7 @@ package jokatu.game.games.cards.input;
 
 import jokatu.game.cards.Card;
 import jokatu.game.cards.Cards;
+import jokatu.game.cards.Suit;
 import jokatu.game.event.StageOverEvent;
 import jokatu.game.games.cards.player.CardPlayer;
 import jokatu.game.input.InputAcceptor;
@@ -28,11 +29,14 @@ public class CardInputAcceptor extends InputAcceptor<CardInput, CardPlayer> {
 
 	private final Set<Card> extremeCards = new HashSet<>();
 
+	private final Map<Suit, TreeSet<Card>> playedCards;
+
 	private CardPlayer currentPlayer;
 
-	public CardInputAcceptor(Map<String, CardPlayer> players, StandardTextStatus status) {
+	public CardInputAcceptor(Map<String, CardPlayer> players, StandardTextStatus status, Map<Suit, TreeSet<Card>> playedCards) {
 		this.players = assignDealOrder(players);
 		this.status = status;
+		this.playedCards = playedCards;
 
 		dealHands();
 		sortHands();
@@ -94,11 +98,7 @@ public class CardInputAcceptor extends InputAcceptor<CardInput, CardPlayer> {
 		if (adjacentExtremeCard == null) {
 			throw new UnacceptableInputException("There is nowhere to play that card.");
 		}
-		if (adjacentExtremeCard.getRank() != SEVEN) {
-			extremeCards.remove(adjacentExtremeCard);
-		}
-		extremeCards.add(card);
-		inputter.playCard(card);
+		playCard(inputter, card, adjacentExtremeCard);
 
 		if (inputter.getHand().isEmpty()) {
 			fireEvent(new PlayerResult(WIN, singleton(inputter)));
@@ -106,6 +106,15 @@ public class CardInputAcceptor extends InputAcceptor<CardInput, CardPlayer> {
 		} else {
 			completeTurn();
 		}
+	}
+
+	private void playCard(@NotNull CardPlayer inputter, Card card, Card adjacentExtremeCard) {
+		if (adjacentExtremeCard.getRank() != SEVEN) {
+			extremeCards.remove(adjacentExtremeCard);
+		}
+		extremeCards.add(card);
+		playedCards.get(card.getSuit()).add(card);
+		inputter.playCard(card);
 	}
 
 	@Nullable
