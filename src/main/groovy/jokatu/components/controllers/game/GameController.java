@@ -26,7 +26,6 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.stereotype.Controller;
@@ -95,50 +94,6 @@ public class GameController {
 		return modelAndView;
 	}
 
-	/**
-	 * Users can subscribe to public events for a game without being a player.  Examples of public events would include:
-	 * <ul>
-	 *     <li>Players joining the game</li>
-	 *     <li>Players leaving the game</li>
-	 *     <li>Results of dice rolls</li>
-	 *     <li>The results of the end of the game</li>
-	 * </ul>
-	 */
-	@SubscribeMapping("/topic/public.game.{identity}")
-	void publicGameSubscription(
-			@DestinationVariable("identity") GameID identity
-	) throws GameException {
-		getGame(identity, "You cannot subscribe to a non-existent game.");
-	}
-
-	@SubscribeMapping("/topic/observers.game.{identity}")
-	void usersSubscription(
-			@DestinationVariable("identity") GameID identity
-	) throws GameException {
-		getGame(identity, "You cannot subscribe to a non-existent game.");
-	}
-
-	@SubscribeMapping("/topic/players.game.{identity}")
-	void playersSubscription(
-			@DestinationVariable("identity") GameID identity
-	) throws GameException {
-		getGame(identity, "You cannot subscribe to a non-existent game.");
-	}
-
-	@SubscribeMapping("/topic/status.game.{identity}")
-	void gameStatusSubscription(
-			@DestinationVariable("identity") GameID identity
-	) throws GameException {
-		getGame(identity, "You cannot subscribe to a non-existent game.");
-	}
-
-	@SubscribeMapping("/topic/substatus.game.{identity}.*")
-	void gameSubstatusSubscription(
-			@DestinationVariable("identity") GameID identity
-	) throws GameException {
-		getGame(identity, "You cannot subscribe to a non-existent game.");
-	}
-
 	@NotNull
 	private Game<? extends Player> getGame(
 			GameID identity,
@@ -171,18 +126,6 @@ public class GameController {
 				.findAny()
 				.orElseThrow(() -> new GameException(identity, "Could not deserialise ''{0}''", json));
 		game.accept(input, player);
-	}
-
-	/**
-	 * Users are allowed to subscribe to a private channel for a game, but unless they're players, they probably won't
-	 * receive any messages for it.
-	 */
-	@SubscribeMapping("/user/topic/private.game.{identity}")
-	void privateSubscription(
-			@DestinationVariable("identity") GameID identity,
-			Principal principal
-	) throws GameException {
-		getGame(identity, "You cannot subscribe to a non-existent game.");
 	}
 
 	@NotNull
