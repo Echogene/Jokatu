@@ -8,14 +8,9 @@ import jokatu.game.stage.JoiningStage;
 import jokatu.game.status.StandardTextStatus;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class NoughtsAndCrossesGame extends Game<NoughtsAndCrossesPlayer> {
 
 	public static final String NOUGHTS_AND_CROSSES = "Noughts and crosses";
-
-	private final Map<String, NoughtsAndCrossesPlayer> players = new HashMap<>();
 
 	private StandardTextStatus status = new StandardTextStatus();
 
