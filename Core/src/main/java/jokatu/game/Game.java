@@ -9,7 +9,6 @@ import jokatu.identity.Identifiable;
 import ophelia.collections.set.UnmodifiableSet;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import ophelia.event.observable.Observable;
-import ophelia.exceptions.StackedException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
