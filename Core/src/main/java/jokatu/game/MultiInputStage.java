@@ -4,28 +4,22 @@ import jokatu.game.event.GameEvent;
 import jokatu.game.input.Input;
 import jokatu.game.input.InputAcceptor;
 import jokatu.game.player.Player;
-import ophelia.collections.BaseCollection;
-import ophelia.collections.set.Singleton;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import ophelia.exceptions.StackedException;
 import ophelia.exceptions.voidmaybe.VoidMaybe;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class MultiInputStage extends AbstractSynchronousObservable<GameEvent> implements Stage {
 
-	private final BaseCollection<InputAcceptor<? extends Input, ? extends Player>> inputAcceptors;
+	private final List<InputAcceptor<? extends Input, ? extends Player>> inputAcceptors = new ArrayList<>();
 
-	protected MultiInputStage(BaseCollection<InputAcceptor<? extends Input, ? extends Player>> inputAcceptors) {
-		this.inputAcceptors = inputAcceptors;
-		// Forward events from all the acceptors.
-		inputAcceptors.stream()
-				.forEach(inputAcceptor -> inputAcceptor.observe(this::fireEvent));
-	}
-
-	protected MultiInputStage(InputAcceptor<? extends Input, ? extends Player> inputAcceptor) {
-		this(new Singleton<>(inputAcceptor));
+	protected void addInputAcceptor(InputAcceptor<? extends Input, ? extends Player> inputAcceptor) {
+		inputAcceptors.add(inputAcceptor);
+		inputAcceptor.observe(this::fireEvent);
 	}
 
 	@Override

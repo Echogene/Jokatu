@@ -1,7 +1,6 @@
 package jokatu.game.games.cards.input;
 
 import jokatu.game.cards.Card;
-import jokatu.game.cards.Cards;
 import jokatu.game.cards.Suit;
 import jokatu.game.event.StageOverEvent;
 import jokatu.game.games.cards.player.CardPlayer;
@@ -9,14 +8,16 @@ import jokatu.game.input.InputAcceptor;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.result.PlayerResult;
 import jokatu.game.status.StandardTextStatus;
+import jokatu.game.turn.TurnManager;
 import ophelia.collections.set.HashSet;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import static java.text.MessageFormat.format;
-import static java.util.Collections.shuffle;
 import static java.util.Collections.singleton;
 import static jokatu.game.cards.Cards.SEVEN_OF_DIAMONDS;
 import static jokatu.game.cards.Rank.SEVEN;
@@ -24,53 +25,17 @@ import static jokatu.game.result.Result.WIN;
 
 public class CardInputAcceptor extends InputAcceptor<CardInput, CardPlayer> {
 
-	private final List<CardPlayer> players;
+	private TurnManager<CardPlayer> turnManager;
 	private final StandardTextStatus status;
 
 	private final Set<Card> extremeCards = new HashSet<>();
 
 	private final Map<Suit, TreeSet<Card>> playedCards;
 
-	private CardPlayer currentPlayer;
-
-	public CardInputAcceptor(Map<String, CardPlayer> players, StandardTextStatus status, Map<Suit, TreeSet<Card>> playedCards) {
-		this.players = assignDealOrder(players);
+	public CardInputAcceptor(TurnManager<CardPlayer> turnManager, StandardTextStatus status, Map<Suit, TreeSet<Card>> playedCards) {
+		this.turnManager = turnManager;
 		this.status = status;
 		this.playedCards = playedCards;
-
-		dealHands();
-		sortHands();
-	}
-
-	private List<CardPlayer> assignDealOrder(Map<String, CardPlayer> players) {
-		return new ArrayList<>(players.values());
-	}
-
-	private void dealHands() {
-		List<Card> deck = Cards.getNewDeck();
-		shuffle(deck);
-		for (int i = 0; i < deck.size(); i++) {
-			Card card = deck.get(i);
-			CardPlayer player = players.get(i % players.size());
-			player.drawCard(card);
-			if (card == SEVEN_OF_DIAMONDS) {
-				currentPlayer = player;
-				status.setText(format("Waiting for {0} to play the seven of diamonds.", currentPlayer));
-			}
-		}
-	}
-
-	private void sortHands() {
-		players.stream()
-				.map(CardPlayer::getHand)
-				.forEach(hand -> Collections.sort(hand, (card1, card2) -> {
-					int suitComparison = card1.getSuit().compareTo(card2.getSuit());
-					if (suitComparison == 0) {
-						return card1.getRank().compareTo(card2.getRank());
-					} else {
-						return suitComparison;
-					}
-				}));
 	}
 
 	@NotNull
@@ -88,6 +53,7 @@ public class CardInputAcceptor extends InputAcceptor<CardInput, CardPlayer> {
 	@Override
 	protected void acceptCastInputAndPlayer(@NotNull CardInput input, @NotNull CardPlayer inputter) throws Exception {
 		Card card = input.getCard();
+		CardPlayer currentPlayer = turnManager.getCurrentPlayer();
 		if (currentPlayer != inputter) {
 			throw new UnacceptableInputException("It''s not your turn!  Wait for {0}.", currentPlayer);
 		}
@@ -140,8 +106,7 @@ public class CardInputAcceptor extends InputAcceptor<CardInput, CardPlayer> {
 	}
 
 	private void completeTurn() {
-		int i = players.indexOf(currentPlayer);
-		currentPlayer = players.get((i + 1) % players.size());
-		status.setText(format("Waiting for {0} to play a card or pass.", currentPlayer));
+		turnManager.next();
+		status.setText(format("Waiting for {0} to play a card or pass.", turnManager.getCurrentPlayer()));
 	}
 }
