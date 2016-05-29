@@ -2,7 +2,7 @@ package jokatu.game.games.noughtsandcrosses.input;
 
 import jokatu.game.input.Input;
 
-class AllegianceInput implements Input {
+public class AllegianceInput implements Input {
 	private final NoughtOrCross noughtOrCross;
 
 	AllegianceInput(NoughtOrCross noughtOrCross) {

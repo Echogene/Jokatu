@@ -32,7 +32,7 @@ public class NoughtsAndCrossesGame extends Game<NoughtsAndCrossesPlayer> {
 			currentStage = new JoiningStage<>(NoughtsAndCrossesPlayer.class, players, 2, status);
 
 		} else if (currentStage instanceof JoiningStage) {
-			currentStage = new AllegianceStage(players, status);
+			currentStage = new AllegianceStage(players.values(), status);
 
 		} else if (currentStage instanceof AllegianceStage) {
 			currentStage = new InputStage(players, status);

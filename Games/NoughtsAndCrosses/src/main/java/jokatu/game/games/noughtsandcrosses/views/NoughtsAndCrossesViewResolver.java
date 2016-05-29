@@ -1,7 +1,7 @@
 package jokatu.game.games.noughtsandcrosses.views;
 
-import jokatu.game.games.noughtsandcrosses.game.AllegianceStage;
 import jokatu.game.games.noughtsandcrosses.game.NoughtsAndCrossesGame;
+import jokatu.game.games.noughtsandcrosses.game.AllegianceStage;
 import jokatu.game.games.noughtsandcrosses.player.NoughtsAndCrossesPlayer;
 import jokatu.game.stage.JoiningStage;
 import jokatu.game.viewresolver.ViewResolver;
@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * @author steven
  */
-class NoughtsAndCrossesViewResolver extends ViewResolver<NoughtsAndCrossesPlayer,NoughtsAndCrossesGame> {
+class NoughtsAndCrossesViewResolver extends ViewResolver<NoughtsAndCrossesPlayer, NoughtsAndCrossesGame> {
 
 	NoughtsAndCrossesViewResolver(NoughtsAndCrossesGame game) {
 		super(game);
