@@ -10,6 +10,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.MessageFormat;
 
+/**
+ * An input acceptor is a stage that only accepts a specific type of input from a specific type of player.
+ * @param <I> the type of the input to accept
+ * @param <P> the type of the player to accept
+ */
 public abstract class InputAcceptor<I extends Input, P extends Player>
 		extends AbstractSynchronousObservable<GameEvent>
 		implements Stage {
