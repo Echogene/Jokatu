@@ -32,7 +32,7 @@ public class RockPaperScissorsGame extends Game<StandardPlayer> {
 			currentStage = new JoiningStage<>(StandardPlayer.class, players, 2, status);
 
 		} else if (currentStage instanceof JoiningStage) {
-			currentStage = new InputStage(players, status);
+			currentStage = new InputStage(players.values(), status);
 
 		} else {
 			currentStage = new GameOverStage(status);

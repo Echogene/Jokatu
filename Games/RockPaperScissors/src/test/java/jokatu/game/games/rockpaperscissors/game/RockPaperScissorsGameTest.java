@@ -99,7 +99,7 @@ public class RockPaperScissorsGameTest {
 			game.accept(new JoinInput(), new StandardPlayer("Player 3"));
 			fail("Should not accept a third player's joining.");
 		} catch (GameException e) {
-			Exception cause = extractRootCause(e);
+			Throwable cause = extractRootCause(e);
 			assertThat(cause, instanceOf(GameFullException.class));
 		}
 		assertThat(events, is(empty()));
@@ -119,7 +119,7 @@ public class RockPaperScissorsGameTest {
 			game.accept(new JoinInput(), player1);
 			fail("Should not accept the same player joining twice.");
 		} catch (GameException e) {
-			Exception cause = extractRootCause(e);
+			Throwable cause = extractRootCause(e);
 			assertThat(cause, instanceOf(PlayerAlreadyJoinedException.class));
 		}
 		assertThat(events, is(empty()));
@@ -169,7 +169,7 @@ public class RockPaperScissorsGameTest {
 			game.accept(new RockPaperScissorsInput(PAPER), player1);
 			fail("Should not let player change mind.");
 		} catch (GameException e) {
-			Exception cause = extractRootCause(e);
+			Throwable cause = extractRootCause(e);
 			assertThat(cause, instanceOf(UnacceptableInputException.class));
 		}
 		assertThat(events, is(empty()));
@@ -200,11 +200,16 @@ public class RockPaperScissorsGameTest {
 		));
 	}
 
-	private Exception extractRootCause(GameException e) {
-		assertThat(e.getCause(), instanceOf(StackedException.class));
-		UnmodifiableList<Exception> causes = CollectedException.flatten((Exception) e.getCause());
-		assertThat(causes, ophelia.collections.matchers.IsCollectionWithSize.hasSize(1));
-		return causes.get(0);
+	private Throwable extractRootCause(GameException e) {
+		Throwable cause = e.getCause();
+		if (cause instanceof StackedException) {
+			assertThat(cause, instanceOf(StackedException.class));
+			UnmodifiableList<Exception> causes = CollectedException.flatten((Exception) cause);
+			assertThat(causes, ophelia.collections.matchers.IsCollectionWithSize.hasSize(1));
+			return causes.get(0);
+		} else {
+			return cause;
+		}
 	}
 
 	private <E extends GameEvent> E getUniqueEventFromList(Class<E> eventClass, List<GameEvent> events) throws StackedException {

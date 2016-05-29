@@ -11,7 +11,7 @@ public class RockPaperScissorsInput implements Input {
 		this.choice = choice;
 	}
 
-	RockPaperScissors getChoice() {
+	public RockPaperScissors getChoice() {
 		return choice;
 	}
 }
