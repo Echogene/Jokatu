@@ -1,5 +1,6 @@
 package jokatu.game.input;
 
+import jokatu.game.Stage;
 import jokatu.game.event.GameEvent;
 import jokatu.game.player.Player;
 import ophelia.event.observable.AbstractSynchronousObservable;
@@ -9,7 +10,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.MessageFormat;
 
-public abstract class InputAcceptor<I extends Input, P extends Player> extends AbstractSynchronousObservable<GameEvent> {
+public abstract class InputAcceptor<I extends Input, P extends Player>
+		extends AbstractSynchronousObservable<GameEvent>
+		implements Stage {
 
 	private final Log log = LogFactory.getLog(getClass());
 
@@ -29,6 +32,7 @@ public abstract class InputAcceptor<I extends Input, P extends Player> extends A
 		return getPlayerClass().cast(player);
 	}
 
+	@Override
 	public void accept(@NotNull Input input, @NotNull Player player) throws Exception {
 		Class<P> playerClass = getPlayerClass();
 		if (!playerClass.isInstance(player)) {
