@@ -2,7 +2,7 @@ package jokatu.game.games.noughtsandcrosses.input;
 
 import jokatu.game.input.Input;
 
-class NoughtsAndCrossesInput implements Input {
+public class NoughtsAndCrossesInput implements Input {
 
 	private final Integer cellId;
 
@@ -10,7 +10,7 @@ class NoughtsAndCrossesInput implements Input {
 		this.cellId = cellId;
 	}
 
-	Integer getCellId() {
+	public Integer getCellId() {
 		return cellId;
 	}
 }
