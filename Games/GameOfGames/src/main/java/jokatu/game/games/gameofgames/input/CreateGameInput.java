@@ -2,7 +2,7 @@ package jokatu.game.games.gameofgames.input;
 
 import jokatu.game.input.Input;
 
-class CreateGameInput implements Input {
+public class CreateGameInput implements Input {
 
 	private final String gameName;
 
@@ -10,7 +10,7 @@ class CreateGameInput implements Input {
 		this.gameName = gameName;
 	}
 
-	String getGameName() {
+	public String getGameName() {
 		return gameName;
 	}
 }
