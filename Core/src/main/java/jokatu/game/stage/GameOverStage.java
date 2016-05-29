@@ -1,33 +1,22 @@
 package jokatu.game.stage;
 
-import jokatu.game.MultiInputStage;
+import jokatu.game.Stage;
+import jokatu.game.event.GameEvent;
 import jokatu.game.input.Input;
-import jokatu.game.input.InputAcceptor;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.player.Player;
 import jokatu.game.status.StandardTextStatus;
+import ophelia.event.observable.AbstractSynchronousObservable;
 import org.jetbrains.annotations.NotNull;
 
-public class GameOverStage extends MultiInputStage {
+public class GameOverStage extends AbstractSynchronousObservable<GameEvent> implements Stage {
+
 	public GameOverStage(StandardTextStatus status) {
-		super(new InputAcceptor<Input, Player>() {
-			@NotNull
-			@Override
-			protected Class<Input> getInputClass() {
-				return Input.class;
-			}
-
-			@NotNull
-			@Override
-			protected Class<Player> getPlayerClass() {
-				return Player.class;
-			}
-
-			@Override
-			protected void acceptCastInputAndPlayer(@NotNull Input input, @NotNull Player inputter) throws Exception {
-				throw new UnacceptableInputException("The game is over!");
-			}
-		});
 		status.setText("Game over.");
+	}
+
+	@Override
+	public void accept(@NotNull Input input, @NotNull Player player) throws Exception {
+		throw new UnacceptableInputException("The game is over!");
 	}
 }
