@@ -44,7 +44,7 @@ public abstract class Game<P extends Player>
 		}
 		try {
 			currentStage.accept(input, player);
-		} catch (StackedException e) {
+		} catch (Exception e) {
 			throw new GameException(
 					identifier,
 					e.getMessage(),
