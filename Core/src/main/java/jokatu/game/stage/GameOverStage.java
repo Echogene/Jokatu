@@ -1,6 +1,6 @@
 package jokatu.game.stage;
 
-import jokatu.game.Stage;
+import jokatu.game.MultiInputStage;
 import jokatu.game.input.Input;
 import jokatu.game.input.InputAcceptor;
 import jokatu.game.input.UnacceptableInputException;
@@ -8,7 +8,7 @@ import jokatu.game.player.Player;
 import jokatu.game.status.StandardTextStatus;
 import org.jetbrains.annotations.NotNull;
 
-public class GameOverStage extends Stage {
+public class GameOverStage extends MultiInputStage {
 	public GameOverStage(StandardTextStatus status) {
 		super(new InputAcceptor<Input, Player>() {
 			@NotNull
