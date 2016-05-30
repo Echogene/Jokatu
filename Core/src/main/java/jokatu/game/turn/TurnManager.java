@@ -28,6 +28,17 @@ public class TurnManager<P extends Player> extends AbstractSynchronousObservable
 	}
 
 	/**
+	 * Assert that the current player is the given player.
+	 * @param player this should be the current player
+	 * @throws NotYourTurnException if the given player is not the current player
+	 */
+	public void assertCurrentPlayer(@NotNull P player) throws NotYourTurnException {
+		if (player != currentPlayer) {
+			throw new NotYourTurnException(currentPlayer);
+		}
+	}
+
+	/**
 	 * Pass the turn onto the next player.
 	 */
 	public void next() {

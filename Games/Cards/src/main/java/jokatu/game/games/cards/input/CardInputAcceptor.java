@@ -48,11 +48,9 @@ public class CardInputAcceptor extends InputAcceptor<CardInput, CardPlayer> {
 
 	@Override
 	protected void acceptCastInputAndPlayer(@NotNull CardInput input, @NotNull CardPlayer inputter) throws Exception {
+		turnManager.assertCurrentPlayer(inputter);
+
 		Card card = input.getCard();
-		CardPlayer currentPlayer = turnManager.getCurrentPlayer();
-		if (currentPlayer != inputter) {
-			throw new UnacceptableInputException("It''s not your turn!  Wait for {0}.", currentPlayer);
-		}
 		if (!inputter.getHand().contains(card)) {
 			throw new UnacceptableInputException("Stop cheating!  You can't play a card that's not in your hand.");
 		}
