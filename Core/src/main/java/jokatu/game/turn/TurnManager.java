@@ -27,11 +27,15 @@ public class TurnManager<P extends Player> extends AbstractSynchronousObservable
 		fireEvent(new TurnChangedEvent(oldPlayer, currentPlayer));
 	}
 
+	/**
+	 * Pass the turn onto the next player.
+	 */
 	public void next() {
 		int i = players.indexOf(currentPlayer);
 		setCurrentPlayer(players.get((i + 1) % players.size()));
 	}
 
+	@NotNull
 	public P getCurrentPlayer() {
 		return currentPlayer;
 	}
