@@ -7,7 +7,6 @@ import jokatu.game.games.cards.player.CardPlayer;
 import jokatu.game.input.InputAcceptor;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.result.PlayerResult;
-import jokatu.game.status.StandardTextStatus;
 import jokatu.game.turn.TurnManager;
 import ophelia.collections.set.HashSet;
 import org.jetbrains.annotations.NotNull;
@@ -25,15 +24,13 @@ import static jokatu.game.result.Result.WIN;
 public class CardInputAcceptor extends InputAcceptor<CardInput, CardPlayer> {
 
 	private TurnManager<CardPlayer> turnManager;
-	private final StandardTextStatus status;
 
 	private final Set<Card> extremeCards = new HashSet<>();
 
 	private final Map<Suit, TreeSet<Card>> playedCards;
 
-	public CardInputAcceptor(TurnManager<CardPlayer> turnManager, StandardTextStatus status, Map<Suit, TreeSet<Card>> playedCards) {
+	public CardInputAcceptor(TurnManager<CardPlayer> turnManager, Map<Suit, TreeSet<Card>> playedCards) {
 		this.turnManager = turnManager;
-		this.status = status;
 		this.playedCards = playedCards;
 	}
 

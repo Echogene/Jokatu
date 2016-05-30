@@ -34,7 +34,7 @@ class CardStage extends MultiInputStage {
 			fireEvent(e);
 		});
 
-		addInputAcceptor(new CardInputAcceptor(turnManager, status, playedCards));
+		addInputAcceptor(new CardInputAcceptor(turnManager, playedCards));
 	}
 
 	private CardPlayer getStartingPlayer() {
