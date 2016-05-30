@@ -1,6 +1,5 @@
 package jokatu.game.turn;
 
-import jokatu.game.event.GameEvent;
 import jokatu.game.player.Player;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +9,7 @@ import java.util.List;
 /**
  * Manages whose turn it is.  Fires a {@link TurnChangedEvent} event when the turn changes.
  */
-public class TurnManager<P extends Player> extends AbstractSynchronousObservable<GameEvent> {
+public class TurnManager<P extends Player> extends AbstractSynchronousObservable<TurnChangedEvent> {
 
 	private final List<P> players;
 
