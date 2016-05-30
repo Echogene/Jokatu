@@ -74,9 +74,25 @@
 			width: 100%;
 			overflow-x: auto;
 
-			> button {
+			>button {
 				font-size: 10vh;
 				padding: 0;
+				border: none;
+				background: none;
+
+				&:hover {
+					text-shadow: 0 0 .1em black;
+				}
+
+				&:not(:last-child) {
+					overflow-x: hidden;
+					flex-shrink: 1;
+					margin-right: -.2vh;
+				}
+
+				&:last-child {
+					margin-left: -.3vh;
+				}
 			}
 		}
 	}
