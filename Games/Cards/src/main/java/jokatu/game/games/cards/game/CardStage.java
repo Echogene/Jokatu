@@ -28,6 +28,11 @@ class CardStage extends MultiInputStage {
 		CardPlayer startingPlayer = getStartingPlayer();
 		status.setText(format("Waiting for {0} to play the seven of diamonds.", startingPlayer));
 		TurnManager<CardPlayer> turnManager = new TurnManager<>(this.players, startingPlayer);
+		turnManager.observe(e -> {
+			status.setText(format("Waiting for {0} to play a card or pass.", e.getNewPlayer()));
+			// Forward the event.
+			fireEvent(e);
+		});
 
 		addInputAcceptor(new CardInputAcceptor(turnManager, status, playedCards));
 	}

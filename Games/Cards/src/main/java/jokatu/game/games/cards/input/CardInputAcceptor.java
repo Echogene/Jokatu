@@ -17,7 +17,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import static java.text.MessageFormat.format;
 import static java.util.Collections.singleton;
 import static jokatu.game.cards.Cards.SEVEN_OF_DIAMONDS;
 import static jokatu.game.cards.Rank.SEVEN;
@@ -107,6 +106,5 @@ public class CardInputAcceptor extends InputAcceptor<CardInput, CardPlayer> {
 
 	private void completeTurn() {
 		turnManager.next();
-		status.setText(format("Waiting for {0} to play a card or pass.", turnManager.getCurrentPlayer()));
 	}
 }
