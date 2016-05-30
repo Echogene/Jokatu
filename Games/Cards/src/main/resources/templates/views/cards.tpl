@@ -36,13 +36,22 @@ layout 'views/game_view.tpl', true,
 				)
 			}
 		}
-		yieldUnescaped markupGenerator.bindUserLast(
-			tag: 'j-status',
-			id: 'hand',
-			wrapperElement: 'JCard',
-			attributeName: 'data-card',
-			'data-wrapperAttributes': "{\"destination\": \"/topic/input.game.${gameId}\"}",
-			destination: "/user/topic/hand.game.${gameId}",
-			user: "${username}"
-		)
+		div(id: 'player') {
+			button(
+				is: 'j-button',
+				id: 'skip',
+				destination: "/topic/input.game.${gameId}",
+				'data-input': '{"skip": true}',
+				'Skip'
+			)
+			yieldUnescaped markupGenerator.bindUserLast(
+				tag: 'j-status',
+				id: 'hand',
+				wrapperElement: 'JCard',
+				attributeName: 'data-card',
+				'data-wrapperAttributes': "{\"destination\": \"/topic/input.game.${gameId}\"}",
+				destination: "/user/topic/hand.game.${gameId}",
+				user: "${username}"
+			)
+		}
 	}

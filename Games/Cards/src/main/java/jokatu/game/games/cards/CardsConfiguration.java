@@ -4,15 +4,17 @@ import jokatu.components.GameComponent;
 import jokatu.components.config.GameConfiguration;
 import jokatu.game.games.cards.game.CardGameFactory;
 import jokatu.game.games.cards.input.CardInputDeserialiser;
+import jokatu.game.games.cards.input.SkipInputDeserialiser;
 import jokatu.game.games.cards.player.CardPlayerFactory;
 import jokatu.game.games.cards.views.CardViewResolverFactory;
 import jokatu.game.input.InputDeserialiser;
 import jokatu.game.joining.JoinInputDeserialiser;
 import ophelia.collections.BaseCollection;
-import ophelia.collections.pair.UnorderedPair;
+import ophelia.collections.set.UnmodifiableSet;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static java.util.Arrays.asList;
 import static jokatu.game.games.cards.game.CardGame.CARDS;
 
 /**
@@ -25,6 +27,7 @@ public class CardsConfiguration implements GameConfiguration {
 	private final CardPlayerFactory echoPlayerFactory;
 	private final JoinInputDeserialiser joinInputDeserialiser;
 	private final CardInputDeserialiser echoInputDeserialiser;
+	private final SkipInputDeserialiser skipInputDeserialiser;
 	private final CardViewResolverFactory echoViewResolverFactory;
 
 	@Autowired
@@ -32,12 +35,14 @@ public class CardsConfiguration implements GameConfiguration {
 	                          CardPlayerFactory echoPlayerFactory,
 	                          JoinInputDeserialiser joinInputDeserialiser,
 	                          CardInputDeserialiser echoInputDeserialiser,
+	                          SkipInputDeserialiser skipInputDeserialiser,
 	                          CardViewResolverFactory echoViewResolverFactory
 	) {
 		this.echoGameFactory = echoGameFactory;
 		this.echoPlayerFactory = echoPlayerFactory;
 		this.joinInputDeserialiser = joinInputDeserialiser;
 		this.echoInputDeserialiser = echoInputDeserialiser;
+		this.skipInputDeserialiser = skipInputDeserialiser;
 		this.echoViewResolverFactory = echoViewResolverFactory;
 	}
 
@@ -56,7 +61,7 @@ public class CardsConfiguration implements GameConfiguration {
 	@NotNull
 	@Override
 	public BaseCollection<? extends InputDeserialiser> getInputDeserialisers() {
-		return new UnorderedPair<>(joinInputDeserialiser, echoInputDeserialiser);
+		return new UnmodifiableSet<>(asList(joinInputDeserialiser, echoInputDeserialiser, skipInputDeserialiser));
 	}
 
 	@NotNull

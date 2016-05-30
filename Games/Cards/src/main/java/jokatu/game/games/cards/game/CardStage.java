@@ -5,6 +5,7 @@ import jokatu.game.cards.Card;
 import jokatu.game.cards.Cards;
 import jokatu.game.cards.Suit;
 import jokatu.game.games.cards.input.CardInputAcceptor;
+import jokatu.game.games.cards.input.SkipInputAcceptor;
 import jokatu.game.games.cards.player.CardPlayer;
 import jokatu.game.status.StandardTextStatus;
 import jokatu.game.turn.TurnManager;
@@ -35,6 +36,7 @@ class CardStage extends MultiInputStage {
 		});
 
 		addInputAcceptor(new CardInputAcceptor(turnManager, playedCards));
+		addInputAcceptor(new SkipInputAcceptor(turnManager));
 	}
 
 	private CardPlayer getStartingPlayer() {
