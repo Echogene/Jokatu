@@ -49,6 +49,7 @@ layout 'views/game_view.tpl', true,
 				id: 'hand',
 				wrapperElement: 'JCard',
 				attributeName: 'data-card',
+				removeOldChildren: true,
 				'data-wrapperAttributes': "{\"destination\": \"/topic/input.game.${gameId}\"}",
 				destination: "/user/topic/hand.game.${gameId}",
 				user: "${username}"
