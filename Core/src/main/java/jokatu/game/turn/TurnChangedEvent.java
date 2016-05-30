@@ -11,7 +11,7 @@ public class TurnChangedEvent implements PublicGameEvent {
 	private final Player oldPlayer;
 	private final Player newPlayer;
 
-	public TurnChangedEvent(Player oldPlayer, Player newPlayer) {
+	TurnChangedEvent(@NotNull Player oldPlayer, @NotNull Player newPlayer) {
 		this.oldPlayer = oldPlayer;
 		this.newPlayer = newPlayer;
 	}
@@ -20,5 +20,10 @@ public class TurnChangedEvent implements PublicGameEvent {
 	@Override
 	public String getMessage() {
 		return MessageFormat.format("{0}'s turn is over.  It's now {1}'s turn.", oldPlayer, newPlayer);
+	}
+
+	@NotNull
+	public Player getNewPlayer() {
+		return newPlayer;
 	}
 }
