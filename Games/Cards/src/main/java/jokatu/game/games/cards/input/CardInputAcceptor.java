@@ -69,7 +69,7 @@ public class CardInputAcceptor extends InputAcceptor<CardInput, CardPlayer> {
 			fireEvent(new PlayerResult(WIN, singleton(inputter)));
 			fireEvent(new StageOverEvent());
 		} else {
-			completeTurn();
+			turnManager.next();
 		}
 	}
 
@@ -102,9 +102,5 @@ public class CardInputAcceptor extends InputAcceptor<CardInput, CardPlayer> {
 		return card.getSuit() == extreme.getSuit()
 				&& (card.getRank().getValue() == extreme.getRank().getValue() - 1
 						|| card.getRank().getValue() == extreme.getRank().getValue() + 1);
-	}
-
-	private void completeTurn() {
-		turnManager.next();
 	}
 }
