@@ -1,24 +1,24 @@
 package jokatu.game.stage;
 
-import jokatu.game.input.AnyEventInputAcceptor;
+import jokatu.game.input.InputAcceptor;
 import jokatu.game.joining.*;
 import jokatu.game.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public class JoiningInputAcceptor<P extends Player> extends AnyEventInputAcceptor<JoinInput, P> {
+public class JoiningInputAcceptor<P extends Player> extends InputAcceptor<JoinInput, P, PlayerJoinedEvent> {
 
 	private final Class<P> playerClass;
 
-	protected final Map<String, P> players;
+	private final Map<String, P> players;
 
 	/**
 	 * The number of players that need to join the game needs before it starts.
 	 */
-	protected final int number;
+	private final int number;
 
-	public JoiningInputAcceptor(@NotNull Class<P> playerClass, @NotNull Map<String, P> players, int number) {
+	JoiningInputAcceptor(@NotNull Class<P> playerClass, @NotNull Map<String, P> players, int number) {
 		this.playerClass = playerClass;
 		this.players = players;
 		this.number = number;
