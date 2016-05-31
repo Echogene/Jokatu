@@ -47,7 +47,7 @@ public class JoiningInputAcceptor<P extends Player> extends InputAcceptor<JoinIn
 			throw new GameFullException("No more players can join.");
 		}
 		if (players.containsKey(inputter.getName())) {
-			throw new PlayerAlreadyJoinedException(inputter.getName() + " cannot join the game twice.");
+			throw new PlayerAlreadyJoinedException("You cannot join the game twice!");
 		}
 	}
 }
