@@ -14,14 +14,14 @@ public class JoiningInputAcceptor<P extends Player> extends InputAcceptor<JoinIn
 	private final Map<String, P> players;
 
 	/**
-	 * The number of players that need to join the game needs before it starts.
+	 * The maximum number of players that can join the game needs before it starts.
 	 */
-	private final int number;
+	private final int maximum;
 
-	JoiningInputAcceptor(@NotNull Class<P> playerClass, @NotNull Map<String, P> players, int number) {
+	JoiningInputAcceptor(@NotNull Class<P> playerClass, @NotNull Map<String, P> players, int maximum) {
 		this.playerClass = playerClass;
 		this.players = players;
-		this.number = number;
+		this.maximum = maximum;
 	}
 
 	@NotNull
@@ -44,7 +44,7 @@ public class JoiningInputAcceptor<P extends Player> extends InputAcceptor<JoinIn
 	}
 
 	private void checkCanJoin(P inputter) throws CannotJoinGameException {
-		if (players.size() > number - 1) {
+		if (players.size() > maximum - 1) {
 			throw new GameFullException("No more players can join.");
 		}
 		if (players.containsKey(inputter.getName())) {
