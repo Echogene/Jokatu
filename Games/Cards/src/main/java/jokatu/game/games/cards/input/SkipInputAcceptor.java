@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.MessageFormat;
 
-public class SkipInputAcceptor extends InputAcceptor<SkipInput, CardPlayer> {
+public class SkipInputAcceptor extends InputAcceptor<SkipInput, CardPlayer, PublicGameEvent> {
 
 	private final TurnManager<CardPlayer> turnManager;
 
@@ -32,7 +32,7 @@ public class SkipInputAcceptor extends InputAcceptor<SkipInput, CardPlayer> {
 	protected void acceptCastInputAndPlayer(@NotNull SkipInput input, @NotNull CardPlayer inputter) throws Exception {
 		turnManager.assertCurrentPlayer(inputter);
 
-		fireEvent((PublicGameEvent) () -> MessageFormat.format("{0} skipped their turn.", inputter));
+		fireEvent(() -> MessageFormat.format("{0} skipped their turn.", inputter));
 		turnManager.next();
 	}
 }

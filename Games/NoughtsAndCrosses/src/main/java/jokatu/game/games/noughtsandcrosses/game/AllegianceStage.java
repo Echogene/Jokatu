@@ -13,7 +13,7 @@ import java.util.Collection;
 
 import static jokatu.game.games.noughtsandcrosses.input.NoughtOrCross.other;
 
-public class AllegianceStage extends InputAcceptor<AllegianceInput, NoughtsAndCrossesPlayer> {
+public class AllegianceStage extends InputAcceptor<AllegianceInput, NoughtsAndCrossesPlayer, StageOverEvent> {
 
 	private final BoundedPair<NoughtsAndCrossesPlayer> players;
 

@@ -1,13 +1,13 @@
 package jokatu.game.stage;
 
-import jokatu.game.input.InputAcceptor;
+import jokatu.game.input.AnyEventInputAcceptor;
 import jokatu.game.joining.*;
 import jokatu.game.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public class JoiningInputAcceptor<P extends Player> extends InputAcceptor<JoinInput, P> {
+public class JoiningInputAcceptor<P extends Player> extends AnyEventInputAcceptor<JoinInput, P> {
 
 	private final Class<P> playerClass;
 

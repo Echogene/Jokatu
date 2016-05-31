@@ -5,7 +5,7 @@ import jokatu.game.games.noughtsandcrosses.event.CellChosenEvent;
 import jokatu.game.games.noughtsandcrosses.input.NoughtOrCross;
 import jokatu.game.games.noughtsandcrosses.input.NoughtsAndCrossesInput;
 import jokatu.game.games.noughtsandcrosses.player.NoughtsAndCrossesPlayer;
-import jokatu.game.input.InputAcceptor;
+import jokatu.game.input.AnyEventInputAcceptor;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.result.PlayerResult;
 import jokatu.game.status.StandardTextStatus;
@@ -26,7 +26,7 @@ import static jokatu.game.games.noughtsandcrosses.input.NoughtOrCross.CROSS;
 import static jokatu.game.result.Result.DRAW;
 import static jokatu.game.result.Result.WIN;
 
-class InputStage extends InputAcceptor<NoughtsAndCrossesInput, NoughtsAndCrossesPlayer> {
+class InputStage extends AnyEventInputAcceptor<NoughtsAndCrossesInput, NoughtsAndCrossesPlayer> {
 
 	private static final UnmodifiableSet<UnmodifiableList<Integer>> LINES;
 	static {

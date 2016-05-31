@@ -6,7 +6,7 @@ import jokatu.game.input.InputAcceptor;
 import jokatu.game.player.StandardPlayer;
 import org.jetbrains.annotations.NotNull;
 
-class GameOfGameStage extends InputAcceptor<CreateGameInput, StandardPlayer> {
+class GameOfGameStage extends InputAcceptor<CreateGameInput, StandardPlayer, GameCreatedEvent> {
 	@NotNull
 	@Override
 	protected Class<CreateGameInput> getInputClass() {

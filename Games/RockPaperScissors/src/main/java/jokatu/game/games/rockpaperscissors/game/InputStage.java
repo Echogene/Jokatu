@@ -2,7 +2,7 @@ package jokatu.game.games.rockpaperscissors.game;
 
 import jokatu.game.event.StageOverEvent;
 import jokatu.game.games.rockpaperscissors.input.RockPaperScissorsInput;
-import jokatu.game.input.InputAcceptor;
+import jokatu.game.input.AnyEventInputAcceptor;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.player.StandardPlayer;
 import jokatu.game.result.PlayerResult;
@@ -20,7 +20,7 @@ import static java.util.Collections.singleton;
 import static jokatu.game.result.Result.DRAW;
 import static jokatu.game.result.Result.WIN;
 
-class InputStage extends InputAcceptor<RockPaperScissorsInput, StandardPlayer> {
+class InputStage extends AnyEventInputAcceptor<RockPaperScissorsInput, StandardPlayer> {
 
 	private final BoundedPair<StandardPlayer> players;
 

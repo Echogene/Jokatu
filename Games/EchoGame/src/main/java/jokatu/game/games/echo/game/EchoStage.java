@@ -2,13 +2,13 @@ package jokatu.game.games.echo.game;
 
 import jokatu.game.event.AbstractPrivateGameEvent;
 import jokatu.game.games.echo.input.EchoInput;
-import jokatu.game.input.InputAcceptor;
+import jokatu.game.input.AnyEventInputAcceptor;
 import jokatu.game.player.StandardPlayer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 
-class EchoStage extends InputAcceptor<EchoInput, StandardPlayer> {
+class EchoStage extends AnyEventInputAcceptor<EchoInput, StandardPlayer> {
 	@NotNull
 	@Override
 	protected Class<EchoInput> getInputClass() {
