@@ -1,7 +1,6 @@
-package jokatu.game.stage;
+package jokatu.game.joining;
 
 import jokatu.game.input.InputAcceptor;
-import jokatu.game.joining.*;
 import jokatu.game.player.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +17,7 @@ public class JoiningInputAcceptor<P extends Player> extends InputAcceptor<JoinIn
 	 */
 	private final int maximum;
 
-	JoiningInputAcceptor(@NotNull Class<P> playerClass, @NotNull Map<String, P> players, int maximum) {
+	public JoiningInputAcceptor(@NotNull Class<P> playerClass, @NotNull Map<String, P> players, int maximum) {
 		this.playerClass = playerClass;
 		this.players = players;
 		this.maximum = maximum;

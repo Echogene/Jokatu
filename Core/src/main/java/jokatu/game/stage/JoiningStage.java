@@ -4,6 +4,7 @@ import jokatu.game.Stage;
 import jokatu.game.event.GameEvent;
 import jokatu.game.event.StageOverEvent;
 import jokatu.game.input.Input;
+import jokatu.game.joining.JoiningInputAcceptor;
 import jokatu.game.joining.PlayerJoinedEvent;
 import jokatu.game.player.Player;
 import jokatu.game.status.StandardTextStatus;
