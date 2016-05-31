@@ -1,5 +1,6 @@
 package jokatu.components.config;
 
+import ophelia.exceptions.voidmaybe.VoidMaybe;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,6 +14,12 @@ import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static ophelia.exceptions.voidmaybe.VoidMaybe.mergeFailures;
+import static ophelia.exceptions.voidmaybe.VoidMaybe.wrapOutput;
 
 /**
  * @author Steven Weston
@@ -22,11 +29,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth
-			.inMemoryAuthentication()
-				.withUser("user").password("password").roles("USER")
-				.and()
-				.withUser("user2").password("password").roles("USER");
+		List<VoidMaybe> results = Arrays.stream(new String[]{"user", "user2", "user3", "user4"})
+				.map(wrapOutput(name -> auth.inMemoryAuthentication().withUser(name).password("password").roles("USER")))
+				.collect(Collectors.toList());
+
+		mergeFailures(results).throwOnFailure();
 	}
 
 	@Override
