@@ -37,6 +37,9 @@ public class JoiningStage<P extends Player> extends AbstractSynchronousObservabl
 		);
 
 		inputAcceptor.observe(this::onPlayerJoin);
+
+		// Forward the events.
+		inputAcceptor.observe(this::fireEvent);
 	}
 
 	private void onPlayerJoin(PlayerJoinedEvent gameEvent) {
