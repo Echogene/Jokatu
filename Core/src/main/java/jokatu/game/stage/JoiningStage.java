@@ -1,5 +1,7 @@
 package jokatu.game.stage;
 
+import jokatu.game.event.GameEvent;
+import jokatu.game.event.StageOverEvent;
 import jokatu.game.player.Player;
 import jokatu.game.status.StandardTextStatus;
 import org.jetbrains.annotations.NotNull;
@@ -21,13 +23,19 @@ public class JoiningStage<P extends Player> extends JoiningInputAcceptor<P> {
 				number == 1 ? "" : "s"
 		);
 
-		observe(gameEvent -> {
+		observe(this::onPlayerJoin);
+	}
+
+	private void onPlayerJoin(GameEvent gameEvent) {
+		if (players.size() == number) {
+			fireEvent(new StageOverEvent());
+		} else {
 			int more = number - players.size();
 			status.setText(
 					"Waiting for {0} more player{1} to join.",
 					more,
 					more == 1 ? "" : "s"
 			);
-		});
+		}
 	}
 }

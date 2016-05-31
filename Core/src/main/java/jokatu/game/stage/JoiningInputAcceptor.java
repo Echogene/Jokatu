@@ -1,6 +1,5 @@
 package jokatu.game.stage;
 
-import jokatu.game.event.StageOverEvent;
 import jokatu.game.input.InputAcceptor;
 import jokatu.game.joining.*;
 import jokatu.game.player.Player;
@@ -12,12 +11,12 @@ public class JoiningInputAcceptor<P extends Player> extends InputAcceptor<JoinIn
 
 	private final Class<P> playerClass;
 
-	private final Map<String, P> players;
+	protected final Map<String, P> players;
 
 	/**
 	 * The number of players that need to join the game needs before it starts.
 	 */
-	private final int number;
+	protected final int number;
 
 	public JoiningInputAcceptor(@NotNull Class<P> playerClass, @NotNull Map<String, P> players, int number) {
 		this.playerClass = playerClass;
@@ -41,9 +40,6 @@ public class JoiningInputAcceptor<P extends Player> extends InputAcceptor<JoinIn
 	protected void acceptCastInputAndPlayer(@NotNull JoinInput input, @NotNull P inputter) throws Exception {
 		checkCanJoin(inputter);
 		players.put(inputter.getName(), inputter);
-		if (players.size() == number) {
-			fireEvent(new StageOverEvent());
-		}
 		fireEvent(new PlayerJoinedEvent(inputter));
 	}
 
