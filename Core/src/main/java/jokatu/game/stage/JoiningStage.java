@@ -22,7 +22,7 @@ public class JoiningStage<P extends Player> extends InputAcceptor<JoinInput, P> 
 
 	private final StandardTextStatus status;
 
-	public JoiningStage(Class<P> playerClass, Map<String, P> players, int number, StandardTextStatus status) {
+	public JoiningStage(@NotNull Class<P> playerClass, @NotNull Map<String, P> players, int number, @NotNull StandardTextStatus status) {
 		this.playerClass = playerClass;
 		this.players = players;
 		this.number = number;
