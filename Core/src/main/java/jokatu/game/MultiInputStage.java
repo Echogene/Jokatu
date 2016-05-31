@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
 
 public abstract class MultiInputStage extends AbstractSynchronousObservable<GameEvent> implements Stage<GameEvent> {
 
-	private final List<InputAcceptor<? extends Input, ? extends Player>> inputAcceptors = new ArrayList<>();
+	private final List<InputAcceptor<? extends Input, ? extends Player, ? extends GameEvent>> inputAcceptors = new ArrayList<>();
 
-	protected void addInputAcceptor(InputAcceptor<? extends Input, ? extends Player> inputAcceptor) {
+	protected void addInputAcceptor(InputAcceptor<? extends Input, ? extends Player, ? extends GameEvent> inputAcceptor) {
 		inputAcceptors.add(inputAcceptor);
 		inputAcceptor.observe(this::fireEvent);
 	}
