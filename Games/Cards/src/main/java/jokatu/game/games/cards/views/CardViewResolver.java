@@ -2,7 +2,7 @@ package jokatu.game.games.cards.views;
 
 import jokatu.game.games.cards.game.CardGame;
 import jokatu.game.games.cards.player.CardPlayer;
-import jokatu.game.stage.JoiningStage;
+import jokatu.game.stage.MinAndMaxJoiningStage;
 import jokatu.game.viewresolver.ViewResolver;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,8 +17,8 @@ public class CardViewResolver extends ViewResolver<CardPlayer, CardGame> {
 	@Override
 	protected ModelAndView getDefaultView() {
 		String view;
-		if (game.getCurrentStage() instanceof JoiningStage) {
-			view = "views/game_join";
+		if (game.getCurrentStage() instanceof MinAndMaxJoiningStage) {
+			view = "views/game_join_with_start";
 
 		} else {
 			view = "views/cards";

@@ -6,7 +6,7 @@ import jokatu.game.cards.Card;
 import jokatu.game.cards.Suit;
 import jokatu.game.games.cards.player.CardPlayer;
 import jokatu.game.stage.GameOverStage;
-import jokatu.game.stage.JoiningStage;
+import jokatu.game.stage.MinAndMaxJoiningStage;
 import jokatu.game.status.StandardTextStatus;
 import ophelia.collections.set.UnmodifiableSet;
 import org.jetbrains.annotations.NotNull;
@@ -41,10 +41,9 @@ public class CardGame extends Game<CardPlayer> {
 	@Override
 	public void advanceStageInner() {
 		if (currentStage == null) {
-			// todo: this should have a minimum and a maximum
-			currentStage = new JoiningStage<>(CardPlayer.class, players, 2, status);
+			currentStage = new MinAndMaxJoiningStage<>(CardPlayer.class, players, 3, 7, status);
 
-		} else if (currentStage instanceof JoiningStage) {
+		} else if (currentStage instanceof MinAndMaxJoiningStage) {
 			currentStage = new CardStage(players, status, playedCards);
 
 		} else {
