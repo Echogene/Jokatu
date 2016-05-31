@@ -17,7 +17,7 @@ import java.text.MessageFormat;
  */
 public abstract class InputAcceptor<I extends Input, P extends Player>
 		extends AbstractSynchronousObservable<GameEvent>
-		implements Stage {
+		implements Stage<GameEvent> {
 
 	private final Log log = LogFactory.getLog(getClass());
 

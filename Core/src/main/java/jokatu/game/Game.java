@@ -31,7 +31,7 @@ public abstract class Game<P extends Player>
 	protected final Map<String, P> players = new HashMap<>();
 
 	@Nullable
-	protected Stage currentStage;
+	protected Stage<? extends GameEvent> currentStage;
 
 	protected Game(@NotNull GameID identifier) {
 		this.identifier = identifier;
@@ -83,7 +83,7 @@ public abstract class Game<P extends Player>
 
 	@JsonIgnore
 	@Nullable
-	public Stage getCurrentStage() {
+	public Stage<? extends GameEvent> getCurrentStage() {
 		return currentStage;
 	}
 

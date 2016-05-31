@@ -9,7 +9,7 @@ import jokatu.game.status.StandardTextStatus;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import org.jetbrains.annotations.NotNull;
 
-public class GameOverStage extends AbstractSynchronousObservable<GameEvent> implements Stage {
+public class GameOverStage extends AbstractSynchronousObservable<GameEvent> implements Stage<GameEvent> {
 
 	public GameOverStage(StandardTextStatus status) {
 		status.setText("Game over.");
