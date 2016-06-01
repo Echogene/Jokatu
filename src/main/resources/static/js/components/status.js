@@ -17,7 +17,15 @@ JStatusProto.createdCallback = function() {
 	var initialData = JSON.parse(this.getAttribute('data-initial'));
 	this._setStatus(initialData && initialData.payload);
 
-	socket.subscribe(destination, this._setStatus.bind(this));
+	socket.subscribe(destination, this._updateStatus.bind(this));
+};
+
+JStatusProto._updateStatus = function(statuses) {
+	this.classList.add('updated');
+	clearTimeout(this._errorTimeout);
+	this._errorTimeout = setTimeout(() => this.classList.remove('updated'), 500);
+
+	this._setStatus(statuses);
 };
 
 JStatusProto._setStatus = function(statuses) {
