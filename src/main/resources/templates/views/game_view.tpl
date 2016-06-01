@@ -33,7 +33,7 @@ layout 'layouts/main.tpl', true,
 					id: 'private-messages',
 					wrapperElement: 'div',
 					toppost: true,
-					destination: "/topic/private.game.${gameId}",
+					destination: "/user/topic/private.game.${gameId}",
 					user: "${username}"
 			)
 			yieldUnescaped markupGenerator.bindLast(
