@@ -64,5 +64,16 @@ body {
 		overflow-y: auto;
 		flex-grow: 1;
 		background-color: #eee;
+
+		>#awaiting {
+			display: none;
+
+			&.awaiting {
+				display: block;
+				position: fixed;
+				top: 0;
+				right: 0;
+			}
+		}
 	}
 }

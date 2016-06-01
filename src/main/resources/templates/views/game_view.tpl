@@ -10,6 +10,7 @@ layout 'layouts/main.tpl', true,
 		include template: 'components/messagebox.tpl'
 		include template: 'components/status.tpl'
 		include template: 'components/player.tpl'
+		include template: 'components/class.tpl'
 		additionalHeaders()
 	},
 
@@ -53,6 +54,15 @@ layout 'layouts/main.tpl', true,
 			)
 		}
 		div(id: 'contents') {
+			yieldUnescaped markupGenerator.bindUserLastStart(
+					tag: 'j-class',
+					id: 'awaiting',
+					nameOfClass: 'awaiting',
+					destination: "/user/topic/awaiting.game.${gameId}",
+					user: "${username}"
+			)
+				div('You need to provide input.')
+			yieldUnescaped '</j-class>'
 			mainContents()
 		}
 	}
