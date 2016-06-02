@@ -1,7 +1,6 @@
 package jokatu.components.eventhandlers;
 
 import jokatu.components.config.FactoryConfiguration.GameFactories;
-import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.Game;
 import jokatu.game.GameFactory;
 import jokatu.game.GameID;
@@ -23,16 +22,14 @@ import static java.text.MessageFormat.format;
 public class GameCreatedEventHandler extends AnyGameEventHandler<GameCreatedEvent> {
 
 	private final GameFactories gameFactories;
-	private final StoringMessageSender messageSender;
 	private final EventBroadcaster eventBroadcaster;
 
 	// todo: move this map to its own bean
 	private final Map<GameID, List<GameEntry>> entries = new HashMap<>();
 
 	@Autowired
-	public GameCreatedEventHandler(GameFactories gameFactories, StoringMessageSender messageSender, EventBroadcaster eventBroadcaster) {
+	public GameCreatedEventHandler(GameFactories gameFactories, EventBroadcaster eventBroadcaster) {
 		this.gameFactories = gameFactories;
-		this.messageSender = messageSender;
 		this.eventBroadcaster = eventBroadcaster;
 	}
 
@@ -49,7 +46,7 @@ public class GameCreatedEventHandler extends AnyGameEventHandler<GameCreatedEven
 		GameID id = gameOfGames.getIdentifier();
 		MapUtils.updateListBasedMap(entries, id, new GameEntry(game));
 
-		messageSender.send(
+		sender.send(
 				format("/topic/games.game.{0}", id),
 				entries.get(id)
 		);

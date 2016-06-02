@@ -1,11 +1,9 @@
 package jokatu.game.games.sevens.event;
 
-import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.cards.Suit;
 import jokatu.game.event.EventHandler;
 import jokatu.game.games.sevens.game.SevensGame;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import static java.text.MessageFormat.format;
@@ -15,13 +13,6 @@ import static java.text.MessageFormat.format;
  */
 @Component
 public class CardPlayedEventHandler extends EventHandler<SevensGame, CardPlayedEvent> {
-
-	private final StoringMessageSender sender;
-
-	@Autowired
-	public CardPlayedEventHandler(StoringMessageSender sender) {
-		this.sender = sender;
-	}
 
 	@NotNull
 	@Override

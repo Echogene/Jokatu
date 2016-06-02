@@ -1,24 +1,15 @@
 package jokatu.components.eventhandlers;
 
-import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.Game;
 import jokatu.game.event.AnyGameEventHandler;
 import jokatu.game.input.AwaitingInputEvent;
 import jokatu.game.player.Player;
 import ophelia.collections.BaseCollection;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AwaitingInputEventHandler extends AnyGameEventHandler<AwaitingInputEvent> {
-
-	private final StoringMessageSender sender;
-
-	@Autowired
-	public AwaitingInputEventHandler(StoringMessageSender sender) {
-		this.sender = sender;
-	}
 
 	@NotNull
 	@Override

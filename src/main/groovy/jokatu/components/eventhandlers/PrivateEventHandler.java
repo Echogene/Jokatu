@@ -1,11 +1,9 @@
 package jokatu.components.eventhandlers;
 
-import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.Game;
 import jokatu.game.event.AnyGameEventHandler;
 import jokatu.game.event.PrivateGameEvent;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,13 +12,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class PrivateEventHandler extends AnyGameEventHandler<PrivateGameEvent> {
-
-	private final StoringMessageSender sender;
-
-	@Autowired
-	public PrivateEventHandler(StoringMessageSender sender) {
-		this.sender = sender;
-	}
 
 	@NotNull
 	@Override

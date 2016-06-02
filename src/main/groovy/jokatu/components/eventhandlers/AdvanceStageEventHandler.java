@@ -1,22 +1,13 @@
 package jokatu.components.eventhandlers;
 
-import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.Game;
 import jokatu.game.event.AnyGameEventHandler;
 import jokatu.game.event.StageOverEvent;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AdvanceStageEventHandler extends AnyGameEventHandler<StageOverEvent> {
-
-	private final StoringMessageSender sender;
-
-	@Autowired
-	public AdvanceStageEventHandler(StoringMessageSender sender) {
-		this.sender = sender;
-	}
 
 	@NotNull
 	@Override

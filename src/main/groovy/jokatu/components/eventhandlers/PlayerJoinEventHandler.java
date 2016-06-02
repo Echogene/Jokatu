@@ -1,7 +1,6 @@
 package jokatu.components.eventhandlers;
 
 import jokatu.components.dao.GameDao;
-import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.event.AnyGameEventHandler;
@@ -42,12 +41,10 @@ public class PlayerJoinEventHandler extends AnyGameEventHandler<PlayerJoinedEven
 
 	private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
 
-	private final StoringMessageSender sender;
 	private final GameDao gameDao;
 
 	@Autowired
-	public PlayerJoinEventHandler(StoringMessageSender sender, GameDao gameDao) {
-		this.sender = sender;
+	public PlayerJoinEventHandler(GameDao gameDao) {
 		this.gameDao = gameDao;
 	}
 
