@@ -1,4 +1,10 @@
 #contents {
+
+	@spadesColor: #111;
+	@heartsColor: #600;
+	@diamondsColor: #811;
+	@clubsColor: #223;
+
 	display: inline-flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -54,16 +60,16 @@
 			}
 
 			&#suit_SPADES {
-				color: #111;
+				color: @spadesColor;
 			}
 			&#suit_HEARTS {
-				color: #600;
+				color: @heartsColor;
 			}
 			&#suit_DIAMONDS {
-				color: #811;
+				color: @diamondsColor;
 			}
 			&#suit_CLUBS {
-				color: #223;
+				color: @clubsColor;
 			}
 		}
 	}
@@ -101,6 +107,19 @@
 
 				&:last-child {
 					margin-left: -.3vh;
+				}
+
+				&[data-suit='SPADES'] {
+					color: @spadesColor;
+				}
+				&[data-suit='HEARTS'] {
+					color: @heartsColor;
+				}
+				&[data-suit='DIAMONDS'] {
+					color: @diamondsColor;
+				}
+				&[data-suit='CLUBS'] {
+					color: @clubsColor;
 				}
 			}
 		}
