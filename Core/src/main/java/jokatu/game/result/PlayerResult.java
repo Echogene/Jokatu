@@ -1,6 +1,7 @@
 package jokatu.game.result;
 
 import jokatu.game.event.PublicGameEvent;
+import jokatu.game.event.StageOverEvent;
 import jokatu.game.player.Player;
 import ophelia.util.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
  * An endgame result for multiple players.  When a team wins, or multiple players draw, the set of players will have
  * more than one element.
  */
-public class PlayerResult implements PublicGameEvent {
+public class PlayerResult extends StageOverEvent implements PublicGameEvent {
 
 	private final String message;
 

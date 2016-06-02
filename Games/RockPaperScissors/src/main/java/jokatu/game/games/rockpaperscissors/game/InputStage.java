@@ -1,6 +1,5 @@
 package jokatu.game.games.rockpaperscissors.game;
 
-import jokatu.game.event.StageOverEvent;
 import jokatu.game.games.rockpaperscissors.input.RockPaperScissorsInput;
 import jokatu.game.input.AnyEventInputAcceptor;
 import jokatu.game.input.UnacceptableInputException;
@@ -77,7 +76,6 @@ class InputStage extends AnyEventInputAcceptor<RockPaperScissorsInput, StandardP
 				default:
 					fireEvent(new PlayerResult(DRAW, asList(player1, player2)));
 			}
-			fireEvent(new StageOverEvent());
 		} else {
 			StandardPlayer other = players.getOther(inputter);
 			assert other != null;

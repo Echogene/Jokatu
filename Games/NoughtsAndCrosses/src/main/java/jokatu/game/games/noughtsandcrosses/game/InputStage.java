@@ -1,6 +1,5 @@
 package jokatu.game.games.noughtsandcrosses.game;
 
-import jokatu.game.event.StageOverEvent;
 import jokatu.game.games.noughtsandcrosses.event.CellChosenEvent;
 import jokatu.game.games.noughtsandcrosses.input.NoughtOrCross;
 import jokatu.game.games.noughtsandcrosses.input.NoughtsAndCrossesInput;
@@ -92,10 +91,8 @@ class InputStage extends AnyEventInputAcceptor<NoughtsAndCrossesInput, NoughtsAn
 		fireEvent(new CellChosenEvent(cell, inputs.get(cell), lines));
 		if (!lines.isEmpty()) {
 			fireEvent(new PlayerResult(WIN, singleton(inputter)));
-			fireEvent(new StageOverEvent());
 		} else if (inputs.size() == 9) {
 			fireEvent(new PlayerResult(DRAW, players));
-			fireEvent(new StageOverEvent());
 		}
 	}
 

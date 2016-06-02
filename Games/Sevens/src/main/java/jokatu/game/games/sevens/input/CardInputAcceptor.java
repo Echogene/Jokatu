@@ -2,7 +2,6 @@ package jokatu.game.games.sevens.input;
 
 import jokatu.game.cards.Card;
 import jokatu.game.cards.Suit;
-import jokatu.game.event.StageOverEvent;
 import jokatu.game.games.sevens.player.SevensPlayer;
 import jokatu.game.input.AnyEventInputAcceptor;
 import jokatu.game.input.UnacceptableInputException;
@@ -62,7 +61,6 @@ public class CardInputAcceptor extends AnyEventInputAcceptor<CardInput, SevensPl
 
 		if (inputter.getHand().isEmpty()) {
 			fireEvent(new PlayerResult(WIN, singleton(inputter)));
-			fireEvent(new StageOverEvent());
 		} else {
 			turnManager.next();
 		}
