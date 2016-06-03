@@ -1,17 +1,29 @@
 package jokatu.game.games.noughtsandcrosses.input;
 
 import jokatu.game.input.DeserialisationException;
-import jokatu.game.input.InputDeserialiser;
+import jokatu.game.input.TypedSingleKeyInputDeserialiser;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
 @Component
-public class NoughtsAndCrossesInputDeserialiser implements InputDeserialiser<NoughtsAndCrossesInput> {
+public class NoughtsAndCrossesInputDeserialiser extends TypedSingleKeyInputDeserialiser<Integer, NoughtsAndCrossesInput> {
 	@NotNull
 	@Override
-	public NoughtsAndCrossesInput deserialise(@NotNull Map<String, Object> json) throws DeserialisationException {
-		return new NoughtsAndCrossesInput((Integer) json.get("choice"));
+	public NoughtsAndCrossesInput deserialiseTypedSingleValue(@NotNull Map<String, Object> json, @NotNull Integer choice) throws DeserialisationException {
+		return new NoughtsAndCrossesInput(choice);
+	}
+
+	@NotNull
+	@Override
+	protected Class<Integer> getType() {
+		return Integer.class;
+	}
+
+	@NotNull
+	@Override
+	protected String getKeyName() {
+		return "choice";
 	}
 }

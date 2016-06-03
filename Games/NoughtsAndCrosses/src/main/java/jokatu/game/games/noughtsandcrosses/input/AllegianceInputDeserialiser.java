@@ -1,26 +1,30 @@
 package jokatu.game.games.noughtsandcrosses.input;
 
 import jokatu.game.input.DeserialisationException;
-import jokatu.game.input.InputDeserialiser;
+import jokatu.game.input.TypedSingleKeyInputDeserialiser;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
 @Component
-public class AllegianceInputDeserialiser implements InputDeserialiser<AllegianceInput> {
+public class AllegianceInputDeserialiser extends TypedSingleKeyInputDeserialiser<String, AllegianceInput> {
 	@NotNull
 	@Override
-	public AllegianceInput deserialise(@NotNull Map<String, Object> json) throws DeserialisationException {
-		if (!json.containsKey("allegiance")) {
-			throw new DeserialisationException(json, "Did not contain the key 'allegiance'.");
-		}
-		Object value = json.get("allegiance");
-		if (!(value instanceof String)) {
-			throw new DeserialisationException(json, "The value for 'allegiance' was not a string.");
-		}
-		String allegiance = (String) value;
+	public AllegianceInput deserialiseTypedSingleValue(@NotNull Map<String, Object> json, @NotNull String allegiance) throws DeserialisationException {
 		NoughtOrCross noughtOrCross = NoughtOrCross.displayValueOf(allegiance);
 		return new AllegianceInput(noughtOrCross);
+	}
+
+	@NotNull
+	@Override
+	protected Class<String> getType() {
+		return String.class;
+	}
+
+	@NotNull
+	@Override
+	protected String getKeyName() {
+		return "allegiance";
 	}
 }

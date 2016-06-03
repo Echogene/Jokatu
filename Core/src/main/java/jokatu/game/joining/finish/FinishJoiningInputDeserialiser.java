@@ -1,21 +1,23 @@
 package jokatu.game.joining.finish;
 
 import jokatu.game.input.DeserialisationException;
-import jokatu.game.input.InputDeserialiser;
+import jokatu.game.input.SingleKeyInputDeserialiser;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
 @Component
-public class FinishJoiningInputDeserialiser implements InputDeserialiser<FinishJoiningInput> {
+public class FinishJoiningInputDeserialiser extends SingleKeyInputDeserialiser<FinishJoiningInput> {
 	@NotNull
 	@Override
-	public FinishJoiningInput deserialise(@NotNull Map<String, Object> json) throws DeserialisationException {
-		if (!json.containsKey("start")) {
-			throw new DeserialisationException(json, "Did not contain the key 'start'.");
-		} else {
-			return new FinishJoiningInput();
-		}
+	public FinishJoiningInput deserialiseSingleValue(@NotNull Map<String, Object> json, @NotNull Object value) throws DeserialisationException {
+		return new FinishJoiningInput();
+	}
+
+	@NotNull
+	@Override
+	protected String getKeyName() {
+		return "start";
 	}
 }
