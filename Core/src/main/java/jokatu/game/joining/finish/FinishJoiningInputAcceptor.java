@@ -1,14 +1,14 @@
 package jokatu.game.joining.finish;
 
 import jokatu.game.event.StageOverEvent;
-import jokatu.game.input.InputAcceptor;
+import jokatu.game.input.AbstractInputAcceptor;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public class FinishJoiningInputAcceptor<P extends Player> extends InputAcceptor<FinishJoiningInput, P, StageOverEvent> {
+public class FinishJoiningInputAcceptor<P extends Player> extends AbstractInputAcceptor<FinishJoiningInput, P, StageOverEvent> {
 
 	private final Class<P> playerClass;
 

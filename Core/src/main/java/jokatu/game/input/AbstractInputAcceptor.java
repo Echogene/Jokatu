@@ -15,7 +15,7 @@ import java.text.MessageFormat;
  * @param <I> the type of the input to accept
  * @param <P> the type of the player to accept
  */
-public abstract class InputAcceptor<I extends Input, P extends Player, E extends GameEvent>
+public abstract class AbstractInputAcceptor<I extends Input, P extends Player, E extends GameEvent>
 		extends AbstractSynchronousObservable<E>
 		implements Stage<E> {
 

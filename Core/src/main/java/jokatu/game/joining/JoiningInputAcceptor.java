@@ -1,12 +1,12 @@
 package jokatu.game.joining;
 
-import jokatu.game.input.InputAcceptor;
+import jokatu.game.input.AbstractInputAcceptor;
 import jokatu.game.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public class JoiningInputAcceptor<P extends Player> extends InputAcceptor<JoinInput, P, PlayerJoinedEvent> {
+public class JoiningInputAcceptor<P extends Player> extends AbstractInputAcceptor<JoinInput, P, PlayerJoinedEvent> {
 
 	private final Class<P> playerClass;
 

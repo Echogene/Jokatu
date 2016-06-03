@@ -2,7 +2,7 @@ package jokatu.game;
 
 import jokatu.game.event.GameEvent;
 import jokatu.game.input.Input;
-import jokatu.game.input.InputAcceptor;
+import jokatu.game.input.AbstractInputAcceptor;
 import jokatu.game.player.Player;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import ophelia.exceptions.StackedException;
@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
 
 public abstract class MultiInputStage extends AbstractSynchronousObservable<GameEvent> implements Stage<GameEvent> {
 
-	private final List<InputAcceptor<? extends Input, ? extends Player, ? extends GameEvent>> inputAcceptors = new ArrayList<>();
+	private final List<AbstractInputAcceptor<? extends Input, ? extends Player, ? extends GameEvent>> inputAcceptors = new ArrayList<>();
 
-	protected void addInputAcceptor(InputAcceptor<? extends Input, ? extends Player, ? extends GameEvent> inputAcceptor) {
+	protected void addInputAcceptor(AbstractInputAcceptor<? extends Input, ? extends Player, ? extends GameEvent> inputAcceptor) {
 		inputAcceptors.add(inputAcceptor);
 		inputAcceptor.observe(this::fireEvent);
 	}

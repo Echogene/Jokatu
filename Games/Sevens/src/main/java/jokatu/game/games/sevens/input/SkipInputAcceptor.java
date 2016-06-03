@@ -2,13 +2,13 @@ package jokatu.game.games.sevens.input;
 
 import jokatu.game.event.PublicGameEvent;
 import jokatu.game.games.sevens.player.SevensPlayer;
-import jokatu.game.input.InputAcceptor;
+import jokatu.game.input.AbstractInputAcceptor;
 import jokatu.game.turn.TurnManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.MessageFormat;
 
-public class SkipInputAcceptor extends InputAcceptor<SkipInput, SevensPlayer, PublicGameEvent> {
+public class SkipInputAcceptor extends AbstractInputAcceptor<SkipInput, SevensPlayer, PublicGameEvent> {
 
 	private final TurnManager<SevensPlayer> turnManager;
 
