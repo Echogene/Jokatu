@@ -3,6 +3,7 @@ package jokatu.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 
@@ -20,6 +21,10 @@ public class Json {
 	@SuppressWarnings("unused") // This is called from the Groovy Templates
 	public static String serialise(Object object) throws JsonProcessingException {
 		return OBJECT_MAPPER.writeValueAsString(object);
+	}
+
+	public static String serialiseAndEscape(Object object) throws JsonProcessingException {
+		return StringEscapeUtils.escapeHtml4(serialise(object));
 	}
 
 	public static Map<String, Object> deserialise(String json) throws IOException {

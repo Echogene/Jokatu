@@ -34,27 +34,27 @@ class MarkupGenerator {
 	private String getHistory(Map properties) {
 		String destination = properties.destination
 
-		return Json.serialise(messageRepository.getMessageHistory(destination));
+		return Json.serialiseAndEscape(messageRepository.getMessageHistory(destination));
 	}
 
 	private String getUserHistory(Map properties) {
 		String destination = properties.destination.replaceFirst("^/user", "")
 
 		String username = properties.remove("user")
-		return Json.serialise(messageRepository.getMessageHistoryForUser(username, destination));
+		return Json.serialiseAndEscape(messageRepository.getMessageHistoryForUser(username, destination));
 	}
 
 	private String getLast(Map properties) {
 		String destination = properties.destination
 
-		return Json.serialise(messageRepository.getLastMessage(destination));
+		return Json.serialiseAndEscape(messageRepository.getLastMessage(destination));
 	}
 
 	private String getUserLast(Map properties) {
 		String destination = properties.destination.replaceFirst("^/user", "")
 
 		String username = properties.remove("user")
-		return Json.serialise(messageRepository.getLastMessageForUser(username, destination));
+		return Json.serialiseAndEscape(messageRepository.getLastMessageForUser(username, destination));
 	}
 
 	private static GString generateTagMarkup(Map properties, initialData) {

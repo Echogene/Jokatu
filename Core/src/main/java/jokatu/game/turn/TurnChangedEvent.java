@@ -21,7 +21,7 @@ public class TurnChangedEvent extends AwaitingInputEvent implements PublicGameEv
 	@NotNull
 	@Override
 	public String getMessage() {
-		return MessageFormat.format("{0}'s turn is over.  It's now {1}'s turn.", oldPlayer, newPlayer);
+		return MessageFormat.format("{0}''s turn is over.  It''s now {1}''s turn.", oldPlayer, newPlayer);
 	}
 
 	@NotNull
