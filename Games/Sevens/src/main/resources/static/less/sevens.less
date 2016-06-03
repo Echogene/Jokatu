@@ -18,6 +18,8 @@
 			display: inline-flex;
 			justify-content: center;
 			align-items: center;
+			margin-top: -1vh;
+			margin-bottom: -1vh;
 
 			>span {
 
@@ -43,6 +45,7 @@
 	>#board {
 		display: flex;
 		justify-content: center;
+		margin-top: -5vh;
 
 		>.suit {
 			display: inline-flex;
@@ -50,12 +53,12 @@
 			justify-content: center;
 
 			>div {
-				font-size: 10vh;
+				font-size: 15vh;
 				padding: 0;
 				overflow-y: hidden;
 				&:not(:last-child) {
-					margin-bottom: -2.8vh;
-					height: 5vh;
+					margin-bottom: -4.2vh;
+					height: 8vh;
 				}
 			}
 
@@ -88,9 +91,10 @@
 			width: 100%;
 			overflow-x: auto;
 			justify-content: center;
+			margin-top: -3vh;
 
 			>button {
-				font-size: 10vh;
+				font-size: 15vh;
 				padding: 0;
 				border: none;
 				background: none;
@@ -102,7 +106,7 @@
 				&:not(:last-child) {
 					overflow-x: hidden;
 					flex-shrink: 1;
-					margin-right: -.2vh;
+					margin-right: -.3vh;
 				}
 
 				&:last-child {
