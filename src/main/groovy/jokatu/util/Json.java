@@ -3,7 +3,6 @@ package jokatu.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 
@@ -24,7 +23,7 @@ public class Json {
 	}
 
 	public static String serialiseAndEscape(Object object) throws JsonProcessingException {
-		return StringEscapeUtils.escapeHtml4(serialise(object));
+		return serialise(object).replaceAll("'", "&#39;");
 	}
 
 	public static Map<String, Object> deserialise(String json) throws IOException {
