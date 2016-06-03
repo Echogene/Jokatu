@@ -1,6 +1,6 @@
 package jokatu.game.input;
 
-import jokatu.game.Stage;
+import jokatu.game.stage.Stage;
 import jokatu.game.event.GameEvent;
 import jokatu.game.player.Player;
 import ophelia.event.observable.AbstractSynchronousObservable;

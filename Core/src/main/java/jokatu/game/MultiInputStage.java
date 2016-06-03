@@ -4,6 +4,7 @@ import jokatu.game.event.GameEvent;
 import jokatu.game.input.Input;
 import jokatu.game.input.AbstractInputAcceptor;
 import jokatu.game.player.Player;
+import jokatu.game.stage.Stage;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import ophelia.exceptions.StackedException;
 import ophelia.exceptions.voidmaybe.VoidMaybe;

@@ -5,6 +5,7 @@ import jokatu.game.event.GameEvent;
 import jokatu.game.exception.GameException;
 import jokatu.game.input.Input;
 import jokatu.game.player.Player;
+import jokatu.game.stage.Stage;
 import jokatu.identity.Identifiable;
 import ophelia.collections.set.UnmodifiableSet;
 import ophelia.event.observable.AbstractSynchronousObservable;

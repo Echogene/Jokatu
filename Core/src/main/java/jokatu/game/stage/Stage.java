@@ -1,4 +1,4 @@
-package jokatu.game;
+package jokatu.game.stage;
 
 import jokatu.game.event.GameEvent;
 import jokatu.game.input.Input;
