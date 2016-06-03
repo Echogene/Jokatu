@@ -1,6 +1,5 @@
 package jokatu.game.input;
 
-import jokatu.game.stage.Stage;
 import jokatu.game.event.GameEvent;
 import jokatu.game.player.Player;
 import ophelia.event.observable.AbstractSynchronousObservable;
@@ -11,13 +10,14 @@ import org.jetbrains.annotations.NotNull;
 import java.text.MessageFormat;
 
 /**
- * An input acceptor is a stage that only accepts a specific type of input from a specific type of player.
+ * An abstract version of {@link InputAcceptor} that only accepts a specific type of input from a specific type of
+ * player.  It does nothing with the input it is not the type it specifies.
  * @param <I> the type of the input to accept
  * @param <P> the type of the player to accept
  */
 public abstract class AbstractInputAcceptor<I extends Input, P extends Player, E extends GameEvent>
 		extends AbstractSynchronousObservable<E>
-		implements Stage<E> {
+		implements InputAcceptor<E> {
 
 	private final Log log = LogFactory.getLog(getClass());
 
@@ -38,7 +38,7 @@ public abstract class AbstractInputAcceptor<I extends Input, P extends Player, E
 	}
 
 	@Override
-	public void accept(@NotNull Input input, @NotNull Player player) throws Exception {
+	public final void accept(@NotNull Input input, @NotNull Player player) throws Exception {
 		Class<P> playerClass = getPlayerClass();
 		if (!playerClass.isInstance(player)) {
 			log.debug(MessageFormat.format(

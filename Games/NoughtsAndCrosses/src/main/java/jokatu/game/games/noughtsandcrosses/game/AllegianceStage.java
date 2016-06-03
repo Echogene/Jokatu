@@ -4,7 +4,7 @@ import jokatu.game.event.StageOverEvent;
 import jokatu.game.games.noughtsandcrosses.input.AllegianceInput;
 import jokatu.game.games.noughtsandcrosses.input.NoughtOrCross;
 import jokatu.game.games.noughtsandcrosses.player.NoughtsAndCrossesPlayer;
-import jokatu.game.input.AbstractInputAcceptor;
+import jokatu.game.stage.SingleInputStage;
 import jokatu.game.status.StandardTextStatus;
 import ophelia.collections.set.bounded.BoundedPair;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +13,7 @@ import java.util.Collection;
 
 import static jokatu.game.games.noughtsandcrosses.input.NoughtOrCross.other;
 
-public class AllegianceStage extends AbstractInputAcceptor<AllegianceInput, NoughtsAndCrossesPlayer, StageOverEvent> {
+public class AllegianceStage extends SingleInputStage<AllegianceInput, NoughtsAndCrossesPlayer, StageOverEvent> {
 
 	private final BoundedPair<NoughtsAndCrossesPlayer> players;
 

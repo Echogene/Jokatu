@@ -1,11 +1,11 @@
 package jokatu.game.games.rockpaperscissors.game;
 
 import jokatu.game.games.rockpaperscissors.input.RockPaperScissorsInput;
-import jokatu.game.input.AnyEventInputAcceptor;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.player.StandardPlayer;
 import jokatu.game.result.PlayerResult;
 import jokatu.game.result.Result;
+import jokatu.game.stage.AnyEventSingleInputStage;
 import jokatu.game.status.StandardTextStatus;
 import ophelia.collections.set.bounded.BoundedPair;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +19,7 @@ import static java.util.Collections.singleton;
 import static jokatu.game.result.Result.DRAW;
 import static jokatu.game.result.Result.WIN;
 
-class InputStage extends AnyEventInputAcceptor<RockPaperScissorsInput, StandardPlayer> {
+class InputStage extends AnyEventSingleInputStage<RockPaperScissorsInput, StandardPlayer> {
 
 	private final BoundedPair<StandardPlayer> players;
 

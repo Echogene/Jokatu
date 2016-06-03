@@ -8,6 +8,9 @@ import jokatu.game.status.StandardTextStatus;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * A {@link Stage} that happens after the game is over.  No more input should be accepted at this point.
+ */
 public class GameOverStage extends AbstractSynchronousObservable<GameEvent> implements Stage<GameEvent> {
 
 	public GameOverStage(StandardTextStatus status) {
