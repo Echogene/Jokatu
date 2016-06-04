@@ -1,4 +1,6 @@
-body {
+#main {
+	min-height: 100%;
+	min-width: 100%;
 	display: flex;
 	align-items: stretch;
 	align-content: stretch;
@@ -42,38 +44,33 @@ body {
 			}
 		}
 
-		>#status {
+		>#status:not(:empty) {
 			flex-shrink: 0;
-
-			&:not(:empty)::before {
+			&::before {
 				content: "Status";
 			}
 		}
-		>#public-messages {
+		>#public-messages:not(:empty) {
 			flex-grow: 1;
-
-			&:not(:empty)::before {
+			&::before {
 				content: "Public messages";
 			}
 		}
-		>#private-messages{
+		>#private-messages:not(:empty) {
 			flex-grow: 1;
-
-			&:not(:empty)::before {
+			&::before {
 				content: "Private messages";
 			}
 		}
-		>#players {
+		>#players:not(:empty){
 			flex-shrink: 0;
-
-			&:not(:empty)::before {
+			&::before {
 				content: "Players";
 			}
 		}
-		>#observers {
+		>#observers:not(:empty) {
 			flex-grow: 1;
-
-			&:not(:empty)::before {
+			&::before {
 				content: "Observers";
 			}
 		}
@@ -84,16 +81,37 @@ body {
 		overflow-y: auto;
 		flex-grow: 1;
 		background-color: #eee;
+	}
+}
 
-		>#awaiting {
-			display: none;
+@keyframes awaiting_updated {
+	0% {
+		background: #aaf;
+		top: 50%;
+		right: 50%;
+		transform: translate(50%,-50%);
+		border-radius: 1em;
+	}
+	100% {
+		background: rgba(200, 200, 200, 0.5);
+		top: 0;
+		right: 0;
+		border-radius: 0 0 0 1em;
+	}
+}
 
-			&.awaiting {
-				display: block;
-				position: fixed;
-				top: 0;
-				right: 0;
-			}
-		}
+#awaiting {
+	display: none;
+	pointer-events: none;
+	padding: 1em;
+
+	&.awaiting {
+		display: block;
+		position: fixed;
+		animation: awaiting_updated 2s;
+		background: rgba(200, 200, 200, 0.5);
+		top: 0;
+		right: 0;
+		border-radius: 0 0 0 1em;
 	}
 }

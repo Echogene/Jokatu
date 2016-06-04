@@ -15,54 +15,56 @@ layout 'layouts/main.tpl', true,
 	},
 
 	mainBody: contents {
-		div(id: 'sidebar') {
-			yieldUnescaped markupGenerator.bindLast(
-					tag: 'j-status',
-					id: 'status',
-					wrapperElement: 'div',
-					destination: "/topic/status.game.${gameId}"
-			)
-			yieldUnescaped markupGenerator.bindHistory(
-					tag: 'j-message-box',
-					id: 'public-messages',
-					wrapperElement: 'div',
-					toppost: true,
-					destination: "/topic/public.game.${gameId}"
-			)
-			yieldUnescaped markupGenerator.bindUserHistory(
-					tag: 'j-message-box',
-					id: 'private-messages',
-					wrapperElement: 'div',
-					toppost: true,
-					destination: "/user/topic/private.game.${gameId}",
-					user: "${username}"
-			)
-			yieldUnescaped markupGenerator.bindLast(
-					tag: 'j-status',
-					id: 'players',
-					wrapperElement: 'JPlayer',
-					attributeName: 'data-player',
-					removeOldChildren: 'true',
-					destination: "/topic/players.game.${gameId}"
-			)
-			yieldUnescaped markupGenerator.bindLast(
-					tag: 'j-status',
-					id: 'observers',
-					wrapperElement: 'div',
-					removeOldChildren: 'true',
-					destination: "/topic/observers.game.${gameId}"
-			)
+		div(id: 'main') {
+			div(id: 'sidebar') {
+				yieldUnescaped markupGenerator.bindLast(
+						tag: 'j-status',
+						id: 'status',
+						wrapperElement: 'div',
+						destination: "/topic/status.game.${gameId}"
+				)
+				yieldUnescaped markupGenerator.bindHistory(
+						tag: 'j-message-box',
+						id: 'public-messages',
+						wrapperElement: 'div',
+						toppost: true,
+						destination: "/topic/public.game.${gameId}"
+				)
+				yieldUnescaped markupGenerator.bindUserHistory(
+						tag: 'j-message-box',
+						id: 'private-messages',
+						wrapperElement: 'div',
+						toppost: true,
+						destination: "/user/topic/private.game.${gameId}",
+						user: "${username}"
+				)
+				yieldUnescaped markupGenerator.bindLast(
+						tag: 'j-status',
+						id: 'players',
+						wrapperElement: 'JPlayer',
+						attributeName: 'data-player',
+						removeOldChildren: 'true',
+						destination: "/topic/players.game.${gameId}"
+				)
+				yieldUnescaped markupGenerator.bindLast(
+						tag: 'j-status',
+						id: 'observers',
+						wrapperElement: 'div',
+						removeOldChildren: 'true',
+						destination: "/topic/observers.game.${gameId}"
+				)
+			}
+			div(id: 'contents') {
+				mainContents()
+			}
 		}
-		div(id: 'contents') {
-			yieldUnescaped markupGenerator.bindUserLastStart(
-					tag: 'j-class',
-					id: 'awaiting',
-					nameOfClass: 'awaiting',
-					destination: "/user/topic/awaiting.game.${gameId}",
-					user: "${username}"
-			)
-				div('You need to provide input.')
-			yieldUnescaped '</j-class>'
-			mainContents()
-		}
+		yieldUnescaped markupGenerator.bindUserLastStart(
+				tag: 'j-class',
+				id: 'awaiting',
+				nameOfClass: 'awaiting',
+				destination: "/user/topic/awaiting.game.${gameId}",
+				user: "${username}"
+		)
+			span('You need to provide input.')
+		yieldUnescaped '</j-class>'
 	}
