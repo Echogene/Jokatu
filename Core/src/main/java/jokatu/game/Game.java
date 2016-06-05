@@ -75,6 +75,7 @@ public abstract class Game<P extends Player>
 		advanceStageInner();
 		assert currentStage != null;
 		currentStage.observe(this::fireEvent);
+		currentStage.start();
 	}
 
 	/**

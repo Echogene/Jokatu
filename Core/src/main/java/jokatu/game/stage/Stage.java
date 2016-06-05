@@ -16,4 +16,10 @@ import jokatu.game.input.InputAcceptor;
  * @param <E>
  */
 public interface Stage<E extends GameEvent> extends InputAcceptor<E> {
+
+	/**
+	 * Start this stage.  This should be called after the stage is being observed so events fired from this method will
+	 * be handled, unlike events fired during the constructor.
+	 */
+	default void start() {}
 }
