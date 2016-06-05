@@ -1,16 +1,18 @@
 package jokatu.game.games.rockpaperscissors.game;
 
 import jokatu.game.games.rockpaperscissors.input.RockPaperScissorsInput;
+import jokatu.game.input.AwaitingInputEvent;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.player.StandardPlayer;
 import jokatu.game.result.PlayerResult;
 import jokatu.game.result.Result;
 import jokatu.game.stage.AnyEventSingleInputStage;
 import jokatu.game.status.StandardTextStatus;
-import ophelia.collections.set.bounded.BoundedPair;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -21,21 +23,26 @@ import static jokatu.game.result.Result.WIN;
 
 class InputStage extends AnyEventSingleInputStage<RockPaperScissorsInput, StandardPlayer> {
 
-	private final BoundedPair<StandardPlayer> players;
+	private final List<StandardPlayer> players;
 
 	private final Map<StandardPlayer, RockPaperScissors> inputs = new ConcurrentHashMap<>();
 
 	private final StandardTextStatus status;
 
 	InputStage(Collection<StandardPlayer> players, StandardTextStatus status) {
-		this.players = new BoundedPair<>(players);
+		this.players = new ArrayList<>(players);
 		this.status = status;
 
 		status.setText(
 				"Waiting for inputs from {0} and {1}.",
-				this.players.getFirst(),
-				this.players.getSecond()
+				this.players.get(0),
+				this.players.get(1)
 		);
+	}
+
+	@Override
+	public void start() {
+		fireEvent(new AwaitingInputEvent(players));
 	}
 
 	@NotNull
@@ -63,8 +70,8 @@ class InputStage extends AnyEventSingleInputStage<RockPaperScissorsInput, Standa
 		}
 		inputs.put(inputter, input.getChoice());
 		if (inputs.size() == 2) {
-			StandardPlayer player1 = players.getFirst();
-			StandardPlayer player2 = players.getSecond();
+			StandardPlayer player1 = players.get(0);
+			StandardPlayer player2 = players.get(1);
 			Result result = inputs.get(player1).resultAgainst(inputs.get(player2));
 			switch (result) {
 				case WIN:
@@ -77,9 +84,13 @@ class InputStage extends AnyEventSingleInputStage<RockPaperScissorsInput, Standa
 					fireEvent(new PlayerResult(DRAW, asList(player1, player2)));
 			}
 		} else {
-			StandardPlayer other = players.getOther(inputter);
-			assert other != null;
+			StandardPlayer other = getOtherPlayer(inputter);
 			status.setText("Waiting for input from {0}.", other.getName());
+			fireEvent(new AwaitingInputEvent(other));
 		}
+	}
+
+	private StandardPlayer getOtherPlayer(StandardPlayer inputter) {
+		return players.get((players.indexOf(inputter) + 1) % 2);
 	}
 }
