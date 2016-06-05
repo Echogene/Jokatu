@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import static ophelia.util.FunctionUtils.not;
@@ -30,6 +31,8 @@ public abstract class Game<P extends Player>
 	private final GameID identifier;
 
 	protected final Map<String, P> players = new HashMap<>();
+
+	protected AtomicBoolean currentStageStarted = new AtomicBoolean(false);
 
 	@Nullable
 	protected Stage<? extends GameEvent> currentStage;
@@ -72,10 +75,10 @@ public abstract class Game<P extends Player>
 	}
 
 	public final void advanceStage() {
+		currentStageStarted.set(false);
 		advanceStageInner();
 		assert currentStage != null;
 		currentStage.observe(this::fireEvent);
-		currentStage.start();
 	}
 
 	/**
@@ -83,9 +86,16 @@ public abstract class Game<P extends Player>
 	 */
 	protected abstract void advanceStageInner();
 
+	/**
+	 * Gets the current stage and lazily starts it if it hasn't been started yet.
+	 * @return the current stage that has also been started
+	 */
 	@JsonIgnore
 	@Nullable
 	public Stage<? extends GameEvent> getCurrentStage() {
+		if (!currentStageStarted.getAndSet(true) && currentStage != null) {
+			currentStage.start();
+		}
 		return currentStage;
 	}
 
