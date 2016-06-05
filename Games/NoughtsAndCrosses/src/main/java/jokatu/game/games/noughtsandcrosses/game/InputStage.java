@@ -88,7 +88,6 @@ class InputStage extends AnyEventSingleInputStage<NoughtsAndCrossesInput, Nought
 			throw new UnacceptableInputException("Cell {0} already contained a {1}.", cell, inputs.get(cell));
 		}
 		inputs.put(cell, inputter.getAllegiance());
-		turnManager.next();
 
 		List<Line> lines = getCompletedLines();
 		fireEvent(new CellChosenEvent(cell, inputs.get(cell), lines));
@@ -96,6 +95,8 @@ class InputStage extends AnyEventSingleInputStage<NoughtsAndCrossesInput, Nought
 			fireEvent(new PlayerResult(WIN, singleton(inputter)));
 		} else if (inputs.size() == 9) {
 			fireEvent(new PlayerResult(DRAW, players));
+		} else {
+			turnManager.next();
 		}
 	}
 
