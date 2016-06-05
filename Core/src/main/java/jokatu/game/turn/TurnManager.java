@@ -3,6 +3,7 @@ package jokatu.game.turn;
 import jokatu.game.player.Player;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -15,13 +16,11 @@ public class TurnManager<P extends Player> extends AbstractSynchronousObservable
 
 	private P currentPlayer;
 
-	public TurnManager(@NotNull List<P> players, @NotNull P startingPlayer) {
-		assert players.contains(startingPlayer);
+	public TurnManager(@NotNull List<P> players) {
 		this.players = players;
-		this.currentPlayer = startingPlayer;
 	}
 
-	private void setCurrentPlayer(@NotNull P newPlayer) {
+	public void setCurrentPlayer(@NotNull P newPlayer) {
 		P oldPlayer = currentPlayer;
 		currentPlayer = newPlayer;
 		fireEvent(new TurnChangedEvent(oldPlayer, currentPlayer));
@@ -46,7 +45,7 @@ public class TurnManager<P extends Player> extends AbstractSynchronousObservable
 		setCurrentPlayer(players.get((i + 1) % players.size()));
 	}
 
-	@NotNull
+	@Nullable
 	public P getCurrentPlayer() {
 		return currentPlayer;
 	}

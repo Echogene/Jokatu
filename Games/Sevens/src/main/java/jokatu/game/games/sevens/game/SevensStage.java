@@ -19,6 +19,7 @@ import static jokatu.game.cards.Cards.SEVEN_OF_DIAMONDS;
 class SevensStage extends MultiInputStage {
 
 	private final List<SevensPlayer> players;
+	private final TurnManager<SevensPlayer> turnManager;
 
 	SevensStage(Map<String, SevensPlayer> players, StandardTextStatus status, Map<Suit, TreeSet<Card>> playedCards) {
 		this.players = assignDealOrder(players);
@@ -26,9 +27,7 @@ class SevensStage extends MultiInputStage {
 		dealHands();
 		sortHands();
 
-		SevensPlayer startingPlayer = getStartingPlayer();
-		status.setText(format("Waiting for {0} to play the seven of diamonds.", startingPlayer));
-		TurnManager<SevensPlayer> turnManager = new TurnManager<>(this.players, startingPlayer);
+		turnManager = new TurnManager<>(this.players);
 		turnManager.observe(e -> {
 			status.setText(format("Waiting for {0} to play a card or pass.", e.getNewPlayer()));
 			// Forward the event.
@@ -37,6 +36,12 @@ class SevensStage extends MultiInputStage {
 
 		addInputAcceptor(new CardInputAcceptor(turnManager, playedCards));
 		addInputAcceptor(new SkipInputAcceptor(turnManager));
+	}
+
+	@Override
+	public void start() {
+		SevensPlayer startingPlayer = getStartingPlayer();
+		turnManager.setCurrentPlayer(startingPlayer);
 	}
 
 	private SevensPlayer getStartingPlayer() {

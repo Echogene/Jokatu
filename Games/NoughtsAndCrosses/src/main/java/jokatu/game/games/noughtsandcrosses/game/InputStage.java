@@ -49,19 +49,22 @@ class InputStage extends AnyEventSingleInputStage<NoughtsAndCrossesInput, Nought
 	InputStage(Collection<NoughtsAndCrossesPlayer> players, StandardTextStatus status) {
 		this.players = new ArrayList<>(players);
 
-		// Crosses go first.
-		NoughtsAndCrossesPlayer startingPlayer = players.stream()
-				.filter(player -> player.getAllegiance() == CROSS)
-				.findAny()
-				.orElseThrow(() -> new RuntimeException("No player was aligned to crosses."));
-
-		status.setText(format("Waiting for {0} to choose a cell.", startingPlayer));
-		turnManager = new TurnManager<>(this.players, startingPlayer);
+		turnManager = new TurnManager<>(this.players);
 		turnManager.observe(e -> {
 			status.setText(format("Waiting for {0} to choose a cell.", e.getNewPlayer()));
 			// Forward the event.
 			fireEvent(e);
 		});
+	}
+
+	@Override
+	public void start() {
+		// Crosses go first.
+		NoughtsAndCrossesPlayer startingPlayer = players.stream()
+				.filter(player -> player.getAllegiance() == CROSS)
+				.findAny()
+				.orElseThrow(() -> new RuntimeException("No player was aligned to crosses."));
+		turnManager.setCurrentPlayer(startingPlayer);
 	}
 
 	@NotNull
