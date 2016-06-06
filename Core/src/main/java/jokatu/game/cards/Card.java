@@ -50,4 +50,9 @@ public class Card {
 	public String getLabel() {
 		return label;
 	}
+
+	@NotNull
+	public String getId() {
+		return text;
+	}
 }

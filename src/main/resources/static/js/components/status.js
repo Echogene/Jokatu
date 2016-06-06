@@ -90,6 +90,11 @@ JStatusProto._updateElement = function(element, status) {
 	} else if (status && typeof status === 'object' && typeof status.text === 'string') {
 		element.textContent = status.text;
 	}
+	
+	if (status && typeof status === 'object' && typeof status.id === 'string') {
+		element.id = status.id;
+	}
+	
 	var attributeName = this.getAttribute('attributeName');
 	if (attributeName) {
 		var statusString = JSON.stringify(status);
