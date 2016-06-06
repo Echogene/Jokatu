@@ -29,6 +29,9 @@ JStatusProto._updateStatus = function(statuses) {
 };
 
 JStatusProto._setStatus = function(statuses) {
+	if (!statuses && !this._showAll) {
+		return;
+	}
 	if (!(statuses instanceof Array)) {
 		statuses = [statuses];
 	}

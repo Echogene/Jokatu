@@ -2,7 +2,6 @@ package jokatu.game.games.gameofgames.game;
 
 import jokatu.game.Game;
 import jokatu.game.GameID;
-import jokatu.game.event.StatusUpdateEvent;
 import jokatu.game.player.StandardPlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,7 +28,6 @@ public class GameOfGames extends Game<StandardPlayer> {
 	protected void advanceStageInner() {
 		if (currentStage == null) {
 			currentStage = new GameOfGameStage();
-			fireEvent((StatusUpdateEvent) () -> () -> "Create some games!");
 		}
 	}
 }
