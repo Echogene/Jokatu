@@ -56,6 +56,9 @@ JPopupProto._updatePosition = function(coveeId) {
 			this.parentNode.appendChild(this._line);
 		}
 		this._line.setEnds(this, covee);
+	} else if (this._line) {
+		// The covee has been removed, so hide this.
+		this.hide();
 	}
 };
 
