@@ -13,6 +13,7 @@ import static jokatu.game.cards.Suit.*;
 /**
  * Contains constants for all of the 52 standard playingcards.
  */
+@SuppressWarnings("unused")
 public abstract class Cards {
 
 	public static final String PRIVATE_CARD = "\ud83c\udca0";
