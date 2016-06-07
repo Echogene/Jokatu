@@ -53,7 +53,7 @@ public class NoughtsAndCrossesConfiguration implements GameConfiguration {
 
 	@NotNull
 	@Override
-	public PlayerFactory getPlayerFactory() {
+	public PlayerFactory<?> getPlayerFactory() {
 		return (game, username) -> new NoughtsAndCrossesPlayer(username);
 	}
 

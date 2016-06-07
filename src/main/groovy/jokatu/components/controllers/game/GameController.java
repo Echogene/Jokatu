@@ -130,10 +130,10 @@ public class GameController {
 	}
 
 	@NotNull
-	private Player getPlayer(@NotNull Game<? extends Player> game, String name) {
+	private Player getPlayer(@NotNull Game<?> game, String name) {
 		Player player = game.getPlayerByName(name);
 		if (player == null) {
-			PlayerFactory factory = gameFactories.getPlayerFactory(game);
+			PlayerFactory<?> factory = gameFactories.getPlayerFactory(game);
 			return factory.produce(game, name);
 		} else {
 			return player;

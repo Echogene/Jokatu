@@ -47,7 +47,7 @@ public class RockPaperScissorsConfiguration implements GameConfiguration {
 
 	@NotNull
 	@Override
-	public PlayerFactory getPlayerFactory() {
+	public PlayerFactory<?> getPlayerFactory() {
 		return ((game, username) -> new StandardPlayer(username));
 	}
 

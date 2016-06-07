@@ -23,7 +23,7 @@ public abstract class AbstractPlayerFactory<P extends Player, G extends Game<P>>
 
 	@Override
 	@NotNull
-	public final P produce(@NotNull Game<? extends P> game, @NotNull String username) {
+	public final P produce(@NotNull Game<?> game, @NotNull String username) {
 		return produceInCastGame(castGame(game), username);
 	}
 

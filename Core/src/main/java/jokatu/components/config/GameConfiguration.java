@@ -18,13 +18,13 @@ public interface GameConfiguration {
 	 * @return the {@link GameFactory} that will be used to construct games of this type
 	 */
 	@NotNull
-	GameFactory getGameFactory();
+	GameFactory<?> getGameFactory();
 
 	/**
 	 * @return the {@link AbstractPlayerFactory} that will be used to create players for games of this type
 	 */
 	@NotNull
-	PlayerFactory getPlayerFactory();
+	PlayerFactory<?> getPlayerFactory();
 
 	/**
 	 * @return the {@link InputDeserialiser}s that will be used to deserialise client inputs for games of this type
@@ -37,5 +37,5 @@ public interface GameConfiguration {
 	 *         games of this type
 	 */
 	@NotNull
-	ViewResolverFactory getViewResolverFactory();
+	ViewResolverFactory<?, ?> getViewResolverFactory();
 }

@@ -85,12 +85,12 @@ public class FactoryConfiguration {
 		}
 
 		@NotNull
-		public GameFactory getFactory(@NotNull String gameName) {
+		public GameFactory<?> getFactory(@NotNull String gameName) {
 			return getConfig(gameName).getGameFactory();
 		}
 
 		@NotNull
-		public PlayerFactory getPlayerFactory(@NotNull Game<?> game) {
+		public PlayerFactory<?> getPlayerFactory(@NotNull Game<?> game) {
 			String gameName = game.getGameName();
 			return getConfig(gameName).getPlayerFactory();
 		}
