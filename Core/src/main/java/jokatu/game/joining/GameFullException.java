@@ -7,7 +7,7 @@ import jokatu.game.Game;
  */
 public class GameFullException extends CannotJoinGameException {
 
-	public GameFullException(String message) {
-		super(message);
+	public GameFullException() {
+		super("No more players can join.");
 	}
 }

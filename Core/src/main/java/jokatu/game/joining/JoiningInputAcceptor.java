@@ -44,7 +44,7 @@ public class JoiningInputAcceptor<P extends Player> extends AbstractInputAccepto
 
 	private void checkCanJoin(P inputter) throws CannotJoinGameException {
 		if (players.size() > maximum - 1) {
-			throw new GameFullException("No more players can join.");
+			throw new GameFullException();
 		}
 		if (players.containsKey(inputter.getName())) {
 			throw new PlayerAlreadyJoinedException("You cannot join the game twice!");
