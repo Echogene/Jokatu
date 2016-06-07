@@ -47,7 +47,7 @@ public class JoiningInputAcceptor<P extends Player> extends AbstractInputAccepto
 			throw new GameFullException();
 		}
 		if (players.containsKey(inputter.getName())) {
-			throw new PlayerAlreadyJoinedException("You cannot join the game twice!");
+			throw new PlayerAlreadyJoinedException();
 		}
 	}
 }
