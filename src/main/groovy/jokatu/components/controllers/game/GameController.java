@@ -95,27 +95,17 @@ public class GameController {
 		return modelAndView;
 	}
 
-	@NotNull
-	private Game<? extends Player> getGame(
-			GameID identity,
-			@NotNull final String errorMessage
-	) throws GameException {
+	@MessageMapping("/topic/input.game.{identity}")
+	void input(@DestinationVariable("identity") GameID identity, @Payload Map<String, Object> json, Principal principal)
+			throws GameException {
 
 		Game<? extends Player> game = gameDao.read(identity);
 		if (game == null) {
 			throw new GameException(
 					identity,
-					format("Game with ID {0} does not exist.  {1}", identity, errorMessage)
+					format("Game with ID {0} does not exist.  You can''t input to a game that does not exist.", identity)
 			);
 		}
-		return game;
-	}
-
-	@MessageMapping("/topic/input.game.{identity}")
-	void input(@DestinationVariable("identity") GameID identity, @Payload Map<String, Object> json, Principal principal)
-			throws GameException {
-
-		Game<? extends Player> game = getGame(identity, "You can't input to a game that does not exist.");
 
 		Player player = getPlayer(game, principal.getName());
 		BaseCollection<? extends InputDeserialiser> deserialisers = gameFactories.getInputDeserialisers(game);
