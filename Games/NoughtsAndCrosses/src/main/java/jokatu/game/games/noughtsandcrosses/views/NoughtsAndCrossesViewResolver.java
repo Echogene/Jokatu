@@ -19,7 +19,7 @@ class NoughtsAndCrossesViewResolver extends ViewResolver<NoughtsAndCrossesPlayer
 
 	@NotNull
 	@Override
-	public ModelAndView getDefaultView() {
+	protected ModelAndView getDefaultView() {
 		String view;
 		if (game.getCurrentStage() instanceof JoiningStage) {
 			view = "views/game_join";

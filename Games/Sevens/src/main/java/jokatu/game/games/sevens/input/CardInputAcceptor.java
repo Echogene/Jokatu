@@ -22,7 +22,7 @@ import static jokatu.game.result.Result.WIN;
 
 public class CardInputAcceptor extends AnyEventInputAcceptor<CardInput, SevensPlayer> {
 
-	private TurnManager<SevensPlayer> turnManager;
+	private final TurnManager<SevensPlayer> turnManager;
 
 	private final Set<Card> extremeCards = new HashSet<>();
 

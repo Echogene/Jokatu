@@ -32,7 +32,7 @@ public abstract class Game<P extends Player>
 
 	protected final Map<String, P> players = new HashMap<>();
 
-	protected AtomicBoolean currentStageStarted = new AtomicBoolean(false);
+	private final AtomicBoolean currentStageStarted = new AtomicBoolean(false);
 
 	@Nullable
 	protected Stage<? extends GameEvent> currentStage;

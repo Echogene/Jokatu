@@ -44,7 +44,7 @@ class InputStage extends AnyEventSingleInputStage<NoughtsAndCrossesInput, Nought
 	private final Map<Integer, NoughtOrCross> inputs = new HashMap<>();
 
 	private final ArrayList<NoughtsAndCrossesPlayer> players;
-	private TurnManager<NoughtsAndCrossesPlayer> turnManager;
+	private final TurnManager<NoughtsAndCrossesPlayer> turnManager;
 
 	InputStage(Collection<NoughtsAndCrossesPlayer> players, StandardTextStatus status) {
 		this.players = new ArrayList<>(players);

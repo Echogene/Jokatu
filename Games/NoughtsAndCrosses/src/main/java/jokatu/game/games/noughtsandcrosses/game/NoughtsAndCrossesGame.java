@@ -12,7 +12,7 @@ public class NoughtsAndCrossesGame extends Game<NoughtsAndCrossesPlayer> {
 
 	public static final String NOUGHTS_AND_CROSSES = "Noughts and crosses";
 
-	private StandardTextStatus status = new StandardTextStatus();
+	private final StandardTextStatus status = new StandardTextStatus();
 
 	NoughtsAndCrossesGame(GameID identifier) {
 		super(identifier);

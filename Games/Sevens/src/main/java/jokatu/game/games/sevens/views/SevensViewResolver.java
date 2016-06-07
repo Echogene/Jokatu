@@ -7,9 +7,9 @@ import jokatu.game.viewresolver.ViewResolver;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.servlet.ModelAndView;
 
-public class SevensViewResolver extends ViewResolver<SevensPlayer, SevensGame> {
+class SevensViewResolver extends ViewResolver<SevensPlayer, SevensGame> {
 
-	protected SevensViewResolver(@NotNull SevensGame game) {
+	SevensViewResolver(@NotNull SevensGame game) {
 		super(game);
 	}
 

@@ -14,7 +14,7 @@ import java.util.List;
 public class SevensPlayer extends AbstractSynchronousObservable<GameEvent> implements Player {
 
 	private final String name;
-	private List<Card> hand = new ArrayList<>();
+	private final List<Card> hand = new ArrayList<>();
 
 	public SevensPlayer(String username) {
 		this.name = username;
