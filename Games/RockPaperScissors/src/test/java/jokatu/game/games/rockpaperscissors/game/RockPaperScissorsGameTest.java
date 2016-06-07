@@ -194,7 +194,7 @@ public class RockPaperScissorsGameTest {
 		assertThat(events, hasItem(instanceOf(PlayerResult.class)));
 		PlayerResult result = getUniqueEventFromList(PlayerResult.class, events);
 		assertThat(result.getMessage(), allOf(
-				containsString("DRAW"),
+				containsString("draw"),
 				containsString(player1.getName()),
 				containsString(player2.getName())
 		));
