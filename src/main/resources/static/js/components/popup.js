@@ -31,10 +31,11 @@ JPopupProto.hide = function() {
 };
 
 JPopupProto.initialise = function() {
-	var container = document.getElementById('popup_container');
+	var container = document.getElementById('popup-container');
 	if (!container) {
 		container = document.createElement('div');
-		container.id = 'popup_container';
+		container.id = 'popup-container';
+		container.classList.add('overlay');
 		document.body.appendChild(container);
 	}
 	container.appendChild(this);
