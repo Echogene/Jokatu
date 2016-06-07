@@ -3,11 +3,10 @@ package jokatu.game.result;
 import jokatu.game.event.PublicGameEvent;
 import jokatu.game.event.StageOverEvent;
 import jokatu.game.player.Player;
-import ophelia.util.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.MessageFormat;
 import java.util.Collection;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -19,14 +18,11 @@ public class PlayerResult extends StageOverEvent implements PublicGameEvent {
 	private final String message;
 
 	public PlayerResult(Result result, Collection<? extends Player> players) {
-		if (players.size() == 1) {
-			message = players.iterator().next() + " " + result.toString();
-		} else {
-			Set<String> playerNames = players.stream()
-					.map(Player::getName)
-					.collect(Collectors.toSet());
-			message = StringUtils.join(playerNames, ", ") + " " + result.toString();
-		}
+
+		String playerNames = players.stream()
+				.map(Player::getName)
+				.collect(Collectors.joining(", "));
+		message = MessageFormat.format("{0} {1}.", playerNames, result.get3rdPersonPresent(players.size()));
 	}
 
 	@NotNull
