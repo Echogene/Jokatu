@@ -25,7 +25,7 @@ public class CellChosenEventHandler extends AnyGameEventHandler<CellChosenEvent>
 
 		sender.send(
 				format("/topic/substatus.game.{0}.cell_{1}", game.getIdentifier(), event.getCell()),
-				event.getMessage()
+				event.getNoughtOrCross()
 		);
 		sender.send(
 				format("/topic/substatus.game.{0}.lines", game.getIdentifier()),

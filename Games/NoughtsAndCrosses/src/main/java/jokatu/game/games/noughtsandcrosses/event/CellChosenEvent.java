@@ -19,8 +19,7 @@ public class CellChosenEvent implements GameEvent {
 	}
 
 	@NotNull
-	@Override
-	public String getMessage() {
+	public String getNoughtOrCross() {
 		return noughtOrCross.toString();
 	}
 

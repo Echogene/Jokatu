@@ -19,6 +19,6 @@ public class AdvanceStageEventHandler extends AnyGameEventHandler<StageOverEvent
 	protected void handleCastGameAndEvent(@NotNull Game game, @NotNull StageOverEvent event) {
 		game.advanceStage();
 
-		sender.send("/topic/advance.game." + game.getIdentifier(), event.getMessage());
+		sender.send("/topic/advance.game." + game.getIdentifier(), true);
 	}
 }

@@ -4,10 +4,8 @@ import jokatu.game.event.GameEvent;
 import jokatu.game.player.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 /**
  * Fire one of these from a game to signify that a collection of players needs to provide input.  Firing one will
@@ -31,14 +29,5 @@ public class AwaitingInputEvent implements GameEvent {
 	@NotNull
 	public Collection<? extends Player> getAwaitingPlayers() {
 		return players;
-	}
-
-	@NotNull
-	@Override
-	public String getMessage() {
-		return MessageFormat.format(
-				"Awaiting input from ",
-				players.stream().map(Player::getName).collect(Collectors.joining(", "))
-		);
 	}
 }

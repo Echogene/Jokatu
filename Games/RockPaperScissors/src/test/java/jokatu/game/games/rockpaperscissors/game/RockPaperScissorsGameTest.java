@@ -138,7 +138,7 @@ public class RockPaperScissorsGameTest {
 
 		assertThat(events, hasItem(instanceOf(StatusUpdateEvent.class)));
 		StatusUpdateEvent statusUpdateEvent = getUniqueEventFromList(StatusUpdateEvent.class, events);
-		assertThat(statusUpdateEvent.getMessage(), allOf(
+		assertThat(statusUpdateEvent.getStatus().getText(), allOf(
 				containsString("Waiting for inputs from"),
 				containsString(player1.getName()),
 				containsString(player2.getName())
@@ -149,7 +149,7 @@ public class RockPaperScissorsGameTest {
 
 		assertThat(events, hasItem(instanceOf(StatusUpdateEvent.class)));
 		StatusUpdateEvent statusUpdateEvent2 = getUniqueEventFromList(StatusUpdateEvent.class, events);
-		assertThat(statusUpdateEvent2.getMessage(), is("Waiting for input from Player 2."));
+		assertThat(statusUpdateEvent2.getStatus().getText(), is("Waiting for input from Player 2."));
 		events.clear();
 	}
 
