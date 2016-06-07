@@ -35,7 +35,6 @@ class SevensViewResolver extends ViewResolver<SevensPlayer, SevensGame> {
 	@NotNull
 	@Override
 	protected ModelAndView getViewFor(@NotNull SevensPlayer player) {
-		// todo: should an observer have a separate view?
 		return getDefaultView();
 	}
 }
