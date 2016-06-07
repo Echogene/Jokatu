@@ -58,6 +58,20 @@ layout 'layouts/main.tpl', true,
 				mainContents()
 			}
 		}
+		yieldUnescaped markupGenerator.bindLastStart(
+				tag: 'j-class',
+				id: 'result-container',
+				class: 'overlay',
+				nameOfClass: 'ended',
+				destination: "/topic/result.game.${gameId}"
+		)
+			yieldUnescaped markupGenerator.bindLast(
+					tag: 'j-status',
+					id: 'result',
+					wrapperElement: 'div',
+					destination: "/topic/result.game.${gameId}"
+			)
+		yieldUnescaped '</j-class>'
 		yieldUnescaped markupGenerator.bindUserLastStart(
 				tag: 'j-class',
 				id: 'awaiting',
