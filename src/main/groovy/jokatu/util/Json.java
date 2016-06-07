@@ -17,7 +17,7 @@ public class Json {
 
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-	@SuppressWarnings("unused") // This is called from the Groovy Templates
+	@SuppressWarnings({"unused", "WeakerAccess"}) // This is called from the Groovy Templates.
 	public static String serialise(Object object) throws JsonProcessingException {
 		return OBJECT_MAPPER.writeValueAsString(object);
 	}
@@ -26,6 +26,7 @@ public class Json {
 		return serialise(object).replaceAll("'", "&#39;");
 	}
 
+	@SuppressWarnings("unused") // This can be called from the Groovy Templates.
 	public static Map<String, Object> deserialise(String json) throws IOException {
 		MapType typeRef = OBJECT_MAPPER.getTypeFactory().constructMapType(HashMap.class, String.class, Object.class);
 		return OBJECT_MAPPER.readValue(json, typeRef);

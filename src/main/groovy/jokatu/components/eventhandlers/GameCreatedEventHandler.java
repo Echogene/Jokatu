@@ -65,6 +65,7 @@ public class GameCreatedEventHandler extends AnyGameEventHandler<GameCreatedEven
 		return game;
 	}
 
+	@SuppressWarnings("unused") // This is converted to JSON using Jackson.
 	private class GameEntry {
 		private final GameID gameId;
 		private final String gameName;

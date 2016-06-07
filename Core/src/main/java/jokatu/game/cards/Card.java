@@ -7,6 +7,7 @@ import java.text.MessageFormat;
 /**
  * Instances of this class represent one of the 52 standard playingcards.
  */
+@SuppressWarnings("unused") // This is converted to JSON using Jackson.
 public class Card {
 
 	private final String text;

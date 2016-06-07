@@ -128,6 +128,7 @@ public class PlayerJoinEventHandler extends AnyGameEventHandler<PlayerJoinedEven
 		scheduleUpdate(game.getIdentifier());
 	}
 
+	@SuppressWarnings("unused") // This is converted to JSON using Jackson.
 	private static class PlayerStatus {
 		private final boolean online;
 		private final String name;

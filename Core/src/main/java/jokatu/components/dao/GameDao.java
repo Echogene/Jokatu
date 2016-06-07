@@ -4,7 +4,6 @@ import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.player.Player;
 import jokatu.identity.IdentifiableDao;
-import ophelia.collections.set.UnmodifiableSet;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
@@ -20,10 +19,6 @@ import java.util.concurrent.ConcurrentMap;
 public class GameDao implements IdentifiableDao<GameID, Game<? extends Player>> {
 
 	private final ConcurrentMap<GameID, Game<? extends Player>> games = new ConcurrentHashMap<>();
-
-	public UnmodifiableSet<Game<? extends Player>> getAll() {
-		return new UnmodifiableSet<>(games.values());
-	}
 
 	@Nullable
 	@Override

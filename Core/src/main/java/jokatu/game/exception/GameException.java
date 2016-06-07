@@ -27,6 +27,7 @@ public class GameException extends Exception {
 		this(id, MessageFormat.format(pattern, arguments));
 	}
 
+	@SuppressWarnings("unused") // I think this can be converted to JSON using Jackson.
 	@NotNull
 	public GameID getId() {
 		return id;
