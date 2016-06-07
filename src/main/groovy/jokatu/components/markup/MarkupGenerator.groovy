@@ -23,6 +23,10 @@ class MarkupGenerator {
 		return generateTagMarkup(properties, getLast(properties));
 	}
 
+	String bindLastStart(Map properties) {
+		return generateStartTag(properties.remove("tag"), properties, getLast(properties));
+	}
+
 	String bindUserLast(Map properties) {
 		return generateTagMarkup(properties, getUserLast(properties));
 	}
