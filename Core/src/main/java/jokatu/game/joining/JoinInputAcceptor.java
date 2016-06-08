@@ -6,6 +6,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
+/**
+ * Accepts {@link JoinInput}s from players and adds them to the game if there is enough room.  It fires a
+ * {@link PlayerJoinedEvent} if the joining was successful.
+ * @param <P> the type of {@link Player} to accept input from
+ */
 public class JoinInputAcceptor<P extends Player> extends AbstractInputAcceptor<JoinInput, P, PlayerJoinedEvent> {
 
 	private final Class<P> playerClass;

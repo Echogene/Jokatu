@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 /**
- * Deserialises {@link FinishJoiningInput}s.
+ * Deserialises {@link FinishJoiningInput}s.  The correct JSON should look like <code>{"start": true}</code>.
  */
 @Component
 public class FinishJoiningInputDeserialiser extends SingleKeyInputDeserialiser<FinishJoiningInput> {
