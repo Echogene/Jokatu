@@ -5,6 +5,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.MessageFormat;
 
+/**
+ * A {@link PlayerFactory} that produces players for a specific game type.
+ * @param <P> the type of {@link Player} to produce
+ * @param <G> the type of {@link Game} to create the players for
+ */
 public abstract class AbstractPlayerFactory<P extends Player, G extends Game<P>> implements PlayerFactory<P> {
 
 	@NotNull
