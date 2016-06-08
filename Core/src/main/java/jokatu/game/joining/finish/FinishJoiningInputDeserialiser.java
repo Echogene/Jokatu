@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+/**
+ * Deserialises {@link FinishJoiningInput}s.
+ */
 @Component
 public class FinishJoiningInputDeserialiser extends SingleKeyInputDeserialiser<FinishJoiningInput> {
 	@NotNull

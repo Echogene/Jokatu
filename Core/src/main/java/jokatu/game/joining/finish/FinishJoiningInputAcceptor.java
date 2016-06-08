@@ -8,6 +8,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
+/**
+ * Accepts {@link FinishJoiningInput}s and fires a {@link StageOverEvent} if the input is valid.
+ * @param <P> the type of {@link Player} that should be accepted
+ */
 public class FinishJoiningInputAcceptor<P extends Player> extends AbstractInputAcceptor<FinishJoiningInput, P, StageOverEvent> {
 
 	private final Class<P> playerClass;

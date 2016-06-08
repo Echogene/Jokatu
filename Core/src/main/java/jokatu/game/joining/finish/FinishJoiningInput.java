@@ -2,5 +2,8 @@ package jokatu.game.joining.finish;
 
 import jokatu.game.input.Input;
 
-public class FinishJoiningInput implements Input {
+/**
+ * An input sent from a player to confirm that there are enough players and that the game should start.
+ */
+class FinishJoiningInput implements Input {
 }
