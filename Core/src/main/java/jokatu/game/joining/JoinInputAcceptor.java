@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public class JoiningInputAcceptor<P extends Player> extends AbstractInputAcceptor<JoinInput, P, PlayerJoinedEvent> {
+public class JoinInputAcceptor<P extends Player> extends AbstractInputAcceptor<JoinInput, P, PlayerJoinedEvent> {
 
 	private final Class<P> playerClass;
 
@@ -17,7 +17,7 @@ public class JoiningInputAcceptor<P extends Player> extends AbstractInputAccepto
 	 */
 	private final int maximum;
 
-	public JoiningInputAcceptor(@NotNull Class<P> playerClass, @NotNull Map<String, P> players, int maximum) {
+	public JoinInputAcceptor(@NotNull Class<P> playerClass, @NotNull Map<String, P> players, int maximum) {
 		this.playerClass = playerClass;
 		this.players = players;
 		this.maximum = maximum;

@@ -2,7 +2,7 @@ package jokatu.game.stage;
 
 import jokatu.game.MultiInputStage;
 import jokatu.game.event.StageOverEvent;
-import jokatu.game.joining.JoiningInputAcceptor;
+import jokatu.game.joining.JoinInputAcceptor;
 import jokatu.game.joining.PlayerJoinedEvent;
 import jokatu.game.joining.finish.FinishJoiningInputAcceptor;
 import jokatu.game.player.Player;
@@ -34,9 +34,9 @@ public class MinAndMaxJoiningStage<P extends Player> extends MultiInputStage {
 				minimum == 1 ? "" : "s"
 		);
 
-		JoiningInputAcceptor<P> joiningInputAcceptor = new JoiningInputAcceptor<>(playerClass, players, minimum);
-		joiningInputAcceptor.observe(this::onPlayerJoin);
-		addInputAcceptor(joiningInputAcceptor);
+		JoinInputAcceptor<P> joinInputAcceptor = new JoinInputAcceptor<>(playerClass, players, minimum);
+		joinInputAcceptor.observe(this::onPlayerJoin);
+		addInputAcceptor(joinInputAcceptor);
 
 		FinishJoiningInputAcceptor<P> finishJoiningInputAcceptor = new FinishJoiningInputAcceptor<>(playerClass, players, minimum);
 		addInputAcceptor(finishJoiningInputAcceptor);

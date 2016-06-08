@@ -3,7 +3,7 @@ package jokatu.game.stage;
 import jokatu.game.event.GameEvent;
 import jokatu.game.event.StageOverEvent;
 import jokatu.game.input.Input;
-import jokatu.game.joining.JoiningInputAcceptor;
+import jokatu.game.joining.JoinInputAcceptor;
 import jokatu.game.joining.PlayerJoinedEvent;
 import jokatu.game.player.Player;
 import jokatu.game.status.StandardTextStatus;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class JoiningStage<P extends Player> extends AbstractSynchronousObservable<GameEvent> implements Stage<GameEvent> {
 
-	private final JoiningInputAcceptor<P> inputAcceptor;
+	private final JoinInputAcceptor<P> inputAcceptor;
 
 	private final int number;
 
@@ -23,7 +23,7 @@ public class JoiningStage<P extends Player> extends AbstractSynchronousObservabl
 	private final StandardTextStatus status;
 
 	public JoiningStage(@NotNull Class<P> playerClass, @NotNull Map<String, P> players, int number, @NotNull StandardTextStatus status) {
-		inputAcceptor = new JoiningInputAcceptor<>(playerClass, players, number);
+		inputAcceptor = new JoinInputAcceptor<>(playerClass, players, number);
 
 		this.players = players;
 		this.number = number;
