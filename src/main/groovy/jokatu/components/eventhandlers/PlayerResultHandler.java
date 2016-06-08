@@ -1,13 +1,13 @@
 package jokatu.components.eventhandlers;
 
 import jokatu.game.Game;
-import jokatu.game.event.AnyGameEventHandler;
+import jokatu.game.event.SpecificEventHandler;
 import jokatu.game.result.PlayerResult;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PlayerResultHandler extends AnyGameEventHandler<PlayerResult> {
+public class PlayerResultHandler extends SpecificEventHandler<PlayerResult> {
 	@NotNull
 	@Override
 	protected Class<PlayerResult> getEventClass() {
@@ -15,7 +15,7 @@ public class PlayerResultHandler extends AnyGameEventHandler<PlayerResult> {
 	}
 
 	@Override
-	protected void handleCastGameAndEvent(@NotNull Game game, @NotNull PlayerResult event) {
+	protected void handleCastEvent(@NotNull Game<?> game, @NotNull PlayerResult event) {
 		sender.send("/topic/result.game." + game.getIdentifier(), event.getMessage());
 	}
 }

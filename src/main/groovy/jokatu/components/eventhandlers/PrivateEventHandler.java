@@ -1,8 +1,8 @@
 package jokatu.components.eventhandlers;
 
 import jokatu.game.Game;
-import jokatu.game.event.AnyGameEventHandler;
 import jokatu.game.event.PrivateGameEvent;
+import jokatu.game.event.SpecificEventHandler;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @author Steven Weston
  */
 @Component
-public class PrivateEventHandler extends AnyGameEventHandler<PrivateGameEvent> {
+public class PrivateEventHandler extends SpecificEventHandler<PrivateGameEvent> {
 
 	@NotNull
 	@Override
@@ -20,7 +20,7 @@ public class PrivateEventHandler extends AnyGameEventHandler<PrivateGameEvent> {
 	}
 
 	@Override
-	protected void handleCastGameAndEvent(@NotNull Game game, @NotNull PrivateGameEvent event) {
+	protected void handleCastEvent(@NotNull Game<?> game, @NotNull PrivateGameEvent event) {
 		event.getPlayers().stream().forEach(
 				player -> sender.sendToUser(
 						player.getName(),

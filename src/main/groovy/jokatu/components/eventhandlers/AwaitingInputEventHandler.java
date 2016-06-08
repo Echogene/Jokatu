@@ -1,15 +1,13 @@
 package jokatu.components.eventhandlers;
 
 import jokatu.game.Game;
-import jokatu.game.event.AnyGameEventHandler;
+import jokatu.game.event.SpecificEventHandler;
 import jokatu.game.input.AwaitingInputEvent;
-import jokatu.game.player.Player;
-import ophelia.collections.BaseCollection;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AwaitingInputEventHandler extends AnyGameEventHandler<AwaitingInputEvent> {
+public class AwaitingInputEventHandler extends SpecificEventHandler<AwaitingInputEvent> {
 
 	@NotNull
 	@Override
@@ -18,8 +16,8 @@ public class AwaitingInputEventHandler extends AnyGameEventHandler<AwaitingInput
 	}
 
 	@Override
-	protected void handleCastGameAndEvent(@NotNull Game game, @NotNull AwaitingInputEvent event) {
-		((BaseCollection<Player>) game.getPlayers()).stream().forEach(
+	protected void handleCastEvent(@NotNull Game<?> game, @NotNull AwaitingInputEvent event) {
+		game.getPlayers().stream().forEach(
 				player -> sender.sendToUser(
 						player.getName(),
 						"/topic/awaiting.game." + game.getIdentifier(),

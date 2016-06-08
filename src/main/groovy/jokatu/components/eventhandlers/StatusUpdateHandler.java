@@ -1,7 +1,7 @@
 package jokatu.components.eventhandlers;
 
 import jokatu.game.Game;
-import jokatu.game.event.AnyGameEventHandler;
+import jokatu.game.event.SpecificEventHandler;
 import jokatu.game.event.StatusUpdateEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @author Steven Weston
  */
 @Component
-public class StatusUpdateHandler extends AnyGameEventHandler<StatusUpdateEvent> {
+public class StatusUpdateHandler extends SpecificEventHandler<StatusUpdateEvent> {
 
 	@NotNull
 	@Override
@@ -20,7 +20,7 @@ public class StatusUpdateHandler extends AnyGameEventHandler<StatusUpdateEvent> 
 	}
 
 	@Override
-	protected void handleCastGameAndEvent(@NotNull Game game, @NotNull StatusUpdateEvent event) {
+	protected void handleCastEvent(@NotNull Game<?> game, @NotNull StatusUpdateEvent event) {
 		sender.send("/topic/status.game." + game.getIdentifier(), event.getStatus().getText());
 	}
 }

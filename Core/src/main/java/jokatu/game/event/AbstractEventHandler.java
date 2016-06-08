@@ -1,9 +1,7 @@
 package jokatu.game.event;
 
-import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.Game;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,23 +10,14 @@ import org.springframework.stereotype.Component;
  * @param <E> the type of {@link GameEvent} to accept
  */
 @Component
-public abstract class AbstractEventHandler<G extends Game, E extends GameEvent> implements EventHandler {
-
-	@Autowired
-	protected StoringMessageSender sender;
+public abstract class AbstractEventHandler<G extends Game, E extends GameEvent> extends SpecificEventHandler<E> {
 
 	@Override
-	public final void handle(@NotNull Game<?> game, @NotNull GameEvent e) {
-		if (getEventClass().isInstance(e) && getGameClass().isInstance(game)) {
-			handleCastGameAndEvent(getGameClass().cast(game), getEventClass().cast(e));
+	protected final void handleCastEvent(@NotNull Game<?> game, @NotNull E event) {
+		if (getGameClass().isInstance(game)) {
+			handleCastGameAndEvent(getGameClass().cast(game), event);
 		}
 	}
-
-	/**
-	 * @return the type of {@link GameEvent}, which would get type-erased, that this {@link AbstractEventHandler} handles
-	 */
-	@NotNull
-	protected abstract Class<E> getEventClass();
 
 	@NotNull
 	protected abstract Class<G> getGameClass();

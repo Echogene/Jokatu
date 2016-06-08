@@ -3,7 +3,7 @@ package jokatu.components.eventhandlers;
 import jokatu.components.dao.GameDao;
 import jokatu.game.Game;
 import jokatu.game.GameID;
-import jokatu.game.event.AnyGameEventHandler;
+import jokatu.game.event.SpecificEventHandler;
 import jokatu.game.joining.PlayerJoinedEvent;
 import jokatu.game.player.Player;
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +31,7 @@ import static java.util.stream.Collectors.toSet;
 import static ophelia.util.FunctionUtils.not;
 
 @Component
-public class PlayerJoinEventHandler extends AnyGameEventHandler<PlayerJoinedEvent> implements ApplicationListener {
+public class PlayerJoinEventHandler extends SpecificEventHandler<PlayerJoinedEvent> implements ApplicationListener {
 
 	private static final Pattern STATUS_REGEX = Pattern.compile("/topic/observers\\.game\\.(\\d+)");
 
@@ -124,7 +124,7 @@ public class PlayerJoinEventHandler extends AnyGameEventHandler<PlayerJoinedEven
 	}
 
 	@Override
-	protected void handleCastGameAndEvent(@NotNull Game game, @NotNull PlayerJoinedEvent event) {
+	protected void handleCastEvent(@NotNull Game<?> game, @NotNull PlayerJoinedEvent event) {
 		scheduleUpdate(game.getIdentifier());
 	}
 

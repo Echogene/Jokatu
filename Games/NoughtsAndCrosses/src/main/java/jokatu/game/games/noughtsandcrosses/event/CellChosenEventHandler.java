@@ -1,7 +1,7 @@
 package jokatu.game.games.noughtsandcrosses.event;
 
 import jokatu.game.Game;
-import jokatu.game.event.AnyGameEventHandler;
+import jokatu.game.event.SpecificEventHandler;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,7 @@ import static java.text.MessageFormat.format;
  * @author Steven Weston
  */
 @Component
-public class CellChosenEventHandler extends AnyGameEventHandler<CellChosenEvent> {
+public class CellChosenEventHandler extends SpecificEventHandler<CellChosenEvent> {
 
 	@NotNull
 	@Override
@@ -21,7 +21,7 @@ public class CellChosenEventHandler extends AnyGameEventHandler<CellChosenEvent>
 	}
 
 	@Override
-	protected void handleCastGameAndEvent(@NotNull Game game, @NotNull CellChosenEvent event) {
+	protected void handleCastEvent(@NotNull Game<?> game, @NotNull CellChosenEvent event) {
 
 		sender.send(
 				format("/topic/substatus.game.{0}.cell_{1}", game.getIdentifier(), event.getCell()),
