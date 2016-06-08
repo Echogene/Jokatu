@@ -1,7 +1,7 @@
 package jokatu.game.games.sevens.event;
 
 import jokatu.game.cards.Suit;
-import jokatu.game.event.EventHandler;
+import jokatu.game.event.AbstractEventHandler;
 import jokatu.game.games.sevens.game.SevensGame;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,7 @@ import static java.text.MessageFormat.format;
  * @author Steven Weston
  */
 @Component
-public class CardPlayedEventHandler extends EventHandler<SevensGame, CardPlayedEvent> {
+public class CardPlayedEventHandler extends AbstractEventHandler<SevensGame, CardPlayedEvent> {
 
 	@NotNull
 	@Override

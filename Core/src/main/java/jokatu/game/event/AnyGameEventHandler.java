@@ -4,10 +4,10 @@ import jokatu.game.Game;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * An {@link EventHandler} that accepts any game.
+ * An {@link AbstractEventHandler} that accepts any game.
  * @param <E> the type of {@link GameEvent} to accept
  */
-public abstract class AnyGameEventHandler<E extends GameEvent> extends EventHandler<Game, E> {
+public abstract class AnyGameEventHandler<E extends GameEvent> extends AbstractEventHandler<Game, E> {
 
 	@NotNull
 	@Override
