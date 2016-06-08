@@ -1,5 +1,8 @@
 package jokatu.game.cards;
 
+/**
+ * The rank of a standard playingcard is one of the 13 values it can take from ace to king.
+ */
 public enum Rank {
 
 	ACE(1),

@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * This takes JSON from the client and turns it into input.
- * @param <I>
+ * @param <I> the type of the {@link Input} to output
  */
 public interface InputDeserialiser<I extends Input> {
 

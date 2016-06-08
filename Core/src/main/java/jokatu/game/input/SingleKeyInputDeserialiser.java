@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * An {@link InputDeserialiser} where the JSON is expected to have only one key.
- * @param <I>
+ * @param <I> the type of the {@link Input} to output
  */
 public abstract class SingleKeyInputDeserialiser<I extends Input> implements InputDeserialiser<I> {
 	@NotNull

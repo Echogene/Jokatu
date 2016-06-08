@@ -12,8 +12,9 @@ import java.text.MessageFormat;
 /**
  * An abstract version of {@link InputAcceptor} that only accepts a specific type of input from a specific type of
  * player.  It does nothing with the input it is not the type it specifies.
- * @param <I> the type of the input to accept
- * @param <P> the type of the player to accept
+ * @param <I> the type of the {@link Input} to accept
+ * @param <P> the type of the {@link Player} to accept
+ * @param <E> the type of {@link GameEvent} this can fire
  */
 public abstract class AbstractInputAcceptor<I extends Input, P extends Player, E extends GameEvent>
 		extends AbstractSynchronousObservable<E>

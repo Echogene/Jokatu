@@ -7,8 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * An abstract {@link EventHandler} that only handles {@link GameEvent}s of certain class and ignores others.
- * @author Steven Weston
+ * Listens to events but ignores the ones that aren't for the game and the event type it specifies.
+ * @param <G> the type of {@link Game} to accept
+ * @param <E> the type of {@link GameEvent} to accept
  */
 @Component
 public abstract class EventHandler<G extends Game, E extends GameEvent> {
