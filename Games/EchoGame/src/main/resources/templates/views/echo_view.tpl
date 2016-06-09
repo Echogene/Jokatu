@@ -5,7 +5,6 @@ layout 'views/game_view.tpl', true,
 	additionalHeaders: contents {
 		include template: 'components/text.tpl'
 		include template: 'components/button.tpl'
-		script(type: 'text/javascript', src: '/js/echo.js') {}
 	},
 
 	mainContents: contents {
