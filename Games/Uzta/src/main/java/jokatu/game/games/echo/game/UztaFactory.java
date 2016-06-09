@@ -6,11 +6,11 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EchoGameFactory extends AbstractGameFactory<EchoGame> {
+public class UztaFactory extends AbstractGameFactory<Uzta> {
 
 	@NotNull
 	@Override
-	protected EchoGame produce(@NotNull GameID gameID, @NotNull String creatorName) {
-		return new EchoGame(gameID);
+	protected Uzta produce(@NotNull GameID gameID, @NotNull String creatorName) {
+		return new Uzta(gameID);
 	}
 }
