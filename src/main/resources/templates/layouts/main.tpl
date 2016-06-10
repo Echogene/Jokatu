@@ -8,6 +8,7 @@ html {
 		script(type: 'text/javascript', src: '/js/stomp.js') {}
 		script(type: 'text/javascript', src: '/js/request.js') {}
 		script(type: 'text/javascript', src: '/js/events.js') {}
+		script(type: 'text/javascript', src: '/js/elements.js') {}
 		headers()
 	}
 	body {

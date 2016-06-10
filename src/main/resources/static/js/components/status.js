@@ -54,24 +54,7 @@ JStatusProto._setStatus = function(statuses) {
 };
 
 JStatusProto._createStatusElement = function() {
-	var firstChar = this._statusElementName.charAt(0);
-	var newElement;
-	if (firstChar == firstChar.toUpperCase()) {
-		// If the first character is uppercase, assume we want to wrap a JavaScript object.
-		newElement = new window[this._statusElementName];
-	} else {
-		// Otherwise, we want to wrap a normal element.
-		newElement = document.createElement(this._statusElementName);
-	}
-	if (this._wrapperAttributes) {
-		Object.keys(this._wrapperAttributes).forEach(key => {
-			var attribute = this._wrapperAttributes[key];
-			if (attribute instanceof Object) {
-				attribute = JSON.stringify(attribute);
-			}
-			newElement.setAttribute(key, attribute);
-		});
-	}
+	var newElement = createElement(this._statusElementName, this._wrapperAttributes);
 	newElement.id = `${this.id}_${this.childNodes.length}`;
 	this.appendChild(newElement);
 };
