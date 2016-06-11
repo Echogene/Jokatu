@@ -33,10 +33,6 @@ public class SetupStage extends SingleInputStage<RandomiseGraphInput, StandardPl
 		}
 	};
 
-	SetupStage() {
-		randomiseGraph();
-	}
-
 	private void randomiseGraph() {
 		nodes.clear();
 		Random random = new Random();
@@ -49,6 +45,7 @@ public class SetupStage extends SingleInputStage<RandomiseGraphInput, StandardPl
 				}
 			}
 		}
+		fireEvent(new GraphUpdatedEvent(graph));
 	}
 
 	private boolean isFarEnoughAnotherNode(Node node) {
@@ -58,7 +55,7 @@ public class SetupStage extends SingleInputStage<RandomiseGraphInput, StandardPl
 
 	@Override
 	public void start() {
-		fireEvent(new GraphUpdatedEvent(graph));
+		randomiseGraph();
 	}
 
 	@NotNull
