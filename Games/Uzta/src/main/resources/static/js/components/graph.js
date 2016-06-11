@@ -1,0 +1,76 @@
+var JGraphProto = Object.create(HTMLElement.prototype);
+
+JGraphProto.createdCallback = function() {
+
+	var template = document.querySelector('#graph-template');
+	var clone = document.importNode(template.content, true);
+
+	this._nodeContainer = clone.querySelector('.nodes');
+	this._edgeContainer = clone.querySelector('.edges');
+
+	this._nodeElementName = this.getAttribute('nodeElement');
+	var destination = this.getAttribute('destination');
+
+	/**
+	 * Attributes to set on the node elements when they are created.
+	 * @private
+	 * @type {Object}
+	 */
+	this._defaultNodeAttributes = JSON.parse(this.getAttribute('data-defaultNodeAttributes'));
+
+	var initialData = JSON.parse(this.getAttribute('data-initial'));
+	this._redrawGraph(initialData && initialData.payload);
+
+	socket.subscribe(destination, this._redrawGraph.bind(this));
+
+	this.appendChild(clone);
+};
+
+/**
+ * @param {{nodes: Array.<{id: string, x: number, y: number}>, edges}} graph
+ * @private
+ */
+JGraphProto._redrawGraph = function(graph) {
+	if (!graph) {
+		return;
+	}
+	var nodes = graph.nodes;
+	this._ensureEnoughNodes(nodes.length);
+	for (var i = 0; i < this.childNodes.length; i++) {
+		var element = this.childNodes[i];
+		var node = nodes[i];
+		if (node) {
+			this._updateNode(element, node);
+		} else {
+			// Remove the element.
+			this.removeChild(element);
+		}
+	}
+};
+
+JGraphProto._ensureEnoughNodes = function(number) {
+	var elementsNeeded = number - this.childNodes.length;
+	if (elementsNeeded > 0) {
+		for (var i = 0; i < elementsNeeded; i++) {
+			this._createNode();
+		}
+	}
+};
+
+JGraphProto._createNode = function() {
+	var newElement = createElement(this._nodeElementName, this._defaultNodeAttributes);
+	this._nodeContainer.appendChild(newElement);
+};
+
+JGraphProto._updateNode = function(element, node) {
+	element.id = node.id;
+	element.style.left = node.x;
+	element.style.bottom = node.y;
+};
+
+/**
+ * A JGraph is an element that listens to updates on a STOMP destination and manages nodes and edges on a graph
+ */
+var JGraph = document.registerElement('j-graph', {
+	prototype: JGraphProto
+});

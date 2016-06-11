@@ -27,6 +27,10 @@ public class Uzta extends Game<StandardPlayer> {
 
 	@Override
 	public void advanceStageInner() {
-		currentStage = new GameOverStage(status);
+		if (currentStage == null) {
+			currentStage = new SetupStage();
+		} else {
+			currentStage = new GameOverStage(status);
+		}
 	}
 }

@@ -14,6 +14,8 @@ class UztaViewResolver extends ViewResolver<StandardPlayer, Uzta> {
 	@NotNull
 	@Override
 	protected ModelAndView getDefaultView() {
+		// lol side effects
+		game.getCurrentStage();
 		return new ModelAndView("views/uzta_view");
 	}
 
