@@ -36,8 +36,8 @@ JGraphProto._redrawGraph = function(graph) {
 	}
 	var nodes = graph.nodes;
 	this._ensureEnoughNodes(nodes.length);
-	for (var i = 0; i < this.childNodes.length; i++) {
-		var element = this.childNodes[i];
+	for (var i = 0; i < this._nodeContainer.childNodes.length; i++) {
+		var element = this._nodeContainer.childNodes[i];
 		var node = nodes[i];
 		if (node) {
 			this._updateNode(element, node);
@@ -64,8 +64,8 @@ JGraphProto._createNode = function() {
 
 JGraphProto._updateNode = function(element, node) {
 	element.id = node.id;
-	element.style.left = node.x;
-	element.style.bottom = node.y;
+	element.style.left = node.x + '%';
+	element.style.bottom = node.y + '%';
 };
 
 /**
