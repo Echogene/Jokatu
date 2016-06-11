@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author steven
  */
 @Component
-public class UztaViewResolverFactory extends ViewResolverFactory<StandardPlayer, EchoGame> {
+public class EchoViewResolverFactory extends ViewResolverFactory<StandardPlayer, EchoGame> {
 	@NotNull
 	@Override
 	protected Class<EchoGame> getGameClass() {

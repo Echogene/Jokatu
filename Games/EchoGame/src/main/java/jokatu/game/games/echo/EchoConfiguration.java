@@ -5,7 +5,7 @@ import jokatu.components.config.GameConfiguration;
 import jokatu.game.games.echo.game.UztaFactory;
 import jokatu.game.games.echo.game.EchoInputDeserialiser;
 import jokatu.game.player.StandardPlayer;
-import jokatu.game.games.echo.views.UztaViewResolverFactory;
+import jokatu.game.games.echo.views.EchoViewResolverFactory;
 import jokatu.game.input.InputDeserialiser;
 import jokatu.game.player.PlayerFactory;
 import ophelia.collections.BaseCollection;
@@ -19,16 +19,16 @@ import static jokatu.game.games.echo.game.EchoGame.ECHO;
  * @author steven
  */
 @GameComponent(gameName = ECHO)
-public class UztaConfiguration implements GameConfiguration {
+public class EchoConfiguration implements GameConfiguration {
 
 	private final UztaFactory echoGameFactory;
 	private final EchoInputDeserialiser echoInputDeserialiser;
-	private final UztaViewResolverFactory echoViewResolverFactory;
+	private final EchoViewResolverFactory echoViewResolverFactory;
 
 	@Autowired
-	public UztaConfiguration(UztaFactory echoGameFactory,
+	public EchoConfiguration(UztaFactory echoGameFactory,
 	                         EchoInputDeserialiser echoInputDeserialiser,
-	                         UztaViewResolverFactory echoViewResolverFactory
+	                         EchoViewResolverFactory echoViewResolverFactory
 	) {
 		this.echoGameFactory = echoGameFactory;
 		this.echoInputDeserialiser = echoInputDeserialiser;
@@ -55,7 +55,7 @@ public class UztaConfiguration implements GameConfiguration {
 
 	@NotNull
 	@Override
-	public UztaViewResolverFactory getViewResolverFactory() {
+	public EchoViewResolverFactory getViewResolverFactory() {
 		return echoViewResolverFactory;
 	}
 }
