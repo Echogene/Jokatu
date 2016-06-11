@@ -75,6 +75,6 @@ public class SetupStage extends SingleInputStage<RandomiseGraphInput, StandardPl
 
 	@Override
 	protected void acceptCastInputAndPlayer(@NotNull RandomiseGraphInput input, @NotNull StandardPlayer inputter) throws Exception {
-
+		randomiseGraph();
 	}
 }
