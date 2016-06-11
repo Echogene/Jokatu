@@ -2,10 +2,10 @@ package jokatu.game.games.uzta.graph;
 
 public class Node {
 	private final String id;
-	private final float x;
-	private final float y;
+	private final double x;
+	private final double y;
 
-	public Node(String id, float x, float y) {
+	public Node(String id, double x, double y) {
 		this.id = id;
 		this.x = x;
 		this.y = y;
@@ -15,11 +15,17 @@ public class Node {
 		return id;
 	}
 
-	public float getX() {
+	public double getX() {
 		return x;
 	}
 
-	public float getY() {
+	public double getY() {
 		return y;
+	}
+
+	public double distanceFrom(Node other) {
+		double δx = x - other.x;
+		double δy = y - other.y;
+		return Math.sqrt(δx * δx + δy * δy);
 	}
 }
