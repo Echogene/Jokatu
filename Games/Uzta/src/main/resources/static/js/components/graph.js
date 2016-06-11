@@ -27,7 +27,7 @@ JGraphProto.createdCallback = function() {
 };
 
 /**
- * @param {{nodes: Array.<{id: string, x: number, y: number}>, edges}} graph
+ * @param {{nodes: Array.<{id: string, x: number, y: number}>, edges: Array.<Array>}} graph
  * @private
  */
 JGraphProto._redrawGraph = function(graph) {
@@ -35,6 +35,13 @@ JGraphProto._redrawGraph = function(graph) {
 		return;
 	}
 	var nodes = graph.nodes;
+	this._updateNodes(nodes);
+
+	var edges = graph.edges;
+	this._updateEdges(edges);
+};
+
+JGraphProto._updateNodes = function(nodes) {
 	this._ensureEnoughNodes(nodes.length);
 	for (var i = 0; i < this._nodeContainer.childNodes.length; i++) {
 		var element = this._nodeContainer.childNodes[i];
@@ -43,13 +50,13 @@ JGraphProto._redrawGraph = function(graph) {
 			this._updateNode(element, node);
 		} else {
 			// Remove the element.
-			this.removeChild(element);
+			this._nodeContainer.removeChild(element);
 		}
 	}
 };
 
 JGraphProto._ensureEnoughNodes = function(number) {
-	var elementsNeeded = number - this.childNodes.length;
+	var elementsNeeded = number - this._nodeContainer.childNodes.length;
 	if (elementsNeeded > 0) {
 		for (var i = 0; i < elementsNeeded; i++) {
 			this._createNode();
@@ -66,6 +73,33 @@ JGraphProto._updateNode = function(element, node) {
 	element.id = node.id;
 	element.style.left = node.x + '%';
 	element.style.bottom = node.y + '%';
+};
+
+JGraphProto._updateEdges = function(edges) {
+	this._ensureEnoughEdges(edges.length);
+	for (var i = 0; i < this._edgeContainer.childNodes.length; i++) {
+		var line = this._edgeContainer.childNodes[i];
+		var edge = edges[i];
+		if (edge) {
+			this._updateEdge(line, edge);
+		} else {
+			// Remove the line.
+			this._edgeContainer.removeChild(line);
+		}
+	}
+};
+
+JGraphProto._ensureEnoughEdges = function(number) {
+	var elementsNeeded = number - this._edgeContainer.childNodes.length;
+	if (elementsNeeded > 0) {
+		for (var i = 0; i < elementsNeeded; i++) {
+			this._edgeContainer.appendChild(new JLine());
+		}
+	}
+};
+
+JGraphProto._updateEdge = function(line, edge) {
+	line.setEnds(edge[0], edge[1]);
 };
 
 /**
