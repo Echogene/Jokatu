@@ -2,7 +2,7 @@ package jokatu.game.games.echo;
 
 import jokatu.components.GameComponent;
 import jokatu.components.config.GameConfiguration;
-import jokatu.game.games.echo.game.UztaFactory;
+import jokatu.game.games.echo.game.EchoFactory;
 import jokatu.game.games.echo.game.EchoInputDeserialiser;
 import jokatu.game.player.StandardPlayer;
 import jokatu.game.games.echo.views.EchoViewResolverFactory;
@@ -21,12 +21,12 @@ import static jokatu.game.games.echo.game.EchoGame.ECHO;
 @GameComponent(gameName = ECHO)
 public class EchoConfiguration implements GameConfiguration {
 
-	private final UztaFactory echoGameFactory;
+	private final EchoFactory echoGameFactory;
 	private final EchoInputDeserialiser echoInputDeserialiser;
 	private final EchoViewResolverFactory echoViewResolverFactory;
 
 	@Autowired
-	public EchoConfiguration(UztaFactory echoGameFactory,
+	public EchoConfiguration(EchoFactory echoGameFactory,
 	                         EchoInputDeserialiser echoInputDeserialiser,
 	                         EchoViewResolverFactory echoViewResolverFactory
 	) {
@@ -37,7 +37,7 @@ public class EchoConfiguration implements GameConfiguration {
 
 	@NotNull
 	@Override
-	public UztaFactory getGameFactory() {
+	public EchoFactory getGameFactory() {
 		return echoGameFactory;
 	}
 
