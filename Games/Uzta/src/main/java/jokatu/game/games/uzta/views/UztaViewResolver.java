@@ -1,6 +1,6 @@
-package jokatu.game.games.echo.views;
+package jokatu.game.games.uzta.views;
 
-import jokatu.game.games.echo.game.Uzta;
+import jokatu.game.games.uzta.game.Uzta;
 import jokatu.game.player.StandardPlayer;
 import jokatu.game.viewresolver.ViewResolver;
 import org.jetbrains.annotations.NotNull;

@@ -1,4 +1,4 @@
-package jokatu.game.games.echo.game;
+package jokatu.game.games.uzta.game;
 
 import jokatu.game.AbstractGameFactory;
 import jokatu.game.GameID;
