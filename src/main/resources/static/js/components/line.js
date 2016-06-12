@@ -65,7 +65,7 @@ JLineProto._updatePosition = function(ends, attempt = 0) {
 		// If the length is 0, this probably means that neither of the ends appear on the page yet, so wait a bit.
 		setTimeout(this._updatePosition.bind(this, ends, attempt + 1), 100);
 	}
-	// center
+	// centre
 	var cx = ((x1 + x2) / 2) - (length / 2);
 	var cy = ((y1 + y2) / 2) - (this._thickness / 2);
 	// angle
