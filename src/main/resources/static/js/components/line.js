@@ -26,7 +26,7 @@ JLineProto._updatePositionFromEnds = function() {
 	this._updatePosition(JSON.parse(this.getAttribute('data-ends')));
 };
 
-JLineProto._updatePosition = function(ends, attempt = 0) {
+JLineProto._updatePosition = function(ends, mutation, attempt = 0) {
 	var startElement = ends && ends.start && document.getElementById(ends.start);
 	var endElement = ends && ends.end && document.getElementById(ends.end);
 
@@ -61,9 +61,10 @@ JLineProto._updatePosition = function(ends, attempt = 0) {
 	var y2 = endOffset.top + endOffset.height / 2;
 	// distance
 	var length = Math.sqrt(((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1)));
-	if (length === 0 && attempt < 3) {
+	if ((length < 0.001) && (attempt < 3)) {
 		// If the length is 0, this probably means that neither of the ends appear on the page yet, so wait a bit.
-		setTimeout(this._updatePosition.bind(this, ends, attempt + 1), 100);
+		setTimeout(this._updatePosition.bind(this, ends, mutation, attempt + 1), 100);
+		return;
 	}
 	// centre
 	var cx = ((x1 + x2) / 2) - (length / 2);
