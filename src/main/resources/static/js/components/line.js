@@ -38,7 +38,9 @@ JLineProto._updatePosition = function(ends) {
 	}
 
 	this._endsObserver.observe(startElement.parentNode, { childList: true });
-	this._endsObserver.observe(endElement.parentNode, { childList: true });
+	if (endElement.parentNode != startElement.parentNode) {
+		this._endsObserver.observe(endElement.parentNode, { childList: true });
+	}
 
 	var startOffset = this._getOffset(startElement);
 	var endOffset = this._getOffset(endElement);
