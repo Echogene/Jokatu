@@ -13,10 +13,7 @@ import ophelia.collections.set.UnmodifiableSet;
 import ophelia.graph.BiGraph;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class SetupStage extends SingleInputStage<RandomiseGraphInput, StandardPlayer, GameEvent> {
 
@@ -58,12 +55,14 @@ public class SetupStage extends SingleInputStage<RandomiseGraphInput, StandardPl
 
 	private void randomiseEdges(Random random) {
 		for (int i = 0; i < nodes.size(); i++) {
-			Node n1 = nodes.get(i);
+			Node node = nodes.get(i);
+			List<Node> otherNodes = new ArrayList<Node>(nodes) {{ remove(node); }};
+			otherNodes.sort((o1, o2) -> Double.compare(node.distanceFrom(o1), node.distanceFrom(o2)));
 
-			for (int j = i + 1; j < nodes.size(); j++) {
-				Node n2 = nodes.get(j);
-				if (random.nextFloat() < 0.1) {
-					edges.add(new UnorderedPair<>(n1, n2));
+			for (int j = 0; j < otherNodes.size(); j++) {
+				Node otherNode = otherNodes.get(j);
+				if (random.nextFloat() < 1.0 / (j * j + 1)) {
+					edges.add(new UnorderedPair<>(node, otherNode));
 				}
 			}
 		}
