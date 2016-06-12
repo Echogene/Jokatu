@@ -27,19 +27,25 @@ JLineProto._updatePositionFromEnds = function() {
 };
 
 JLineProto._updatePosition = function(ends) {
-	this._endsObserver.disconnect();
-	if (!ends) {
-		return;
+	var startElement = ends && ends.start && document.getElementById(ends.start);
+	var endElement = ends && ends.end && document.getElementById(ends.end);
+
+	var endElementsChanged = (startElement != this._startElement) || (endElement != this._endElement);
+	if (endElementsChanged) {
+		this._endsObserver.disconnect();
 	}
-	var startElement = document.getElementById(ends.start);
-	var endElement = document.getElementById(ends.end);
+
+	this._startElement = startElement;
+	this._endElement = endElement;
 	if (!startElement || !endElement) {
 		return;
 	}
 
-	this._endsObserver.observe(startElement.parentNode, { childList: true });
-	if (endElement.parentNode != startElement.parentNode) {
-		this._endsObserver.observe(endElement.parentNode, { childList: true });
+	if (endElementsChanged) {
+		this._endsObserver.observe(startElement.parentNode, {childList: true});
+		if (endElement.parentNode != startElement.parentNode) {
+			this._endsObserver.observe(endElement.parentNode, {childList: true});
+		}
 	}
 
 	var startOffset = this._getOffset(startElement);
