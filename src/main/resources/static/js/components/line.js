@@ -1,6 +1,6 @@
 var JLineProto = Object.create(HTMLDivElement.prototype);
 
-JLineProto.createdCallback = function() {
+JLineProto.attachedCallback = function() {
 	this._thickness = 4;
 	this.style.height = `${this._thickness}px`;
 	this.style.backgroundColor = 'black';
@@ -26,7 +26,7 @@ JLineProto._updatePositionFromEnds = function() {
 	this._updatePosition(JSON.parse(this.getAttribute('data-ends')));
 };
 
-JLineProto._updatePosition = function(ends) {
+JLineProto._updatePosition = function(ends, attempt = 0) {
 	var startElement = ends && ends.start && document.getElementById(ends.start);
 	var endElement = ends && ends.end && document.getElementById(ends.end);
 
@@ -61,6 +61,10 @@ JLineProto._updatePosition = function(ends) {
 	var y2 = endOffset.top + endOffset.height / 2;
 	// distance
 	var length = Math.sqrt(((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1)));
+	if (length === 0 && attempt < 3) {
+		// If the length is 0, this probably means that neither of the ends appear on the page yet, so wait a bit.
+		setTimeout(this._updatePosition.bind(this, ends, attempt + 1), 100);
+	}
 	// center
 	var cx = ((x1 + x2) / 2) - (length / 2);
 	var cy = ((y1 + y2) / 2) - (this._thickness / 2);

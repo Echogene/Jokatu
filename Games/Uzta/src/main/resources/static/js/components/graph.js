@@ -1,12 +1,14 @@
 var JGraphProto = Object.create(HTMLElement.prototype);
 
-JGraphProto.createdCallback = function() {
+JGraphProto.attachedCallback = function() {
 
 	var template = document.querySelector('#graph-template');
 	var clone = document.importNode(template.content, true);
 
 	this._nodeContainer = clone.querySelector('.nodes');
 	this._edgeContainer = clone.querySelector('.edges');
+
+	this.appendChild(clone);
 
 	this._nodeElementName = this.getAttribute('nodeElement');
 	var destination = this.getAttribute('destination');
@@ -22,8 +24,6 @@ JGraphProto.createdCallback = function() {
 	this._redrawGraph(initialData && initialData.payload);
 
 	socket.subscribe(destination, this._redrawGraph.bind(this));
-
-	this.appendChild(clone);
 };
 
 /**
