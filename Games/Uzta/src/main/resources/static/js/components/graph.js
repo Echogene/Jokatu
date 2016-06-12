@@ -43,7 +43,7 @@ JGraphProto._redrawGraph = function(graph) {
 
 JGraphProto._updateNodes = function(nodes) {
 	this._ensureEnoughNodes(nodes.length);
-	for (var i = 0; i < this._nodeContainer.childNodes.length; i++) {
+	for (var i = this._nodeContainer.childNodes.length - 1; i >= 0; i--) {
 		var element = this._nodeContainer.childNodes[i];
 		var node = nodes[i];
 		if (node) {
@@ -77,7 +77,7 @@ JGraphProto._updateNode = function(element, node) {
 
 JGraphProto._updateEdges = function(edges) {
 	this._ensureEnoughEdges(edges.length);
-	for (var i = 0; i < this._edgeContainer.childNodes.length; i++) {
+	for (var i = this._edgeContainer.childNodes.length - 1; i >= 0; i--) {
 		var line = this._edgeContainer.childNodes[i];
 		var edge = edges[i];
 		if (edge) {
