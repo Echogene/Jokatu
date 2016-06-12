@@ -42,8 +42,8 @@ JLineProto._updatePosition = function(ends) {
 	}
 
 	if (endElementsChanged) {
-		this._endsObserver.observe(startElement, { attributes : true, attributeFilter : ['style'] });
-		this._endsObserver.observe(endElement, { attributes : true, attributeFilter : ['style'] });
+		this._endsObserver.observe(startElement, { attributes: true, attributeFilter: ['style'] });
+		this._endsObserver.observe(endElement, { attributes: true, attributeFilter: ['style'] });
 
 		this._endsObserver.observe(startElement.parentNode, { childList: true });
 		if (endElement.parentNode != startElement.parentNode) {
