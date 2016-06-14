@@ -24,8 +24,12 @@ public class Node {
 	}
 
 	public double distanceFrom(Node other) {
+		return Math.sqrt(squareDistanceFrom(other));
+	}
+
+	public double squareDistanceFrom(Node other) {
 		double δx = x - other.x;
 		double δy = y - other.y;
-		return Math.sqrt(δx * δx + δy * δy);
+		return δx * δx + δy * δy;
 	}
 }
