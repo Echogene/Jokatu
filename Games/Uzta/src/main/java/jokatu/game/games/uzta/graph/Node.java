@@ -1,5 +1,9 @@
 package jokatu.game.games.uzta.graph;
 
+import java.util.Comparator;
+
+import static java.util.Comparator.comparingDouble;
+
 public class Node {
 	private final String id;
 	private final double x;
@@ -31,5 +35,9 @@ public class Node {
 		double δx = x - other.x;
 		double δy = y - other.y;
 		return δx * δx + δy * δy;
+	}
+
+	public Comparator<Node> nearest() {
+		return comparingDouble(this::distanceFrom);
 	}
 }

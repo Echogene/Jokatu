@@ -57,7 +57,7 @@ public class SetupStage extends SingleInputStage<RandomiseGraphInput, StandardPl
 		for (int i = 0; i < nodes.size(); i++) {
 			Node node = nodes.get(i);
 			List<Node> otherNodes = new ArrayList<Node>(nodes) {{ remove(node); }};
-			otherNodes.sort((o1, o2) -> Double.compare(node.distanceFrom(o1), node.distanceFrom(o2)));
+			otherNodes.sort(node.nearest());
 
 			for (int j = 0; j < otherNodes.size(); j++) {
 				Node otherNode = otherNodes.get(j);
