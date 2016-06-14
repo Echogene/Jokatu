@@ -45,7 +45,7 @@ public class SetupStage extends SingleInputStage<RandomiseGraphInput, StandardPl
 	}
 
 	private void randomiseNodes(Random random) {
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 50; i++) {
 			for (int tries = 0; tries < 100; tries++) {
 				Node node = new Node("node_" + i, random.nextDouble() * 100, random.nextDouble() * 100);
 				if (isFarEnoughAnotherNode(node)) {
