@@ -2,27 +2,30 @@ package jokatu.game.games.uzta.game;
 
 import jokatu.game.event.GameEvent;
 import jokatu.game.games.uzta.event.GraphUpdatedEvent;
+import jokatu.game.games.uzta.graph.LineSegment;
 import jokatu.game.games.uzta.graph.Node;
 import jokatu.game.games.uzta.input.RandomiseGraphInput;
 import jokatu.game.player.StandardPlayer;
 import jokatu.game.stage.SingleInputStage;
 import ophelia.collections.BaseCollection;
-import ophelia.collections.pair.UnorderedPair;
 import ophelia.collections.set.HashSet;
 import ophelia.collections.set.UnmodifiableSet;
 import ophelia.graph.BiGraph;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public class SetupStage extends SingleInputStage<RandomiseGraphInput, StandardPlayer, GameEvent> {
 
 	private final List<Node> nodes = new ArrayList<>();
-	private final Set<UnorderedPair<Node>> edges = new HashSet<>();
+	private final Set<LineSegment> edges = new HashSet<>();
 
-	private final BiGraph<Node, UnorderedPair<Node>> graph = new BiGraph<Node, UnorderedPair<Node>>() {
+	private final BiGraph<Node, LineSegment> graph = new BiGraph<Node, LineSegment>() {
 		@Override
-		public BaseCollection<UnorderedPair<Node>> getEdges() {
+		public BaseCollection<LineSegment> getEdges() {
 			return new UnmodifiableSet<>(edges);
 		}
 
@@ -62,7 +65,7 @@ public class SetupStage extends SingleInputStage<RandomiseGraphInput, StandardPl
 			for (int j = 0; j < otherNodes.size(); j++) {
 				Node otherNode = otherNodes.get(j);
 				if (random.nextFloat() < 1.0 / (j * j + 1)) {
-					edges.add(new UnorderedPair<>(node, otherNode));
+					edges.add(new LineSegment(node, otherNode));
 				}
 			}
 		}
