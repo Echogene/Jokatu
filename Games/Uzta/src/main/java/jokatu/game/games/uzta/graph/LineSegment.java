@@ -12,6 +12,16 @@ public class LineSegment extends UnorderedPair<Node> {
 		super(first, second);
 	}
 
+	@NotNull
+	public Node getFirst() {
+		return first;
+	}
+
+	@NotNull
+	public Node getSecond() {
+		return second;
+	}
+
 	public double squareDistanceFrom(@NotNull Node point) {
 		double squareLength = first.squareDistanceFrom(second);
 		if (squareLength == 0) {
