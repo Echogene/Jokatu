@@ -4,6 +4,7 @@ import jokatu.game.event.GameEvent;
 import jokatu.game.games.uzta.event.GraphUpdatedEvent;
 import jokatu.game.games.uzta.graph.LineSegment;
 import jokatu.game.games.uzta.graph.Node;
+import jokatu.game.games.uzta.graph.Trigon;
 import jokatu.game.games.uzta.input.RandomiseGraphInput;
 import jokatu.game.player.StandardPlayer;
 import jokatu.game.stage.SingleInputStage;
@@ -13,10 +14,9 @@ import ophelia.collections.set.UnmodifiableSet;
 import ophelia.graph.BiGraph;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
+
+import static java.util.stream.Collectors.toSet;
 
 public class SetupStage extends SingleInputStage<RandomiseGraphInput, StandardPlayer, GameEvent> {
 
@@ -40,7 +40,7 @@ public class SetupStage extends SingleInputStage<RandomiseGraphInput, StandardPl
 		edges.clear();
 		Random random = new Random();
 		randomiseNodes(random);
-		randomiseEdges(random);
+		delaunayTrigonate();
 		fireEvent(new GraphUpdatedEvent(graph));
 	}
 
@@ -56,19 +56,36 @@ public class SetupStage extends SingleInputStage<RandomiseGraphInput, StandardPl
 		}
 	}
 
-	private void randomiseEdges(Random random) {
-		for (int i = 0; i < nodes.size(); i++) {
-			Node node = nodes.get(i);
-			List<Node> otherNodes = new ArrayList<Node>(nodes) {{ remove(node); }};
-			otherNodes.sort(node.nearest());
+	private void delaunayTrigonate() {
+		Set<Trigon> trigonation = new HashSet<>();
 
-			for (int j = 0; j < otherNodes.size(); j++) {
-				Node otherNode = otherNodes.get(j);
-				if (random.nextFloat() < 1.0 / (j * j + 1)) {
-					edges.add(new LineSegment(node, otherNode));
-				}
-			}
+		Trigon superTrigon = new Trigon(
+				new Node("0",   0,   0),
+				new Node("x", 200,   0),
+				new Node("y",   0, 200)
+		);
+
+		trigonation.add(superTrigon);
+
+		for (Node node : nodes) {
+			Set<Trigon> badTrigons = trigonation.stream()
+					.filter(trigon -> trigon.circumcircleContains(node))
+					.collect(toSet());
+
+			badTrigons.stream()
+					.peek(trigonation::remove)
+					.map(Trigon::getEdges)
+					.flatMap(Collection::stream)
+					.filter(edge -> badTrigons.stream().filter(Δ -> Δ.getEdges().contains(edge)).count() == 1)
+					.map(edge -> new Trigon(edge, node))
+					.forEach(trigonation::add);
 		}
+
+		trigonation.stream()
+				.filter(Δ -> Δ.getNodes().stream().noneMatch(superTrigon.getNodes()::contains))
+				.map(Trigon::getEdges)
+				.flatMap(Collection::stream)
+				.forEach(edges::add);
 	}
 
 	private boolean isFarEnoughAnotherNode(Node node) {
