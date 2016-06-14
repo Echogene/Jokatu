@@ -38,6 +38,6 @@ public class Node {
 	}
 
 	public Comparator<Node> nearest() {
-		return comparingDouble(this::distanceFrom);
+		return comparingDouble(this::squareDistanceFrom);
 	}
 }
