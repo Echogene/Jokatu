@@ -12,6 +12,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
+/**
+ * A {@link Stage} in which a fixed number of players have to join.  When the limit is reached, the next stage starts
+ * automatically.
+ * @param <P> the type of player that should be joining the stage
+ */
 public class JoiningStage<P extends Player> extends AbstractSynchronousObservable<GameEvent> implements Stage<GameEvent> {
 
 	private final JoinInputAcceptor<P> inputAcceptor;
