@@ -8,6 +8,9 @@ import org.jetbrains.annotations.Nullable;
 
 import static java.text.MessageFormat.format;
 
+/**
+ * Fired when play is passed from one player to another.
+ */
 public class TurnChangedEvent extends AwaitingInputEvent implements PublicGameEvent {
 
 	private final Player oldPlayer;
