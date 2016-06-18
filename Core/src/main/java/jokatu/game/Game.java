@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 import static ophelia.util.FunctionUtils.not;
 
 /**
+ * A game has a collection of {@link Player}s and a current {@link Stage}.
  * @author Steven Weston
  */
 public abstract class Game<P extends Player>
