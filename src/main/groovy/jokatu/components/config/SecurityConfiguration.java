@@ -22,6 +22,7 @@ import static ophelia.exceptions.voidmaybe.VoidMaybe.mergeFailures;
 import static ophelia.exceptions.voidmaybe.VoidMaybe.wrapOutput;
 
 /**
+ * Sets up how users log in.
  * @author Steven Weston
  */
 @EnableWebSecurity
