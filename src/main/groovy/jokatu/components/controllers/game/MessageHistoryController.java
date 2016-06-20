@@ -12,6 +12,9 @@ import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
+/**
+ * A REST controller for getting the history and last message sent to a STOMP channel.
+ */
 @RestController
 public class MessageHistoryController {
 
