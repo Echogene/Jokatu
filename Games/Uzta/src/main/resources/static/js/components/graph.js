@@ -73,6 +73,7 @@ JGraphProto._updateNode = function(element, node) {
 	element.id = node.id;
 	element.style.left = node.x + '%';
 	element.style.bottom = node.y + '%';
+	element.className = node.type.toLowerCase();
 };
 
 JGraphProto._updateEdges = function(edges) {

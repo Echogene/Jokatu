@@ -11,6 +11,8 @@ public class Node {
 	private final double x;
 	private final double y;
 
+	private NodeType type;
+
 	public Node(@NotNull String id, double x, double y) {
 		this.id = id;
 		this.x = x;
@@ -28,6 +30,14 @@ public class Node {
 
 	public double getY() {
 		return y;
+	}
+
+	public NodeType getType() {
+		return type;
+	}
+
+	public void setType(NodeType type) {
+		this.type = type;
 	}
 
 	public double distanceFrom(@NotNull Node other) {

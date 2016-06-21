@@ -4,6 +4,7 @@ import jokatu.game.event.GameEvent;
 import jokatu.game.games.uzta.event.GraphUpdatedEvent;
 import jokatu.game.games.uzta.graph.LineSegment;
 import jokatu.game.games.uzta.graph.Node;
+import jokatu.game.games.uzta.graph.NodeType;
 import jokatu.game.games.uzta.graph.Trigon;
 import jokatu.game.games.uzta.input.RandomiseGraphInput;
 import jokatu.game.player.StandardPlayer;
@@ -16,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toSet;
 
 public class SetupStage extends SingleInputStage<RandomiseGraphInput, StandardPlayer, GameEvent> {
@@ -39,12 +41,13 @@ public class SetupStage extends SingleInputStage<RandomiseGraphInput, StandardPl
 		nodes.clear();
 		edges.clear();
 		Random random = new Random();
-		randomiseNodes(random);
+		createNodesInRandomPositions(random);
 		delaunayTrigonate();
+		randomiseNodeTypes(random);
 		fireEvent(new GraphUpdatedEvent(graph));
 	}
 
-	private void randomiseNodes(Random random) {
+	private void createNodesInRandomPositions(Random random) {
 		for (int i = 0; i < 50; i++) {
 			for (int tries = 0; tries < 100; tries++) {
 				Node node = new Node("node_" + i, random.nextDouble() * 100, random.nextDouble() * 100);
@@ -86,6 +89,28 @@ public class SetupStage extends SingleInputStage<RandomiseGraphInput, StandardPl
 				.map(Trigon::getEdges)
 				.flatMap(Collection::stream)
 				.forEach(edges::add);
+	}
+
+	private void randomiseNodeTypes(Random random) {
+
+		List<Node> nodesToProcess = new ArrayList<>(nodes);
+
+		int numberOfNodes = nodesToProcess.size();
+		int numberOfTypes = NodeType.values().length;
+		double averageNumberOfEachType = (double) numberOfNodes / (double) numberOfTypes;
+
+		// Partition (most of) the nodes into the types to ensure that there are nodes of all types.
+		double targetNumberOfEachType = averageNumberOfEachType - random.nextDouble() * (double) numberOfNodes / 10.0;
+		stream(NodeType.values()).forEach(type -> {
+			for (int i = 0; i < (int) targetNumberOfEachType; i++) {
+				Node node = nodesToProcess.remove(random.nextInt(nodesToProcess.size()));
+				node.setType(type);
+			}
+		});
+
+		// Set the types of the remaining nodes to random ones.  Obviously, this will introduce bias towards certain
+		// types.
+		nodesToProcess.forEach(node -> node.setType(NodeType.values()[random.nextInt(numberOfTypes)]));
 	}
 
 	private boolean isFarEnoughAnotherNode(Node node) {
