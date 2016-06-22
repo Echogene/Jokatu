@@ -20,6 +20,9 @@ import java.util.*;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toSet;
 
+/**
+ * The stage of {@link Uzta} where the game is set up.
+ */
 public class SetupStage extends SingleInputStage<RandomiseGraphInput, StandardPlayer, GameEvent> {
 
 	private final List<Node> nodes = new ArrayList<>();
