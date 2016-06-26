@@ -30,6 +30,11 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.stream.Collectors.toSet;
 import static ophelia.util.FunctionUtils.not;
 
+/**
+ * When a player joins a game, we need to move them from the observers list to the players list.  When a player stops
+ * observing/starts to observe a game (by un/subscribing to the {@link #STATUS_REGEX} destination), the observers list
+ * needs to be updated.
+ */
 @Component
 public class PlayerJoinEventHandler extends SpecificEventHandler<PlayerJoinedEvent> implements ApplicationListener {
 
