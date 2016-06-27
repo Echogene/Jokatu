@@ -6,6 +6,7 @@ import jokatu.game.GameFactory;
 import jokatu.game.GameID;
 import jokatu.game.event.SpecificEventHandler;
 import jokatu.game.games.gameofgames.event.GameCreatedEvent;
+import jokatu.game.games.gameofgames.game.GameOfGames;
 import ophelia.util.MapUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ import java.util.Map;
 import static java.text.MessageFormat.format;
 
 
+/**
+ * When a game has been requested to be created by a {@link GameOfGames}, create the game.
+ */
 @Component
 public class GameCreatedEventHandler extends SpecificEventHandler<GameCreatedEvent> {
 
