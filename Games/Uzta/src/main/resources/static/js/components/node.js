@@ -25,7 +25,7 @@ JNodeProto._updateNode = function(node) {
 			this._updateElement(element, value);
 		} else {
 			// Remove the element.
-			this.removeChild(element);
+			this._valuesContainer.removeChild(element);
 		}
 	}
 };
