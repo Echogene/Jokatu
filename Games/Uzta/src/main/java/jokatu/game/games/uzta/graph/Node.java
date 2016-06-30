@@ -1,8 +1,11 @@
 package jokatu.game.games.uzta.graph;
 
+import ophelia.collections.set.HashSet;
+import ophelia.collections.set.UnmodifiableSet;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
+import java.util.Set;
 
 import static java.util.Comparator.comparingDouble;
 
@@ -12,6 +15,7 @@ public class Node {
 	private final double y;
 
 	private NodeType type;
+	private final Set<Integer> values = new HashSet<>();
 
 	public Node(@NotNull String id, double x, double y) {
 		this.id = id;
@@ -34,6 +38,14 @@ public class Node {
 
 	public NodeType getType() {
 		return type;
+	}
+
+	public UnmodifiableSet<Integer> getValues() {
+		return new UnmodifiableSet<>(values);
+	}
+
+	public void addValue(int value) {
+		values.add(value);
 	}
 
 	public void setType(NodeType type) {

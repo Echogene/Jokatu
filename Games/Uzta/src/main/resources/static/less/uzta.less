@@ -10,29 +10,56 @@ j-graph {
 		height: 100%;
 		display: block;
 
-		>div {
-			border: 1px solid black;
-			width: 50px;
-			height: 50px;
+		>* {
 			position: absolute;
 			z-index: 1;
+			color: #eee;
+
+			>.background {
+				position: absolute;
+				border: 1px solid black;
+				width:  100%;
+				height: 100%;
+				z-index: -1;
+			}
 
 			&.square {
 				width: 40px;
 				height: 40px;
-				background-color: #221818;
+				>.background {
+					background-color: #301;
+				}
 			}
 			&.circle {
 				width: 50px;
 				height: 50px;
-				background-color: #020;
-				border-radius: 50%;
+				>.background {
+					background-color: #130;
+					border-radius: 50%;
+				}
 			}
 			&.rhombus {
 				width: 45px;
 				height: 45px;
-				background-color: #002;
-				transform: scale(0.8, 1) rotate(45deg);
+				>.background {
+					background-color: #013;
+					transform: scale(0.8, 1) rotate(45deg);
+				}
+			}
+
+			>.values {
+				height: 100%;
+				padding: 3px 6px;
+				z-index: 1;
+				display: flex;
+				align-items: center;
+				justify-content: space-around;
+				flex-wrap: wrap;
+				font-size: small;
+
+				>span {
+					padding: 0 1px;
+				}
 			}
 		}
 	}

@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 public class Uzta extends Game<StandardPlayer> {
 
 	public static final String UZTA = "Uzta";
+	public static final int DICE_SIZE = 12;
 
 	private final StandardTextStatus status = new StandardTextStatus();
 

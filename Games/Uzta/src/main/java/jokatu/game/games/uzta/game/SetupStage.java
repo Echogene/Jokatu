@@ -19,6 +19,9 @@ import java.util.*;
 
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toSet;
+import static java.util.stream.IntStream.range;
+import static java.util.stream.IntStream.rangeClosed;
+import static jokatu.game.games.uzta.game.Uzta.DICE_SIZE;
 
 /**
  * The stage of {@link Uzta} where the game is set up.
@@ -47,6 +50,7 @@ public class SetupStage extends SingleInputStage<RandomiseGraphInput, StandardPl
 		createNodesInRandomPositions(random);
 		delaunayTrigonate();
 		randomiseNodeTypes(random);
+		randomiseNodeValues(random);
 		fireEvent(new GraphUpdatedEvent(graph));
 	}
 
@@ -114,6 +118,21 @@ public class SetupStage extends SingleInputStage<RandomiseGraphInput, StandardPl
 		// Set the types of the remaining nodes to random ones.  Obviously, this will introduce bias towards certain
 		// types.
 		nodesToProcess.forEach(node -> node.setType(NodeType.values()[random.nextInt(numberOfTypes)]));
+	}
+
+	private void randomiseNodeValues(Random random) {
+		List<Node> nodesToProcess = new ArrayList<>(nodes);
+
+		// Ensure all the values are mapped to nodes.
+		rangeClosed(1, DICE_SIZE).forEach(i -> nodesToProcess.remove(random.nextInt(nodesToProcess.size())).addValue(i));
+
+		// Ensure all remaining nodes have at least one value.
+		nodesToProcess.forEach(node -> node.addValue(1 + random.nextInt(DICE_SIZE)));
+
+		// Add a second and maybe a third value to some nodes.
+		range(0, 2).forEach(i -> nodes.stream()
+				.filter(node -> random.nextBoolean())
+				.forEach(node -> node.addValue(1 + random.nextInt(DICE_SIZE))));
 	}
 
 	private boolean isFarEnoughAnotherNode(Node node) {
