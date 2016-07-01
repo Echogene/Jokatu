@@ -2,15 +2,26 @@ package jokatu.game.games.uzta.game;
 
 import jokatu.game.Game;
 import jokatu.game.GameID;
+import jokatu.game.games.uzta.graph.LineSegment;
+import jokatu.game.games.uzta.graph.Node;
 import jokatu.game.player.StandardPlayer;
 import jokatu.game.stage.GameOverStage;
 import jokatu.game.status.StandardTextStatus;
+import ophelia.collections.set.HashSet;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class Uzta extends Game<StandardPlayer> {
 
 	public static final String UZTA = "Uzta";
-	public static final int DICE_SIZE = 12;
+
+	static final int DICE_SIZE = 12;
+
+	private final List<Node> nodes = new ArrayList<>();
+	private final Set<LineSegment> edges = new HashSet<>();
 
 	private final StandardTextStatus status = new StandardTextStatus();
 
@@ -29,7 +40,7 @@ public class Uzta extends Game<StandardPlayer> {
 	@Override
 	public void advanceStageInner() {
 		if (currentStage == null) {
-			currentStage = new SetupStage();
+			currentStage = new SetupStage(nodes, edges);
 		} else {
 			currentStage = new GameOverStage(status);
 		}
