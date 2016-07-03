@@ -3,16 +3,17 @@ package jokatu.game.joining.finish;
 import jokatu.game.event.StageOverEvent;
 import jokatu.game.input.AbstractInputAcceptor;
 import jokatu.game.input.UnacceptableInputException;
+import jokatu.game.input.finishstage.EndStageInput;
 import jokatu.game.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
 /**
- * Accepts {@link FinishJoiningInput}s and fires a {@link StageOverEvent} if the input is valid.
+ * Accepts {@link EndStageInput}s and fires a {@link StageOverEvent} if the input is valid.
  * @param <P> the type of {@link Player} that should be accepted
  */
-public class FinishJoiningInputAcceptor<P extends Player> extends AbstractInputAcceptor<FinishJoiningInput, P, StageOverEvent> {
+public class FinishJoiningInputAcceptor<P extends Player> extends AbstractInputAcceptor<EndStageInput, P, StageOverEvent> {
 
 	private final Class<P> playerClass;
 
@@ -28,8 +29,8 @@ public class FinishJoiningInputAcceptor<P extends Player> extends AbstractInputA
 
 	@NotNull
 	@Override
-	protected Class<FinishJoiningInput> getInputClass() {
-		return FinishJoiningInput.class;
+	protected Class<EndStageInput> getInputClass() {
+		return EndStageInput.class;
 	}
 
 	@NotNull
@@ -39,7 +40,7 @@ public class FinishJoiningInputAcceptor<P extends Player> extends AbstractInputA
 	}
 
 	@Override
-	protected void acceptCastInputAndPlayer(@NotNull FinishJoiningInput input, @NotNull P inputter) throws Exception {
+	protected void acceptCastInputAndPlayer(@NotNull EndStageInput input, @NotNull P inputter) throws Exception {
 		int more = minimum - players.size();
 		if (more > 0) {
 			throw new UnacceptableInputException(

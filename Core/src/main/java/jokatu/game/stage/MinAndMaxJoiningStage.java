@@ -4,7 +4,7 @@ import jokatu.game.MultiInputStage;
 import jokatu.game.event.StageOverEvent;
 import jokatu.game.joining.JoinInputAcceptor;
 import jokatu.game.joining.PlayerJoinedEvent;
-import jokatu.game.joining.finish.FinishJoiningInput;
+import jokatu.game.input.finishstage.EndStageInput;
 import jokatu.game.joining.finish.FinishJoiningInputAcceptor;
 import jokatu.game.player.Player;
 import jokatu.game.status.StandardTextStatus;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 /**
  * A {@link Stage} in which a maximum and minimum number of players can join.  When there are enough players, it
- * can accept a {@link FinishJoiningInput} to start the next stage. When the maximum is reached, the next stage starts
+ * can accept a {@link EndStageInput} to start the next stage. When the maximum is reached, the next stage starts
  * automatically.
  * @param <P> the type of player that should be joining the stage
  */

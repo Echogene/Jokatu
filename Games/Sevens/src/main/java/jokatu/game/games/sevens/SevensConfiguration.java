@@ -9,7 +9,7 @@ import jokatu.game.games.sevens.player.SevensPlayerFactory;
 import jokatu.game.games.sevens.views.SevensViewResolverFactory;
 import jokatu.game.input.InputDeserialiser;
 import jokatu.game.joining.JoinInputDeserialiser;
-import jokatu.game.joining.finish.FinishJoiningInputDeserialiser;
+import jokatu.game.input.finishstage.EndStageInputDeserialiser;
 import ophelia.collections.BaseCollection;
 import ophelia.collections.set.UnmodifiableSet;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +27,7 @@ public class SevensConfiguration implements GameConfiguration {
 	private final SevensGameFactory sevensGameFactory;
 	private final SevensPlayerFactory sevensPlayerFactory;
 	private final JoinInputDeserialiser joinInputDeserialiser;
-	private final FinishJoiningInputDeserialiser finishJoiningInputDeserialiser;
+	private final EndStageInputDeserialiser endStageInputDeserialiser;
 	private final CardInputDeserialiser cardInputDeserialiser;
 	private final SkipInputDeserialiser skipInputDeserialiser;
 	private final SevensViewResolverFactory sevensViewResolverFactory;
@@ -36,7 +36,7 @@ public class SevensConfiguration implements GameConfiguration {
 	public SevensConfiguration(SevensGameFactory sevensGameFactory,
 	                           SevensPlayerFactory sevensPlayerFactory,
 	                           JoinInputDeserialiser joinInputDeserialiser,
-	                           FinishJoiningInputDeserialiser finishJoiningInputDeserialiser,
+	                           EndStageInputDeserialiser endStageInputDeserialiser,
 	                           CardInputDeserialiser cardInputDeserialiser,
 	                           SkipInputDeserialiser skipInputDeserialiser,
 	                           SevensViewResolverFactory sevensViewResolverFactory
@@ -44,7 +44,7 @@ public class SevensConfiguration implements GameConfiguration {
 		this.sevensGameFactory = sevensGameFactory;
 		this.sevensPlayerFactory = sevensPlayerFactory;
 		this.joinInputDeserialiser = joinInputDeserialiser;
-		this.finishJoiningInputDeserialiser = finishJoiningInputDeserialiser;
+		this.endStageInputDeserialiser = endStageInputDeserialiser;
 		this.cardInputDeserialiser = cardInputDeserialiser;
 		this.skipInputDeserialiser = skipInputDeserialiser;
 		this.sevensViewResolverFactory = sevensViewResolverFactory;
@@ -66,7 +66,7 @@ public class SevensConfiguration implements GameConfiguration {
 	@Override
 	public BaseCollection<? extends InputDeserialiser> getInputDeserialisers() {
 		return new UnmodifiableSet<>(asList(
-				joinInputDeserialiser, finishJoiningInputDeserialiser, cardInputDeserialiser, skipInputDeserialiser
+				joinInputDeserialiser, endStageInputDeserialiser, cardInputDeserialiser, skipInputDeserialiser
 		));
 	}
 
