@@ -6,6 +6,7 @@ import jokatu.game.games.uzta.graph.LineSegment;
 import jokatu.game.games.uzta.graph.Node;
 import jokatu.game.player.StandardPlayer;
 import jokatu.game.stage.GameOverStage;
+import jokatu.game.stage.JoiningStage;
 import jokatu.game.status.StandardTextStatus;
 import ophelia.collections.set.HashSet;
 import org.jetbrains.annotations.NotNull;
@@ -40,7 +41,12 @@ public class Uzta extends Game<StandardPlayer> {
 	@Override
 	public void advanceStageInner() {
 		if (currentStage == null) {
+			// todo: accept more players
+			currentStage = new JoiningStage<>(StandardPlayer.class, players, 1, status);
+
+		} else if (currentStage instanceof JoiningStage) {
 			currentStage = new SetupStage(nodes, edges);
+
 		} else {
 			currentStage = new GameOverStage(status);
 		}

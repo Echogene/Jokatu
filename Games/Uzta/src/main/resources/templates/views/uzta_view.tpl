@@ -23,4 +23,11 @@ layout 'views/game_view.tpl', true,
 			'data-input': '{"randomise": true}',
 			'Randomise graph'
 		)
+		button(
+			is: 'j-button',
+			id: 'finish',
+			destination: "/topic/input.game.${gameId}",
+			'data-input': '{"end": true}',
+			'Finish setup'
+		)
 	}

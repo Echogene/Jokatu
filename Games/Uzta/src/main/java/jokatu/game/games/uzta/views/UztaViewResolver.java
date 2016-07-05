@@ -2,6 +2,8 @@ package jokatu.game.games.uzta.views;
 
 import jokatu.game.games.uzta.game.Uzta;
 import jokatu.game.player.StandardPlayer;
+import jokatu.game.stage.JoiningStage;
+import jokatu.game.stage.Stage;
 import jokatu.game.viewresolver.ViewResolver;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,9 +16,15 @@ class UztaViewResolver extends ViewResolver<StandardPlayer, Uzta> {
 	@NotNull
 	@Override
 	protected ModelAndView getDefaultView() {
-		// lol side effects
-		game.getCurrentStage();
-		return new ModelAndView("views/uzta_view");
+		Stage currentStage = game.getCurrentStage();
+		String view;
+		if (currentStage instanceof JoiningStage) {
+			view = "views/game_join";
+
+		} else {
+			view = "views/uzta_view";
+		}
+		return new ModelAndView(view);
 	}
 
 	@NotNull
