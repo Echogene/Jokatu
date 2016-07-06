@@ -45,7 +45,7 @@ public class Uzta extends Game<StandardPlayer> {
 			currentStage = new JoiningStage<>(StandardPlayer.class, players, 1, status);
 
 		} else if (currentStage instanceof JoiningStage) {
-			currentStage = new SetupStage(nodes, edges);
+			currentStage = new SetupStage(nodes, edges, players);
 
 		} else {
 			currentStage = new GameOverStage(status);
