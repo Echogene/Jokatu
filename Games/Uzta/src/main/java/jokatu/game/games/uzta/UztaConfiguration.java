@@ -4,6 +4,7 @@ import jokatu.components.GameComponent;
 import jokatu.components.config.GameConfiguration;
 import jokatu.game.games.uzta.game.UztaFactory;
 import jokatu.game.games.uzta.input.RandomiseGraphInputDeserialiser;
+import jokatu.game.games.uzta.input.SelectEdgeInputDeserialiser;
 import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.games.uzta.views.UztaViewResolverFactory;
 import jokatu.game.input.InputDeserialiser;
@@ -30,18 +31,21 @@ public class UztaConfiguration implements GameConfiguration {
 	private final JoinInputDeserialiser joinInputDeserialiser;
 	private final RandomiseGraphInputDeserialiser randomiseGraphInputDeserialiser;
 	private final EndStageInputDeserialiser endStageInputDeserialiser;
+	private final SelectEdgeInputDeserialiser selectEdgeInputDeserialiser;
 
 	@Autowired
 	public UztaConfiguration(UztaFactory uztaFactory,
 	                         UztaViewResolverFactory uztaViewResolverFactory,
 	                         JoinInputDeserialiser joinInputDeserialiser,
 	                         RandomiseGraphInputDeserialiser randomiseGraphInputDeserialiser,
-	                         EndStageInputDeserialiser endStageInputDeserialiser) {
+	                         EndStageInputDeserialiser endStageInputDeserialiser,
+	                         SelectEdgeInputDeserialiser selectEdgeInputDeserialiser) {
 		this.uztaFactory = uztaFactory;
 		this.uztaViewResolverFactory = uztaViewResolverFactory;
 		this.joinInputDeserialiser = joinInputDeserialiser;
 		this.randomiseGraphInputDeserialiser = randomiseGraphInputDeserialiser;
 		this.endStageInputDeserialiser = endStageInputDeserialiser;
+		this.selectEdgeInputDeserialiser = selectEdgeInputDeserialiser;
 	}
 
 	@NotNull
@@ -60,7 +64,10 @@ public class UztaConfiguration implements GameConfiguration {
 	@Override
 	public BaseCollection<? extends InputDeserialiser> getInputDeserialisers() {
 		return new UnmodifiableSet<>(Arrays.asList(
-				randomiseGraphInputDeserialiser, joinInputDeserialiser, endStageInputDeserialiser
+				randomiseGraphInputDeserialiser,
+				joinInputDeserialiser,
+				endStageInputDeserialiser,
+				selectEdgeInputDeserialiser
 		));
 	}
 

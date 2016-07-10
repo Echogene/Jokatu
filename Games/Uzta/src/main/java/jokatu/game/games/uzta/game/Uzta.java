@@ -40,6 +40,9 @@ public class Uzta extends Game<UztaPlayer> {
 		} else if (currentStage instanceof JoiningStage) {
 			currentStage = new SetupStage(graph, players);
 
+		} else if (currentStage instanceof SetupStage) {
+			currentStage = new FirstPlacementStage(graph, players);
+
 		} else {
 			currentStage = new GameOverStage(status);
 		}
