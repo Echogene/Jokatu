@@ -13,7 +13,7 @@ public abstract class SingleKeyInputDeserialiser<I extends Input> extends InputD
 	@Override
 	public final I deserialise(@NotNull Map<String, Object> json) throws DeserialisationException {
 		String keyName = getKeyName();
-		getMandatoryKeyValue(json, keyName);
+		getMandatoryKeyValue(keyName, json);
 		Object value = json.get(keyName);
 		return deserialiseSingleValue(json, value);
 	}
