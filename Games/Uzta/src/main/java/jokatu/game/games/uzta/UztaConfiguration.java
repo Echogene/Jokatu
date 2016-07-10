@@ -4,12 +4,12 @@ import jokatu.components.GameComponent;
 import jokatu.components.config.GameConfiguration;
 import jokatu.game.games.uzta.game.UztaFactory;
 import jokatu.game.games.uzta.input.RandomiseGraphInputDeserialiser;
+import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.games.uzta.views.UztaViewResolverFactory;
 import jokatu.game.input.InputDeserialiser;
 import jokatu.game.input.finishstage.EndStageInputDeserialiser;
 import jokatu.game.joining.JoinInputDeserialiser;
 import jokatu.game.player.PlayerFactory;
-import jokatu.game.player.StandardPlayer;
 import ophelia.collections.BaseCollection;
 import ophelia.collections.set.UnmodifiableSet;
 import org.jetbrains.annotations.NotNull;
@@ -53,7 +53,7 @@ public class UztaConfiguration implements GameConfiguration {
 	@NotNull
 	@Override
 	public PlayerFactory<?> getPlayerFactory() {
-		return (game, username) -> new StandardPlayer(username);
+		return (game, username) -> new UztaPlayer(username);
 	}
 
 	@NotNull
