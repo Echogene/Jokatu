@@ -25,4 +25,24 @@ public abstract class InputDeserialiser<I extends Input> {
 		}
 		return value;
 	}
+
+	@NotNull
+	protected <T> T castValue(
+			@NotNull Class<T> type,
+			@NotNull String keyName,
+			@NotNull Object value,
+			@NotNull Map<String, Object> json
+	) throws DeserialisationException {
+		if (!type.isInstance(value)) {
+			throw new DeserialisationException(
+					json,
+					MessageFormat.format(
+							"The value for ''{0}'' was not a {1}.",
+							keyName,
+							type.getSimpleName()
+					)
+			);
+		}
+		return type.cast(value);
+	}
 }
