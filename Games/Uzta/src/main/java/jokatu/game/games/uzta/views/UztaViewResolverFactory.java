@@ -21,6 +21,6 @@ public class UztaViewResolverFactory extends ViewResolverFactory<StandardPlayer,
 	@NotNull
 	@Override
 	protected ViewResolver<StandardPlayer, Uzta> getResolverFor(@NotNull Uzta castGame) {
-		return new UztaViewResolver(castGame) ;
+		return new UztaViewResolver(castGame);
 	}
 }
