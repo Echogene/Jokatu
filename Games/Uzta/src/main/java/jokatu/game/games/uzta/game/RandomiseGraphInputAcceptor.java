@@ -27,7 +27,7 @@ class RandomiseGraphInputAcceptor extends AbstractInputAcceptor<RandomiseGraphIn
 	private final List<Node> nodes;
 	private final Set<LineSegment> edges;
 
-	RandomiseGraphInputAcceptor(ModifiableUztaGraph graph) {
+	RandomiseGraphInputAcceptor(@NotNull ModifiableUztaGraph graph) {
 		this.graph = graph;
 		this.nodes = graph.getNodes();
 		this.edges = graph.getEdges();

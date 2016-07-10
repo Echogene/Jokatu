@@ -5,6 +5,7 @@ import jokatu.game.games.uzta.graph.ModifiableUztaGraph;
 import jokatu.game.input.EndStageInputAcceptor;
 import jokatu.game.player.StandardPlayer;
 import ophelia.collections.set.UnmodifiableSet;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -15,7 +16,7 @@ public class SetupStage extends MultiInputStage {
 
 	private final RandomiseGraphInputAcceptor randomiseGraphInputAcceptor;
 
-	SetupStage(ModifiableUztaGraph graph, Map<String, StandardPlayer> players) {
+	SetupStage(@NotNull ModifiableUztaGraph graph, @NotNull Map<String, StandardPlayer> players) {
 		randomiseGraphInputAcceptor = new RandomiseGraphInputAcceptor(graph);
 		addInputAcceptor(randomiseGraphInputAcceptor);
 
