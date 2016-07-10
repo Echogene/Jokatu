@@ -22,7 +22,7 @@ class UztaViewResolver extends ViewResolver<StandardPlayer, Uzta> {
 			view = "views/game_join";
 
 		} else {
-			view = "views/uzta_view";
+			view = "views/uzta_setup";
 		}
 		return new ModelAndView(view);
 	}
