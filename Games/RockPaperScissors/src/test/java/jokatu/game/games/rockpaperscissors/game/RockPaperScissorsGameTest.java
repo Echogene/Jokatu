@@ -16,7 +16,6 @@ import jokatu.game.result.PlayerResult;
 import ophelia.collections.list.UnmodifiableList;
 import ophelia.exceptions.CollectedException;
 import ophelia.exceptions.StackedException;
-import ophelia.util.StreamUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,9 +25,8 @@ import java.util.List;
 import static jokatu.game.games.rockpaperscissors.game.RockPaperScissors.PAPER;
 import static jokatu.game.games.rockpaperscissors.game.RockPaperScissors.ROCK;
 import static ophelia.collections.matchers.IsCollectionWithSize.hasSize;
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.instanceOf;
+import static ophelia.util.CollectionUtils.getUniqueElementOfClass;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.core.Is.is;
@@ -62,7 +60,7 @@ public class RockPaperScissorsGameTest {
 
 		assertThat(game.getPlayers(), hasSize(1));
 		assertThat(events, hasItem(instanceOf(PlayerJoinedEvent.class)));
-		PlayerJoinedEvent playerJoinedEvent = getUniqueEventFromList(PlayerJoinedEvent.class, events);
+		PlayerJoinedEvent playerJoinedEvent = getUniqueElementOfClass(PlayerJoinedEvent.class, events);
 		assertThat(playerJoinedEvent.getMessage(), is("Player 1 joined the game."));
 	}
 
@@ -79,7 +77,7 @@ public class RockPaperScissorsGameTest {
 
 		assertThat(game.getPlayers(), hasSize(2));
 		assertThat(events, hasItem(instanceOf(PlayerJoinedEvent.class)));
-		PlayerJoinedEvent playerJoinedEvent = getUniqueEventFromList(PlayerJoinedEvent.class, events);
+		PlayerJoinedEvent playerJoinedEvent = getUniqueElementOfClass(PlayerJoinedEvent.class, events);
 		assertThat(playerJoinedEvent.getMessage(), is("Player 2 joined the game."));
 
 		assertThat(events, hasItem(instanceOf(StageOverEvent.class)));
@@ -137,7 +135,7 @@ public class RockPaperScissorsGameTest {
 		game.advanceStage();
 
 		assertThat(events, hasItem(instanceOf(StatusUpdateEvent.class)));
-		StatusUpdateEvent statusUpdateEvent = getUniqueEventFromList(StatusUpdateEvent.class, events);
+		StatusUpdateEvent statusUpdateEvent = getUniqueElementOfClass(StatusUpdateEvent.class, events);
 		assertThat(statusUpdateEvent.getStatus().getText(), allOf(
 				containsString("Waiting for inputs from"),
 				containsString(player1.getName()),
@@ -148,7 +146,7 @@ public class RockPaperScissorsGameTest {
 		game.accept(new RockPaperScissorsInput(ROCK), player1);
 
 		assertThat(events, hasItem(instanceOf(StatusUpdateEvent.class)));
-		StatusUpdateEvent statusUpdateEvent2 = getUniqueEventFromList(StatusUpdateEvent.class, events);
+		StatusUpdateEvent statusUpdateEvent2 = getUniqueElementOfClass(StatusUpdateEvent.class, events);
 		assertThat(statusUpdateEvent2.getStatus().getText(), is("Waiting for input from Player 2."));
 		events.clear();
 	}
@@ -192,7 +190,7 @@ public class RockPaperScissorsGameTest {
 		assertThat(events, hasItem(instanceOf(StageOverEvent.class)));
 
 		assertThat(events, hasItem(instanceOf(PlayerResult.class)));
-		PlayerResult result = getUniqueEventFromList(PlayerResult.class, events);
+		PlayerResult result = getUniqueElementOfClass(PlayerResult.class, events);
 		assertThat(result.getMessage(), allOf(
 				containsString("draw"),
 				containsString(player1.getName()),
@@ -210,14 +208,5 @@ public class RockPaperScissorsGameTest {
 		} else {
 			return cause;
 		}
-	}
-
-	private <E extends GameEvent> E getUniqueEventFromList(Class<E> eventClass, List<GameEvent> events) throws StackedException {
-		return events.stream()
-				.filter(eventClass::isInstance)
-				.map(eventClass::cast)
-				.collect(StreamUtils.findUnique())
-				.returnOnSuccess()
-				.throwAllFailures();
 	}
 }
