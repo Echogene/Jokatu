@@ -31,6 +31,10 @@ public class Uzta extends Game<UztaPlayer> {
 		return UZTA;
 	}
 
+	ModifiableUztaGraph getGraph() {
+		return graph;
+	}
+
 	@Override
 	public void advanceStageInner() {
 		if (currentStage == null) {
