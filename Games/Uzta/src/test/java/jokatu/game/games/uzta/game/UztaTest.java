@@ -3,13 +3,18 @@ package jokatu.game.games.uzta.game;
 import jokatu.game.GameID;
 import jokatu.game.event.GameEvent;
 import jokatu.game.event.StageOverEvent;
+import jokatu.game.exception.GameException;
 import jokatu.game.games.uzta.graph.LineSegment;
 import jokatu.game.games.uzta.graph.ModifiableUztaGraph;
 import jokatu.game.games.uzta.graph.Node;
 import jokatu.game.games.uzta.input.RandomiseGraphInput;
+import jokatu.game.games.uzta.input.SelectEdgeInput;
 import jokatu.game.games.uzta.player.UztaPlayer;
+import jokatu.game.input.finishstage.EndStageInput;
 import jokatu.game.joining.JoinInput;
 import jokatu.game.joining.PlayerJoinedEvent;
+import ophelia.collections.set.HashSet;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -47,8 +52,7 @@ public class UztaTest {
 
 		assertThat(game.getPlayers(), hasSize(0));
 
-		List<GameEvent> events = new ArrayList<>();
-		game.observe(events::add);
+		List<GameEvent> events = captureEvents();
 
 		game.accept(new JoinInput(), player);
 
@@ -59,11 +63,7 @@ public class UztaTest {
 
 	@Test
 	public void setup_stage_should_follow_joining_stage() throws Exception {
-
-		game.accept(new JoinInput(), player);
-		game.advanceStage();
-
-		assertThat(game.getCurrentStage(), instanceOf(SetupStage.class));
+		goToSetup();
 	}
 
 	@Test
@@ -74,10 +74,7 @@ public class UztaTest {
 		assertThat(graph.getNodes(), is(empty()));
 		assertThat(graph.getEdges(), is(empty()));
 
-		game.accept(new JoinInput(), player);
-		game.advanceStage();
-
-		assertThat(game.getCurrentStage(), instanceOf(SetupStage.class));
+		goToSetup();
 
 		graph = game.getGraph();
 		assertThat(graph.getNodes(), is(not(empty())));
@@ -86,10 +83,7 @@ public class UztaTest {
 
 	@Test
 	public void randomise_graph_input_should_randomise_graph() throws Exception {
-
-		game.accept(new JoinInput(), player);
-		game.advanceStage();
-		assertThat(game.getCurrentStage(), instanceOf(SetupStage.class));
+		goToSetup();
 
 		List<Node> oldNodes = new ArrayList<>(game.getGraph().getNodes());
 		List<LineSegment> oldEdges = new ArrayList<>(game.getGraph().getEdges());
@@ -99,6 +93,51 @@ public class UztaTest {
 		game.accept(new RandomiseGraphInput(), player);
 
 		testGraphEquality(oldNodes, oldEdges, false);
+	}
+
+	@Test
+	public void ending_setup_stage_should_fire_event() throws Exception {
+		goToSetup();
+
+		List<GameEvent> events = captureEvents();
+
+		game.accept(new EndStageInput(), player);
+
+		assertThat(events, hasItem(instanceOf(StageOverEvent.class)));
+	}
+
+	@Test
+	public void first_placement_stage_should_follow_setup_stage() throws Exception {
+		goToFirstPlacement();
+	}
+
+	@Test
+	public void first_placement_stage_should_accept_edge_selection() throws Exception {
+		goToFirstPlacement();
+
+		HashSet<LineSegment> edges = game.getGraph().getEdges();
+		LineSegment edge = edges.stream().findAny().orElseThrow(() -> new Exception("Cannot find edge"));
+		game.accept(new SelectEdgeInput(edge.getFirst().getId(), edge.getSecond().getId()), player);
+	}
+
+	@NotNull
+	private List<GameEvent> captureEvents() {
+		List<GameEvent> events = new ArrayList<>();
+		game.observe(events::add);
+		return events;
+	}
+
+	private void goToSetup() throws GameException {
+		game.accept(new JoinInput(), player);
+		game.advanceStage();
+		assertThat(game.getCurrentStage(), instanceOf(SetupStage.class));
+	}
+
+	private void goToFirstPlacement() throws GameException {
+		goToSetup();
+		game.accept(new EndStageInput(), player);
+		game.advanceStage();
+		assertThat(game.getCurrentStage(), instanceOf(FirstPlacementStage.class));
 	}
 
 	private void testGraphEquality(List<Node> oldNodes, List<LineSegment> oldEdges, boolean equality) {
