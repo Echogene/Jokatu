@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import static java.text.MessageFormat.format;
 
 /**
+ * Update the user's hand and inform everyone else that the number of cards in their hand has changed.
  * @author Steven Weston
  */
 @Component
