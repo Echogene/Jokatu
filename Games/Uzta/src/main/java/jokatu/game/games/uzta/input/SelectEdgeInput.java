@@ -8,7 +8,7 @@ public class SelectEdgeInput implements Input {
 	private final String startId;
 	private final String endId;
 
-	SelectEdgeInput(@NotNull String startId, @NotNull String endId) {
+	public SelectEdgeInput(@NotNull String startId, @NotNull String endId) {
 		this.startId = startId;
 		this.endId = endId;
 	}
