@@ -2,16 +2,11 @@ package jokatu.game.games.uzta.game;
 
 import jokatu.game.event.GameEvent;
 import jokatu.game.games.uzta.event.GraphUpdatedEvent;
-import jokatu.game.games.uzta.graph.LineSegment;
-import jokatu.game.games.uzta.graph.Node;
-import jokatu.game.games.uzta.graph.NodeType;
-import jokatu.game.games.uzta.graph.Trigon;
+import jokatu.game.games.uzta.graph.*;
 import jokatu.game.games.uzta.input.RandomiseGraphInput;
 import jokatu.game.input.AbstractInputAcceptor;
 import jokatu.game.player.StandardPlayer;
-import ophelia.collections.BaseCollection;
 import ophelia.collections.set.HashSet;
-import ophelia.collections.set.UnmodifiableSet;
 import ophelia.graph.BiGraph;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,24 +23,14 @@ import static jokatu.game.games.uzta.game.Uzta.DICE_SIZE;
  */
 class RandomiseGraphInputAcceptor extends AbstractInputAcceptor<RandomiseGraphInput, StandardPlayer, GameEvent> {
 
+	private final BiGraph<Node, LineSegment> graph;
 	private final List<Node> nodes;
 	private final Set<LineSegment> edges;
 
-	private final BiGraph<Node, LineSegment> graph = new BiGraph<Node, LineSegment>() {
-		@Override
-		public BaseCollection<LineSegment> getEdges() {
-			return new UnmodifiableSet<>(edges);
-		}
-
-		@Override
-		public BaseCollection<Node> getNodes() {
-			return new UnmodifiableSet<>(nodes);
-		}
-	};
-
-	RandomiseGraphInputAcceptor(List<Node> nodes, Set<LineSegment> edges) {
-		this.nodes = nodes;
-		this.edges = edges;
+	RandomiseGraphInputAcceptor(@NotNull ModifiableUztaGraph graph) {
+		this.graph = graph;
+		this.nodes = graph.getNodes();
+		this.edges = graph.getEdges();
 	}
 
 	void randomiseGraph() {

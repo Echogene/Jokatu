@@ -48,7 +48,7 @@ public class Node {
 		values.add(value);
 	}
 
-	public void setType(NodeType type) {
+	public void setType(@NotNull NodeType type) {
 		this.type = type;
 	}
 

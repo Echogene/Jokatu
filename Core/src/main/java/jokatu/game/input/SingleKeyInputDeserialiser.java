@@ -2,22 +2,17 @@ package jokatu.game.input;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.text.MessageFormat;
 import java.util.Map;
 
 /**
  * An {@link InputDeserialiser} where the JSON is expected to have only one key.
  * @param <I> the type of the {@link Input} to output
  */
-public abstract class SingleKeyInputDeserialiser<I extends Input> implements InputDeserialiser<I> {
+public abstract class SingleKeyInputDeserialiser<I extends Input> extends InputDeserialiser<I> {
 	@NotNull
 	@Override
 	public final I deserialise(@NotNull Map<String, Object> json) throws DeserialisationException {
-		String keyName = getKeyName();
-		if (!json.containsKey(keyName)) {
-			throw new DeserialisationException(json, MessageFormat.format("Did not contain the key ''{0}''.", keyName));
-		}
-		Object value = json.get(keyName);
+		Object value = getMandatoryKeyValue(getKeyName(), json);
 		return deserialiseSingleValue(json, value);
 	}
 

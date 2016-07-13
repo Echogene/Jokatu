@@ -2,27 +2,20 @@ package jokatu.game.games.uzta.game;
 
 import jokatu.game.Game;
 import jokatu.game.GameID;
-import jokatu.game.games.uzta.graph.LineSegment;
-import jokatu.game.games.uzta.graph.Node;
-import jokatu.game.player.StandardPlayer;
+import jokatu.game.games.uzta.graph.ModifiableUztaGraph;
+import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.stage.GameOverStage;
 import jokatu.game.stage.JoiningStage;
 import jokatu.game.status.StandardTextStatus;
-import ophelia.collections.set.HashSet;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-public class Uzta extends Game<StandardPlayer> {
+public class Uzta extends Game<UztaPlayer> {
 
 	public static final String UZTA = "Uzta";
 
 	static final int DICE_SIZE = 12;
 
-	private final List<Node> nodes = new ArrayList<>();
-	private final Set<LineSegment> edges = new HashSet<>();
+	private final ModifiableUztaGraph graph = new ModifiableUztaGraph();
 
 	private final StandardTextStatus status = new StandardTextStatus();
 
@@ -38,14 +31,21 @@ public class Uzta extends Game<StandardPlayer> {
 		return UZTA;
 	}
 
+	ModifiableUztaGraph getGraph() {
+		return graph;
+	}
+
 	@Override
 	public void advanceStageInner() {
 		if (currentStage == null) {
 			// todo: accept more players
-			currentStage = new JoiningStage<>(StandardPlayer.class, players, 1, status);
+			currentStage = new JoiningStage<>(UztaPlayer.class, players, 1, status);
 
 		} else if (currentStage instanceof JoiningStage) {
-			currentStage = new SetupStage(nodes, edges, players);
+			currentStage = new SetupStage(graph, players);
+
+		} else if (currentStage instanceof SetupStage) {
+			currentStage = new FirstPlacementStage(graph, players);
 
 		} else {
 			currentStage = new GameOverStage(status);

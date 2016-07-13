@@ -1,14 +1,15 @@
 package jokatu.game.games.uzta.views;
 
+import jokatu.game.games.uzta.game.SetupStage;
 import jokatu.game.games.uzta.game.Uzta;
-import jokatu.game.player.StandardPlayer;
+import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.stage.JoiningStage;
 import jokatu.game.stage.Stage;
 import jokatu.game.viewresolver.ViewResolver;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.servlet.ModelAndView;
 
-class UztaViewResolver extends ViewResolver<StandardPlayer, Uzta> {
+class UztaViewResolver extends ViewResolver<UztaPlayer, Uzta> {
 	UztaViewResolver(Uzta castGame) {
 		super(castGame);
 	}
@@ -21,21 +22,24 @@ class UztaViewResolver extends ViewResolver<StandardPlayer, Uzta> {
 		if (currentStage instanceof JoiningStage) {
 			view = "views/game_join";
 
+		} else if (currentStage instanceof SetupStage) {
+			view = "views/uzta_setup";
+
 		} else {
-			view = "views/uzta_view";
+			view = "views/uzta";
 		}
 		return new ModelAndView(view);
 	}
 
 	@NotNull
 	@Override
-	protected Class<StandardPlayer> getPlayerClass() {
-		return StandardPlayer.class;
+	protected Class<UztaPlayer> getPlayerClass() {
+		return UztaPlayer.class;
 	}
 
 	@NotNull
 	@Override
-	protected ModelAndView getViewFor(@NotNull StandardPlayer player) {
+	protected ModelAndView getViewFor(@NotNull UztaPlayer player) {
 		return getDefaultView();
 	}
 }
