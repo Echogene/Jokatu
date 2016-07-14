@@ -9,6 +9,10 @@ import jokatu.game.stage.JoiningStage;
 import jokatu.game.status.StandardTextStatus;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * A game played on an abstract graph where players harvest abstract resources produced by the graph in order to build
+ * more things on the graph.
+ */
 public class Uzta extends Game<UztaPlayer> {
 
 	public static final String UZTA = "Uzta";
