@@ -5,6 +5,9 @@ import jokatu.game.games.echo.input.EchoInput;
 import jokatu.game.player.StandardPlayer;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * An event that echoes the users input to everyone in the game.
+ */
 public class Echo implements PublicGameEvent {
 
 	private final String message;
