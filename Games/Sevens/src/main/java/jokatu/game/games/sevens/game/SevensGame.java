@@ -30,11 +30,11 @@ public class SevensGame extends Game<SevensPlayer> {
 	SevensGame(GameID identifier) {
 		super(identifier);
 
-		stageMachine = new SequentialStageMachine(Arrays.asList(
+		stageMachine = new SequentialStageMachine(
 				() -> new MinAndMaxJoiningStage<>(SevensPlayer.class, players, 3, 7, status),
 				() -> new SevensStage(players, status, playedCards),
 				() -> new GameOverStage(status)
-		));
+		);
 
 		status.observe(this::fireEvent);
 	}

@@ -4,6 +4,7 @@ import jokatu.game.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class SequentialStageMachine implements StageMachine {
@@ -12,8 +13,8 @@ public class SequentialStageMachine implements StageMachine {
 	private Stage<?> currentStage;
 	private final List<StageFactory> factories;
 
-	public SequentialStageMachine(@NotNull List<StageFactory> factories) {
-		this.factories = factories;
+	public SequentialStageMachine(@NotNull StageFactory... factories) {
+		this.factories = Arrays.asList(factories);
 	}
 
 	@Nullable

@@ -10,8 +10,6 @@ import jokatu.game.stage.machine.SequentialStageMachine;
 import jokatu.game.status.StandardTextStatus;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-
 /**
  * A game played on an abstract graph where players harvest abstract resources produced by the graph in order to build
  * more things on the graph.
@@ -29,13 +27,13 @@ public class Uzta extends Game<UztaPlayer> {
 	Uzta(GameID identifier) {
 		super(identifier);
 
-		stageMachine = new SequentialStageMachine(Arrays.asList(
+		stageMachine = new SequentialStageMachine(
 				// todo: accept more players
 				() -> new JoiningStage<>(UztaPlayer.class, players, 1, status),
 				() -> new SetupStage(graph, players),
 				() -> new FirstPlacementStage(graph, players),
 				() -> new GameOverStage(status)
-		));
+		);
 
 		status.observe(this::fireEvent);
 	}

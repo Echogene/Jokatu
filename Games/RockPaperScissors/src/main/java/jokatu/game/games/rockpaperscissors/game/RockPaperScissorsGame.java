@@ -9,8 +9,6 @@ import jokatu.game.stage.machine.SequentialStageMachine;
 import jokatu.game.status.StandardTextStatus;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-
 public class RockPaperScissorsGame extends Game<StandardPlayer> {
 
 	public static final String ROCK_PAPER_SCISSORS = "Rock/paper/scissors";
@@ -20,11 +18,11 @@ public class RockPaperScissorsGame extends Game<StandardPlayer> {
 	RockPaperScissorsGame(GameID identifier) {
 		super(identifier);
 
-		stageMachine = new SequentialStageMachine(Arrays.asList(
+		stageMachine = new SequentialStageMachine(
 				() -> new JoiningStage<>(StandardPlayer.class, players, 2, status),
 				() -> new InputStage(players.values(), status),
 				() -> new GameOverStage(status)
-		));
+		);
 
 		status.observe(this::fireEvent);
 	}
