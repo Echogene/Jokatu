@@ -16,6 +16,9 @@ JNodeProto.attachedCallback = function() {
 };
 
 JNodeProto._updateNode = function(node) {
+	if (!node) {
+		return;
+	}
 	this._ensureEnoughElements(node.values.length);
 	
 	for (var i = this._valuesContainer.childNodes.length - 1; i >= 0; i--) {
