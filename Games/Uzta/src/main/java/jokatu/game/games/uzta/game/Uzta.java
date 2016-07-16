@@ -6,8 +6,11 @@ import jokatu.game.games.uzta.graph.ModifiableUztaGraph;
 import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.stage.GameOverStage;
 import jokatu.game.stage.JoiningStage;
+import jokatu.game.stage.machine.SequentialStageMachine;
 import jokatu.game.status.StandardTextStatus;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 
 /**
  * A game played on an abstract graph where players harvest abstract resources produced by the graph in order to build
@@ -26,6 +29,14 @@ public class Uzta extends Game<UztaPlayer> {
 	Uzta(GameID identifier) {
 		super(identifier);
 
+		stageMachine = new SequentialStageMachine(Arrays.asList(
+				// todo: accept more players
+				() -> new JoiningStage<>(UztaPlayer.class, players, 1, status),
+				() -> new SetupStage(graph, players),
+				() -> new FirstPlacementStage(graph, players),
+				() -> new GameOverStage(status)
+		));
+
 		status.observe(this::fireEvent);
 	}
 
@@ -38,22 +49,5 @@ public class Uzta extends Game<UztaPlayer> {
 	@NotNull
 	ModifiableUztaGraph getGraph() {
 		return graph;
-	}
-
-	@Override
-	public void advanceStageInner() {
-		if (currentStage == null) {
-			// todo: accept more players
-			currentStage = new JoiningStage<>(UztaPlayer.class, players, 1, status);
-
-		} else if (currentStage instanceof JoiningStage) {
-			currentStage = new SetupStage(graph, players);
-
-		} else if (currentStage instanceof SetupStage) {
-			currentStage = new FirstPlacementStage(graph, players);
-
-		} else {
-			currentStage = new GameOverStage(status);
-		}
 	}
 }
