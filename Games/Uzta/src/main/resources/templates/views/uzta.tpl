@@ -5,6 +5,7 @@ layout 'views/game_view.tpl', true,
 	additionalHeaders: contents {
 		include template: 'components/graph.tpl'
 		include template: 'components/node.tpl'
+		include template: 'components/edge.tpl'
 		include template: 'components/button.tpl'
 		link(rel: 'stylesheet', href: '/css/uzta.css')
 	},
@@ -14,6 +15,7 @@ layout 'views/game_view.tpl', true,
 				tag: 'j-graph',
 				id: 'graph',
 				nodeElement: 'JNode',
+				edgeElement: 'JEdge',
 				destination: "/topic/graph.game.${gameId}"
 		)
 	}

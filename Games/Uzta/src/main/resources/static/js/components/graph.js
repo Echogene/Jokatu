@@ -11,6 +11,7 @@ JGraphProto.attachedCallback = function() {
 	this.appendChild(clone);
 
 	this._nodeElementName = this.getAttribute('nodeElement');
+	this._edgeElementName = this.getAttribute('edgeElement') || 'JLine';
 	var destination = this.getAttribute('destination');
 
 	/**
@@ -19,6 +20,12 @@ JGraphProto.attachedCallback = function() {
 	 * @type {Object}
 	 */
 	this._defaultNodeAttributes = JSON.parse(this.getAttribute('data-defaultNodeAttributes'));
+	/**
+	 * Attributes to set on the edge elements when they are created.
+	 * @private
+	 * @type {Object}
+	 */
+	this._defaultEdgeAttributes = JSON.parse(this.getAttribute('data-defaultEdgeAttributes'));
 
 	var initialData = JSON.parse(this.getAttribute('data-initial'));
 	this._redrawGraph(initialData && initialData.payload);
@@ -96,9 +103,14 @@ JGraphProto._ensureEnoughEdges = function(number) {
 	var elementsNeeded = number - this._edgeContainer.childNodes.length;
 	if (elementsNeeded > 0) {
 		for (var i = 0; i < elementsNeeded; i++) {
-			this._edgeContainer.appendChild(new JLine());
+			this._createEdge();
 		}
 	}
+};
+
+JGraphProto._createEdge = function() {
+	var newElement = createElement(this._edgeElementName, this._defaultEdgeAttributes);
+	this._edgeContainer.appendChild(newElement);
 };
 
 JGraphProto._updateEdge = function(line, edge) {
