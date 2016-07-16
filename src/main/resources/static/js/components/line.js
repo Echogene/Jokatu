@@ -1,12 +1,6 @@
 var JLineProto = Object.create(HTMLDivElement.prototype);
 
 JLineProto.attachedCallback = function() {
-	this._thickness = 4;
-	this.style.height = `${this._thickness}px`;
-	this.style.backgroundColor = 'black';
-	this.style.position = 'absolute';
-	this.style.pointerEvents = 'none';
-
 	this._endsObserver = new MutationObserver(this._updatePositionFromEnds.bind(this));
 
 	observeAttributes(this, new Map([
@@ -68,7 +62,7 @@ JLineProto._updatePosition = function(ends, mutation, attempt = 0) {
 	}
 	// centre
 	var cx = ((x1 + x2) / 2) - (length / 2);
-	var cy = ((y1 + y2) / 2) - (this._thickness / 2);
+	var cy = ((y1 + y2) / 2) - (this.clientHeight / 2);
 	// angle
 	var angle = Math.atan2((y1 - y2), (x1 - x2)) * (180 / Math.PI);
 
