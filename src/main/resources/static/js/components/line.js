@@ -62,7 +62,7 @@ JLineProto._updatePosition = function(ends, mutation, attempt = 0) {
 	}
 	// centre
 	var cx = ((x1 + x2) / 2) - (length / 2);
-	var cy = ((y1 + y2) / 2) - (this.clientHeight / 2);
+	var cy = ((y1 + y2) / 2) - (this.offsetHeight / 2);
 	// angle
 	var angle = Math.atan2((y1 - y2), (x1 - x2)) * (180 / Math.PI);
 
