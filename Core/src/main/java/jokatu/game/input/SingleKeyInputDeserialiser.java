@@ -12,6 +12,9 @@ public abstract class SingleKeyInputDeserialiser<I extends Input> extends InputD
 	@NotNull
 	@Override
 	public final I deserialise(@NotNull Map<String, Object> json) throws DeserialisationException {
+		if (json.size() > 1) {
+			throw new DeserialisationException(json, "There was more than one key.");
+		}
 		Object value = getMandatoryKeyValue(getKeyName(), json);
 		return deserialiseSingleValue(json, value);
 	}
