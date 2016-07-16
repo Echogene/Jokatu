@@ -9,6 +9,7 @@ html {
 		script(type: 'text/javascript', src: '/js/request.js') {}
 		script(type: 'text/javascript', src: '/js/events.js') {}
 		script(type: 'text/javascript', src: '/js/elements.js') {}
+		script(type: 'text/javascript', src: '/js/objects.js') {}
 		headers()
 	}
 	body {
