@@ -16,6 +16,7 @@ layout 'views/game_view.tpl', true,
 				id: 'graph',
 				nodeElement: 'JNode',
 				edgeElement: 'JEdge',
+				'data-defaultEdgeAttributes': "{\"destination\": \"/topic/input.game.${gameId}\"}",
 				destination: "/topic/graph.game.${gameId}"
 		)
 	}
