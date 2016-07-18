@@ -114,7 +114,13 @@ JGraphProto._createEdge = function() {
 };
 
 JGraphProto._updateEdge = function(line, edge) {
-	line.setEnds(edge[0], edge[1]);
+	if (edge instanceof Array) {
+		line.setEnds(edge[0], edge[1]);
+
+	} else if (edge.nodes instanceof Array) {
+		line.setEnds(edge.nodes[0], edge.nodes[1]);
+		line.setAttribute('data-colour', edge.colour);
+	}
 };
 
 /**

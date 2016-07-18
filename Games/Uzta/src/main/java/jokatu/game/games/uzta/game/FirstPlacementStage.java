@@ -1,5 +1,6 @@
 package jokatu.game.games.uzta.game;
 
+import jokatu.game.games.uzta.event.GraphUpdatedEvent;
 import jokatu.game.games.uzta.graph.LineSegment;
 import jokatu.game.games.uzta.graph.Node;
 import jokatu.game.games.uzta.graph.UztaGraph;
@@ -69,7 +70,15 @@ public class FirstPlacementStage extends AnyEventSingleInputStage<SelectEdgeInpu
 		LineSegment edge = graph.getEdge(start, end)
 				.orElseThrow(() -> new UnacceptableInputException("Could not find edge between {0} and {1}", start, end));
 
-		// todo: give ownership of the edge to the player
+		if (edge.getOwner() != null) {
+			if (edge.getOwner() == inputter) {
+				throw new UnacceptableInputException("You already own that edge!");
+			} else {
+				throw new UnacceptableInputException("{0} already owns this edge.", edge.getOwner().getName());
+			}
+		}
+		edge.setOwner(inputter);
+		fireEvent(new GraphUpdatedEvent(graph));
 
 		turnManager.next();
 	}
