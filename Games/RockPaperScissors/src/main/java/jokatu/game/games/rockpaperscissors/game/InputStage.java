@@ -8,6 +8,7 @@ import jokatu.game.result.PlayerResult;
 import jokatu.game.result.Result;
 import jokatu.game.stage.AnyEventSingleInputStage;
 import jokatu.game.status.StandardTextStatus;
+import jokatu.game.turn.NotAPlayerException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ class InputStage extends AnyEventSingleInputStage<RockPaperScissorsInput, Standa
 	protected void acceptCastInputAndPlayer(@NotNull RockPaperScissorsInput input, @NotNull StandardPlayer inputter) throws Exception {
 
 		if (!players.contains(inputter)) {
-			throw new UnacceptableInputException("You can't input to a game you're not playing.");
+			throw new NotAPlayerException();
 		}
 
 		if (inputs.containsKey(inputter)) {
