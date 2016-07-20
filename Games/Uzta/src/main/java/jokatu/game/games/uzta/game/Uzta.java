@@ -5,7 +5,7 @@ import jokatu.game.GameID;
 import jokatu.game.games.uzta.graph.ModifiableUztaGraph;
 import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.stage.GameOverStage;
-import jokatu.game.stage.JoiningStage;
+import jokatu.game.stage.MinAndMaxJoiningStage;
 import jokatu.game.stage.machine.SequentialStageMachine;
 import jokatu.game.status.StandardTextStatus;
 import org.jetbrains.annotations.NotNull;
@@ -28,8 +28,7 @@ public class Uzta extends Game<UztaPlayer> {
 		super(identifier);
 
 		stageMachine = new SequentialStageMachine(
-				// todo: accept more players
-				() -> new JoiningStage<>(UztaPlayer.class, players, 1, status),
+				() -> new MinAndMaxJoiningStage<>(UztaPlayer.class, players, 1, 6, status),
 				() -> new SetupStage(graph, players),
 				() -> new FirstPlacementStage(graph, players),
 				() -> new GameOverStage(status)

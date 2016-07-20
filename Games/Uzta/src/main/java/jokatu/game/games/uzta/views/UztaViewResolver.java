@@ -3,7 +3,7 @@ package jokatu.game.games.uzta.views;
 import jokatu.game.games.uzta.game.SetupStage;
 import jokatu.game.games.uzta.game.Uzta;
 import jokatu.game.games.uzta.player.UztaPlayer;
-import jokatu.game.stage.JoiningStage;
+import jokatu.game.stage.MinAndMaxJoiningStage;
 import jokatu.game.stage.Stage;
 import jokatu.game.viewresolver.ViewResolver;
 import org.jetbrains.annotations.NotNull;
@@ -19,8 +19,8 @@ class UztaViewResolver extends ViewResolver<UztaPlayer, Uzta> {
 	protected ModelAndView getDefaultView() {
 		Stage currentStage = game.getCurrentStage();
 		String view;
-		if (currentStage instanceof JoiningStage) {
-			view = "views/game_join";
+		if (currentStage instanceof MinAndMaxJoiningStage) {
+			view = "views/game_join_with_start";
 
 		} else if (currentStage instanceof SetupStage) {
 			view = "views/uzta_setup";

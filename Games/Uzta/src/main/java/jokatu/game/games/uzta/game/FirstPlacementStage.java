@@ -1,5 +1,6 @@
 package jokatu.game.games.uzta.game;
 
+import jokatu.game.event.StageOverEvent;
 import jokatu.game.games.uzta.event.GraphUpdatedEvent;
 import jokatu.game.games.uzta.graph.LineSegment;
 import jokatu.game.games.uzta.graph.Node;
@@ -11,9 +12,9 @@ import jokatu.game.stage.AnyEventSingleInputStage;
 import jokatu.game.turn.TurnManager;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static ophelia.util.MapUtils.updateSetBasedMap;
 
 /**
  * The stage where players determine their starting positions.
@@ -24,6 +25,8 @@ public class FirstPlacementStage extends AnyEventSingleInputStage<SelectEdgeInpu
 	private final UztaGraph graph;
 	private final List<UztaPlayer> players;
 	private final TurnManager<UztaPlayer> turnManager;
+
+	private final Map<UztaPlayer, Set<LineSegment>> ownedEdgesPerPlayer = new HashMap<>();
 
 	FirstPlacementStage(@NotNull UztaGraph graph, @NotNull Map<String, UztaPlayer> players) {
 		this.graph = graph;
@@ -77,9 +80,31 @@ public class FirstPlacementStage extends AnyEventSingleInputStage<SelectEdgeInpu
 				throw new UnacceptableInputException("{0} already owns this edge.", edge.getOwner().getName());
 			}
 		}
+
+		Set<LineSegment> alreadyOwnedEdges = ownedEdgesPerPlayer.get(inputter);
+		if (alreadyOwnedEdges.size() > 1) {
+			throw new UnacceptableInputException("You already own more than one edge.  Don't be greedy!");
+		}
+
 		edge.setOwner(inputter);
+		updateSetBasedMap(ownedEdgesPerPlayer, inputter, edge);
 		fireEvent(new GraphUpdatedEvent(graph));
 
-		turnManager.next();
+		Set<LineSegment> ownedEdges = ownedEdgesPerPlayer.get(inputter);
+		if (ownedEdges.size() == 1) {
+			turnManager.next();
+		} else {
+			turnManager.previous();
+		}
+
+		int min = ownedEdgesPerPlayer.values().stream()
+				.mapToInt(Set::size)
+				.min()
+				.orElse(0);
+
+		if (min > 1) {
+			// Everyone now owns two edges.
+			fireEvent(new StageOverEvent());
+		}
 	}
 }
