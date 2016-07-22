@@ -58,6 +58,8 @@ public class UztaTest {
 
 		assertThat(game.getPlayers(), hasSize(1));
 		assertThat(events, hasItem(instanceOf(PlayerJoinedEvent.class)));
+
+		game.accept(new EndStageInput(), player);
 		assertThat(events, hasItem(instanceOf(StageOverEvent.class)));
 	}
 
@@ -118,6 +120,8 @@ public class UztaTest {
 		HashSet<LineSegment> edges = game.getGraph().getEdges();
 		LineSegment edge = edges.stream().findAny().orElseThrow(() -> new Exception("Cannot find edge"));
 		game.accept(new SelectEdgeInput(edge.getFirst().getId(), edge.getSecond().getId()), player);
+
+		assertThat(edge.getOwner(), is(player));
 	}
 
 	@NotNull
@@ -129,6 +133,7 @@ public class UztaTest {
 
 	private void goToSetup() throws GameException {
 		game.accept(new JoinInput(), player);
+		game.accept(new EndStageInput(), player);
 		game.advanceStage();
 		assertThat(game.getCurrentStage(), instanceOf(SetupStage.class));
 	}
