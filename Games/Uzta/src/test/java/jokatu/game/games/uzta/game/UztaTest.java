@@ -4,6 +4,7 @@ import jokatu.game.GameID;
 import jokatu.game.event.GameEvent;
 import jokatu.game.event.StageOverEvent;
 import jokatu.game.exception.GameException;
+import jokatu.game.games.uzta.event.GraphUpdatedEvent;
 import jokatu.game.games.uzta.graph.LineSegment;
 import jokatu.game.games.uzta.graph.ModifiableUztaGraph;
 import jokatu.game.games.uzta.graph.Node;
@@ -13,13 +14,18 @@ import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.input.finishstage.EndStageInput;
 import jokatu.game.joining.JoinInput;
 import jokatu.game.joining.PlayerJoinedEvent;
+import jokatu.game.turn.TurnChangedEvent;
 import ophelia.collections.set.HashSet;
+import ophelia.exceptions.voidmaybe.VoidMaybe;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static junit.framework.TestCase.assertFalse;
 import static ophelia.collections.matchers.IsCollectionWithSize.hasSize;
@@ -34,6 +40,9 @@ import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.junit.Assert.assertTrue;
 
 public class UztaTest {
+
+	@Rule
+	public ExpectedException expectedException = ExpectedException.none();
 
 	private Uzta game;
 	private UztaPlayer player;
@@ -119,9 +128,52 @@ public class UztaTest {
 
 		HashSet<LineSegment> edges = game.getGraph().getEdges();
 		LineSegment edge = edges.stream().findAny().orElseThrow(() -> new Exception("Cannot find edge"));
+
+		List<GameEvent> events = captureEvents();
+
 		game.accept(new SelectEdgeInput(edge.getFirst().getId(), edge.getSecond().getId()), player);
 
+		assertThat(events, hasItem(instanceOf(GraphUpdatedEvent.class)));
+		assertThat(events, hasItem(instanceOf(TurnChangedEvent.class)));
+
 		assertThat(edge.getOwner(), is(player));
+	}
+
+
+	@Test
+	public void first_placement_stage_should_not_the_same_selection_twice() throws Exception {
+		goToFirstPlacement();
+
+		HashSet<LineSegment> edges = game.getGraph().getEdges();
+		LineSegment edge = edges.stream().findAny().orElseThrow(() -> new Exception("Cannot find edge"));
+		game.accept(new SelectEdgeInput(edge.getFirst().getId(), edge.getSecond().getId()), player);
+
+		expectedException.expectMessage("You already own that edge!");
+		game.accept(new SelectEdgeInput(edge.getFirst().getId(), edge.getSecond().getId()), player);
+	}
+
+	@Test
+	public void first_placement_stage_should_accept_two_edge_selections_and_end_stage() throws Exception {
+		goToFirstPlacement();
+
+		HashSet<LineSegment> edges = game.getGraph().getEdges();
+
+		List<LineSegment> twoEdges = edges.stream()
+				.limit(2)
+				.collect(Collectors.toList());
+
+		List<GameEvent> events = captureEvents();
+
+		twoEdges.stream()
+				.map(edge -> new SelectEdgeInput(edge.getFirst().getId(), edge.getSecond().getId()))
+				.map(VoidMaybe.wrapOutput(input -> game.accept(input, player)))
+				.forEach(result -> result.throwMappedFailure(RuntimeException::new));
+
+		assertThat(events, hasItem(instanceOf(StageOverEvent.class)));
+
+		twoEdges.stream()
+				.map(LineSegment::getOwner)
+				.forEach(owner -> assertThat(owner, is(player)));
 	}
 
 	@NotNull
