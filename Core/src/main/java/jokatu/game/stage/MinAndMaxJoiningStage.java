@@ -41,7 +41,7 @@ public class MinAndMaxJoiningStage<P extends Player> extends MultiInputStage {
 				minimum == 1 ? "" : "s"
 		);
 
-		JoinInputAcceptor<P> joinInputAcceptor = new JoinInputAcceptor<>(playerClass, players, minimum);
+		JoinInputAcceptor<P> joinInputAcceptor = new JoinInputAcceptor<>(playerClass, players, maximum);
 		joinInputAcceptor.observe(this::onPlayerJoin);
 		addInputAcceptor(joinInputAcceptor);
 
