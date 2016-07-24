@@ -95,18 +95,19 @@ public class FirstPlacementStage extends AnyEventSingleInputStage<SelectEdgeInpu
 		if (ownedEdges == null) {
 			throw new IllegalStateException("You should own at least one edge by this point.");
 		}
-		if (ownedEdges.size() == 1) {
+		if (ownedEdges.size() < 2) {
 			turnManager.next();
 		} else {
 			turnManager.previous();
 		}
 
-		int min = ownedEdgesPerPlayer.values().stream()
+		int minOwnedEdges = players.stream()
+				.map(player -> ownedEdgesPerPlayer.getOrDefault(player, emptySet()))
 				.mapToInt(Set::size)
 				.min()
 				.orElse(0);
 
-		if (min > 1) {
+		if (minOwnedEdges > 1) {
 			// Everyone now owns two edges.
 			fireEvent(new StageOverEvent());
 		}
