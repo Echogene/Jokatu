@@ -10,6 +10,7 @@ import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.stage.AnyEventSingleInputStage;
 import jokatu.game.turn.TurnManager;
+import ophelia.collections.list.UnmodifiableList;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -57,6 +58,11 @@ public class FirstPlacementStage extends AnyEventSingleInputStage<SelectEdgeInpu
 	@NotNull
 	private List<UztaPlayer> determineTurnOrder(Map<String, UztaPlayer> players) {
 		return new ArrayList<>(players.values());
+	}
+
+	@NotNull
+	UnmodifiableList<UztaPlayer> getPlayersInOrder() {
+		return new UnmodifiableList<>(players);
 	}
 
 	@Override

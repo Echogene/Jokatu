@@ -14,8 +14,8 @@ import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.input.finishstage.EndStageInput;
 import jokatu.game.joining.JoinInput;
 import jokatu.game.joining.PlayerJoinedEvent;
-import jokatu.game.player.Player;
 import jokatu.game.turn.TurnChangedEvent;
+import ophelia.collections.list.UnmodifiableList;
 import ophelia.collections.set.HashSet;
 import ophelia.exceptions.voidmaybe.VoidMaybe;
 import org.jetbrains.annotations.NotNull;
@@ -26,8 +26,8 @@ import org.junit.rules.ExpectedException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
 import static junit.framework.TestCase.assertFalse;
 import static ophelia.collections.matchers.IsCollectionWithSize.hasSize;
 import static ophelia.collections.matchers.IsEmptyCollection.empty;
@@ -48,6 +48,7 @@ public class UztaTest {
 	private Uzta game;
 	private UztaPlayer player;
 	private UztaPlayer player2;
+	private UztaPlayer player3;
 
 	@Before
 	public void setUp() throws Exception {
@@ -57,6 +58,7 @@ public class UztaTest {
 
 		player = new UztaPlayer("Player");
 		player2 = new UztaPlayer("Player 2");
+		player3 = new UztaPlayer("Player 3");
 	}
 
 	@Test
@@ -134,7 +136,7 @@ public class UztaTest {
 
 		List<GameEvent> events = captureEvents();
 
-		game.accept(new SelectEdgeInput(edge.getFirst().getId(), edge.getSecond().getId()), player);
+		selectEdge(player, edge);
 
 		assertThat(events, hasItem(instanceOf(GraphUpdatedEvent.class)));
 		assertThat(events, hasItem(instanceOf(TurnChangedEvent.class)));
@@ -149,10 +151,10 @@ public class UztaTest {
 
 		HashSet<LineSegment> edges = game.getGraph().getEdges();
 		LineSegment edge = edges.stream().findAny().orElseThrow(() -> new Exception("Cannot find edge"));
-		game.accept(new SelectEdgeInput(edge.getFirst().getId(), edge.getSecond().getId()), player);
+		selectEdge(player, edge);
 
 		expectedException.expectMessage("You already own that edge!");
-		game.accept(new SelectEdgeInput(edge.getFirst().getId(), edge.getSecond().getId()), player);
+		selectEdge(player, edge);
 	}
 
 	@Test
@@ -163,7 +165,7 @@ public class UztaTest {
 
 		List<LineSegment> twoEdges = edges.stream()
 				.limit(2)
-				.collect(Collectors.toList());
+				.collect(toList());
 
 		List<GameEvent> events = captureEvents();
 
@@ -182,47 +184,70 @@ public class UztaTest {
 	@Test
 	public void turn_order_should_be_correct_for_two_players() throws Exception {
 
-		List<GameEvent> events = captureEvents();
 		goToSetupStageWithTwoPlayers();
-		TurnChangedEvent awaitingInputEvent = events.stream()
-				.filter(TurnChangedEvent.class::isInstance)
-				.map(TurnChangedEvent.class::cast)
-				.findAny()
-				.orElseThrow(() -> new RuntimeException("Awaiting input from no one"));
-		Player firstPlayer = awaitingInputEvent.getAwaitingPlayers().stream()
-				.findAny()
-				.orElseThrow(() -> new RuntimeException("No player"));
-		final Player secondPlayer;
-		if (firstPlayer == player) {
-			secondPlayer = player2;
-		} else {
-			secondPlayer = player;
-		}
+		FirstPlacementStage currentStage = (FirstPlacementStage) game.getCurrentStage();
+		assert currentStage != null;
+		UnmodifiableList<UztaPlayer> playersInOrder = currentStage.getPlayersInOrder();
+		UztaPlayer firstPlayer = playersInOrder.get(0);
+		UztaPlayer secondPlayer = playersInOrder.get(1);
 
 		HashSet<LineSegment> edges = game.getGraph().getEdges();
 
 		List<LineSegment> fourEdges = edges.stream()
 				.limit(4)
-				.collect(Collectors.toList());
+				.collect(toList());
 
-		LineSegment edge;
+		selectEdge(firstPlayer, fourEdges.get(0));
+		selectEdge(secondPlayer, fourEdges.get(1));
+		selectEdge(secondPlayer, fourEdges.get(2));
+		selectEdge(firstPlayer, fourEdges.get(3));
+	}
 
-		edge = fourEdges.get(0);
-		game.accept(new SelectEdgeInput(edge.getFirst().getId(), edge.getSecond().getId()), firstPlayer);
+	@Test
+	public void turn_order_should_be_correct_for_three_players() throws Exception {
 
-		edge = fourEdges.get(1);
-		game.accept(new SelectEdgeInput(edge.getFirst().getId(), edge.getSecond().getId()), secondPlayer);
+		goToSetupStageWithThreePlayers();
+		FirstPlacementStage currentStage = (FirstPlacementStage) game.getCurrentStage();
+		assert currentStage != null;
+		UnmodifiableList<UztaPlayer> playersInOrder = currentStage.getPlayersInOrder();
+		UztaPlayer firstPlayer = playersInOrder.get(0);
+		UztaPlayer secondPlayer = playersInOrder.get(1);
+		UztaPlayer thirdPlayer = playersInOrder.get(2);
 
-		edge = fourEdges.get(2);
-		game.accept(new SelectEdgeInput(edge.getFirst().getId(), edge.getSecond().getId()), secondPlayer);
+		HashSet<LineSegment> edges = game.getGraph().getEdges();
 
-		edge = fourEdges.get(3);
+		List<LineSegment> fourEdges = edges.stream()
+				.limit(6)
+				.collect(toList());
+
+		selectEdge(firstPlayer, fourEdges.get(0));
+		selectEdge(secondPlayer, fourEdges.get(1));
+		selectEdge(thirdPlayer, fourEdges.get(2));
+		selectEdge(thirdPlayer, fourEdges.get(3));
+		selectEdge(secondPlayer, fourEdges.get(4));
+		selectEdge(firstPlayer, fourEdges.get(5));
+	}
+
+	private void selectEdge(UztaPlayer firstPlayer, LineSegment edge) throws GameException {
 		game.accept(new SelectEdgeInput(edge.getFirst().getId(), edge.getSecond().getId()), firstPlayer);
 	}
 
 	private void goToSetupStageWithTwoPlayers() throws GameException {
 		game.accept(new JoinInput(), player);
 		game.accept(new JoinInput(), player2);
+		game.accept(new EndStageInput(), player);
+		game.advanceStage();
+		assertThat(game.getCurrentStage(), instanceOf(SetupStage.class));
+
+		game.accept(new EndStageInput(), player);
+		game.advanceStage();
+		assertThat(game.getCurrentStage(), instanceOf(FirstPlacementStage.class));
+	}
+
+	private void goToSetupStageWithThreePlayers() throws GameException {
+		game.accept(new JoinInput(), player);
+		game.accept(new JoinInput(), player2);
+		game.accept(new JoinInput(), player3);
 		game.accept(new EndStageInput(), player);
 		game.advanceStage();
 		assertThat(game.getCurrentStage(), instanceOf(SetupStage.class));
