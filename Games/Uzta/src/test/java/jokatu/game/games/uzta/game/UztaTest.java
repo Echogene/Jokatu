@@ -14,6 +14,7 @@ import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.input.finishstage.EndStageInput;
 import jokatu.game.joining.JoinInput;
 import jokatu.game.joining.PlayerJoinedEvent;
+import jokatu.game.player.Player;
 import jokatu.game.turn.TurnChangedEvent;
 import ophelia.collections.set.HashSet;
 import ophelia.exceptions.voidmaybe.VoidMaybe;
@@ -46,6 +47,7 @@ public class UztaTest {
 
 	private Uzta game;
 	private UztaPlayer player;
+	private UztaPlayer player2;
 
 	@Before
 	public void setUp() throws Exception {
@@ -54,6 +56,7 @@ public class UztaTest {
 		game.advanceStage();
 
 		player = new UztaPlayer("Player");
+		player2 = new UztaPlayer("Player 2");
 	}
 
 	@Test
@@ -174,6 +177,59 @@ public class UztaTest {
 		twoEdges.stream()
 				.map(LineSegment::getOwner)
 				.forEach(owner -> assertThat(owner, is(player)));
+	}
+
+	@Test
+	public void turn_order_should_be_correct_for_two_players() throws Exception {
+
+		List<GameEvent> events = captureEvents();
+		goToSetupStageWithTwoPlayers();
+		TurnChangedEvent awaitingInputEvent = events.stream()
+				.filter(TurnChangedEvent.class::isInstance)
+				.map(TurnChangedEvent.class::cast)
+				.findAny()
+				.orElseThrow(() -> new RuntimeException("Awaiting input from no one"));
+		Player firstPlayer = awaitingInputEvent.getAwaitingPlayers().stream()
+				.findAny()
+				.orElseThrow(() -> new RuntimeException("No player"));
+		final Player secondPlayer;
+		if (firstPlayer == player) {
+			secondPlayer = player2;
+		} else {
+			secondPlayer = player;
+		}
+
+		HashSet<LineSegment> edges = game.getGraph().getEdges();
+
+		List<LineSegment> fourEdges = edges.stream()
+				.limit(4)
+				.collect(Collectors.toList());
+
+		LineSegment edge;
+
+		edge = fourEdges.get(0);
+		game.accept(new SelectEdgeInput(edge.getFirst().getId(), edge.getSecond().getId()), firstPlayer);
+
+		edge = fourEdges.get(1);
+		game.accept(new SelectEdgeInput(edge.getFirst().getId(), edge.getSecond().getId()), secondPlayer);
+
+		edge = fourEdges.get(2);
+		game.accept(new SelectEdgeInput(edge.getFirst().getId(), edge.getSecond().getId()), secondPlayer);
+
+		edge = fourEdges.get(3);
+		game.accept(new SelectEdgeInput(edge.getFirst().getId(), edge.getSecond().getId()), firstPlayer);
+	}
+
+	private void goToSetupStageWithTwoPlayers() throws GameException {
+		game.accept(new JoinInput(), player);
+		game.accept(new JoinInput(), player2);
+		game.accept(new EndStageInput(), player);
+		game.advanceStage();
+		assertThat(game.getCurrentStage(), instanceOf(SetupStage.class));
+
+		game.accept(new EndStageInput(), player);
+		game.advanceStage();
+		assertThat(game.getCurrentStage(), instanceOf(FirstPlacementStage.class));
 	}
 
 	@NotNull
