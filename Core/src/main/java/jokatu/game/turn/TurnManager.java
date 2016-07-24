@@ -56,6 +56,10 @@ public class TurnManager<P extends Player> extends AbstractSynchronousObservable
 		setCurrentPlayer(players.get((i + players.size() - 1) % players.size()));
 	}
 
+	public void playAgain() {
+		setCurrentPlayer(currentPlayer);
+	}
+
 	@Nullable
 	public P getCurrentPlayer() {
 		return currentPlayer;
