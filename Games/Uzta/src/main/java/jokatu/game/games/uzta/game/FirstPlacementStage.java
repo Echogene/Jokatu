@@ -106,7 +106,10 @@ public class FirstPlacementStage extends AnyEventSingleInputStage<SelectEdgeInpu
 				.mapToInt(Set::size)
 				.min()
 				.orElse(0);
-		if (ownedEdges.size() < 2) {
+		if (minOwnedEdges > 1) {
+			// Everyone now owns two edges.
+			fireEvent(new StageOverEvent());
+		} else if (ownedEdges.size() < 2) {
 			if (minOwnedEdges > 0) {
 				// Everyone has input once, so go again.
 				turnManager.playAgain();
@@ -115,12 +118,6 @@ public class FirstPlacementStage extends AnyEventSingleInputStage<SelectEdgeInpu
 			}
 		} else {
 			turnManager.previous();
-		}
-
-
-		if (minOwnedEdges > 1) {
-			// Everyone now owns two edges.
-			fireEvent(new StageOverEvent());
 		}
 	}
 }

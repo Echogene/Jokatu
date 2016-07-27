@@ -11,6 +11,7 @@ import jokatu.game.games.uzta.graph.Node;
 import jokatu.game.games.uzta.input.RandomiseGraphInput;
 import jokatu.game.games.uzta.input.SelectEdgeInput;
 import jokatu.game.games.uzta.player.UztaPlayer;
+import jokatu.game.input.AwaitingInputEvent;
 import jokatu.game.input.finishstage.EndStageInput;
 import jokatu.game.joining.JoinInput;
 import jokatu.game.joining.PlayerJoinedEvent;
@@ -26,6 +27,7 @@ import org.junit.rules.ExpectedException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 import static junit.framework.TestCase.assertFalse;
@@ -200,7 +202,15 @@ public class UztaTest {
 		selectEdge(firstPlayer, fourEdges.get(0));
 		selectEdge(secondPlayer, fourEdges.get(1));
 		selectEdge(secondPlayer, fourEdges.get(2));
+
+		List<GameEvent> events = captureEvents();
 		selectEdge(firstPlayer, fourEdges.get(3));
+		List<AwaitingInputEvent> awaitingInputEvents = events.stream()
+				.filter(AwaitingInputEvent.class::isInstance)
+				.map(AwaitingInputEvent.class::cast)
+				.collect(Collectors.toList());
+		assertThat(awaitingInputEvents, org.hamcrest.collection.IsCollectionWithSize.hasSize(1));
+		assertThat(awaitingInputEvents, hasItem(instanceOf(StageOverEvent.class)));
 	}
 
 	@Test
