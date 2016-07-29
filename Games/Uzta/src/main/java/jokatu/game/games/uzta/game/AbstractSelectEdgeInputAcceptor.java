@@ -1,6 +1,7 @@
 package jokatu.game.games.uzta.game;
 
 import jokatu.game.event.GameEvent;
+import jokatu.game.games.uzta.event.GraphUpdatedEvent;
 import jokatu.game.games.uzta.graph.LineSegment;
 import jokatu.game.games.uzta.graph.Node;
 import jokatu.game.games.uzta.graph.UztaGraph;
@@ -12,6 +13,8 @@ import jokatu.game.turn.TurnManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+
+import static ophelia.util.MapUtils.updateSetBasedMap;
 
 public abstract class AbstractSelectEdgeInputAcceptor extends AbstractInputAcceptor<SelectEdgeInput, UztaPlayer, GameEvent> {
 	protected final UztaGraph graph;
@@ -67,5 +70,20 @@ public abstract class AbstractSelectEdgeInputAcceptor extends AbstractInputAccep
 			}
 		}
 		return edge;
+	}
+
+	protected void setOwner(LineSegment edge, @NotNull UztaPlayer inputter) {
+		edge.setOwner(inputter);
+		updateSetBasedMap(ownedEdgesPerPlayer, inputter, edge);
+		fireEvent(new GraphUpdatedEvent(graph));
+	}
+
+	@NotNull
+	protected Set<LineSegment> getNotNullOwnedEdgesForPlayer(@NotNull UztaPlayer inputter) {
+		Set<LineSegment> ownedEdges = ownedEdgesPerPlayer.get(inputter);
+		if (ownedEdges == null) {
+			throw new IllegalStateException("You should own at least one edge by this point.");
+		}
+		return ownedEdges;
 	}
 }

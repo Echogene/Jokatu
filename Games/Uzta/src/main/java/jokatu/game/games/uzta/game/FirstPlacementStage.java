@@ -2,7 +2,6 @@ package jokatu.game.games.uzta.game;
 
 import jokatu.game.event.GameEvent;
 import jokatu.game.event.StageOverEvent;
-import jokatu.game.games.uzta.event.GraphUpdatedEvent;
 import jokatu.game.games.uzta.graph.LineSegment;
 import jokatu.game.games.uzta.graph.UztaGraph;
 import jokatu.game.games.uzta.input.SelectEdgeInput;
@@ -16,7 +15,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static java.util.Collections.emptySet;
-import static ophelia.util.MapUtils.updateSetBasedMap;
 
 /**
  * The stage where players determine their starting positions.
@@ -46,14 +44,9 @@ public class FirstPlacementStage extends AbstractSelectEdgeInputAcceptor impleme
 			throw new UnacceptableInputException("You already own more than one edge.  Don't be greedy!");
 		}
 
-		edge.setOwner(inputter);
-		updateSetBasedMap(ownedEdgesPerPlayer, inputter, edge);
-		fireEvent(new GraphUpdatedEvent(graph));
+		setOwner(edge, inputter);
 
-		Set<LineSegment> ownedEdges = ownedEdgesPerPlayer.get(inputter);
-		if (ownedEdges == null) {
-			throw new IllegalStateException("You should own at least one edge by this point.");
-		}
+		Set<LineSegment> ownedEdges = getNotNullOwnedEdgesForPlayer(inputter);
 		int minOwnedEdges = players.stream()
 				.map(player -> ownedEdgesPerPlayer.getOrDefault(player, emptySet()))
 				.mapToInt(Set::size)
