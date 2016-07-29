@@ -11,8 +11,6 @@ import jokatu.game.stage.Stage;
 import ophelia.collections.list.UnmodifiableList;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,17 +23,12 @@ import static ophelia.util.MapUtils.updateSetBasedMap;
 public class FirstPlacementStage extends AbstractSelectEdgeInputAcceptor implements Stage<GameEvent> {
 
 	FirstPlacementStage(@NotNull UztaGraph graph, @NotNull Map<String, UztaPlayer> players) {
-		super(graph, determineTurnOrder(players));
+		super(graph, players);
 	}
 
 	@Override
 	public void start() {
 		turnManager.next();
-	}
-
-	@NotNull
-	private static List<UztaPlayer> determineTurnOrder(Map<String, UztaPlayer> players) {
-		return new ArrayList<>(players.values());
 	}
 
 	@NotNull

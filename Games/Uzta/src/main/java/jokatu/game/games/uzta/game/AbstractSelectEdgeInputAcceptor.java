@@ -11,10 +11,7 @@ import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.turn.TurnManager;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.Collections.emptySet;
 
@@ -24,12 +21,17 @@ public abstract class AbstractSelectEdgeInputAcceptor extends AbstractInputAccep
 	protected final Map<UztaPlayer, Set<LineSegment>> ownedEdgesPerPlayer = new HashMap<>();
 	protected final List<UztaPlayer> players;
 
-	protected AbstractSelectEdgeInputAcceptor(@NotNull UztaGraph graph, List<UztaPlayer> players) {
+	protected AbstractSelectEdgeInputAcceptor(@NotNull UztaGraph graph, Map<String, UztaPlayer> players) {
 		this.graph = graph;
-		this.players = players;
+		this.players = determineTurnOrder(players);
 
 		turnManager = new TurnManager<>(this.players);
 		turnManager.observe(this::fireEvent);
+	}
+
+	@NotNull
+	private List<UztaPlayer> determineTurnOrder(Map<String, UztaPlayer> players) {
+		return new ArrayList<>(players.values());
 	}
 
 	@NotNull
