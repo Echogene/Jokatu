@@ -7,6 +7,7 @@ import jokatu.game.games.uzta.graph.LineSegment;
 import jokatu.game.games.uzta.graph.UztaGraph;
 import jokatu.game.games.uzta.input.SelectEdgeInput;
 import jokatu.game.games.uzta.player.UztaPlayer;
+import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.stage.Stage;
 import ophelia.collections.list.UnmodifiableList;
 import org.jetbrains.annotations.NotNull;
@@ -39,6 +40,11 @@ public class FirstPlacementStage extends AbstractSelectEdgeInputAcceptor impleme
 	@Override
 	protected void acceptCastInputAndPlayer(@NotNull SelectEdgeInput input, @NotNull UztaPlayer inputter) throws Exception {
 		LineSegment edge = getLineSegment(input, inputter);
+
+		Set<LineSegment> alreadyOwnedEdges = ownedEdgesPerPlayer.getOrDefault(inputter, emptySet());
+		if (alreadyOwnedEdges.size() > 1) {
+			throw new UnacceptableInputException("You already own more than one edge.  Don't be greedy!");
+		}
 
 		edge.setOwner(inputter);
 		updateSetBasedMap(ownedEdgesPerPlayer, inputter, edge);

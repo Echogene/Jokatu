@@ -13,8 +13,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-import static java.util.Collections.emptySet;
-
 public abstract class AbstractSelectEdgeInputAcceptor extends AbstractInputAcceptor<SelectEdgeInput, UztaPlayer, GameEvent> {
 	protected final UztaGraph graph;
 	protected final TurnManager<UztaPlayer> turnManager;
@@ -67,11 +65,6 @@ public abstract class AbstractSelectEdgeInputAcceptor extends AbstractInputAccep
 			} else {
 				throw new UnacceptableInputException("{0} already owns this edge.", edge.getOwner().getName());
 			}
-		}
-
-		Set<LineSegment> alreadyOwnedEdges = ownedEdgesPerPlayer.getOrDefault(inputter, emptySet());
-		if (alreadyOwnedEdges.size() > 1) {
-			throw new UnacceptableInputException("You already own more than one edge.  Don't be greedy!");
 		}
 		return edge;
 	}
