@@ -45,7 +45,7 @@ public abstract class AbstractSelectEdgeInputAcceptor extends AbstractInputAccep
 	}
 
 	@NotNull
-	protected LineSegment getLineSegment(@NotNull SelectEdgeInput input, @NotNull UztaPlayer inputter) throws Exception {
+	protected LineSegment getUnownedLineSegment(@NotNull SelectEdgeInput input, @NotNull UztaPlayer inputter) throws Exception {
 		turnManager.assertCurrentPlayer(inputter);
 
 		String startId = input.getStartId();

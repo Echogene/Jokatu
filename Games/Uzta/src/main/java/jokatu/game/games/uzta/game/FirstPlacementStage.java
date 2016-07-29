@@ -39,7 +39,7 @@ public class FirstPlacementStage extends AbstractSelectEdgeInputAcceptor impleme
 
 	@Override
 	protected void acceptCastInputAndPlayer(@NotNull SelectEdgeInput input, @NotNull UztaPlayer inputter) throws Exception {
-		LineSegment edge = getLineSegment(input, inputter);
+		LineSegment edge = getUnownedLineSegment(input, inputter);
 
 		Set<LineSegment> alreadyOwnedEdges = ownedEdgesPerPlayer.getOrDefault(inputter, emptySet());
 		if (alreadyOwnedEdges.size() > 1) {
