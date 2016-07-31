@@ -28,7 +28,7 @@ public class TurnChangedEvent extends AwaitingInputEvent implements PublicGameEv
 		if (oldPlayer == null) {
 			return format("It''s {0}''s turn.", newPlayer);
 		} else if (oldPlayer == newPlayer) {
-			return format("It's {0}''s turn again.", oldPlayer);
+			return format("It''s {0}''s turn again.", oldPlayer);
 		} else {
 			return format("{0}''s turn is over.  It''s now {1}''s turn.", oldPlayer, newPlayer);
 		}
