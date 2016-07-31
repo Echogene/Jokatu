@@ -28,6 +28,10 @@ public abstract class AbstractSelectEdgeInputAcceptor extends AbstractInputAccep
 
 		turnManager = new TurnManager<>(this.players);
 		turnManager.observe(this::fireEvent);
+
+		graph.getEdges().stream()
+				.filter(edge -> edge.getOwner() != null)
+				.forEach(edge -> updateSetBasedMap(ownedEdgesPerPlayer, edge.getOwner(), edge));
 	}
 
 	@NotNull
