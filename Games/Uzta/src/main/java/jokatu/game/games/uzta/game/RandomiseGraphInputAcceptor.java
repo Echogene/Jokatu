@@ -4,8 +4,8 @@ import jokatu.game.event.GameEvent;
 import jokatu.game.games.uzta.event.GraphUpdatedEvent;
 import jokatu.game.games.uzta.graph.*;
 import jokatu.game.games.uzta.input.RandomiseGraphInput;
+import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.input.AbstractInputAcceptor;
-import jokatu.game.player.StandardPlayer;
 import ophelia.collections.set.HashSet;
 import ophelia.graph.BiGraph;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +21,7 @@ import static jokatu.game.games.uzta.game.Uzta.DICE_SIZE;
 /**
  * Randomise the graph whenever a user wants to.
  */
-class RandomiseGraphInputAcceptor extends AbstractInputAcceptor<RandomiseGraphInput, StandardPlayer, GameEvent> {
+class RandomiseGraphInputAcceptor extends AbstractInputAcceptor<RandomiseGraphInput, UztaPlayer, GameEvent> {
 
 	private final BiGraph<Node, LineSegment> graph;
 	private final List<Node> nodes;
@@ -138,12 +138,12 @@ class RandomiseGraphInputAcceptor extends AbstractInputAcceptor<RandomiseGraphIn
 
 	@NotNull
 	@Override
-	protected Class<StandardPlayer> getPlayerClass() {
-		return StandardPlayer.class;
+	protected Class<UztaPlayer> getPlayerClass() {
+		return UztaPlayer.class;
 	}
 
 	@Override
-	protected void acceptCastInputAndPlayer(@NotNull RandomiseGraphInput input, @NotNull StandardPlayer inputter) throws Exception {
+	protected void acceptCastInputAndPlayer(@NotNull RandomiseGraphInput input, @NotNull UztaPlayer inputter) throws Exception {
 		randomiseGraph();
 	}
 }
