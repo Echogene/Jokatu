@@ -1,5 +1,6 @@
 package jokatu.game.games.uzta.views;
 
+import jokatu.game.games.uzta.game.FirstPlacementStage;
 import jokatu.game.games.uzta.game.SetupStage;
 import jokatu.game.games.uzta.game.Uzta;
 import jokatu.game.games.uzta.player.UztaPlayer;
@@ -24,6 +25,9 @@ class UztaViewResolver extends ViewResolver<UztaPlayer, Uzta> {
 
 		} else if (currentStage instanceof SetupStage) {
 			view = "views/uzta_setup";
+
+		} else if (currentStage instanceof FirstPlacementStage) {
+			view = "views/uzta";
 
 		} else {
 			view = "views/uzta";
