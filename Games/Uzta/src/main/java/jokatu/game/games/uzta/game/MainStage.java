@@ -109,7 +109,7 @@ public class MainStage extends AbstractSelectEdgeInputAcceptor implements Stage<
 	@NotNull
 	private String presentNeededResources(Pair<NodeType, Integer> pair) {
 		Integer numberNeeded = -pair.getRight();
-		return numberNeeded + " " + pair.getLeft().getNumber(numberNeeded);
+		return pair.getLeft().getNumber(numberNeeded);
 	}
 
 	private BaseIntegerBag<NodeType> getCost(@NotNull LineSegment edge) {

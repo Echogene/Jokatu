@@ -19,6 +19,6 @@ public enum NodeType {
 
 	@NotNull
 	public String getNumber(int number) {
-		return number == 1 ? singular : plural;
+		return number + " " + (number == 1 ? singular : plural);
 	}
 }
