@@ -33,6 +33,8 @@ public class MainStage extends AbstractSelectEdgeInputAcceptor implements Stage<
 	MainStage(@NotNull UztaGraph graph, @NotNull Map<String, UztaPlayer> players) {
 		super(graph, players);
 
+		this.players.forEach(player -> player.observe(this::fireEvent));
+
 		nodeToOwningEdges = new HashMap<>(); 
 		
 		graph.getEdges().stream()
