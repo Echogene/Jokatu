@@ -3,6 +3,7 @@ package jokatu.game.input;
 import jokatu.game.Game;
 import jokatu.game.event.GameEvent;
 import jokatu.game.player.Player;
+import ophelia.collections.BaseCollection;
 import ophelia.event.observable.Observable;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,5 +15,9 @@ import org.jetbrains.annotations.NotNull;
  * @param <E> the type of {@link GameEvent} that this may fire
  */
 public interface InputAcceptor<E extends GameEvent> extends Observable<E> {
+
+	@NotNull
+	BaseCollection<Class<? extends Input>> getAcceptedInputs();
+
 	void accept(@NotNull Input input, @NotNull Player player) throws Exception;
 }

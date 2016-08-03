@@ -7,6 +7,7 @@ import jokatu.game.joining.JoinInputAcceptor;
 import jokatu.game.joining.PlayerJoinedEvent;
 import jokatu.game.player.Player;
 import jokatu.game.status.StandardTextStatus;
+import ophelia.collections.BaseCollection;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import org.jetbrains.annotations.NotNull;
 
@@ -57,6 +58,12 @@ public class JoiningStage<P extends Player> extends AbstractSynchronousObservabl
 					more == 1 ? "" : "s"
 			);
 		}
+	}
+
+	@NotNull
+	@Override
+	public BaseCollection<Class<? extends Input>> getAcceptedInputs() {
+		return inputAcceptor.getAcceptedInputs();
 	}
 
 	@Override

@@ -5,6 +5,8 @@ import jokatu.game.input.Input;
 import jokatu.game.input.InputAcceptor;
 import jokatu.game.player.Player;
 import jokatu.game.stage.Stage;
+import ophelia.collections.BaseCollection;
+import ophelia.collections.UnmodifiableCollection;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import ophelia.exceptions.StackedException;
 import ophelia.exceptions.voidmaybe.VoidMaybe;
@@ -12,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -26,8 +29,18 @@ public abstract class MultiInputStage extends AbstractSynchronousObservable<Game
 		inputAcceptor.observe(this::fireEvent);
 	}
 
+	@NotNull
 	@Override
-	public void accept(@NotNull Input input, @NotNull Player player) throws StackedException {
+	public UnmodifiableCollection<Class<? extends Input>> getAcceptedInputs() {
+		Set<Class<? extends Input>> inputs = inputAcceptors.stream()
+				.map(InputAcceptor::getAcceptedInputs)
+				.flatMap(BaseCollection::stream)
+				.collect(Collectors.toSet());
+		return new UnmodifiableCollection<>(inputs);
+	}
+
+	@Override
+	public final void accept(@NotNull Input input, @NotNull Player player) throws StackedException {
 		VoidMaybe.mergeFailures(
 				inputAcceptors.stream()
 						.map(VoidMaybe.wrapOutput(acceptor -> acceptor.accept(input, player)))

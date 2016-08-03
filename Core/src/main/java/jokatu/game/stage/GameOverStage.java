@@ -5,8 +5,11 @@ import jokatu.game.input.Input;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.player.Player;
 import jokatu.game.status.StandardTextStatus;
+import ophelia.collections.BaseCollection;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import org.jetbrains.annotations.NotNull;
+
+import static ophelia.collections.set.EmptySet.emptySet;
 
 /**
  * A {@link Stage} that happens after the game is over.  No more input should be accepted at this point.
@@ -15,6 +18,12 @@ public class GameOverStage extends AbstractSynchronousObservable<GameEvent> impl
 
 	public GameOverStage(StandardTextStatus status) {
 		status.setText("Game over.");
+	}
+
+	@NotNull
+	@Override
+	public BaseCollection<Class<? extends Input>> getAcceptedInputs() {
+		return emptySet();
 	}
 
 	@Override
