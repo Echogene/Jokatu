@@ -16,6 +16,7 @@ import jokatu.game.stage.Stage;
 import jokatu.game.viewresolver.ViewResolver;
 import jokatu.stomp.SendErrorMessage;
 import jokatu.stomp.SubscriptionErrorMessage;
+import ophelia.collections.BaseCollection;
 import ophelia.exceptions.maybe.FailureHandler;
 import ophelia.exceptions.maybe.SuccessHandler;
 import org.jetbrains.annotations.NotNull;
@@ -117,14 +118,20 @@ public class GameController {
 		if (currentStage == null) {
 			throw new GameException(identity, "The game hasn't started yet.");
 		}
-		Input input = currentStage.getAcceptedInputs().stream()
-				.map(inputDeserialisers::getDeserialiser)
-				.map(wrapOutput(deserialiser -> deserialiser.deserialise(json)))
-				.map(SuccessHandler::returnOnSuccess)
-				.map(FailureHandler::nullOnFailure)
-				.filter(i -> i != null)
-				.findAny()
-				.orElseThrow(() -> new GameException(identity, "Could not deserialise ''{0}''", json));
+		BaseCollection<Class<? extends Input>> acceptedInputs = currentStage.getAcceptedInputs();
+		Input input;
+		if (acceptedInputs.isEmpty()) {
+			input = new Input() {};
+		} else {
+			input = acceptedInputs.stream()
+					.map(inputDeserialisers::getDeserialiser)
+					.map(wrapOutput(deserialiser -> deserialiser.deserialise(json)))
+					.map(SuccessHandler::returnOnSuccess)
+					.map(FailureHandler::nullOnFailure)
+					.filter(i -> i != null)
+					.findAny()
+					.orElseThrow(() -> new GameException(identity, "Could not deserialise ''{0}''.", json));
+		}
 		game.accept(input, player);
 	}
 
