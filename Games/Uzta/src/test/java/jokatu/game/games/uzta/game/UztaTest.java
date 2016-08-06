@@ -177,7 +177,7 @@ public class UztaTest {
 
 		twoEdges.stream()
 				.map(edge -> new SelectEdgeInput(edge.getFirst().getId(), edge.getSecond().getId()))
-				.map(VoidMaybe.wrapOutput(input -> game.accept(input, player)))
+				.map(VoidMaybe.wrap(input -> game.accept(input, player)))
 				.forEach(result -> result.throwMappedFailure(RuntimeException::new));
 
 		assertThat(events, hasItem(instanceOf(StageOverEvent.class)));
@@ -326,7 +326,7 @@ public class UztaTest {
 
 		twoEdges.stream()
 				.map(edge -> new SelectEdgeInput(edge.getFirst().getId(), edge.getSecond().getId()))
-				.map(VoidMaybe.wrapOutput(input -> game.accept(input, player)))
+				.map(VoidMaybe.wrap(input -> game.accept(input, player)))
 				.forEach(result -> result.throwMappedFailure(RuntimeException::new));
 
 		game.advanceStage();
