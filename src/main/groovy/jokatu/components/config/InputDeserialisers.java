@@ -29,7 +29,7 @@ public class InputDeserialisers {
 	@PostConstruct
 	public void populateDeserialisers() throws Exception {
 		List<VoidMaybe> maybes = applicationContext.getBeansOfType(InputDeserialiser.class).values().stream()
-				.map(VoidMaybe.wrapOutput(this::addDeserialiser))
+				.map(VoidMaybe.wrap(this::addDeserialiser))
 				.collect(Collectors.toList());
 		VoidMaybe.mergeFailures(maybes).throwOnFailure();
 		if (deserialiserMap.isEmpty()) {
