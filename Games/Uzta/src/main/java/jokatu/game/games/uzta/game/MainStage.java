@@ -3,27 +3,29 @@ package jokatu.game.games.uzta.game;
 import jokatu.game.MultiInputStage;
 import jokatu.game.games.uzta.graph.UztaGraph;
 import jokatu.game.games.uzta.player.UztaPlayer;
+import jokatu.game.turn.TurnManager;
 
-import java.util.Map;
+import java.util.List;
 
 public class MainStage extends MultiInputStage {
 
-	private final MainStageSelectEdgeInputAcceptor mainStageSelectEdgeInputAcceptor;
 	private final ResourceDistributor resourceDistributor;
+	private final TurnManager<UztaPlayer> turnManager;
 
-	MainStage(UztaGraph graph, Map<String, UztaPlayer> players) {
+	MainStage(UztaGraph graph, List<UztaPlayer> playersInOrder) {
 		resourceDistributor = new ResourceDistributor(graph);
+		turnManager = new TurnManager<>(playersInOrder);
 
-		mainStageSelectEdgeInputAcceptor = new MainStageSelectEdgeInputAcceptor(graph, players, resourceDistributor);
+		MainStageSelectEdgeInputAcceptor mainStageSelectEdgeInputAcceptor = new MainStageSelectEdgeInputAcceptor(graph, turnManager, resourceDistributor);
 		addInputAcceptor(mainStageSelectEdgeInputAcceptor);
 
-		players.values().forEach(player -> player.observe(this::fireEvent));
+		playersInOrder.forEach(player -> player.observe(this::fireEvent));
 	}
 
 	@Override
 	public void start() {
 		resourceDistributor.distributeStartingResources();
 
-		mainStageSelectEdgeInputAcceptor.startNextTurn();
+		turnManager.next();
 	}
 }

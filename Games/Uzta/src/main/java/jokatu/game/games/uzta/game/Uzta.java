@@ -10,6 +10,10 @@ import jokatu.game.stage.machine.SequentialStageMachine;
 import jokatu.game.status.StandardTextStatus;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * A game played on an abstract graph where players harvest abstract resources produced by the graph in order to build
  * more things on the graph.
@@ -30,12 +34,17 @@ public class Uzta extends Game<UztaPlayer> {
 		stageMachine = new SequentialStageMachine(
 				() -> new MinAndMaxJoiningStage<>(UztaPlayer.class, players, 1, 6, status),
 				() -> new SetupStage(graph, players),
-				() -> new FirstPlacementStage(graph, players),
-				() -> new MainStage(graph, players),
+				() -> new FirstPlacementStage(graph, determineTurnOrder(players)),
+				() -> new MainStage(graph, determineTurnOrder(players)),
 				() -> new GameOverStage(status)
 		);
 
 		status.observe(this::fireEvent);
+	}
+
+	@NotNull
+	private List<UztaPlayer> determineTurnOrder(@NotNull Map<String, UztaPlayer> players) {
+		return new ArrayList<>(players.values());
 	}
 
 	@NotNull

@@ -8,10 +8,11 @@ import jokatu.game.games.uzta.input.SelectEdgeInput;
 import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.stage.Stage;
+import jokatu.game.turn.TurnManager;
 import ophelia.collections.list.UnmodifiableList;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
 
 import static java.util.Collections.emptySet;
@@ -21,8 +22,18 @@ import static java.util.Collections.emptySet;
  */
 public class FirstPlacementStage extends AbstractSelectEdgeInputAcceptor implements Stage<GameEvent> {
 
-	FirstPlacementStage(@NotNull UztaGraph graph, @NotNull Map<String, UztaPlayer> players) {
-		super(graph, players);
+	private final UnmodifiableList<UztaPlayer> players;
+
+	FirstPlacementStage(@NotNull UztaGraph graph, @NotNull List<UztaPlayer> playersInOrder) {
+		super(graph, getTurnManager(playersInOrder));
+		this.players = new UnmodifiableList<>(playersInOrder);
+
+		this.turnManager.observe(this::fireEvent);
+	}
+
+	@NotNull
+	private static TurnManager<UztaPlayer> getTurnManager(@NotNull List<UztaPlayer> players) {
+		return new TurnManager<>(players);
 	}
 
 	@Override
@@ -32,7 +43,7 @@ public class FirstPlacementStage extends AbstractSelectEdgeInputAcceptor impleme
 
 	@NotNull
 	UnmodifiableList<UztaPlayer> getPlayersInOrder() {
-		return new UnmodifiableList<>(players);
+		return players;
 	}
 
 	@Override

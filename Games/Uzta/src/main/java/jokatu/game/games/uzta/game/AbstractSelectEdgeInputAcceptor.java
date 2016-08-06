@@ -20,24 +20,17 @@ public abstract class AbstractSelectEdgeInputAcceptor extends AbstractInputAccep
 	protected final UztaGraph graph;
 	protected final TurnManager<UztaPlayer> turnManager;
 	protected final Map<UztaPlayer, Set<LineSegment>> ownedEdgesPerPlayer = new HashMap<>();
-	protected final List<UztaPlayer> players;
 
-	protected AbstractSelectEdgeInputAcceptor(@NotNull UztaGraph graph, Map<String, UztaPlayer> players) {
+	protected AbstractSelectEdgeInputAcceptor(@NotNull UztaGraph graph, @NotNull TurnManager<UztaPlayer> turnManager) {
 		this.graph = graph;
-		this.players = determineTurnOrder(players);
 
-		turnManager = new TurnManager<>(this.players);
-		turnManager.observe(this::fireEvent);
+		this.turnManager = turnManager;
 
 		graph.getEdges().stream()
 				.filter(edge -> edge.getOwner() != null)
 				.forEach(edge -> updateSetBasedMap(ownedEdgesPerPlayer, edge.getOwner(), edge));
 	}
 
-	@NotNull
-	private List<UztaPlayer> determineTurnOrder(Map<String, UztaPlayer> players) {
-		return new ArrayList<>(players.values());
-	}
 
 	@NotNull
 	@Override

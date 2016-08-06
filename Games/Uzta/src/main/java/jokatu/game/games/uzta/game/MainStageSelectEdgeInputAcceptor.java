@@ -7,6 +7,7 @@ import jokatu.game.games.uzta.graph.UztaGraph;
 import jokatu.game.games.uzta.input.SelectEdgeInput;
 import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.input.UnacceptableInputException;
+import jokatu.game.turn.TurnManager;
 import ophelia.collections.bag.BaseIntegerBag;
 import ophelia.collections.bag.HashBag;
 import ophelia.collections.bag.ModifiableIntegerBag;
@@ -15,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.MessageFormat;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -26,16 +26,13 @@ public class MainStageSelectEdgeInputAcceptor extends AbstractSelectEdgeInputAcc
 	private final ResourceDistributor resourceDistributor;
 	private final Random die;
 
-	MainStageSelectEdgeInputAcceptor(@NotNull UztaGraph graph, @NotNull Map<String, UztaPlayer> players, @NotNull ResourceDistributor resourceDistributor) {
-		super(graph, players);
+	MainStageSelectEdgeInputAcceptor(@NotNull UztaGraph graph, @NotNull TurnManager<UztaPlayer> turnManager, @NotNull ResourceDistributor resourceDistributor) {
+		super(graph, turnManager);
 		this.resourceDistributor = resourceDistributor;
 
-		die = new Random();
-	}
+		turnManager.observe(e -> roll());
 
-	void startNextTurn() {
-		turnManager.next();
-		roll();
+		die = new Random();
 	}
 
 	private void roll() {
@@ -65,7 +62,7 @@ public class MainStageSelectEdgeInputAcceptor extends AbstractSelectEdgeInputAcc
 
 		setOwner(edge, inputter);
 
-		startNextTurn();
+		turnManager.next();
 	}
 
 	@NotNull
