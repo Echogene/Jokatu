@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static ophelia.exceptions.voidmaybe.VoidMaybe.mergeFailures;
-import static ophelia.exceptions.voidmaybe.VoidMaybe.wrapOutput;
+import static ophelia.exceptions.voidmaybe.VoidMaybe.wrap;
 
 /**
  * Sets up how users log in.
@@ -31,7 +31,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		List<VoidMaybe> results = Arrays.stream(new String[]{"user", "user2", "user3", "user4"})
-				.map(wrapOutput(name -> auth.inMemoryAuthentication().withUser(name).password("password").roles("USER")))
+				.map(wrap(name -> auth.inMemoryAuthentication().withUser(name).password("password").roles("USER")))
 				.collect(Collectors.toList());
 
 		mergeFailures(results).throwOnFailure();
