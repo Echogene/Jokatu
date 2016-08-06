@@ -40,7 +40,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.text.MessageFormat.format;
-import static ophelia.exceptions.maybe.Maybe.wrapOutput;
+import static ophelia.exceptions.maybe.Maybe.wrap;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 /**
@@ -110,7 +110,7 @@ public class GameController {
 		Player player = getPlayer(game, principal.getName());
 		BaseCollection<? extends InputDeserialiser> deserialisers = gameFactories.getInputDeserialisers(game);
 		Input input = deserialisers.stream()
-				.map(wrapOutput(deserialiser -> deserialiser.deserialise(json)))
+				.map(wrap(deserialiser -> deserialiser.deserialise(json)))
 				.map(SuccessHandler::returnOnSuccess)
 				.map(FailureHandler::nullOnFailure)
 				.filter(i -> i != null)

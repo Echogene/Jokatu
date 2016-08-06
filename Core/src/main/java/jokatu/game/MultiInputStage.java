@@ -27,7 +27,7 @@ public abstract class MultiInputStage extends AbstractSynchronousObservable<Game
 	public void accept(@NotNull Input input, @NotNull Player player) throws StackedException {
 		VoidMaybe.mergeFailures(
 				inputAcceptors.stream()
-						.map(VoidMaybe.wrapOutput(acceptor -> acceptor.accept(input, player)))
+						.map(VoidMaybe.wrap(acceptor -> acceptor.accept(input, player)))
 						.collect(Collectors.toList())
 		).throwOnFailure();
 	}
