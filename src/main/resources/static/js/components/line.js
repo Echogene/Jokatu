@@ -61,8 +61,9 @@ JLineProto._updatePosition = function(ends, mutation, attempt = 0) {
 		return;
 	}
 	// centre
-	var cx = ((x1 + x2) / 2) - (length / 2);
-	var cy = ((y1 + y2) / 2) - (this.offsetHeight / 2);
+	var totalOffset = this._getTotalOffsetOfParents();
+	var cx = ((x1 + x2) / 2) - (length / 2) - totalOffset[0];
+	var cy = ((y1 + y2) / 2) - (this.offsetHeight / 2) - totalOffset[1];
 	// angle
 	var angle = Math.atan2((y1 - y2), (x1 - x2)) * (180 / Math.PI);
 
@@ -70,6 +71,17 @@ JLineProto._updatePosition = function(ends, mutation, attempt = 0) {
 	this.style.top = `${cy}px`;
 	this.style.width = `${length}px`;
 	this.style.transform = `rotate(${angle}deg)`;
+};
+
+JLineProto._getTotalOffsetOfParents = function() {
+	var element = this.offsetParent;
+	var left = 0;
+	var top = 0;
+	do {
+		left += element.offsetLeft;
+		top += element.offsetTop;
+	} while (element = element.offsetParent);
+	return [left, top];
 };
 
 JLineProto._getOffset = function(element) {
