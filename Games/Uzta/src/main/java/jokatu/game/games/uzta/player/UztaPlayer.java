@@ -52,4 +52,8 @@ public class UztaPlayer extends AbstractSynchronousObservable<GameEvent> impleme
 	public String toString() {
 		return name;
 	}
+
+	public int getNumberOfType(@NotNull NodeType type) {
+		return resources.getNumberOf(type);
+	}
 }
