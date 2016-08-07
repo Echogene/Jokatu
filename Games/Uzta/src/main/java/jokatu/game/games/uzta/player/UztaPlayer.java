@@ -32,9 +32,9 @@ public class UztaPlayer extends AbstractSynchronousObservable<GameEvent> impleme
 		return colour;
 	}
 
-	public void giveResources(@NotNull NodeType type, int number) {
-		resources.modifyNumberOf(type, number);
-		fireEvent(new ResourcesUpdatedEvent(this, type, number));
+	public void giveResources(@NotNull BaseIntegerBag<NodeType> givenResources) {
+		resources.merge(givenResources);
+		fireEvent(new ResourcesUpdatedEvent(this, givenResources));
 	}
 
 	@NotNull
