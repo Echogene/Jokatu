@@ -17,7 +17,7 @@ layout 'views/game_view.tpl', true,
 			is: 'j-button',
 			id: 'start',
 			destination: "/topic/input.game.${gameId}",
-			'data-input': '{"start": true}',
+			'data-input': '{"end": true}',
 			'Start game'
 		)
 	}

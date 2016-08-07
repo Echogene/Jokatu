@@ -2,6 +2,7 @@ package jokatu.game.input;
 
 import jokatu.game.event.GameEvent;
 import jokatu.game.player.Player;
+import ophelia.collections.set.Singleton;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -36,6 +37,12 @@ public abstract class AbstractInputAcceptor<I extends Input, P extends Player, E
 	@NotNull
 	private P castPlayer(@NotNull Player player) {
 		return getPlayerClass().cast(player);
+	}
+
+	@NotNull
+	@Override
+	public final Singleton<Class<? extends Input>> getAcceptedInputs() {
+		return new Singleton<>(getInputClass());
 	}
 
 	@Override

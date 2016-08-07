@@ -1,0 +1,93 @@
+j-graph {
+	width: calc(~"100% - 50px");
+	margin-top: 50px;
+	height: 90%;
+	display: block;
+	position: relative;
+
+	>.nodes {
+		width: 100%;
+		height: 100%;
+		display: block;
+
+		>* {
+			position: absolute;
+			z-index: 1;
+			color: #eee;
+
+			>.background {
+				position: absolute;
+				border: 1px solid black;
+				width:  100%;
+				height: 100%;
+				z-index: -1;
+			}
+
+			&.square {
+				width: 40px;
+				height: 40px;
+				>.background {
+					background-color: #301;
+				}
+			}
+			&.circle {
+				width: 50px;
+				height: 50px;
+				>.background {
+					background-color: #130;
+					border-radius: 50%;
+				}
+			}
+			&.rhombus {
+				width: 45px;
+				height: 45px;
+				>.background {
+					background-color: #013;
+					transform: scale(0.8, 1) rotate(45deg);
+				}
+			}
+
+			>.values {
+				height: 100%;
+				padding: 3px 6px;
+				z-index: 1;
+				display: flex;
+				align-items: center;
+				justify-content: space-around;
+				flex-wrap: wrap;
+				font-size: small;
+
+				>span {
+					padding: 0 1px;
+				}
+			}
+		}
+	}
+	>.edges {
+		position: fixed;
+		top: 0;
+		left: 0;
+
+		div[is="j-edge"] {
+			background-color: transparent;
+			background-image: repeating-linear-gradient(to right, #888, #888 10px, transparent 10px, transparent 20px);
+
+			&:hover {
+				background-color: #888;
+			}
+
+			&.yellow {
+				background-color: #bb4;
+				background-image: none;
+			}
+			&.cyan {
+				background-color: #4bb;
+				background-image: none;
+			}
+			&.purple {
+				background-color: #b4b;
+				background-image: none;
+			}
+		}
+	}
+}

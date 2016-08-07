@@ -6,6 +6,7 @@ import jokatu.game.exception.GameException;
 import jokatu.game.input.Input;
 import jokatu.game.player.Player;
 import jokatu.game.stage.Stage;
+import jokatu.game.stage.machine.StageMachine;
 import jokatu.identity.Identifiable;
 import ophelia.collections.set.UnmodifiableSet;
 import ophelia.event.observable.AbstractSynchronousObservable;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 import static ophelia.util.FunctionUtils.not;
 
 /**
+ * A game has a collection of {@link Player}s and a current {@link Stage}.
  * @author Steven Weston
  */
 public abstract class Game<P extends Player>
@@ -34,19 +36,18 @@ public abstract class Game<P extends Player>
 
 	private final AtomicBoolean currentStageStarted = new AtomicBoolean(false);
 
-	@Nullable
-	protected Stage<? extends GameEvent> currentStage;
+	protected StageMachine stageMachine;
 
 	protected Game(@NotNull GameID identifier) {
 		this.identifier = identifier;
 	}
 
 	public final void accept(@NotNull Input input, @NotNull Player player) throws GameException {
-		if (currentStage == null) {
+		if (getCurrentStage() == null) {
 			throw new GameException(identifier, "The game hasn't started yet.");
 		}
 		try {
-			currentStage.accept(input, player);
+			getCurrentStage().accept(input, player);
 		} catch (Exception e) {
 			throw new GameException(
 					identifier,
@@ -76,15 +77,9 @@ public abstract class Game<P extends Player>
 
 	public final void advanceStage() {
 		currentStageStarted.set(false);
-		advanceStageInner();
-		assert currentStage != null;
-		currentStage.observe(this::fireEvent);
+		Stage<?> newStage = stageMachine.advance();
+		newStage.observe(this::fireEvent);
 	}
-
-	/**
-	 * Set the {@link Game#currentStage} field to the next (not-null) stage.
-	 */
-	protected abstract void advanceStageInner();
 
 	/**
 	 * Gets the current stage and lazily starts it if it hasn't been started yet.
@@ -93,6 +88,7 @@ public abstract class Game<P extends Player>
 	@JsonIgnore
 	@Nullable
 	public Stage<? extends GameEvent> getCurrentStage() {
+		Stage<?> currentStage = stageMachine.getCurrentStage();
 		if (!currentStageStarted.getAndSet(true) && currentStage != null) {
 			currentStage.start();
 		}

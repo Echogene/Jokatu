@@ -6,6 +6,9 @@ import jokatu.game.result.PlayerResult;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
+/**
+ * At the end of a game, send the message of the {@link PlayerResult} to a special STOMP destination.
+ */
 @Component
 public class PlayerResultHandler extends SpecificEventHandler<PlayerResult> {
 	@NotNull

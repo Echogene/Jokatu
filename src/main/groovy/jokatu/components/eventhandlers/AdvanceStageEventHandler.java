@@ -6,6 +6,9 @@ import jokatu.game.event.StageOverEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
+/**
+ * When a stage says it is over, move the game onto the next stage.
+ */
 @Component
 public class AdvanceStageEventHandler extends SpecificEventHandler<StageOverEvent> {
 

@@ -3,6 +3,7 @@ package jokatu.game.games.gameofgames.game;
 import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.player.StandardPlayer;
+import jokatu.game.stage.machine.SingleStageMachine;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -16,18 +17,13 @@ public class GameOfGames extends Game<StandardPlayer> {
 
 	GameOfGames(GameID gameID) {
 		super(gameID);
+
+		stageMachine = new SingleStageMachine(new GameOfGameStage());
 	}
 
 	@NotNull
 	@Override
 	public String getGameName() {
 		return GAME_OF_GAMES;
-	}
-
-	@Override
-	protected void advanceStageInner() {
-		if (currentStage == null) {
-			currentStage = new GameOfGameStage();
-		}
 	}
 }

@@ -4,13 +4,16 @@ import jokatu.components.config.FactoryConfiguration.GameFactories;
 import jokatu.game.Game;
 import jokatu.game.GameFactory;
 import jokatu.game.GameID;
+import jokatu.game.event.EventHandler;
 import jokatu.game.event.SpecificEventHandler;
 import jokatu.game.games.gameofgames.event.GameCreatedEvent;
+import jokatu.game.games.gameofgames.game.GameOfGames;
 import ophelia.util.MapUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +21,9 @@ import java.util.Map;
 import static java.text.MessageFormat.format;
 
 
+/**
+ * When a game has been requested to be created by a {@link GameOfGames}, create the game.
+ */
 @Component
 public class GameCreatedEventHandler extends SpecificEventHandler<GameCreatedEvent> {
 
@@ -31,6 +37,12 @@ public class GameCreatedEventHandler extends SpecificEventHandler<GameCreatedEve
 	public GameCreatedEventHandler(GameFactories gameFactories, EventBroadcaster eventBroadcaster) {
 		this.gameFactories = gameFactories;
 		this.eventBroadcaster = eventBroadcaster;
+	}
+
+	// todo: is it possible to remove this circular dependency?
+	@PostConstruct
+	public void updateFromCircularDependency() {
+		eventBroadcaster.wireEventListeners();
 	}
 
 	@NotNull

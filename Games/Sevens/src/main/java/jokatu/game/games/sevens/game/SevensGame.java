@@ -7,6 +7,7 @@ import jokatu.game.cards.Suit;
 import jokatu.game.games.sevens.player.SevensPlayer;
 import jokatu.game.stage.GameOverStage;
 import jokatu.game.stage.MinAndMaxJoiningStage;
+import jokatu.game.stage.machine.SequentialStageMachine;
 import jokatu.game.status.StandardTextStatus;
 import ophelia.collections.set.UnmodifiableSet;
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +30,12 @@ public class SevensGame extends Game<SevensPlayer> {
 	SevensGame(GameID identifier) {
 		super(identifier);
 
+		stageMachine = new SequentialStageMachine(
+				() -> new MinAndMaxJoiningStage<>(SevensPlayer.class, players, 3, 7, status),
+				() -> new SevensStage(players, status, playedCards),
+				() -> new GameOverStage(status)
+		);
+
 		status.observe(this::fireEvent);
 	}
 
@@ -36,19 +43,6 @@ public class SevensGame extends Game<SevensPlayer> {
 	@Override
 	public String getGameName() {
 		return SEVENS;
-	}
-
-	@Override
-	public void advanceStageInner() {
-		if (currentStage == null) {
-			currentStage = new MinAndMaxJoiningStage<>(SevensPlayer.class, players, 3, 7, status);
-
-		} else if (currentStage instanceof MinAndMaxJoiningStage) {
-			currentStage = new SevensStage(players, status, playedCards);
-
-		} else {
-			currentStage = new GameOverStage(status);
-		}
 	}
 
 	public void register(SevensPlayer player) {

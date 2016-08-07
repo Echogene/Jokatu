@@ -1,16 +1,18 @@
 package jokatu.components.controllers.game;
 
 import jokatu.components.config.FactoryConfiguration.GameFactories;
+import jokatu.components.config.InputDeserialisers;
 import jokatu.components.dao.GameDao;
 import jokatu.components.markup.MarkupGenerator;
 import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.Game;
 import jokatu.game.GameID;
+import jokatu.game.event.GameEvent;
 import jokatu.game.exception.GameException;
 import jokatu.game.input.Input;
-import jokatu.game.input.InputDeserialiser;
 import jokatu.game.player.Player;
 import jokatu.game.player.PlayerFactory;
+import jokatu.game.stage.Stage;
 import jokatu.game.viewresolver.ViewResolver;
 import jokatu.stomp.SendErrorMessage;
 import jokatu.stomp.SubscriptionErrorMessage;
@@ -54,6 +56,7 @@ public class GameController {
 
 	private static final Pattern GAME_CHANNEL_PATTERN = Pattern.compile(".*\\.game\\.(\\d+).*");
 
+	private final InputDeserialisers inputDeserialisers;
 	private final GameFactories gameFactories;
 	private final GameDao gameDao;
 	private final StoringMessageSender sender;
@@ -61,11 +64,13 @@ public class GameController {
 
 	@Autowired
 	public GameController(
+			InputDeserialisers inputDeserialisers,
 			GameFactories gameFactories,
 			GameDao gameDao,
 			StoringMessageSender sender,
 			MarkupGenerator markupGenerator
 	) {
+		this.inputDeserialisers = inputDeserialisers;
 		this.gameFactories = gameFactories;
 		this.gameDao = gameDao;
 		this.sender = sender;
@@ -108,14 +113,25 @@ public class GameController {
 		}
 
 		Player player = getPlayer(game, principal.getName());
-		BaseCollection<? extends InputDeserialiser> deserialisers = gameFactories.getInputDeserialisers(game);
-		Input input = deserialisers.stream()
-				.map(wrap(deserialiser -> deserialiser.deserialise(json)))
-				.map(SuccessHandler::returnOnSuccess)
-				.map(FailureHandler::nullOnFailure)
-				.filter(i -> i != null)
-				.findAny()
-				.orElseThrow(() -> new GameException(identity, "Could not deserialise ''{0}''", json));
+
+		Stage<? extends GameEvent> currentStage = game.getCurrentStage();
+		if (currentStage == null) {
+			throw new GameException(identity, "The game hasn't started yet.");
+		}
+		BaseCollection<Class<? extends Input>> acceptedInputs = currentStage.getAcceptedInputs();
+		Input input;
+		if (acceptedInputs.isEmpty()) {
+			input = new Input() {};
+		} else {
+			input = acceptedInputs.stream()
+					.map(inputDeserialisers::getDeserialiser)
+					.map(wrap(deserialiser -> deserialiser.deserialise(json)))
+					.map(SuccessHandler::returnOnSuccess)
+					.map(FailureHandler::nullOnFailure)
+					.filter(i -> i != null)
+					.findAny()
+					.orElseThrow(() -> new GameException(identity, "Could not deserialise ''{0}''.", json));
+		}
 		game.accept(input, player);
 	}
 

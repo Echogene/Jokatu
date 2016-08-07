@@ -6,12 +6,16 @@ buildscript {
 
 	dependencies {
 		classpath('org.springframework.boot:spring-boot-gradle-plugin:1.2.5.RELEASE')
+		classpath 'de.obqo.gradle:gradle-lesscss-plugin:1.0-1.3.3'
 	}
 }
 
-apply plugin: 'java'
+allprojects {
+	apply plugin: 'lesscss'
+	apply plugin: 'java'
+	apply plugin: 'idea'
+}
 apply plugin: 'groovy'
-apply plugin: 'idea'
 apply plugin: 'spring-boot'
 
 sourceCompatibility = 1.8
@@ -28,6 +32,18 @@ def games = project(':Games').getChildProjects().values()
 gradle.projectsEvaluated {
 	processResources {
 		from games*.sourceSets*.main.resources.srcDirs
+	}
+}
+allprojects {
+	lesscss {
+		source = fileTree('src/main/resources/static/less') {
+			include '**/*.less'
+		}
+		dest = 'src/main/resources/static/css'
+	}
+
+	build {
+		dependsOn 'lesscss'
 	}
 }
 

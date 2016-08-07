@@ -21,6 +21,9 @@ public class StatusUpdateHandler extends SpecificEventHandler<StatusUpdateEvent>
 
 	@Override
 	protected void handleCastEvent(@NotNull Game<?> game, @NotNull StatusUpdateEvent event) {
-		sender.send("/topic/status.game." + game.getIdentifier(), event.getStatus().getText());
+		String text = event.getStatus().getText();
+		if (text != null) {
+			sender.send("/topic/status.game." + game.getIdentifier(), text);
+		}
 	}
 }

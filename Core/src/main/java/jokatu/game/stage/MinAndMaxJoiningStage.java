@@ -4,6 +4,7 @@ import jokatu.game.MultiInputStage;
 import jokatu.game.event.StageOverEvent;
 import jokatu.game.joining.JoinInputAcceptor;
 import jokatu.game.joining.PlayerJoinedEvent;
+import jokatu.game.input.finishstage.EndStageInput;
 import jokatu.game.joining.finish.FinishJoiningInputAcceptor;
 import jokatu.game.player.Player;
 import jokatu.game.status.StandardTextStatus;
@@ -11,6 +12,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
+/**
+ * A {@link Stage} in which a maximum and minimum number of players can join.  When there are enough players, it
+ * can accept a {@link EndStageInput} to start the next stage. When the maximum is reached, the next stage starts
+ * automatically.
+ * @param <P> the type of player that should be joining the stage
+ */
 public class MinAndMaxJoiningStage<P extends Player> extends MultiInputStage {
 
 	private final int minimum;
@@ -34,7 +41,7 @@ public class MinAndMaxJoiningStage<P extends Player> extends MultiInputStage {
 				minimum == 1 ? "" : "s"
 		);
 
-		JoinInputAcceptor<P> joinInputAcceptor = new JoinInputAcceptor<>(playerClass, players, minimum);
+		JoinInputAcceptor<P> joinInputAcceptor = new JoinInputAcceptor<>(playerClass, players, maximum);
 		joinInputAcceptor.observe(this::onPlayerJoin);
 		addInputAcceptor(joinInputAcceptor);
 

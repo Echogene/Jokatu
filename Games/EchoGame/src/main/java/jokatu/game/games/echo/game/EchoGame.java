@@ -4,6 +4,7 @@ import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.event.StatusUpdateEvent;
 import jokatu.game.player.StandardPlayer;
+import jokatu.game.stage.machine.SingleStageMachine;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Timer;
@@ -18,6 +19,9 @@ public class EchoGame extends Game<StandardPlayer> {
 
 	EchoGame(GameID identifier) {
 		super(identifier);
+
+		stageMachine = new SingleStageMachine(new EchoStage());
+
 		new Timer().scheduleAtFixedRate(
 				new TimerTask() {
 					@Override
@@ -34,10 +38,5 @@ public class EchoGame extends Game<StandardPlayer> {
 	@Override
 	public String getGameName() {
 		return ECHO;
-	}
-
-	@Override
-	public void advanceStageInner() {
-		currentStage = new EchoStage();
 	}
 }

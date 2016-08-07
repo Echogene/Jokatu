@@ -11,6 +11,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 
+/**
+ * Presents to the user all the error messages they have received for a particular game.
+ */
 @Controller
 public class ErrorLogController {
 

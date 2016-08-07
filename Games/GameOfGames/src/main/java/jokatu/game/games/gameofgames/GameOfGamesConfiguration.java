@@ -4,13 +4,9 @@ import jokatu.components.GameComponent;
 import jokatu.components.config.GameConfiguration;
 import jokatu.game.games.gameofgames.game.GameOfGames;
 import jokatu.game.games.gameofgames.game.GameOfGamesFactory;
-import jokatu.game.games.gameofgames.input.CreateGameInputDeserialiser;
 import jokatu.game.games.gameofgames.views.GameOfGamesViewResolverFactory;
-import jokatu.game.input.InputDeserialiser;
 import jokatu.game.player.PlayerFactory;
 import jokatu.game.player.StandardPlayer;
-import ophelia.collections.BaseCollection;
-import ophelia.collections.set.Singleton;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,17 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class GameOfGamesConfiguration implements GameConfiguration {
 
 	private final GameOfGamesFactory factory;
-	private final CreateGameInputDeserialiser createGameInputDeserialiser;
 	private final GameOfGamesViewResolverFactory viewResolverFactory;
 
 	@Autowired
 	public GameOfGamesConfiguration(
 			GameOfGamesFactory factory,
-			CreateGameInputDeserialiser createGameInputDeserialiser,
 			GameOfGamesViewResolverFactory viewResolverFactory
 	) {
 		this.factory = factory;
-		this.createGameInputDeserialiser = createGameInputDeserialiser;
 		this.viewResolverFactory = viewResolverFactory;
 	}
 
@@ -45,12 +38,6 @@ public class GameOfGamesConfiguration implements GameConfiguration {
 	@Override
 	public PlayerFactory<?> getPlayerFactory() {
 		return ((game, username) -> new StandardPlayer(username));
-	}
-
-	@NotNull
-	@Override
-	public BaseCollection<? extends InputDeserialiser> getInputDeserialisers() {
-		return new Singleton<>(createGameInputDeserialiser);
 	}
 
 	@NotNull

@@ -5,6 +5,7 @@ import jokatu.game.GameID;
 import jokatu.game.player.StandardPlayer;
 import jokatu.game.stage.GameOverStage;
 import jokatu.game.stage.JoiningStage;
+import jokatu.game.stage.machine.SequentialStageMachine;
 import jokatu.game.status.StandardTextStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,6 +18,12 @@ public class RockPaperScissorsGame extends Game<StandardPlayer> {
 	RockPaperScissorsGame(GameID identifier) {
 		super(identifier);
 
+		stageMachine = new SequentialStageMachine(
+				() -> new JoiningStage<>(StandardPlayer.class, players, 2, status),
+				() -> new InputStage(players.values(), status),
+				() -> new GameOverStage(status)
+		);
+
 		status.observe(this::fireEvent);
 	}
 
@@ -24,18 +31,5 @@ public class RockPaperScissorsGame extends Game<StandardPlayer> {
 	@Override
 	public String getGameName() {
 		return ROCK_PAPER_SCISSORS;
-	}
-
-	@Override
-	public void advanceStageInner() {
-		if (currentStage == null) {
-			currentStage = new JoiningStage<>(StandardPlayer.class, players, 2, status);
-
-		} else if (currentStage instanceof JoiningStage) {
-			currentStage = new InputStage(players.values(), status);
-
-		} else {
-			currentStage = new GameOverStage(status);
-		}
 	}
 }

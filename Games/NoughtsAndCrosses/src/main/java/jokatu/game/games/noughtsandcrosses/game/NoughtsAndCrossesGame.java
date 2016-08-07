@@ -5,6 +5,7 @@ import jokatu.game.GameID;
 import jokatu.game.games.noughtsandcrosses.player.NoughtsAndCrossesPlayer;
 import jokatu.game.stage.GameOverStage;
 import jokatu.game.stage.JoiningStage;
+import jokatu.game.stage.machine.SequentialStageMachine;
 import jokatu.game.status.StandardTextStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,6 +18,13 @@ public class NoughtsAndCrossesGame extends Game<NoughtsAndCrossesPlayer> {
 	NoughtsAndCrossesGame(GameID identifier) {
 		super(identifier);
 
+		stageMachine = new SequentialStageMachine(
+				() -> new JoiningStage<>(NoughtsAndCrossesPlayer.class, players, 2, status),
+				() -> new AllegianceStage(players.values(), status),
+				() -> new InputStage(players.values(), status),
+				() -> new GameOverStage(status)
+		);
+
 		status.observe(this::fireEvent);
 	}
 
@@ -24,21 +32,5 @@ public class NoughtsAndCrossesGame extends Game<NoughtsAndCrossesPlayer> {
 	@Override
 	public String getGameName() {
 		return NOUGHTS_AND_CROSSES;
-	}
-
-	@Override
-	protected void advanceStageInner() {
-		if (currentStage == null) {
-			currentStage = new JoiningStage<>(NoughtsAndCrossesPlayer.class, players, 2, status);
-
-		} else if (currentStage instanceof JoiningStage) {
-			currentStage = new AllegianceStage(players.values(), status);
-
-		} else if (currentStage instanceof AllegianceStage) {
-			currentStage = new InputStage(players.values(), status);
-
-		} else {
-			currentStage = new GameOverStage(status);
-		}
 	}
 }

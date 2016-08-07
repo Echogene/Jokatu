@@ -1,12 +1,6 @@
 var JLineProto = Object.create(HTMLDivElement.prototype);
 
-JLineProto.createdCallback = function() {
-	this._thickness = 4;
-	this.style.height = `${this._thickness}px`;
-	this.style.backgroundColor = 'black';
-	this.style.position = 'absolute';
-	this.style.pointerEvents = 'none';
-
+JLineProto.attachedCallback = function() {
 	this._endsObserver = new MutationObserver(this._updatePositionFromEnds.bind(this));
 
 	observeAttributes(this, new Map([
@@ -26,19 +20,30 @@ JLineProto._updatePositionFromEnds = function() {
 	this._updatePosition(JSON.parse(this.getAttribute('data-ends')));
 };
 
-JLineProto._updatePosition = function(ends) {
-	this._endsObserver.disconnect();
-	if (!ends) {
-		return;
+JLineProto._updatePosition = function(ends, mutation, attempt = 0) {
+	var startElement = ends && ends.start && document.getElementById(ends.start);
+	var endElement = ends && ends.end && document.getElementById(ends.end);
+
+	var endElementsChanged = (startElement != this._startElement) || (endElement != this._endElement);
+	if (endElementsChanged) {
+		this._endsObserver.disconnect();
 	}
-	var startElement = document.getElementById(ends.start);
-	var endElement = document.getElementById(ends.end);
+
+	this._startElement = startElement;
+	this._endElement = endElement;
 	if (!startElement || !endElement) {
 		return;
 	}
 
-	this._endsObserver.observe(startElement.parentNode, { childList: true });
-	this._endsObserver.observe(endElement.parentNode, { childList: true });
+	if (endElementsChanged) {
+		this._endsObserver.observe(startElement, { attributes: true, attributeFilter: ['style'] });
+		this._endsObserver.observe(endElement, { attributes: true, attributeFilter: ['style'] });
+
+		this._endsObserver.observe(startElement.parentNode, { childList: true });
+		if (endElement.parentNode != startElement.parentNode) {
+			this._endsObserver.observe(endElement.parentNode, { childList: true });
+		}
+	}
 
 	var startOffset = this._getOffset(startElement);
 	var endOffset = this._getOffset(endElement);
@@ -50,9 +55,14 @@ JLineProto._updatePosition = function(ends) {
 	var y2 = endOffset.top + endOffset.height / 2;
 	// distance
 	var length = Math.sqrt(((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1)));
-	// center
+	if ((length < 0.001) && (attempt < 3)) {
+		// If the length is 0, this probably means that neither of the ends appear on the page yet, so wait a bit.
+		setTimeout(this._updatePosition.bind(this, ends, mutation, attempt + 1), 100);
+		return;
+	}
+	// centre
 	var cx = ((x1 + x2) / 2) - (length / 2);
-	var cy = ((y1 + y2) / 2) - (this._thickness / 2);
+	var cy = ((y1 + y2) / 2) - (this.offsetHeight / 2);
 	// angle
 	var angle = Math.atan2((y1 - y2), (x1 - x2)) * (180 / Math.PI);
 
