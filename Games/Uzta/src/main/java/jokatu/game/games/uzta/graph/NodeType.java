@@ -3,18 +3,26 @@ package jokatu.game.games.uzta.graph;
 import org.jetbrains.annotations.NotNull;
 
 public enum NodeType {
-	SQUARE("square", "squares"),
-	CIRCLE("circle", "circles"),
-	RHOMBUS("rhombus", "rhombi");
+	SQUARE("square", "squares", "□"),
+	CIRCLE("circle", "circles", "○"),
+	RHOMBUS("rhombus", "rhombi", "◇");
 
 	@NotNull
 	private final String singular;
 	@NotNull
 	private final String plural;
+	@NotNull
+	private final String symbol;
 
-	NodeType(@NotNull String singular, @NotNull String plural) {
+	NodeType(@NotNull String singular, @NotNull String plural, @NotNull String symbol) {
 		this.singular = singular;
 		this.plural = plural;
+		this.symbol = symbol;
+	}
+
+	@NotNull
+	public String getSymbol() {
+		return symbol;
 	}
 
 	@NotNull
