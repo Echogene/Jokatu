@@ -12,8 +12,27 @@ Jokatu has a few games implemented; they exist mainly as an excuse to build up s
 - Noughts and Crosses
 - [Sevens](https://en.wikipedia.org/wiki/Sevens_(card_game))
 
+###Other games
+- Uzta
+    - Played on a graph produced from a random [Delaunay triangulation](https://en.wikipedia.org/wiki/Delaunay_triangulation) of the unit square.
+    - Nodes of the graph produce resources when a D12 lands on one of their values.
+        - Nodes have 1–3 values, so some nodes produce more frequently than others.
+        - There are three types of resources, which are denoted by the shapes □, ○ and ◇.
+    - Resources can be harvested from a node by owning an incoming edge to that node.
+        - Owning multiple edges to the same node adds to the yield.
+    - Players start with two free edges each and can purchase more edges with the resources they gain.
+        - Edges cost one of each of the resources plus one resource per value and type of the two end nodes.
+    - The game is played in turns in which the following happens:
+        1. The die is rolled and resources are distributed.
+        2. Players can purchase edges with their resources.
+        3. When the player wishes, they can pass the turn to the next player.
+    - TODO:
+        - Players can exchange resources for others in their turns.
+        - Players should earn points for things.
+        - The game needs to have an end condition.
+
 ###Other ‘games’
 - A rudimentary chat client called Echo
-  - The players' ‘moves’ are to send messages to the board
+    - The players' ‘moves’ are to send messages to the board
 - The Game of Games
-  - The players' ‘moves’ are to create other games
+    - The players' ‘moves’ are to create other games
