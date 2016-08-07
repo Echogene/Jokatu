@@ -47,4 +47,9 @@ public class UztaPlayer extends AbstractSynchronousObservable<GameEvent> impleme
 	public String getName() {
 		return name;
 	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
 }
