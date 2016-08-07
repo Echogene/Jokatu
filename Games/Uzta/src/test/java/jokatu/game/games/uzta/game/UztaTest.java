@@ -13,6 +13,7 @@ import jokatu.game.games.uzta.input.RandomiseGraphInput;
 import jokatu.game.games.uzta.input.SelectEdgeInput;
 import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.input.AwaitingInputEvent;
+import jokatu.game.input.endturn.EndTurnInput;
 import jokatu.game.input.finishstage.EndStageInput;
 import jokatu.game.joining.JoinInput;
 import jokatu.game.joining.PlayerJoinedEvent;
@@ -266,6 +267,17 @@ public class UztaTest {
 
 		BaseIntegerBag<NodeType> resourcesLeft = player.getResourcesLeftAfter(expectedResources);
 		assertFalse("The player should have at least the resources they start with", resourcesLeft.isLacking());
+	}
+
+	@Test
+	public void player_should_be_able_to_end_their_turn() throws GameException {
+		goToMainStage();
+
+		List<GameEvent> events = captureEvents();
+
+		game.accept(new EndTurnInput(), player);
+
+		assertThat(events, hasItem(instanceOf(TurnChangedEvent.class)));
 	}
 
 	private void selectEdge(UztaPlayer firstPlayer, LineSegment edge) throws GameException {

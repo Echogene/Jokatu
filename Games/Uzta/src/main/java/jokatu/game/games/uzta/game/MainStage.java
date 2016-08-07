@@ -3,6 +3,7 @@ package jokatu.game.games.uzta.game;
 import jokatu.game.MultiInputStage;
 import jokatu.game.games.uzta.graph.UztaGraph;
 import jokatu.game.games.uzta.player.UztaPlayer;
+import jokatu.game.input.endturn.EndTurnInputAcceptor;
 import jokatu.game.turn.TurnManager;
 
 import java.util.List;
@@ -18,6 +19,11 @@ public class MainStage extends MultiInputStage {
 
 		MainStageSelectEdgeInputAcceptor mainStageSelectEdgeInputAcceptor = new MainStageSelectEdgeInputAcceptor(graph, turnManager, resourceDistributor);
 		addInputAcceptor(mainStageSelectEdgeInputAcceptor);
+
+		EndTurnInputAcceptor<UztaPlayer> endTurnInputAcceptor = new EndTurnInputAcceptor<>(turnManager, UztaPlayer.class);
+		addInputAcceptor(endTurnInputAcceptor);
+
+		turnManager.observe(this::fireEvent);
 
 		playersInOrder.forEach(player -> player.observe(this::fireEvent));
 	}
