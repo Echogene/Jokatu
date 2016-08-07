@@ -61,6 +61,7 @@ public class MainStageSelectEdgeInputAcceptor extends AbstractSelectEdgeInputAcc
 		}
 
 		setOwner(edge, inputter);
+		inputter.giveResources(edgeCost.getInverse());
 	}
 
 	@NotNull

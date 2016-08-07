@@ -39,7 +39,7 @@ public class ResourcesUpdatedEvent implements PublicGameEvent {
 					"paid {0}",
 					resources.stream()
 							.filter(entry -> entry.getRight() < 0)
-							.map(entry -> entry.getLeft().getNumber(entry.getRight()))
+							.map(entry -> entry.getLeft().getNumber(-entry.getRight()))
 							.collect(joining(", "))
 			));
 		}
