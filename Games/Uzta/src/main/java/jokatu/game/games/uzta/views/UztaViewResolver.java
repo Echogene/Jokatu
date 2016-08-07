@@ -30,7 +30,7 @@ class UztaViewResolver extends ViewResolver<UztaPlayer, Uzta> {
 			view = "views/uzta";
 
 		} else {
-			view = "views/uzta";
+			view = "views/uzta_main";
 		}
 		return new ModelAndView(view);
 	}
