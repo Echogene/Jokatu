@@ -59,13 +59,13 @@ layout 'layouts/main.tpl', true,
 				mainContents()
 			}
 		}
-		yieldUnescaped markupGenerator.bindLast(
+		yieldUnescaped markupGenerator.bindUserLast(
 				tag: 'j-status',
 				id: 'dialogs',
 				class: 'overlay',
 				wrapperElement: 'JDialog',
 				'data-attributeMapping': '{\"data-title\": \"title\", \"data-message\": \"message\"}',
-				destination: "/topic/dialogs.game.${gameId}"
+				destination: "/user/topic/dialogs.game.${gameId}"
 		)
 		yieldUnescaped markupGenerator.bindLastStart(
 				tag: 'j-class',
