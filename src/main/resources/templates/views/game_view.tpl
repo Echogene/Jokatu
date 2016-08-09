@@ -65,7 +65,8 @@ layout 'layouts/main.tpl', true,
 				class: 'overlay',
 				wrapperElement: 'JDialog',
 				'data-attributeMapping': '{\"data-title\": \"title\", \"data-message\": \"message\"}',
-				destination: "/user/topic/dialogs.game.${gameId}"
+				destination: "/user/topic/dialogs.game.${gameId}",
+				user: "${username}"
 		)
 		yieldUnescaped markupGenerator.bindLastStart(
 				tag: 'j-class',
