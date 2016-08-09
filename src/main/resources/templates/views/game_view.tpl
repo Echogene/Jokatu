@@ -11,6 +11,7 @@ layout 'layouts/main.tpl', true,
 		include template: 'components/status.tpl'
 		include template: 'components/player.tpl'
 		include template: 'components/class.tpl'
+		include template: 'components/dialog.tpl'
 		additionalHeaders()
 	},
 
@@ -58,6 +59,14 @@ layout 'layouts/main.tpl', true,
 				mainContents()
 			}
 		}
+		yieldUnescaped markupGenerator.bindLast(
+				tag: 'j-status',
+				id: 'dialogs',
+				class: 'overlay',
+				wrapperElement: 'JDialog',
+				'data-attributeMapping': '{\"data-title\": \"title\", \"data-message\": \"message\"}',
+				destination: "/topic/dialogs.game.${gameId}"
+		)
 		yieldUnescaped markupGenerator.bindLastStart(
 				tag: 'j-class',
 				id: 'result-container',
