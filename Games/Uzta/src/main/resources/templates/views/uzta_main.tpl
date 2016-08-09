@@ -23,7 +23,7 @@ layout 'views/game_view.tpl', true,
 							id: "${name}_${type}",
 							class: "resource ${type}",
 							wrapperElement: 'span',
-							'data-wrapperAttributes': "{\"text\": \"${type.getSymbol()}\"}",
+							'data-defaultAttributes': "{\"text\": \"${type.getSymbol()}\"}",
 							destination: "/topic/resource.game.${gameId}.${name}.${type}"
 						)
 					}
@@ -57,7 +57,7 @@ layout 'views/game_view.tpl', true,
 						id: "${username}_${type}",
 						class: "resource ${type}",
 						wrapperElement: 'span',
-						'data-wrapperAttributes': "{\"text\": \"${type.getSymbol()}\"}",
+						'data-defaultAttributes': "{\"text\": \"${type.getSymbol()}\"}",
 						destination: "/topic/resource.game.${gameId}.${username}.${type}"
 					)
 				}

@@ -10,7 +10,7 @@ JCounterProto.createdCallback = function() {
 	 * @private
 	 * @type {Object}
 	 */
-	this._wrapperAttributes = JSON.parse(this.getAttribute('data-wrapperAttributes'));
+	this._defaultAttributes = JSON.parse(this.getAttribute('data-defaultAttributes'));
 
 	var initialData = JSON.parse(this.getAttribute('data-initial'));
 	this._setCount(initialData && initialData.payload);
@@ -39,9 +39,9 @@ JCounterProto._createCounterElement = function() {
 		// Otherwise, we want to wrap a normal element.
 		newElement = document.createElement(this._counterElementName);
 	}
-	if (this._wrapperAttributes) {
-		Object.keys(this._wrapperAttributes).forEach(key => {
-			var attribute = this._wrapperAttributes[key];
+	if (this._defaultAttributes) {
+		Object.keys(this._defaultAttributes).forEach(key => {
+			var attribute = this._defaultAttributes[key];
 			if (attribute instanceof Object) {
 				attribute = JSON.stringify(attribute);
 			}
@@ -50,7 +50,7 @@ JCounterProto._createCounterElement = function() {
 	}
 	newElement.id = `${this.id}_${this.childNodes.length}`;
 
-	newElement.textContent = this._wrapperAttributes.text;
+	newElement.textContent = this._defaultAttributes.text;
 
 	this.appendChild(newElement);
 };

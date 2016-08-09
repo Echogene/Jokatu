@@ -19,7 +19,7 @@ layout 'views/game_view.tpl', true,
 						id: "hand_${name}",
 						class: 'hand',
 						wrapperElement: 'span',
-						'data-wrapperAttributes': "{\"text\": \"${Cards.PRIVATE_CARD}\"}",
+						'data-defaultAttributes': "{\"text\": \"${Cards.PRIVATE_CARD}\"}",
 						destination: "/topic/handcount.game.${gameId}.${name}"
 					)
 				}
@@ -50,7 +50,7 @@ layout 'views/game_view.tpl', true,
 				wrapperElement: 'JCard',
 				attributeName: 'data-card',
 				removeOldChildren: true,
-				'data-wrapperAttributes': "{\"destination\": \"/topic/input.game.${gameId}\"}",
+				'data-defaultAttributes': "{\"destination\": \"/topic/input.game.${gameId}\"}",
 				destination: "/user/topic/hand.game.${gameId}",
 				user: "${username}"
 			)

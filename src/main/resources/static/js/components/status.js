@@ -12,7 +12,7 @@ JStatusProto.createdCallback = function() {
 	 * @private
 	 * @type {Object}
 	 */
-	this._wrapperAttributes = JSON.parse(this.getAttribute('data-wrapperAttributes'));
+	this._defaultAttributes = JSON.parse(this.getAttribute('data-defaultAttributes'));
 
 	var initialData = JSON.parse(this.getAttribute('data-initial'));
 	this._setStatus(initialData && initialData.payload);
@@ -54,7 +54,7 @@ JStatusProto._setStatus = function(statuses) {
 };
 
 JStatusProto._createStatusElement = function() {
-	var newElement = createElement(this._statusElementName, this._wrapperAttributes);
+	var newElement = createElement(this._statusElementName, this._defaultAttributes);
 	newElement.id = `${this.id}_${this.childNodes.length}`;
 	this.appendChild(newElement);
 };
@@ -101,7 +101,7 @@ JStatusProto._updateElement = function(element, status) {
  *     <li><code>destination</code>: the STOMP destination to subscribe to.</li>
  *     <li><code>wrapperElement</code>: the name of the element to use as the child elements.  This should be the tag
  *         name for standard elements and the JavaScript class name for custom elements.</li>
- *     <li><code>data-wrapperAttributes</code>: when creating a child element, an object to use whose keys and values
+ *     <li><code>data-defaultAttributes</code>: when creating a child element, an object to use whose keys and values
  *         will be the attributes and values to set on the child element.</li>
  *     <li><code>attributeName</code>: an attribute name to set on each child element with the status for that element.
  *         </li>

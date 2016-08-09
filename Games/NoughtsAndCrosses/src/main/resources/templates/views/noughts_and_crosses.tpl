@@ -17,7 +17,7 @@ layout 'views/game_view.tpl', true,
 					wrapperElement: 'JButton',
 					attributeName: 'data-contents',
 					showAll: true,
-					'data-wrapperAttributes': "{\"destination\": \"/topic/input.game.${gameId}\", \"data-input\": {\"choice\": ${cell}}}",
+					'data-defaultAttributes': "{\"destination\": \"/topic/input.game.${gameId}\", \"data-input\": {\"choice\": ${cell}}}",
 					destination: "/topic/substatus.game.${gameId}.cell_${cell}"
 				)
 			}
