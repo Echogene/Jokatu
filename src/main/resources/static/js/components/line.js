@@ -3,13 +3,15 @@ var JLineProto = Object.create(HTMLDivElement.prototype);
 JLineProto.attachedCallback = function() {
 	this._endsObserver = new MutationObserver(this._updatePositionFromEnds.bind(this));
 
+	window.addEventListener('load', this._updatePositionFromEnds.bind(this));
+
+	window.addEventListener('optimizedResize', this._updatePositionFromEnds.bind(this), false);
+
 	observeAttributes(this, new Map([
 		['data-ends', this._updatePosition.bind(this)]
 	]));
 
 	this.innerHTML = '&nbsp;';
-
-	window.addEventListener("optimizedResize", this._updatePositionFromEnds.bind(this), false);
 };
 
 JLineProto.setEnds = function(start, end) {
@@ -66,6 +68,16 @@ JLineProto._updatePosition = function(ends, mutation, attempt = 0) {
 	var cy = ((y1 + y2) / 2) - (this.offsetHeight / 2) - totalOffset[1];
 	// angle
 	var angle = Math.atan2((y1 - y2), (x1 - x2)) * (180 / Math.PI);
+
+	/*var ss = document.styleSheets;
+	var links = '';
+	for (var i = 0, max = ss.length; i < max; i++) {
+		links += ' ' + ss[i].href;
+	}
+	console.log(`${links} ${document.readyState}
+start left: ${startOffset.left}, start top: ${startOffset.top}, start width: ${startOffset.width}, start height: ${startOffset.height}
+end left: ${endOffset.left}, end top: ${endOffset.top}, end width ${endOffset.width}, end height: ${endOffset.height}
+left: ${cx}, top: ${cy}, length: ${length}, angle: ${angle}, attempt: ${attempt}`);*/
 
 	this.style.left = `${cx}px`;
 	this.style.top = `${cy}px`;
