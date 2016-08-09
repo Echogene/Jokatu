@@ -30,7 +30,7 @@ JPopupProto.hide = function() {
 	this.parentNode.removeChild(this);
 };
 
-JPopupProto.initialise = function() {
+JPopupProto.placeInDefaultContainer = function() {
 	var container = document.getElementById('popup-container');
 	if (!container) {
 		container = document.createElement('div');

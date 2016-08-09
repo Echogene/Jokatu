@@ -16,7 +16,7 @@ JButtonProto.createdCallback = function() {
 				popup.setAttribute('data-title', 'Error');
 				popup.setAttribute('data-message', error.message);
 				popup.setAttribute('data-cover', this.id);
-				popup.initialise();
+				popup.placeInDefaultContainer();
 			});
 	});
 };
