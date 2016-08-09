@@ -84,10 +84,6 @@ JStatusProto._updateElement = function(element, status) {
 	var attributeName = this.getAttribute('attributeName');
 	if (attributeName) {
 		var statusString = JSON.stringify(status);
-		var attributeWrapper = this.getAttribute('attributeWrapper');
-		if (attributeWrapper) {
-			statusString = attributeWrapper.replace(/\$status/g, statusString);
-		}
 		element.setAttribute(attributeName, statusString);
 	}
 };
@@ -109,8 +105,6 @@ JStatusProto._updateElement = function(element, status) {
  *         will be the attributes and values to set on the child element.</li>
  *     <li><code>attributeName</code>: an attribute name to set on each child element with the status for that element.
  *         </li>
- *     <li><code>attributeWrapper</code>: a JSON string where <code>$status</code> will be replaced with the status
- *         for that element.  The resulting JSON string will be used as the value for <code>attributeName</code>.</li>
  *     <li><code>data-initial</code>: an object for the initial data for the status.</li>
  *     <li><code>showAll</code>: instead of deleting or hiding children, keep them around but clear their text.</li>
  *     <li><code>removeOldChildren</code>: instead of hiding or emptying children, delete the children.</li>
