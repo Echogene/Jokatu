@@ -86,6 +86,13 @@ JStatusProto._updateElement = function(element, status) {
 		var statusString = JSON.stringify(status);
 		element.setAttribute(attributeName, statusString);
 	}
+	var attributeMapping = JSON.parse(this.getAttribute('data-attributeMapping'));
+	if (attributeMapping) {
+		Object.keys(attributeMapping).forEach(attributeName => {
+			var statusField = attributeMapping[attributeName];
+			element.setAttribute(attributeName, status[statusField]);
+		});
+	}
 };
 
 /**
@@ -105,6 +112,10 @@ JStatusProto._updateElement = function(element, status) {
  *         will be the attributes and values to set on the child element.</li>
  *     <li><code>attributeName</code>: an attribute name to set on each child element with the status for that element.
  *         </li>
+ *     <li><code>data-attributeMapping</code>: a map whose keys should be attribute names of the wrapped elements and
+ *         whose values should be field names of the status object.  When the status is updated, each of the
+ *         mapped attributes of each wrapped element will be populated with the values for the corresponding
+ *         (by <code>data-attributeMapping</code>) fields of the status corresponding to the wrapped element.</li>
  *     <li><code>data-initial</code>: an object for the initial data for the status.</li>
  *     <li><code>showAll</code>: instead of deleting or hiding children, keep them around but clear their text.</li>
  *     <li><code>removeOldChildren</code>: instead of hiding or emptying children, delete the children.</li>
