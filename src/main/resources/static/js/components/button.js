@@ -11,7 +11,7 @@ JButtonProto.createdCallback = function() {
 				clearTimeout(this._errorTimeout);
 				this._errorTimeout = setTimeout(() => this.classList.remove('error'), 1000);
 
-				var popup = new JPopup();
+				var popup = new JError();
 				popup.id = headers.get('receipt-id');
 				popup.setAttribute('data-title', 'Error');
 				popup.setAttribute('data-message', error.message);

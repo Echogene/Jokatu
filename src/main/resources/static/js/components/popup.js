@@ -14,12 +14,6 @@ JPopupProto.createdCallback = function() {
 		['data-cover', this._updatePosition.bind(this)]
 	]));
 
-	this._titleBar.addEventListener('mouseup', (e) => {
-		if (e.button === 1) {
-			this.hide();
-		}
-	});
-
 	this.appendChild(clone);
 };
 
@@ -28,17 +22,6 @@ JPopupProto.hide = function() {
 		this.parentNode.removeChild(this._line);
 	}
 	this.parentNode.removeChild(this);
-};
-
-JPopupProto.placeInDefaultContainer = function() {
-	var container = document.getElementById('popup-container');
-	if (!container) {
-		container = document.createElement('div');
-		container.id = 'popup-container';
-		container.classList.add('overlay');
-		document.body.appendChild(container);
-	}
-	container.appendChild(this);
 };
 
 JPopupProto._updateTitle = function(title) {
