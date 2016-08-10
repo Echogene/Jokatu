@@ -17,10 +17,14 @@ import java.util.Collection;
 @Component
 public class EventBroadcaster {
 
-	@Autowired
-	private ApplicationContext applicationContext;
+	private final ApplicationContext applicationContext;
 
 	private Collection<EventHandler> eventHandlers;
+
+	@Autowired
+	public EventBroadcaster(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
+	}
 
 	@PostConstruct
 	public void wireEventListeners() {
