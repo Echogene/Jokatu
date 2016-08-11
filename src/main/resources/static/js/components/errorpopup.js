@@ -1,7 +1,7 @@
 var JErrorProto = Object.create(JPopup.prototype);
 
 JErrorProto.createdCallback = function() {
-	JPopup.prototype.attachedCallback && JPopup.prototype.attachedCallback.call(this);
+	JPopup.prototype.createdCallback && JPopup.prototype.createdCallback.call(this);
 
 	this._titleBar.addEventListener('mouseup', (e) => {
 		if (e.button === 1) {
