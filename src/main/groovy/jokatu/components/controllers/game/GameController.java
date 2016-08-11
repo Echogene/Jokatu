@@ -3,8 +3,8 @@ package jokatu.components.controllers.game;
 import jokatu.components.config.FactoryConfiguration.GameFactories;
 import jokatu.components.config.InputDeserialisers;
 import jokatu.components.dao.GameDao;
+import jokatu.components.exceptions.ExceptionHandler;
 import jokatu.components.markup.MarkupGenerator;
-import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.event.GameEvent;
@@ -14,32 +14,26 @@ import jokatu.game.player.Player;
 import jokatu.game.player.PlayerFactory;
 import jokatu.game.stage.Stage;
 import jokatu.game.viewresolver.ViewResolver;
-import jokatu.stomp.SendErrorMessage;
-import jokatu.stomp.SubscriptionErrorMessage;
 import ophelia.collections.BaseCollection;
 import ophelia.exceptions.maybe.FailureHandler;
 import ophelia.exceptions.maybe.SuccessHandler;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.security.Principal;
-import java.text.MessageFormat;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static java.text.MessageFormat.format;
 import static ophelia.exceptions.maybe.Maybe.wrap;
@@ -52,14 +46,10 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @Controller
 public class GameController {
 
-	private static final Logger log = LoggerFactory.getLogger(GameController.class);
-
-	private static final Pattern GAME_CHANNEL_PATTERN = Pattern.compile(".*\\.game\\.(\\d+).*");
-
 	private final InputDeserialisers inputDeserialisers;
 	private final GameFactories gameFactories;
 	private final GameDao gameDao;
-	private final StoringMessageSender sender;
+	private final ExceptionHandler exceptionHandler;
 	private final MarkupGenerator markupGenerator;
 
 	@Autowired
@@ -67,13 +57,13 @@ public class GameController {
 			InputDeserialisers inputDeserialisers,
 			GameFactories gameFactories,
 			GameDao gameDao,
-			StoringMessageSender sender,
+			ExceptionHandler exceptionHandler,
 			MarkupGenerator markupGenerator
 	) {
 		this.inputDeserialisers = inputDeserialisers;
 		this.gameFactories = gameFactories;
 		this.gameDao = gameDao;
-		this.sender = sender;
+		this.exceptionHandler = exceptionHandler;
 		this.markupGenerator = markupGenerator;
 	}
 
@@ -148,36 +138,10 @@ public class GameController {
 
 	@MessageExceptionHandler(Exception.class)
 	void handleException(Exception e, Message originalMessage, Principal principal) {
-		StompHeaderAccessor accessor = StompHeaderAccessor.wrap(originalMessage);
-		String destination = accessor.getDestination();
-		Matcher matcher = GAME_CHANNEL_PATTERN.matcher(destination);
-		if (matcher.matches()) {
-			ErrorMessage errorMessage = getErrorMessage(e, accessor);
-			sender.sendMessageToUser(principal.getName(), "/topic/errors.game." + matcher.group(1), errorMessage);
-		}
-		log.error(
-				MessageFormat.format(
-					"Exception occurred when receiving message\n{0}",
-					accessor.getDetailedLogMessage(originalMessage.getPayload())
-				),
-				e
-		);
+		exceptionHandler.handleException(e, originalMessage, principal);
 	}
 
-	private ErrorMessage getErrorMessage(Throwable e, StompHeaderAccessor accessor) {
-		switch (accessor.getCommand()) {
-			case SUBSCRIBE:
-				String subscribeId = accessor.getNativeHeader("id").get(0);
-				return new SubscriptionErrorMessage(e, subscribeId);
-			case SEND:
-				String sendReceipt = accessor.getNativeHeader("receipt").get(0);
-				return new SendErrorMessage(e, sendReceipt);
-			default:
-				return new ErrorMessage(e);
-		}
-	}
-
-	@ExceptionHandler(GameException.class)
+	@org.springframework.web.bind.annotation.ExceptionHandler(GameException.class)
 	@ResponseStatus(INTERNAL_SERVER_ERROR)
 	@ResponseBody
 	Exception handleException(Exception e) {
