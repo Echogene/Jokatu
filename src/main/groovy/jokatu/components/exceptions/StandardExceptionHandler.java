@@ -4,6 +4,7 @@ import jokatu.components.controllers.game.GameController;
 import jokatu.components.stomp.StoringMessageSender;
 import jokatu.stomp.SendErrorMessage;
 import jokatu.stomp.SubscriptionErrorMessage;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
-public class ExceptionHandler {
+public class StandardExceptionHandler {
 
 	private static final Logger log = LoggerFactory.getLogger(GameController.class);
 
@@ -27,11 +28,11 @@ public class ExceptionHandler {
 	private final StoringMessageSender sender;
 
 	@Autowired
-	public ExceptionHandler(StoringMessageSender sender) {
+	public StandardExceptionHandler(StoringMessageSender sender) {
 		this.sender = sender;
 	}
 
-	public void handleException(Exception e, Message originalMessage, Principal principal) {
+	public void handleMessageException(@NotNull Exception e, @NotNull Message originalMessage, @NotNull Principal principal) {
 		StompHeaderAccessor accessor = StompHeaderAccessor.wrap(originalMessage);
 		String destination = accessor.getDestination();
 		Matcher matcher = GAME_CHANNEL_PATTERN.matcher(destination);

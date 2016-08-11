@@ -3,7 +3,7 @@ package jokatu.components.controllers.game;
 import jokatu.components.config.FactoryConfiguration.GameFactories;
 import jokatu.components.config.InputDeserialisers;
 import jokatu.components.dao.GameDao;
-import jokatu.components.exceptions.ExceptionHandler;
+import jokatu.components.exceptions.StandardExceptionHandler;
 import jokatu.components.markup.MarkupGenerator;
 import jokatu.game.Game;
 import jokatu.game.GameID;
@@ -25,6 +25,7 @@ import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -49,7 +50,7 @@ public class GameController {
 	private final InputDeserialisers inputDeserialisers;
 	private final GameFactories gameFactories;
 	private final GameDao gameDao;
-	private final ExceptionHandler exceptionHandler;
+	private final StandardExceptionHandler standardExceptionHandler;
 	private final MarkupGenerator markupGenerator;
 
 	@Autowired
@@ -57,13 +58,13 @@ public class GameController {
 			InputDeserialisers inputDeserialisers,
 			GameFactories gameFactories,
 			GameDao gameDao,
-			ExceptionHandler exceptionHandler,
+			StandardExceptionHandler standardExceptionHandler,
 			MarkupGenerator markupGenerator
 	) {
 		this.inputDeserialisers = inputDeserialisers;
 		this.gameFactories = gameFactories;
 		this.gameDao = gameDao;
-		this.exceptionHandler = exceptionHandler;
+		this.standardExceptionHandler = standardExceptionHandler;
 		this.markupGenerator = markupGenerator;
 	}
 
@@ -138,10 +139,10 @@ public class GameController {
 
 	@MessageExceptionHandler(Exception.class)
 	void handleException(Exception e, Message originalMessage, Principal principal) {
-		exceptionHandler.handleException(e, originalMessage, principal);
+		standardExceptionHandler.handleMessageException(e, originalMessage, principal);
 	}
 
-	@org.springframework.web.bind.annotation.ExceptionHandler(GameException.class)
+	@ExceptionHandler(GameException.class)
 	@ResponseStatus(INTERNAL_SERVER_ERROR)
 	@ResponseBody
 	Exception handleException(Exception e) {
