@@ -14,6 +14,8 @@ JPopupProto.createdCallback = function() {
 		['data-cover', this._updatePosition.bind(this)]
 	]));
 
+	this.classList.add('popup');
+
 	this.appendChild(clone);
 };
 
