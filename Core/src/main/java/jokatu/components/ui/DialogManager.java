@@ -10,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
@@ -23,7 +23,7 @@ public class DialogManager implements DialogRequestor, DialogResponder {
 
 	private final Map<DialogID, ExceptionalConsumer<Map<String, Object>, GameException>> dialogs = new ConcurrentHashMap<>();
 
-	private final Map<Pair<GameID, String>, Set<DialogUI>> playersDialogs = new ConcurrentHashMap<>();
+	private final Map<Pair<GameID, String>, List<DialogUI>> playersDialogs = new ConcurrentHashMap<>();
 
 	private final Supplier<String> idSupplier = new Supplier<String>() {
 		private final AtomicLong id = new AtomicLong();
@@ -53,7 +53,7 @@ public class DialogManager implements DialogRequestor, DialogResponder {
 
 		DialogUI dialog = new DialogUI(title, message, dialogId.getDialogId());
 
-		MapUtils.updateSetBasedMap(playersDialogs, gamePlayerKey, dialog);
+		MapUtils.updateListBasedMap(playersDialogs, gamePlayerKey, dialog);
 
 		updatePlayerDialogs(gamePlayerKey);
 
@@ -61,7 +61,7 @@ public class DialogManager implements DialogRequestor, DialogResponder {
 	}
 
 	private void updatePlayerDialogs(@NotNull Pair<GameID, String> gamePlayerKey) {
-		Set<DialogUI> dialogUIs = playersDialogs.get(gamePlayerKey);
+		List<DialogUI> dialogUIs = playersDialogs.get(gamePlayerKey);
 		assert dialogUIs != null;
 
 		sender.sendToUser(gamePlayerKey.getRight(), "/topic/dialogs.game." + gamePlayerKey.getLeft(), dialogUIs);
@@ -89,7 +89,7 @@ public class DialogManager implements DialogRequestor, DialogResponder {
 		dialog.accept(json);
 
 		Pair<GameID, String> gamePlayerKey = new Pair<>(dialogId.getGameId(), playerName);
-		Set<DialogUI> dialogUIs = playersDialogs.get(gamePlayerKey);
+		List<DialogUI> dialogUIs = playersDialogs.get(gamePlayerKey);
 		if (dialogUIs == null) {
 			throw new GameException(
 					dialogId.getGameId(),
