@@ -31,5 +31,24 @@ public interface DialogResponder {
 		public String getDialogId() {
 			return dialogId;
 		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+
+			DialogID dialogID = (DialogID) o;
+
+			if (!gameId.equals(dialogID.gameId)) return false;
+			return dialogId.equals(dialogID.dialogId);
+
+		}
+
+		@Override
+		public int hashCode() {
+			int result = gameId.hashCode();
+			result = 31 * result + dialogId.hashCode();
+			return result;
+		}
 	}
 }
