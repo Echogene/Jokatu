@@ -9,13 +9,16 @@ layout 'layouts/main.tpl', true,
 	mainBody: contents {
 		form(name: 'f', action: '/login', method: 'post') {
 			input(type: 'hidden', name: "${_csrf.parameterName}", value: "${_csrf.token}")
-
-			label(for: 'username') {yield 'Username:'}
-			input(id: 'username', name: 'username', type: 'text', autocomplete: 'username', autofocus: 'true')
-
-			label(for: 'password') {yield 'Password:'}
-			input(id: 'password', name: 'password', type: 'password', autocomplete: 'current-password')
-
-			button(id: 'submit', type: 'submit') {yield 'Log in'}
+			div() {
+				label(for: 'username', 'Username:')
+				input(id: 'username', name: 'username', type: 'text', autocomplete: 'username', autofocus: 'true')
+			}
+			div() {
+				label(for: 'password', 'Password:')
+				input(id: 'password', name: 'password', type: 'password', autocomplete: 'current-password')
+			}
+			div() {
+				button(id: 'submit', type: 'submit', 'Log in')
+			}
 		}
 	}
