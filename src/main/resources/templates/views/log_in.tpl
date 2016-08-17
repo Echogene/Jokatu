@@ -4,7 +4,6 @@ layout 'layouts/main.tpl', true,
 
 	headers: contents {
 		link(rel: 'stylesheet', href: '/css/login.css')
-		script(type: 'text/javascript', src: '/js/login.js') {}
 	},
 
 	mainBody: contents {
