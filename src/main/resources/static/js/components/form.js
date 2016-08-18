@@ -8,6 +8,7 @@ JFormProto.attachedCallback = function() {
 	this._submitButton = clone.querySelector('button');
 	// Override the method so that the input can be based on the form's content.
 	this._submitButton._getInput = this._getInput.bind(this);
+	this._submitButton.id = this.id + "_submit";
 
 	this.addEventListener('submit', this._onSubmit.bind(this));
 
