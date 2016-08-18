@@ -15,8 +15,6 @@ import jokatu.game.player.PlayerFactory;
 import jokatu.game.stage.Stage;
 import jokatu.game.viewresolver.ViewResolver;
 import ophelia.collections.BaseCollection;
-import ophelia.exceptions.maybe.FailureHandler;
-import ophelia.exceptions.maybe.SuccessHandler;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
@@ -25,11 +23,7 @@ import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -38,6 +32,7 @@ import java.util.Map;
 
 import static java.text.MessageFormat.format;
 import static ophelia.exceptions.maybe.Maybe.wrap;
+import static ophelia.exceptions.maybe.MaybeCollectors.toUniqueSuccess;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 /**
@@ -117,11 +112,9 @@ public class GameController {
 			input = acceptedInputs.stream()
 					.map(inputDeserialisers::getDeserialiser)
 					.map(wrap(deserialiser -> deserialiser.deserialise(json)))
-					.map(SuccessHandler::returnOnSuccess)
-					.map(FailureHandler::nullOnFailure)
-					.filter(i -> i != null)
-					.findAny()
-					.orElseThrow(() -> new GameException(identity, "Could not deserialise ''{0}''.", json));
+					.collect(toUniqueSuccess())
+					.returnOnSuccess()
+					.throwMappedFailure(e -> new GameException(identity, e, "Could not deserialise ''{0}''.", json));
 		}
 		game.accept(input, player);
 	}
