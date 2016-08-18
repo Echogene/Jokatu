@@ -51,8 +51,8 @@ public abstract class Game<P extends Player>
 		} catch (Exception e) {
 			throw new GameException(
 					identifier,
-					e.getMessage(),
-					e
+					e,
+					e.getMessage()
 			);
 		}
 	}
