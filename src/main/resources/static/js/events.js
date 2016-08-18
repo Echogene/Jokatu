@@ -41,7 +41,10 @@ function observeAttributes(element, attributeListeners) {
 
 	// Trigger the listeners now.
 	for (var [attribute, listener] of attributeListeners) {
-		var attributeValue = JSON.parse(element.getAttribute(attribute));
+		var attributeValue = element.getAttribute(attribute);
+		try {
+			attributeValue = JSON.parse(attributeValue)
+		} catch (e) {}
 		listener(attributeValue);
 	}
 }
