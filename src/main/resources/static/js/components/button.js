@@ -26,7 +26,7 @@ JButtonProto.createdCallback = function() {
  * @protected
  */
 JButtonProto._getInput = function() {
-	JSON.parse(this.getAttribute('data-input'))
+	return JSON.parse(this.getAttribute('data-input'));
 };
 
 var JButton = document.registerElement('j-button', {
