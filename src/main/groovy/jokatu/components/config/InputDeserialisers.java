@@ -23,8 +23,12 @@ public class InputDeserialisers {
 
 	private Map<Class<? extends Input>, InputDeserialiser<?>> deserialiserMap = new HashMap<>();
 
+	private final ApplicationContext applicationContext;
+
 	@Autowired
-	private ApplicationContext applicationContext;
+	public InputDeserialisers(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
+	}
 
 	@PostConstruct
 	public void populateDeserialisers() throws Exception {
