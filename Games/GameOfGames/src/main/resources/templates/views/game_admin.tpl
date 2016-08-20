@@ -11,6 +11,7 @@ layout 'views/game_view.tpl', true,
 		gameNames.each { gameName ->
 			button(
 				is: 'j-button',
+				id: "game_${gameName}",
 				destination: "/topic/input.game.${gameId}",
 				'data-input': "{\"gameName\": \"${gameName}\"}",
 				"Create ${gameName}"
