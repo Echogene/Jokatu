@@ -1,0 +1,75 @@
+#contents {
+	display: inline-flex;
+	flex-direction: row;
+	justify-content: space-between;
+
+	>#other_players {
+		flex-grow: 1;
+		display: inline-flex;
+		flex-direction: column;
+		justify-content: space-around;
+	}
+
+	>j-graph {
+		width: calc(~"80% - 50px");
+		margin-top: 50px;
+		height: 90%;
+	}
+
+	>#me {
+		flex-grow: 1;
+		display: inline-flex;
+		flex-direction: column;
+		justify-content: space-around;
+	}
+
+	.player {
+		display: inline-flex;
+		flex-direction: column;
+
+		&.YELLOW {
+			background-color: #bb4;
+		}
+		&.CYAN {
+			background-color: #4bb;
+		}
+		&.PURPLE {
+			background-color: #b4b;
+		}
+
+		>.name {
+			text-align: center;
+		}
+
+		>.resources {
+			display: inline-flex;
+			flex-direction: row;
+			justify-content: space-around;
+
+			>j-counter {
+				flex-grow: 1;
+				display: inline-flex;
+				flex-direction: column;
+				align-items: center;
+				color: white;
+				border: 1px solid #aaa;
+
+				&:not(:first-child) {
+					border-left-width: 0;
+				}
+
+				&.SQUARE {
+					background-color: #301;
+				}
+
+				&.CIRCLE {
+					background-color: #130;
+				}
+
+				&.RHOMBUS {
+					background-color: #013;
+				}
+			}
+		}
+	}
+}

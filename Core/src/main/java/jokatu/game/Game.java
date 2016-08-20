@@ -20,8 +20,6 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
-import static ophelia.util.FunctionUtils.not;
-
 /**
  * A game has a collection of {@link Player}s and a current {@link Stage}.
  * @author Steven Weston
@@ -101,10 +99,9 @@ public abstract class Game<P extends Player>
 	}
 
 	@NotNull
-	public Set<String> getOtherPlayersNames(@NotNull String name) {
+	public Set<P> getOtherPlayers(@NotNull String name) {
 		return players.values().stream()
-				.map(Player::getName)
-				.filter(not(name::equals))
+				.filter(p -> !name.equals(p.getName()))
 				.collect(Collectors.toSet());
 	}
 }

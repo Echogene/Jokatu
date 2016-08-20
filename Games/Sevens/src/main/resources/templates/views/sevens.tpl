@@ -11,16 +11,16 @@ layout 'views/game_view.tpl', true,
 
 	mainContents: contents {
 		div(id: 'others') {
-			otherPlayersNames.each { name ->
+			otherPlayers.each { p ->
 				div() {
-					span("${name}")
+					span("${p.name}")
 					yieldUnescaped markupGenerator.bindLast(
 						tag: 'j-counter',
-						id: "hand_${name}",
+						id: "hand_${p.name}",
 						class: 'hand',
 						wrapperElement: 'span',
 						'data-defaultAttributes': "{\"text\": \"${Cards.PRIVATE_CARD}\"}",
-						destination: "/topic/handcount.game.${gameId}.${name}"
+						destination: "/topic/handcount.game.${gameId}.${p.name}"
 					)
 				}
 			}

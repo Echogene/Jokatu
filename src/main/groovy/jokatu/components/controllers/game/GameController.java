@@ -79,7 +79,8 @@ public class GameController {
 		}
 		modelAndView.addObject("markupGenerator", markupGenerator);
 		modelAndView.addObject("username", principal.getName());
-		modelAndView.addObject("otherPlayersNames", game.getOtherPlayersNames(player.getName()));
+		modelAndView.addObject("player", player);
+		modelAndView.addObject("otherPlayers", game.getOtherPlayers(player.getName()));
 		modelAndView.addObject("gameId", identity);
 		modelAndView.addObject("gameName", game.getGameName());
 		modelAndView.addObject("gameNames", gameFactories.getGameNames());

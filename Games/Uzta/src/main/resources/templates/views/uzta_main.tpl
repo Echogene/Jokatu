@@ -10,22 +10,25 @@ layout 'views/game_view.tpl', true,
 		include template: 'components/button.tpl'
 		include template: 'components/counter.tpl'
 		link(rel: 'stylesheet', href: '/css/uzta.css')
+		link(rel: 'stylesheet', href: '/css/uzta_main.css')
 	},
 
 	mainContents: contents {
-		otherPlayersNames.each { name ->
-			div(class: 'otherPlayer') {
-				span("${name}")
-				div(class: 'resources') {
-					NodeType.values().each { type ->
-						yieldUnescaped markupGenerator.bindLast(
-							tag: 'j-counter',
-							id: "${name}_${type}",
-							class: "resource ${type}",
-							wrapperElement: 'span',
-							'data-defaultAttributes': "{\"text\": \"${type.getSymbol()}\"}",
-							destination: "/topic/resource.game.${gameId}.${name}.${type}"
-						)
+		div(id: 'other_players') {
+			otherPlayers.each { p ->
+				div(class: "player ${p.colour}") {
+					span(class: 'name', "${p.name}")
+					div(class: 'resources') {
+						NodeType.values().each { type ->
+							yieldUnescaped markupGenerator.bindLast(
+								tag: 'j-counter',
+								id: "${p.name}_${type}",
+								class: "resource ${type}",
+								wrapperElement: 'span',
+								'data-defaultAttributes': "{\"text\": \"${type.getSymbol()}\"}",
+								destination: "/topic/resource.game.${gameId}.${p.name}.${type}"
+							)
+						}
 					}
 				}
 			}
@@ -40,27 +43,29 @@ layout 'views/game_view.tpl', true,
 				destination: "/topic/graph.game.${gameId}"
 		)
 
-		button(
-			is: 'j-button',
-			id: 'end',
-			destination: "/topic/input.game.${gameId}",
-			'data-input': '{"skip": true}',
-			'End turn'
-		)
-
 		div(id: 'me') {
-			span('Your resources')
-			div(class: 'resources') {
-				NodeType.values().each { type ->
-					yieldUnescaped markupGenerator.bindLast(
-						tag: 'j-counter',
-						id: "${username}_${type}",
-						class: "resource ${type}",
-						wrapperElement: 'span',
-						'data-defaultAttributes': "{\"text\": \"${type.getSymbol()}\"}",
-						destination: "/topic/resource.game.${gameId}.${username}.${type}"
-					)
+			div(id: 'my_resources', class: "player ${player.colour}") {
+				span(class: 'name', 'Your resources')
+				div(class: 'resources') {
+					NodeType.values().each { type ->
+						yieldUnescaped markupGenerator.bindLast(
+							tag: 'j-counter',
+							id: "${username}_${type}",
+							class: "resource ${type}",
+							wrapperElement: 'span',
+							'data-defaultAttributes': "{\"text\": \"${type.getSymbol()}\"}",
+							destination: "/topic/resource.game.${gameId}.${username}.${type}"
+						)
+					}
 				}
 			}
+
+			button(
+				is: 'j-button',
+				id: 'end',
+				destination: "/topic/input.game.${gameId}",
+				'data-input': '{"skip": true}',
+				'End turn'
+			)
 		}
 	}
