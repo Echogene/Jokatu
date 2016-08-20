@@ -14,7 +14,7 @@ JButtonProto.createdCallback = function() {
 				var popup = new JError();
 				popup.id = headers.get('receipt-id');
 				popup.setAttribute('data-title', 'Error');
-				popup.setAttribute('data-message', error.message);
+				popup.setAttribute('data-message', error.message || error);
 				popup.setAttribute('data-cover', this.id);
 				popup.placeInDefaultContainer();
 			});
