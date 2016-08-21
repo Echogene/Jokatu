@@ -20,7 +20,7 @@ JCounterProto.createdCallback = function() {
 
 JCounterProto._setCount = function(count) {
 	this._ensureEnoughElements(count);
-	for (var i = 0; i < this.childNodes.length; i++) {
+	for (var i = this.childNodes.length - 1; i >= 0; i--) {
 		var element = this.childNodes[i];
 		if (i >= count) {
 			// Remove the element.
