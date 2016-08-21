@@ -8,6 +8,7 @@ import jokatu.game.games.uzta.input.SelectEdgeInput;
 import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.stage.Stage;
+import jokatu.game.status.StandardTextStatus;
 import jokatu.game.turn.TurnManager;
 import ophelia.collections.list.UnmodifiableList;
 import org.jetbrains.annotations.NotNull;
@@ -23,10 +24,12 @@ import static java.util.Collections.emptySet;
 public class FirstPlacementStage extends AbstractSelectEdgeInputAcceptor implements Stage<GameEvent> {
 
 	private final UnmodifiableList<UztaPlayer> players;
+	private final StandardTextStatus status;
 
-	FirstPlacementStage(@NotNull UztaGraph graph, @NotNull List<UztaPlayer> playersInOrder) {
+	FirstPlacementStage(@NotNull UztaGraph graph, @NotNull List<UztaPlayer> playersInOrder, @NotNull StandardTextStatus status) {
 		super(graph, getTurnManager(playersInOrder));
 		this.players = new UnmodifiableList<>(playersInOrder);
+		this.status = status;
 
 		this.turnManager.observe(this::fireEvent);
 	}
@@ -39,6 +42,8 @@ public class FirstPlacementStage extends AbstractSelectEdgeInputAcceptor impleme
 	@Override
 	public void start() {
 		turnManager.next();
+
+		status.setText("Waiting for players to choose their starting edges.");
 	}
 
 	@NotNull

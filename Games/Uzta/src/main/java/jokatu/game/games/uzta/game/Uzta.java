@@ -33,9 +33,9 @@ public class Uzta extends Game<UztaPlayer> {
 
 		stageMachine = new SequentialStageMachine(
 				() -> new MinAndMaxJoiningStage<>(UztaPlayer.class, players, 1, 6, status),
-				() -> new SetupStage(graph, players),
-				() -> new FirstPlacementStage(graph, determineTurnOrder(players)),
-				() -> new MainStage(graph, determineTurnOrder(players)),
+				() -> new SetupStage(graph, players, status),
+				() -> new FirstPlacementStage(graph, determineTurnOrder(players), status),
+				() -> new MainStage(graph, determineTurnOrder(players), status),
 				() -> new GameOverStage(status)
 		);
 
