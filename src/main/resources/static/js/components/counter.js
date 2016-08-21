@@ -5,6 +5,8 @@ JCounterProto.createdCallback = function() {
 	this._counterElementName = this.getAttribute('wrapperElement');
 	var destination = this.getAttribute('destination');
 
+	this._limit = this.getAttribute('limit');
+
 	/**
 	 * Attributes to set on the counter elements when they are created.
 	 * @private
@@ -19,12 +21,33 @@ JCounterProto.createdCallback = function() {
 };
 
 JCounterProto._setCount = function(count) {
-	this._ensureEnoughElements(count);
-	for (var i = this.childNodes.length - 1; i >= 0; i--) {
-		var element = this.childNodes[i];
-		if (i >= count) {
-			// Remove the element.
-			this.removeChild(element);
+	if (this._limit > 0 && count > this._limit) {
+		if (!this._number) {
+			// We've just gone above the limit, so use a number instead of elements.
+			while (this.firstChild) {
+				this.removeChild(this.firstChild);
+			}
+			this._number = document.createElement('span');
+			this.appendChild(this._number);
+			this._createCounterElement();
+		}
+		this._number.innerText = `${count}×`;
+
+	} else {
+		if (this._number) {
+			// We've just gone below the limit, so go back to using elements.
+			while (this.firstChild) {
+				this.removeChild(this.firstChild);
+			}
+			delete this._number;
+		}
+		this._ensureEnoughElements(count);
+		for (let i = this.childNodes.length - 1; i >= 0; i--) {
+			let element = this.childNodes[i];
+			if (i >= count) {
+				// Remove the element.
+				this.removeChild(element);
+			}
 		}
 	}
 };
