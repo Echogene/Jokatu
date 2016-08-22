@@ -14,19 +14,29 @@ import javax.annotation.PostConstruct;
 @Configuration
 public class InitialGameOfGamesConfiguration {
 
-	@Autowired
-	private GameOfGamesFactory factory;
+	private final GameOfGamesFactory factory;
+
+	private final EventBroadcaster eventBroadcaster;
+
+	private GameOfGames theGameOfGames;
 
 	@Autowired
-	private EventBroadcaster eventBroadcaster;
+	public InitialGameOfGamesConfiguration(EventBroadcaster eventBroadcaster, GameOfGamesFactory factory) {
+		this.eventBroadcaster = eventBroadcaster;
+		this.factory = factory;
+	}
 
 	@PostConstruct
 	public void createGameOfGames() {
-		GameOfGames theGameOfGames = factory.produceGame("");
+		theGameOfGames = factory.produceGame("");
 
 		theGameOfGames.observe(event -> eventBroadcaster.broadcast(theGameOfGames, event));
 
 		// Now we are observing events, start the game.
 		theGameOfGames.advanceStage();
+	}
+
+	public GameOfGames getTheGameOfGames() {
+		return theGameOfGames;
 	}
 }
