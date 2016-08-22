@@ -20,15 +20,24 @@ layout 'views/game_view.tpl', true,
 					span(class: 'name', "${p.name}")
 					div(class: 'resources') {
 						NodeType.values().each { type ->
-							yieldUnescaped markupGenerator.bindLast(
-								tag: 'j-counter',
-								id: "${p.name}_${type}",
-								class: "resource ${type}",
-								limit: 10,
-								wrapperElement: 'span',
-								'data-defaultAttributes': "{\"text\": \"${type.getSymbol()}\"}",
-								destination: "/topic/resource.game.${gameId}.${p.name}.${type}"
-							)
+							div(class: "${type}") {
+								yieldUnescaped markupGenerator.bindLast(
+									tag: 'j-counter',
+									id: "${p.name}_${type}",
+									class: "resource",
+									limit: 10,
+									wrapperElement: 'span',
+									'data-defaultAttributes': "{\"text\": \"${type.getSymbol()}\"}",
+									destination: "/topic/resource.game.${gameId}.${p.name}.${type}"
+								)
+								button(
+									is: 'j-button',
+									destination: "/topic/input.game.${gameId}",
+									'data-input': "{\"resource\": \"${type}\", \"player\": \"${p.name}\"}",
+									title: "Request ${type.plural} from ${p.name}.",
+									'⇄'
+								)
+							}
 						}
 					}
 				}
@@ -49,15 +58,24 @@ layout 'views/game_view.tpl', true,
 				span(class: 'name', 'Your resources')
 				div(class: 'resources') {
 					NodeType.values().each { type ->
-						yieldUnescaped markupGenerator.bindLast(
-							tag: 'j-counter',
-							id: "${username}_${type}",
-							class: "resource ${type}",
-							limit: 10,
-							wrapperElement: 'span',
-							'data-defaultAttributes': "{\"text\": \"${type.getSymbol()}\"}",
-							destination: "/topic/resource.game.${gameId}.${username}.${type}"
-						)
+						div(class: "${type}") {
+							yieldUnescaped markupGenerator.bindLast(
+								tag: 'j-counter',
+								id: "${username}_${type}",
+								class: "resource",
+								limit: 10,
+								wrapperElement: 'span',
+								'data-defaultAttributes': "{\"text\": \"${type.getSymbol()}\"}",
+								destination: "/topic/resource.game.${gameId}.${username}.${type}"
+							)
+							button(
+								is: 'j-button',
+								destination: "/topic/input.game.${gameId}",
+								'data-input': "{\"resource\": \"${type}\"}",
+								title: "Request ${type.plural} from the supply.",
+								'⇄'
+							)
+						}
 					}
 				}
 			}

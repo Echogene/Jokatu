@@ -24,6 +24,9 @@ public class MainStage extends MultiInputStage {
 		MainStageSelectEdgeInputAcceptor mainStageSelectEdgeInputAcceptor = new MainStageSelectEdgeInputAcceptor(graph, turnManager, resourceDistributor);
 		addInputAcceptor(mainStageSelectEdgeInputAcceptor);
 
+		TradeRequestAcceptor tradeRequestAcceptor = new TradeRequestAcceptor();
+		addInputAcceptor(tradeRequestAcceptor);
+
 		EndTurnInputAcceptor<UztaPlayer> endTurnInputAcceptor = new EndTurnInputAcceptor<>(turnManager, UztaPlayer.class);
 		addInputAcceptor(endTurnInputAcceptor);
 

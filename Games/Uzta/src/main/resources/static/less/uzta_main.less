@@ -46,28 +46,32 @@
 			flex-direction: row;
 			justify-content: space-around;
 
-			>j-counter {
+			>div {
 				flex-grow: 1;
 				display: inline-flex;
 				flex-direction: column;
 				align-items: center;
+				justify-content: space-between;
 				color: white;
 				border: 1px solid #aaa;
+
+				&.SQUARE {
+					background-color: #301;
+				}
+				&.CIRCLE {
+					background-color: #130;
+				}
+				&.RHOMBUS {
+					background-color: #013;
+				}
 
 				&:not(:first-child) {
 					border-left-width: 0;
 				}
 
-				&.SQUARE {
-					background-color: #301;
-				}
-
-				&.CIRCLE {
-					background-color: #130;
-				}
-
-				&.RHOMBUS {
-					background-color: #013;
+				>j-counter {
+					display: inline-flex;
+					flex-direction: column;
 				}
 			}
 		}
