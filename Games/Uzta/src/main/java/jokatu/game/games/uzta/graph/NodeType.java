@@ -29,4 +29,9 @@ public enum NodeType {
 	public String getNumber(int number) {
 		return number + " " + (number == 1 ? singular : plural);
 	}
+
+	@NotNull
+	public String getPlural() {
+		return plural;
+	}
 }
