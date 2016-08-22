@@ -11,20 +11,20 @@ import java.util.Map;
 
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
-import static jokatu.game.games.uzta.input.TradeRequest.SUPPLY;
+import static jokatu.game.games.uzta.input.InitialTradeRequest.SUPPLY;
 
 @Component
-public class TradeRequestDeserialiser extends InputDeserialiser<TradeRequest> {
+public class InitialTradeRequestDeserialiser extends InputDeserialiser<InitialTradeRequest> {
 	@NotNull
 	@Override
-	public TradeRequest deserialise(@NotNull Map<String, Object> json) throws DeserialisationException {
+	public InitialTradeRequest deserialise(@NotNull Map<String, Object> json) throws DeserialisationException {
 		NodeType resource = getResource(json);
 
 		if (json.containsKey("player")) {
 			String playerName = getMandatoryKeyValueOfType(String.class, "player", json);
-			return new TradeRequest(playerName, resource);
+			return new InitialTradeRequest(playerName, resource);
 		} else {
-			return new TradeRequest(SUPPLY, resource);
+			return new InitialTradeRequest(SUPPLY, resource);
 		}
 	}
 
