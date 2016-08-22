@@ -54,7 +54,7 @@ public class Uzta extends Game<UztaPlayer> {
 	}
 
 	@NotNull
-	ModifiableUztaGraph getGraph() {
+	public ModifiableUztaGraph getGraph() {
 		return graph;
 	}
 }

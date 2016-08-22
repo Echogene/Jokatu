@@ -47,7 +47,7 @@ public class FirstPlacementStage extends AbstractSelectEdgeInputAcceptor impleme
 	}
 
 	@NotNull
-	UnmodifiableList<UztaPlayer> getPlayersInOrder() {
+	public UnmodifiableList<UztaPlayer> getPlayersInOrder() {
 		return players;
 	}
 
