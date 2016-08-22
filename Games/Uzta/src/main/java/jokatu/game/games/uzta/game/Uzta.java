@@ -35,7 +35,7 @@ public class Uzta extends Game<UztaPlayer> {
 				() -> new MinAndMaxJoiningStage<>(UztaPlayer.class, players, 1, 6, status),
 				() -> new SetupStage(graph, players, status),
 				() -> new FirstPlacementStage(graph, determineTurnOrder(players), status),
-				() -> new MainStage(graph, determineTurnOrder(players), status),
+				() -> new MainStage(graph, players, determineTurnOrder(players), status),
 				() -> new GameOverStage(status)
 		);
 

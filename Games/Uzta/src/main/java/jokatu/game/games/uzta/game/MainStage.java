@@ -9,6 +9,7 @@ import jokatu.game.turn.TurnManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Map;
 
 public class MainStage extends MultiInputStage {
 
@@ -16,7 +17,12 @@ public class MainStage extends MultiInputStage {
 	private final TurnManager<UztaPlayer> turnManager;
 	private final StandardTextStatus status;
 
-	MainStage(@NotNull UztaGraph graph, @NotNull List<UztaPlayer> playersInOrder, @NotNull StandardTextStatus status) {
+	MainStage(
+			@NotNull UztaGraph graph,
+			Map<String, UztaPlayer> players,
+			@NotNull List<UztaPlayer> playersInOrder,
+			@NotNull StandardTextStatus status
+	) {
 		resourceDistributor = new ResourceDistributor(graph);
 		turnManager = new TurnManager<>(playersInOrder);
 		this.status = status;
@@ -24,8 +30,8 @@ public class MainStage extends MultiInputStage {
 		MainStageSelectEdgeInputAcceptor mainStageSelectEdgeInputAcceptor = new MainStageSelectEdgeInputAcceptor(graph, turnManager, resourceDistributor);
 		addInputAcceptor(mainStageSelectEdgeInputAcceptor);
 
-		TradeRequestAcceptor tradeRequestAcceptor = new TradeRequestAcceptor();
-		addInputAcceptor(tradeRequestAcceptor);
+		InitialTradeRequestAcceptor initialTradeRequestAcceptor = new InitialTradeRequestAcceptor(players);
+		addInputAcceptor(initialTradeRequestAcceptor);
 
 		EndTurnInputAcceptor<UztaPlayer> endTurnInputAcceptor = new EndTurnInputAcceptor<>(turnManager, UztaPlayer.class);
 		addInputAcceptor(endTurnInputAcceptor);
