@@ -26,6 +26,14 @@ public abstract class InputDeserialiser<I extends Input> {
 		return value;
 	}
 
+	protected <T> T getMandatoryKeyValueOfType(
+			@NotNull Class<T> type,
+			@NotNull String keyName,
+			@NotNull Map<String, Object> json
+	) throws DeserialisationException {
+		return castValue(type, keyName, getMandatoryKeyValue(keyName, json), json);
+	}
+
 	@NotNull
 	protected <T> T castValue(
 			@NotNull Class<T> type,
