@@ -26,6 +26,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.text.MessageFormat.format;
+import static java.util.Collections.emptyMap;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.stream.Collectors.toSet;
 import static ophelia.util.FunctionUtils.not;
@@ -84,23 +85,27 @@ public class PlayerJoinEventHandler extends SpecificEventHandler<PlayerJoinedEve
 
 	private void handleSessionDisconnect(StompHeaderAccessor accessor, GameID gameId) {
 		Map<String, String> sessionUsers = gameUsers.get(gameId);
-		sessionUsers.remove(accessor.getSessionId());
+		if (sessionUsers != null) {
+			sessionUsers.remove(accessor.getSessionId());
+		}
 
 		scheduleUpdate(gameId);
 	}
 
 	private void handleStatusSubscription(StompHeaderAccessor accessor, GameID gameId) {
-		if (!gameUsers.containsKey(gameId)) {
-			gameUsers.put(gameId, new ConcurrentHashMap<>());
+		Map<String, String> users = gameUsers.get(gameId);
+		if (!gameUsers.containsKey(gameId) || users == null) {
+			users = new ConcurrentHashMap<>();
+			gameUsers.put(gameId, users);
 		}
-		gameUsers.get(gameId).put(accessor.getSessionId(), accessor.getUser().getName());
+		users.put(accessor.getSessionId(), accessor.getUser().getName());
 		sessionGames.put(accessor.getSessionId(), gameId);
 
 		scheduleUpdate(gameId);
 	}
 
 	private void scheduleUpdate(GameID gameId) {
-		Collection<String> userNames = gameUsers.get(gameId).values();
+		Collection<String> userNames = gameUsers.getOrDefault(gameId, emptyMap()).values();
 		if (gameUpdates.containsKey(gameId)) {
 			// There is already a scheduled update for this game.
 			return;
