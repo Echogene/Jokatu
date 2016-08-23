@@ -7,7 +7,7 @@ import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.input.AnyEventInputAcceptor;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.ui.DialogFormBuilder;
-import jokatu.ui.Form;
+import jokatu.ui.FormField;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -56,8 +56,8 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 			if (requestedPlayer == inputter) {
 				throw new UnacceptableInputException("You can't trade with yourself!");
 			}
-			List<Form.FormField<?>> fields = Arrays.stream(NodeType.values())
-					.map(type -> new Form.FormField<>(
+			List<FormField<?>> fields = Arrays.stream(NodeType.values())
+					.map(type -> new FormField<>(
 							type.toString(),
 							capitalize(type.getPlural()),
 							NUMBER,
