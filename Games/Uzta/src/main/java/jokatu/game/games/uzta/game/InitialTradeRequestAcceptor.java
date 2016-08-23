@@ -9,23 +9,25 @@ import jokatu.game.input.UnacceptableInputException;
 import jokatu.ui.DialogFormBuilder;
 import jokatu.ui.FormField;
 import jokatu.ui.FormInput;
+import jokatu.ui.FormSelect;
+import jokatu.ui.FormSelect.Option;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
 import static jokatu.game.event.DialogRequest.requestDialogFor;
 import static jokatu.ui.Form.FormFieldType.NUMBER;
+import static ophelia.util.FunctionUtils.not;
 import static org.springframework.util.StringUtils.capitalize;
 
 public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTradeRequest, UztaPlayer> {
 	private final Map<String, UztaPlayer> players;
 
 	InitialTradeRequestAcceptor(Map<String, UztaPlayer> players) {
-
 		this.players = players;
 	}
 
@@ -57,6 +59,14 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 			if (requestedPlayer == inputter) {
 				throw new UnacceptableInputException("You can't trade with yourself!");
 			}
+			FormSelect playerField = new FormSelect(
+					"player",
+					"Player",
+					players.keySet().stream()
+							.filter(not(inputter.getName()::equals))
+							.map(name -> new Option(name, name, playerName.equals(name)))
+							.collect(toList())
+			);
 			List<FormField> fields = Arrays.stream(NodeType.values())
 					.map(type -> new FormInput<>(
 							type.toString(),
@@ -64,7 +74,7 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 							NUMBER,
 							input.getResource() == type ? 1 : 0
 					))
-					.collect(Collectors.toList());
+					.collect(toList());
 			fireEvent(
 					requestDialogFor(
 							FullPlayerTradeRequest.class,
@@ -74,6 +84,7 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 					)
 							.withForm(
 									new DialogFormBuilder()
+											.withField(playerField)
 											.withFields(fields)
 											.build()
 							)

@@ -51,11 +51,26 @@ JDialogProto._updateForm = function(form) {
 			fieldLabel.for = field.name;
 			fieldDiv.appendChild(fieldLabel);
 
-			let fieldInput = document.createElement('input');
-			fieldInput.type = field.type;
-			fieldInput.name = field.name;
-			fieldInput.value = field.value;
-			fieldDiv.appendChild(fieldInput);
+			if (field.type == 'select') {
+				let select = document.createElement('select');
+				select.name = field.name;
+				field.options.forEach(o => {
+					let option = document.createElement('option');
+					option.value = o.value;
+					option.innerText = o.label;
+					if (o.selected) {
+						option.selected = true;
+					}
+					select.appendChild(option);
+				});
+				fieldDiv.appendChild(select);
+			} else {
+				let fieldInput = document.createElement('input');
+				fieldInput.type = field.type;
+				fieldInput.name = field.name;
+				fieldInput.value = field.value;
+				fieldDiv.appendChild(fieldInput);
+			}
 
 			this._form.insertBefore(fieldDiv, this._form.lastChild);
 		});

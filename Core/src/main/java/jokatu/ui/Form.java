@@ -18,7 +18,7 @@ public class Form {
 		TEXT,
 		CHECKBOX,
 		RANGE,
-		NUMBER
+		NUMBER,
+		SELECT
 	}
-
 }
