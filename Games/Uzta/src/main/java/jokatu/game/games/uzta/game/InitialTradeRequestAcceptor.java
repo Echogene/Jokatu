@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static jokatu.game.event.DialogRequest.requestDialogFor;
-import static jokatu.ui.Form.FormFieldType.RANGE;
+import static jokatu.ui.Form.FormFieldType.NUMBER;
 import static org.springframework.util.StringUtils.capitalize;
 
 public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTradeRequest, UztaPlayer> {
@@ -60,7 +60,7 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 					.map(type -> new Form.FormField<>(
 							type.toString(),
 							capitalize(type.getPlural()),
-							RANGE,
+							NUMBER,
 							input.getResource() == type ? 1 : 0
 					))
 					.collect(Collectors.toList());

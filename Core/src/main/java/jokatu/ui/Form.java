@@ -20,7 +20,8 @@ public class Form {
 	public enum FormFieldType {
 		TEXT,
 		CHECKBOX,
-		RANGE
+		RANGE,
+		NUMBER
 	}
 
 	public static class FormField<T> {
