@@ -3,10 +3,13 @@ package jokatu.components.ui;
 import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.GameID;
 import jokatu.game.exception.GameException;
+import jokatu.ui.Dialog;
+import jokatu.ui.Form;
 import ophelia.function.ExceptionalConsumer;
 import ophelia.tuple.Pair;
 import ophelia.util.MapUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,8 +45,7 @@ public class DialogManager implements DialogRequestor, DialogResponder {
 
 	@Override
 	public void requestDialog(
-			@NotNull final String title,
-			@NotNull final String message,
+			@NotNull final Dialog dialog,
 			@NotNull String playerName,
 			@NotNull GameID gameId,
 			@NotNull ExceptionalConsumer<Map<String, Object>, GameException> jsonConsumer
@@ -51,9 +53,9 @@ public class DialogManager implements DialogRequestor, DialogResponder {
 		DialogID dialogId = generateId(gameId);
 		Pair<GameID, String> gamePlayerKey = new Pair<>(gameId, playerName);
 
-		DialogUI dialog = new DialogUI(title, message, dialogId.getDialogId());
+		DialogUI dialogUi = new DialogUI(dialog.getTitle(), dialog.getMessage(), dialog.getForm(), dialogId.getDialogId());
 
-		MapUtils.updateListBasedMap(playersDialogs, gamePlayerKey, dialog);
+		MapUtils.updateListBasedMap(playersDialogs, gamePlayerKey, dialogUi);
 
 		updatePlayerDialogs(gamePlayerKey);
 
@@ -104,11 +106,13 @@ public class DialogManager implements DialogRequestor, DialogResponder {
 	private static class DialogUI {
 		private final String title;
 		private final String message;
+		private final Form form;
 		private final String dialogId;
 
-		private DialogUI(String title, String message, String dialogId) {
+		private DialogUI(String title, String message, @Nullable Form form, String dialogId) {
 			this.title = title;
 			this.message = message;
+			this.form = form;
 			this.dialogId = dialogId;
 		}
 
@@ -118,6 +122,10 @@ public class DialogManager implements DialogRequestor, DialogResponder {
 
 		public String getMessage() {
 			return message;
+		}
+
+		public Form getForm() {
+			return form;
 		}
 
 		public String getDialogId() {

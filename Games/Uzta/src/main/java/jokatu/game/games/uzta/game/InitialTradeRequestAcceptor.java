@@ -1,15 +1,21 @@
 package jokatu.game.games.uzta.game;
 
-import jokatu.game.event.DialogRequest;
 import jokatu.game.games.uzta.input.FullPlayerTradeRequest;
 import jokatu.game.games.uzta.input.InitialTradeRequest;
 import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.input.AnyEventInputAcceptor;
 import jokatu.game.input.UnacceptableInputException;
+import jokatu.ui.DialogFormBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+
+import static jokatu.game.event.DialogRequest.requestDialogFor;
+import static jokatu.game.games.uzta.graph.NodeType.CIRCLE;
+import static jokatu.game.games.uzta.graph.NodeType.RHOMBUS;
+import static jokatu.game.games.uzta.graph.NodeType.SQUARE;
+import static jokatu.ui.Form.FormFieldType.RANGE;
 
 public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTradeRequest, UztaPlayer> {
 	private final Map<String, UztaPlayer> players;
@@ -47,14 +53,22 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 				throw new UnacceptableInputException("You can't trade with yourself!");
 			}
 			fireEvent(
-					DialogRequest.requestDialogFor(
+					requestDialogFor(
 							FullPlayerTradeRequest.class,
 							inputter,
 							"Request trade",
 							"You can modify your trade before submitting."
-					).then(fullRequest -> {
-						// todo:
-					})
+					)
+							.withForm(
+									new DialogFormBuilder()
+											.withField(RHOMBUS.toString(), RHOMBUS.getPlural(), RANGE, 1)
+											.withField(CIRCLE.toString(), CIRCLE.getPlural(), RANGE, 1)
+											.withField(SQUARE.toString(), SQUARE.getPlural(), RANGE, 1)
+											.build()
+							)
+							.then(fullRequest -> {
+								// todo:
+							})
 			);
 		}
 	}

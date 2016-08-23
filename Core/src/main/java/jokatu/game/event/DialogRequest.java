@@ -2,6 +2,8 @@ package jokatu.game.event;
 
 import jokatu.game.input.Input;
 import jokatu.game.player.Player;
+import jokatu.ui.Dialog;
+import jokatu.ui.Form;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -12,6 +14,7 @@ public class DialogRequest<I extends Input> {
 	private final Player player;
 	private final String title;
 	private final String message;
+	private Form form;
 
 	private DialogRequest(@NotNull Class<I> expectedInput, @NotNull Player player, @NotNull String title, @NotNull String message) {
 		this.expectedInput = expectedInput;
@@ -28,6 +31,11 @@ public class DialogRequest<I extends Input> {
 			@NotNull String message
 	) {
 		return new DialogRequest<>(expectedInput, player, title, message);
+	}
+
+	public DialogRequest<I> withForm(@NotNull Form form) {
+		this.form = form;
+		return this;
 	}
 
 	public DialogRequestEvent then(@NotNull Consumer<? super I> consumer) {
@@ -51,14 +59,8 @@ public class DialogRequest<I extends Input> {
 			return expectedInput;
 		}
 
-		@NotNull
-		String getTitle() {
-			return title;
-		}
-
-		@NotNull
-		String getMessage() {
-			return message;
+		Dialog getDialog() {
+			return new Dialog(title, message, form);
 		}
 
 		@NotNull

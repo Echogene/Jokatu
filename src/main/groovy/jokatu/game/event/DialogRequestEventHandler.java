@@ -32,8 +32,7 @@ public class DialogRequestEventHandler extends SpecificEventHandler<DialogReques
 	@Override
 	protected void handleCastEvent(@NotNull Game<?> game, @NotNull DialogRequest.DialogRequestEvent event) {
 		dialogRequestor.requestDialog(
-				event.getTitle(),
-				event.getMessage(),
+				event.getDialog(),
 				event.getPlayer().getName(),
 				game.getIdentifier(),
 				json -> {
