@@ -3,12 +3,17 @@ var JDialogProto = Object.create(JPopup.prototype);
 JDialogProto.attachedCallback = function() {
 	JPopup.prototype.attachedCallback && JPopup.prototype.attachedCallback.call(this);
 
+	this._form = new JForm();
+	this._form.id = `${this.id}_form`;
+	this.appendChild(this._form);
+
 	this._buttonBar = document.createElement('div');
 	this.appendChild(this._buttonBar);
 
 	observeAttributes(this, new Map([
 		['data-buttons', this._updateButtons.bind(this)],
-		['dialogid', this._updateDialogId.bind(this)]
+		['dialogid', this._updateDialogId.bind(this)],
+		['data-form', this._updateForm.bind(this)]
 	]));
 };
 
@@ -29,6 +34,29 @@ JDialogProto._updateButtons = function(buttons) {
 		this._buttonBar.appendChild(this._ok);
 	} else {
 
+	}
+};
+
+JDialogProto._updateForm = function(form) {
+	while (this._form.firstChild) {
+		this._form.removeChild(this._form.firstChild);
+	}
+	if (form && form.fields) {
+		form.fields.forEach(field => {
+			let fieldDiv = document.createElement('div');
+
+			let fieldLabel = document.createElement('label');
+			fieldLabel.innerText = field.label;
+			fieldLabel.for = field.name;
+			fieldDiv.appendChild(fieldLabel);
+
+			let fieldInput = document.createElement('input');
+			fieldInput.type = field.type;
+			fieldInput.name = field.name;
+			fieldDiv.appendChild(fieldInput);
+
+			this._form.appendChild(fieldDiv);
+		});
 	}
 };
 
