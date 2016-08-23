@@ -43,7 +43,9 @@ JDialogProto._updateForm = function(form) {
 	}
 
 	if (form.fields) {
-		form.fields.forEach(field => {
+		for (var i = 0; i < form.fields.length; i++) {
+			var field = form.fields[i];
+
 			let fieldDiv = document.createElement('div');
 
 			let fieldLabel = document.createElement('label');
@@ -51,9 +53,10 @@ JDialogProto._updateForm = function(form) {
 			fieldLabel.for = field.name;
 			fieldDiv.appendChild(fieldLabel);
 
+			let fieldElement;
 			if (field.type == 'select') {
-				let select = document.createElement('select');
-				select.name = field.name;
+				fieldElement = document.createElement('select');
+				fieldElement.name = field.name;
 				field.options.forEach(o => {
 					let option = document.createElement('option');
 					option.value = o.name;
@@ -61,19 +64,22 @@ JDialogProto._updateForm = function(form) {
 					if (o.selected) {
 						option.selected = true;
 					}
-					select.appendChild(option);
+					fieldElement.appendChild(option);
 				});
-				fieldDiv.appendChild(select);
+				fieldDiv.appendChild(fieldElement);
 			} else {
-				let fieldInput = document.createElement('input');
-				fieldInput.type = field.type;
-				fieldInput.name = field.name;
-				fieldInput.value = field.value;
-				fieldDiv.appendChild(fieldInput);
+				fieldElement = document.createElement('input');
+				fieldElement.type = field.type;
+				fieldElement.name = field.name;
+				fieldElement.value = field.value;
 			}
+			fieldDiv.appendChild(fieldElement);
 
 			this._form.insertBefore(fieldDiv, this._form.lastChild);
-		});
+			if (i == 0) {
+				fieldElement.focus();
+			}
+		}
 	}
 
 	this._dialogIdField = document.createElement('input');
