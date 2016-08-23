@@ -53,6 +53,7 @@ JDialogProto._updateForm = function(form) {
 			let fieldInput = document.createElement('input');
 			fieldInput.type = field.type;
 			fieldInput.name = field.name;
+			fieldInput.value = field.value;
 			fieldDiv.appendChild(fieldInput);
 
 			this._form.appendChild(fieldDiv);
