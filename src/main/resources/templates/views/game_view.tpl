@@ -64,7 +64,7 @@ layout 'layouts/main.tpl', true,
 				id: 'dialogs',
 				class: 'overlay',
 				wrapperElement: 'JDialog',
-				'data-attributeMapping': '{\"data-title\": \"title\", \"data-message\": \"message\", \"dialogid\": \"dialogId\"}',
+				'data-attributeMapping': '{\"data-title\": \"title\", \"data-message\": \"message\", \"dialogid\": \"dialogId\", \"data-form\": \"form\"}',
 				destination: "/user/topic/dialogs.game.${gameId}",
 				user: "${username}"
 		)
