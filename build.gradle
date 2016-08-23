@@ -32,6 +32,7 @@ def games = project(':Games').getChildProjects().values()
 gradle.projectsEvaluated {
 	processResources {
 		from games*.sourceSets*.main.resources.srcDirs
+		dependsOn 'lesscss'
 	}
 }
 allprojects {
