@@ -1,12 +1,21 @@
 .popup {
 	>form {
+		padding: 0;
+
 		>div {
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
+			padding: 0 .5em .5em .5em;
 
-			&:not(:last-child) {
-				padding-bottom: 1em;
+			&.buttons {
+				justify-content: center;
+				border-top: 1px solid #aaa;
+				padding-top: .5em;
+			}
+
+			&:first-child {
+				padding-top: .5em;
 			}
 		}
 	}

@@ -2,17 +2,7 @@ var JFormProto = Object.create(HTMLFormElement.prototype);
 
 JFormProto.attachedCallback = function() {
 
-	var template = document.querySelector('#form_template');
-	var clone = document.importNode(template.content, true);
-
-	this._submitButton = clone.querySelector('button');
-	// Override the method so that the input can be based on the form's content.
-	this._submitButton._getInput = this._getInput.bind(this);
-	this._submitButton.id = this.id + "_submit";
-
 	this.addEventListener('submit', this._onSubmit.bind(this));
-
-	this.appendChild(clone);
 
 	observeAttributes(this, new Map([
 		['destination', this._updateDestination.bind(this)]
@@ -20,7 +10,9 @@ JFormProto.attachedCallback = function() {
 };
 
 JFormProto._updateDestination = function(destination) {
-	this._submitButton.setAttribute('destination', destination);
+	if (this._submitButton) {
+		this._submitButton.setAttribute('destination', destination);
+	}
 };
 
 JFormProto._getInput = function() {
@@ -37,6 +29,19 @@ JFormProto._getInput = function() {
 JFormProto._onSubmit = function(e) {
 	e.preventDefault();
 	return false;
+};
+
+JFormProto.getSubmitButton = function() {
+	if (this._submitButton) {
+		return this._submitButton;
+	}
+	this._submitButton = new JButton();
+	// Override the method so that the input can be based on the form's content.
+	this._submitButton._getInput = this._getInput.bind(this);
+	this._submitButton.id = this.id + "_submit";
+	this._submitButton.innerText = 'Submit';
+	this._submitButton.setAttribute('destination', this.getAttribute('destination'));
+	return this._submitButton;
 };
 
 var JForm = document.registerElement('j-form', {

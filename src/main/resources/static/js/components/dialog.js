@@ -5,10 +5,12 @@ JDialogProto.attachedCallback = function() {
 
 	this._form = new JForm();
 	this._form.id = `${this.id}_form`;
+	this._form.setAttribute('destination', `/topic/input.dialog.game.${gameId}`);
 	this.appendChild(this._form);
 
 	this._buttonBar = document.createElement('div');
-	this.appendChild(this._buttonBar);
+	this._buttonBar.classList.add('buttons');
+	this._form.appendChild(this._buttonBar);
 
 	observeAttributes(this, new Map([
 		['data-buttons', this._updateButtons.bind(this)],
@@ -18,30 +20,29 @@ JDialogProto.attachedCallback = function() {
 };
 
 JDialogProto._updateButtons = function(buttons) {
-	delete this._ok;
 	while (this._buttonBar.firstChild) {
 		this._buttonBar.removeChild(this._buttonBar.firstChild);
 	}
 	if (!buttons) {
-		this._ok = new JButton();
-		this._ok.innerText = 'OK';
-		this._ok.setAttribute('destination', `/topic/input.dialog.game.${gameId}`);
-		this._ok.setAttribute('data-input', JSON.stringify({
-			acknowledge: true,
-			dialogId: this.getAttribute('dialogid')
-		}));
-		this._ok.id = `${this.id}_ok`;
-		this._buttonBar.appendChild(this._ok);
+		this._buttonBar.appendChild(this._form.getSubmitButton());
 	} else {
 
 	}
 };
 
 JDialogProto._updateForm = function(form) {
-	while (this._form.firstChild) {
-		this._form.removeChild(this._form.firstChild);
+	for (let i = this._form.childNodes.length - 1; i >= 0; i--) {
+		let element = this._form.childNodes[i];
+		if (!element.classList.contains('buttons')) {
+			this._form.removeChild(element);
+		}
 	}
-	if (form && form.fields) {
+
+	if (!form) {
+		return;
+	}
+
+	if (form.fields) {
 		form.fields.forEach(field => {
 			let fieldDiv = document.createElement('div');
 
@@ -56,20 +57,23 @@ JDialogProto._updateForm = function(form) {
 			fieldInput.value = field.value;
 			fieldDiv.appendChild(fieldInput);
 
-			this._form.appendChild(fieldDiv);
+			this._form.insertBefore(fieldDiv, this._form.lastChild);
 		});
 	}
+
+	this._dialogIdField = document.createElement('input');
+	this._dialogIdField.type = 'hidden';
+	this._dialogIdField.name = 'dialogId';
+	this._dialogIdField.value = this.getAttribute('dialogid');
+	this._form.insertBefore(this._dialogIdField, this._form.lastChild);
 };
 
 JDialogProto._updateDialogId = function(dialogId) {
 	if (!(dialogId instanceof String)) {
 		dialogId = JSON.stringify(dialogId);
 	}
-	if (this._ok) {
-		this._ok.setAttribute('data-input', JSON.stringify({
-			acknowledge: true,
-			dialogId: dialogId
-		}));
+	if (this._dialogIdField) {
+		this._dialogIdField.value = dialogId;
 	}
 };
 
