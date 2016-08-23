@@ -50,8 +50,8 @@ public class DialogRequestEventHandler extends SpecificEventHandler<DialogReques
 					} catch (DeserialisationException e) {
 						throw new GameException(
 								game.getIdentifier(),
-								"Could not deserialise ''{0}''.",
-								json
+								e,
+								e.getMessage()
 						);
 					}
 					event.accept(input);
