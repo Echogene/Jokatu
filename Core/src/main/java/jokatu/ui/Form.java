@@ -4,13 +4,13 @@ import java.util.List;
 
 public class Form {
 
-	private final List<FormField<?>> fields;
+	private final List<FormField> fields;
 
-	Form(List<FormField<?>> fields) {
+	Form(List<FormField> fields) {
 		this.fields = fields;
 	}
 
-	public List<FormField<?>> getFields() {
+	public List<FormField> getFields() {
 		return fields;
 	}
 

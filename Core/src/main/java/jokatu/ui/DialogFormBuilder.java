@@ -8,7 +8,7 @@ import java.util.List;
 
 public class DialogFormBuilder implements Builder<Form, DialogFormBuilder> {
 
-	private final List<FormField<?>> fields = new ArrayList<>();
+	private final List<FormField> fields = new ArrayList<>();
 
 	@NotNull
 	@Override
@@ -18,14 +18,14 @@ public class DialogFormBuilder implements Builder<Form, DialogFormBuilder> {
 
 	@NotNull
 	public DialogFormBuilder withField(
-			@NotNull FormField<?> field
+			@NotNull FormField field
 	) {
 		fields.add(field);
 		return this;
 	}
 
 	@NotNull
-	public DialogFormBuilder withFields(@NotNull List<FormField<?>> fields) {
+	public DialogFormBuilder withFields(@NotNull List<FormField> fields) {
 		this.fields.addAll(fields);
 		return this;
 	}
