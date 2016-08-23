@@ -90,7 +90,11 @@ JStatusProto._updateElement = function(element, status) {
 	if (attributeMapping) {
 		Object.keys(attributeMapping).forEach(attributeName => {
 			var statusField = attributeMapping[attributeName];
-			element.setAttribute(attributeName, status[statusField]);
+			var attributeValue = status[statusField];
+			if (!(attributeValue instanceof String)) {
+				attributeValue = JSON.stringify(attributeValue);
+			}
+			element.setAttribute(attributeName, attributeValue);
 		});
 	}
 };
