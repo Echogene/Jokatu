@@ -37,11 +37,11 @@ public class Form {
 		@Nullable
 		private final T value;
 
-		FormField(@NotNull String name, @NotNull String label, @NotNull Form.FormFieldType type) {
+		public FormField(@NotNull String name, @NotNull String label, @NotNull Form.FormFieldType type) {
 			this(name, label, type, null);
 		}
 
-		FormField(@NotNull String name, @NotNull String label, @NotNull Form.FormFieldType type, @Nullable T value) {
+		public FormField(@NotNull String name, @NotNull String label, @NotNull Form.FormFieldType type, @Nullable T value) {
 			this.name = name;
 			this.label = label;
 			this.type = type;

@@ -1,21 +1,24 @@
 package jokatu.game.games.uzta.game;
 
+import jokatu.game.games.uzta.graph.NodeType;
 import jokatu.game.games.uzta.input.FullPlayerTradeRequest;
 import jokatu.game.games.uzta.input.InitialTradeRequest;
 import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.input.AnyEventInputAcceptor;
 import jokatu.game.input.UnacceptableInputException;
 import jokatu.ui.DialogFormBuilder;
+import jokatu.ui.Form;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static jokatu.game.event.DialogRequest.requestDialogFor;
-import static jokatu.game.games.uzta.graph.NodeType.CIRCLE;
-import static jokatu.game.games.uzta.graph.NodeType.RHOMBUS;
-import static jokatu.game.games.uzta.graph.NodeType.SQUARE;
 import static jokatu.ui.Form.FormFieldType.RANGE;
+import static org.springframework.util.StringUtils.capitalize;
 
 public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTradeRequest, UztaPlayer> {
 	private final Map<String, UztaPlayer> players;
@@ -38,7 +41,8 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 	}
 
 	@Override
-	protected void acceptCastInputAndPlayer(@NotNull InitialTradeRequest input, @NotNull UztaPlayer inputter) throws Exception {
+	protected void acceptCastInputAndPlayer(@NotNull InitialTradeRequest input, @NotNull UztaPlayer inputter) throws
+			Exception {
 		@Nullable String playerName = input.getPlayerName();
 		if (playerName == null) {
 
@@ -52,6 +56,14 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 			if (requestedPlayer == inputter) {
 				throw new UnacceptableInputException("You can't trade with yourself!");
 			}
+			List<Form.FormField<?>> fields = Arrays.stream(NodeType.values())
+					.map(type -> new Form.FormField<>(
+							type.toString(),
+							capitalize(type.getPlural()),
+							RANGE,
+							input.getResource() == type ? 1 : 0
+					))
+					.collect(Collectors.toList());
 			fireEvent(
 					requestDialogFor(
 							FullPlayerTradeRequest.class,
@@ -61,9 +73,7 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 					)
 							.withForm(
 									new DialogFormBuilder()
-											.withField(RHOMBUS.toString(), RHOMBUS.getPlural(), RANGE, 1)
-											.withField(CIRCLE.toString(), CIRCLE.getPlural(), RANGE, 1)
-											.withField(SQUARE.toString(), SQUARE.getPlural(), RANGE, 1)
+											.withFields(fields)
 											.build()
 							)
 							.then(fullRequest -> {

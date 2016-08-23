@@ -18,22 +18,15 @@ public class DialogFormBuilder implements Builder<Form, DialogFormBuilder> {
 
 	@NotNull
 	public DialogFormBuilder withField(
-			@NotNull String name,
-			@NotNull String label,
-			@NotNull Form.FormFieldType type
+			@NotNull Form.FormField<?> field
 	) {
-		fields.add(new Form.FormField<>(name, label, type));
+		fields.add(field);
 		return this;
 	}
 
 	@NotNull
-	public <T> DialogFormBuilder withField(
-			@NotNull String name,
-			@NotNull String label,
-			@NotNull Form.FormFieldType type,
-			@NotNull T value
-	) {
-		fields.add(new Form.FormField<>(name, label, type, value));
+	public DialogFormBuilder withFields(@NotNull List<Form.FormField<?>> fields) {
+		this.fields.addAll(fields);
 		return this;
 	}
 
