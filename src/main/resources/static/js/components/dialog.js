@@ -56,7 +56,7 @@ JDialogProto._updateForm = function(form) {
 				select.name = field.name;
 				field.options.forEach(o => {
 					let option = document.createElement('option');
-					option.value = o.value;
+					option.value = o.name;
 					option.innerText = o.label;
 					if (o.selected) {
 						option.selected = true;
