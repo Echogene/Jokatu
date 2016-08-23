@@ -19,7 +19,7 @@ public class FullPlayerTradeRequestDeserialiser extends InputDeserialiser<FullPl
 	@Override
 	public FullPlayerTradeRequest deserialise(@NotNull Map<String, Object> json) throws DeserialisationException {
 		ModifiableIntegerBag<NodeType> wantedResources = Arrays.stream(NodeType.values())
-				.map(n -> new Pair<>(n, (Integer) json.getOrDefault(n.toString(), 0)))
+				.map(n -> new Pair<>(n, Integer.parseInt((String) json.getOrDefault(n.toString(), "0"))))
 				.collect(toBag(Pair::getLeft, Pair::getRight));
 
 		if (wantedResources.isLacking()) {
