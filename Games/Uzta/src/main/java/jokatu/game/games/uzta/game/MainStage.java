@@ -24,6 +24,8 @@ public class MainStage extends MultiInputStage {
 			@NotNull StandardTextStatus status
 	) {
 		resourceDistributor = new ResourceDistributor(graph);
+		resourceDistributor.observe(this::fireEvent);
+
 		turnManager = new TurnManager<>(playersInOrder);
 		this.status = status;
 

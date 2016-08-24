@@ -16,6 +16,7 @@ public class Node {
 
 	private NodeType type;
 	private final Set<Integer> values = new HashSet<>();
+	private boolean highlighted = false;
 
 	public Node(@NotNull String id, double x, double y) {
 		this.id = id;
@@ -40,8 +41,13 @@ public class Node {
 		return type;
 	}
 
+	@NotNull
 	public UnmodifiableSet<Integer> getValues() {
 		return new UnmodifiableSet<>(values);
+	}
+
+	public boolean isHighlighted() {
+		return highlighted;
 	}
 
 	public void addValue(int value) {
@@ -50,6 +56,10 @@ public class Node {
 
 	public void setType(@NotNull NodeType type) {
 		this.type = type;
+	}
+
+	public void setHighlighted(boolean highlighted) {
+		this.highlighted = highlighted;
 	}
 
 	public double distanceFrom(@NotNull Node other) {

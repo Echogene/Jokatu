@@ -81,6 +81,9 @@ JGraphProto._updateNode = function(element, node) {
 	element.style.left = node.x + '%';
 	element.style.bottom = node.y + '%';
 	element.className = node.type.toLowerCase();
+	if (node.highlighted) {
+		element.classList.add('highlighted')
+	}
 	
 	element.setAttribute('data-node', JSON.stringify(node));
 };
