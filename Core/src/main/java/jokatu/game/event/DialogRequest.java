@@ -4,9 +4,8 @@ import jokatu.game.input.Input;
 import jokatu.game.player.Player;
 import jokatu.ui.Dialog;
 import jokatu.ui.Form;
+import ophelia.function.ExceptionalBiConsumer;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.function.Consumer;
 
 public class DialogRequest<I extends Input> {
 
@@ -38,20 +37,20 @@ public class DialogRequest<I extends Input> {
 		return this;
 	}
 
-	public DialogRequestEvent then(@NotNull Consumer<? super I> consumer) {
+	public DialogRequestEvent then(@NotNull ExceptionalBiConsumer<? super I, ? super Player, ?> consumer) {
 		return new DialogRequestEvent(consumer);
 	}
 
 	public class DialogRequestEvent implements GameEvent {
 
-		private final Consumer<? super I> consumer;
+		private final ExceptionalBiConsumer<? super I, ? super Player, ?> consumer;
 
-		private DialogRequestEvent(@NotNull Consumer<? super I> consumer) {
+		private DialogRequestEvent(@NotNull ExceptionalBiConsumer<? super I, ? super Player, ?> consumer) {
 			this.consumer = consumer;
 		}
 
-		void accept(@NotNull I i) {
-			consumer.accept(i);
+		void accept(@NotNull I i) throws Exception {
+			consumer.accept(i, player);
 		}
 
 		@NotNull

@@ -7,6 +7,7 @@ import jokatu.game.games.uzta.input.InitialTradeRequest;
 import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.input.AnyEventInputAcceptor;
 import jokatu.game.input.UnacceptableInputException;
+import jokatu.game.player.Player;
 import jokatu.ui.*;
 import jokatu.ui.FormSelect.Option;
 import org.jetbrains.annotations.NotNull;
@@ -44,19 +45,12 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 	@Override
 	protected void acceptCastInputAndPlayer(@NotNull InitialTradeRequest input, @NotNull UztaPlayer inputter) throws
 			Exception {
-		@Nullable String playerName = input.getPlayerName();
+		@Nullable
+		String playerName = input.getPlayerName();
 		if (playerName == null) {
 
 		} else {
-			UztaPlayer requestedPlayer = players.get(playerName);
-			if (requestedPlayer == null) {
-				throw new UnacceptableInputException(
-						"You can''t request at trade from {0}; they are not playing the game!", playerName
-				);
-			}
-			if (requestedPlayer == inputter) {
-				throw new UnacceptableInputException("You can't trade with yourself!");
-			}
+			checkPlayerToTradeWith(inputter, playerName);
 			Form form = constructFormForTradeConfirmation(inputter, playerName, input.getResource());
 			DialogRequest<FullPlayerTradeRequest>.DialogRequestEvent dialogRequestEvent = requestDialogFor(
 					FullPlayerTradeRequest.class,
@@ -68,6 +62,21 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 					.then(this::acceptFullRequest);
 			fireEvent(dialogRequestEvent);
 		}
+	}
+
+	@NotNull
+	private UztaPlayer checkPlayerToTradeWith(@NotNull Player inputter, String playerName) throws
+			UnacceptableInputException {
+		UztaPlayer requestedPlayer = players.get(playerName);
+		if (requestedPlayer == null) {
+			throw new UnacceptableInputException(
+					"You can''t request at trade from {0}; they are not playing the game!", playerName
+			);
+		}
+		if (requestedPlayer == inputter) {
+			throw new UnacceptableInputException("You can't trade with yourself!");
+		}
+		return requestedPlayer;
 	}
 
 	@NotNull
@@ -98,7 +107,11 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 				.build();
 	}
 
-	private void acceptFullRequest(@NotNull FullPlayerTradeRequest fullPlayerTradeRequest) {
+	private void acceptFullRequest(
+			@NotNull FullPlayerTradeRequest fullPlayerTradeRequest,
+			@NotNull Player inputter
+	) throws UnacceptableInputException {
+		checkPlayerToTradeWith(inputter, fullPlayerTradeRequest.getPlayerName());
 		//todo:
 	}
 }

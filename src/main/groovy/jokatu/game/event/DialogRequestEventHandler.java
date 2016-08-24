@@ -54,7 +54,15 @@ public class DialogRequestEventHandler extends SpecificEventHandler<DialogReques
 								e.getMessage()
 						);
 					}
-					event.accept(input);
+					try {
+						event.accept(input);
+					} catch (Exception e) {
+						throw new GameException(
+								game.getIdentifier(),
+								e,
+								e.getMessage()
+						);
+					}
 				}
 		);
 	}
