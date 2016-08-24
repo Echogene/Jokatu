@@ -117,11 +117,21 @@ JGraphProto._createEdge = function() {
 };
 
 JGraphProto._updateEdge = function(line, edge) {
+	let from;
+	let to;
 	if (edge instanceof Array) {
-		line.setEnds(edge[0], edge[1]);
+		from = edge[0];
+		to = edge[1];
 
 	} else if (edge.nodes instanceof Array) {
-		line.setEnds(edge.nodes[0], edge.nodes[1]);
+		from = edge.nodes[0];
+		to = edge.nodes[1];
+	}
+	line.id = `edge_${from.id}_${to.id}`;
+	if (from && to) {
+		line.setEnds(from, to);
+	}
+	if (edge.colour) {
 		line.setAttribute('data-colour', edge.colour);
 	}
 };
