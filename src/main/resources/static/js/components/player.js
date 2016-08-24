@@ -22,8 +22,10 @@ JPlayerProto._updateStatus = function(status) {
 	this._name.innerText = status.name;
 	if (status.online) {
 		this.classList.add('online');
+		this.title = `${status.name} is online`;
 	} else {
-		this.classList.remove('online')
+		this.classList.remove('online');
+		this.title = `${status.name} is offline`;
 	}
 };
 
