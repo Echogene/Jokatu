@@ -47,14 +47,6 @@ public class DialogRequestEventHandler extends SpecificEventHandler<DialogReques
 					Input input = null;
 					try {
 						input = deserialiser.deserialise(json);
-					} catch (DeserialisationException e) {
-						throw new GameException(
-								game.getIdentifier(),
-								e,
-								e.getMessage()
-						);
-					}
-					try {
 						event.accept(input);
 					} catch (Exception e) {
 						throw new GameException(
