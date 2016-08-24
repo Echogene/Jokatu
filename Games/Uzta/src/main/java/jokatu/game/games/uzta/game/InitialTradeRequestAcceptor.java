@@ -10,6 +10,7 @@ import jokatu.game.input.UnacceptableInputException;
 import jokatu.game.player.Player;
 import jokatu.ui.*;
 import jokatu.ui.FormSelect.Option;
+import ophelia.collections.bag.BaseIntegerBag;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static jokatu.game.event.DialogRequest.requestDialogFor;
 import static jokatu.ui.Form.FormFieldType.NUMBER;
@@ -111,7 +113,28 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 			@NotNull FullPlayerTradeRequest fullPlayerTradeRequest,
 			@NotNull Player inputter
 	) throws UnacceptableInputException {
-		checkPlayerToTradeWith(inputter, fullPlayerTradeRequest.getPlayerName());
-		//todo:
+		@NotNull
+		String playerName = fullPlayerTradeRequest.getPlayerName();
+		@NotNull
+		BaseIntegerBag<NodeType> wantedResources = fullPlayerTradeRequest.getWantedResources();
+
+		@NotNull
+		UztaPlayer uztaPlayer = checkPlayerToTradeWith(inputter, playerName);
+
+		@NotNull
+		BaseIntegerBag<NodeType> resourcesLeftAfterTrade = uztaPlayer.getResourcesLeftAfter(wantedResources);
+		if (resourcesLeftAfterTrade.isLacking()) {
+			throw new UnacceptableInputException(
+					"{0} doesn''t have enough resources to trade {1}.  They still need {2}.",
+					playerName,
+					wantedResources.stream()
+							.map(entry -> entry.getLeft().getNumber(entry.getRight()))
+							.collect(joining(", ")),
+					resourcesLeftAfterTrade.stream()
+							.filter(entry -> entry.getRight() < 0)
+							.map(entry -> entry.getLeft().getNumber(-entry.getRight()))
+							.collect(joining(", "))
+			);
+		}
 	}
 }

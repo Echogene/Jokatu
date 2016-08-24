@@ -1,12 +1,11 @@
 package jokatu.game.event;
 
 import jokatu.components.config.InputDeserialisers;
+import jokatu.components.ui.DialogRequestor;
 import jokatu.game.Game;
 import jokatu.game.exception.GameException;
-import jokatu.game.input.DeserialisationException;
 import jokatu.game.input.Input;
 import jokatu.game.input.InputDeserialiser;
-import jokatu.components.ui.DialogRequestor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
