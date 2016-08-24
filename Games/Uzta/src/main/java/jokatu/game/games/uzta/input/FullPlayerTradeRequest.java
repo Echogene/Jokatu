@@ -15,4 +15,14 @@ public class FullPlayerTradeRequest implements Input {
 		this.wantedResources = wantedResources;
 		this.playerName = playerName;
 	}
+
+	@NotNull
+	public BaseIntegerBag<NodeType> getWantedResources() {
+		return wantedResources;
+	}
+
+	@NotNull
+	public String getPlayerName() {
+		return playerName;
+	}
 }

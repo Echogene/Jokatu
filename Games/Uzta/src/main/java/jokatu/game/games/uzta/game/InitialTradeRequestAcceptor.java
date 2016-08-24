@@ -1,15 +1,13 @@
 package jokatu.game.games.uzta.game;
 
+import jokatu.game.event.DialogRequest;
 import jokatu.game.games.uzta.graph.NodeType;
 import jokatu.game.games.uzta.input.FullPlayerTradeRequest;
 import jokatu.game.games.uzta.input.InitialTradeRequest;
 import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.input.AnyEventInputAcceptor;
 import jokatu.game.input.UnacceptableInputException;
-import jokatu.ui.DialogFormBuilder;
-import jokatu.ui.FormField;
-import jokatu.ui.FormInput;
-import jokatu.ui.FormSelect;
+import jokatu.ui.*;
 import jokatu.ui.FormSelect.Option;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -59,39 +57,48 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 			if (requestedPlayer == inputter) {
 				throw new UnacceptableInputException("You can't trade with yourself!");
 			}
-			FormSelect playerField = new FormSelect(
-					"player",
-					"Player",
-					players.keySet().stream()
-							.filter(not(inputter.getName()::equals))
-							.map(name -> new Option(name, name, playerName.equals(name)))
-							.collect(toList())
-			);
-			List<FormField> fields = Arrays.stream(NodeType.values())
-					.map(type -> new FormInput<>(
-							type.toString(),
-							capitalize(type.getPlural()),
-							NUMBER,
-							input.getResource() == type ? 1 : 0
-					))
-					.collect(toList());
-			fireEvent(
-					requestDialogFor(
-							FullPlayerTradeRequest.class,
-							inputter,
-							"Request trade",
-							"You can modify your trade before submitting."
-					)
-							.withForm(
-									new DialogFormBuilder()
-											.withField(playerField)
-											.withFields(fields)
-											.build()
-							)
-							.then(fullRequest -> {
-								// todo:
-							})
-			);
+			Form form = constructFormForTradeConfirmation(inputter, playerName, input.getResource());
+			DialogRequest<FullPlayerTradeRequest>.DialogRequestEvent dialogRequestEvent = requestDialogFor(
+					FullPlayerTradeRequest.class,
+					inputter,
+					"Request trade",
+					"You can modify your trade before submitting."
+			)
+					.withForm(form)
+					.then(this::acceptFullRequest);
+			fireEvent(dialogRequestEvent);
 		}
+	}
+
+	@NotNull
+	private Form constructFormForTradeConfirmation(
+			@NotNull UztaPlayer inputter,
+			@NotNull String playerName,
+			@NotNull NodeType resource
+	) {
+		FormSelect playerField = new FormSelect(
+				"player",
+				"Player",
+				players.keySet().stream()
+						.filter(not(inputter.getName()::equals))
+						.map(name -> new Option(name, name, playerName.equals(name)))
+						.collect(toList())
+		);
+		List<FormField> fields = Arrays.stream(NodeType.values())
+				.map(type -> new FormInput<>(
+						type.toString(),
+						capitalize(type.getPlural()),
+						NUMBER,
+						resource == type ? 1 : 0
+				))
+				.collect(toList());
+		return new DialogFormBuilder()
+				.withField(playerField)
+				.withFields(fields)
+				.build();
+	}
+
+	private void acceptFullRequest(@NotNull FullPlayerTradeRequest fullPlayerTradeRequest) {
+		//todo:
 	}
 }
