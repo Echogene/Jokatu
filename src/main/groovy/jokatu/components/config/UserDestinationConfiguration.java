@@ -1,5 +1,7 @@
 package jokatu.components.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.messaging.simp.user.DefaultUserDestinationResolver;
@@ -10,6 +12,8 @@ import java.lang.reflect.Field;
 
 @Configuration
 public class UserDestinationConfiguration {
+
+	private static final Logger log = LoggerFactory.getLogger(UserDestinationConfiguration.class);
 
 	private final UserDestinationResolver userDestinationResolver;
 
@@ -36,5 +40,7 @@ public class UserDestinationConfiguration {
 		Field keepLeadingSlash = userDestinationResolver.getClass().getDeclaredField("keepLeadingSlash");
 		keepLeadingSlash.setAccessible(true);
 		keepLeadingSlash.set(userDestinationResolver, true);
+
+		log.debug("{} initialised", UserDestinationConfiguration.class.getSimpleName());
 	}
 }

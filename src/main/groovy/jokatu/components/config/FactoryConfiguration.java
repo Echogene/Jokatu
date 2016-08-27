@@ -7,6 +7,8 @@ import jokatu.game.player.PlayerFactory;
 import jokatu.game.viewresolver.ViewResolver;
 import jokatu.game.viewresolver.ViewResolverFactory;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +32,8 @@ import static java.util.stream.Collectors.toMap;
 @ComponentScan("jokatu.game")
 public class FactoryConfiguration {
 
+	private static final Logger log = LoggerFactory.getLogger(FactoryConfiguration.class);
+
 	private Map<String, GameConfiguration> configs;
 
 	@Autowired
@@ -39,6 +43,8 @@ public class FactoryConfiguration {
 	@PostConstruct
 	public void populateFactories() {
 		configs = getFactoryMap(GameConfiguration.class);
+
+		log.debug("{} initialised", FactoryConfiguration.class.getSimpleName());
 	}
 
 	private <T> Map<String, T> getFactoryMap(@NotNull Class<T> clazz) {

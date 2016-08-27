@@ -16,6 +16,8 @@ import jokatu.game.joining.JoinInput;
 import jokatu.game.player.StandardPlayer;
 import ophelia.collections.list.UnmodifiableList;
 import ophelia.collections.set.HashSet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -26,6 +28,8 @@ import static java.util.stream.Collectors.toList;
 
 @Configuration
 public class TestGameCreator {
+
+	private static final Logger log = LoggerFactory.getLogger(TestGameCreator.class);
 
 	private final GameCreatedEventHandler gameCreatedEventHandler;
 	private final GameOfGames theGameOfGames;
@@ -74,6 +78,8 @@ public class TestGameCreator {
 		selectEdge(game, thirdPlayer, fourEdges.get(3));
 		selectEdge(game, secondPlayer, fourEdges.get(4));
 		selectEdge(game, firstPlayer, fourEdges.get(5));
+
+		log.debug("{} initialised", TestGameCreator.class.getSimpleName());
 	}
 
 	private void selectEdge(Uzta game, UztaPlayer firstPlayer, LineSegment edge) throws GameException {

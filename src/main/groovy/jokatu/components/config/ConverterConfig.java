@@ -1,6 +1,8 @@
 package jokatu.components.config;
 
 import jokatu.util.Json;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
@@ -17,6 +19,8 @@ import javax.annotation.PostConstruct;
 @Configuration
 public class ConverterConfig extends WebMvcConfigurerAdapter {
 
+	private static final Logger log = LoggerFactory.getLogger(ConverterConfig.class);
+
 	@Autowired
 	private SimpAnnotationMethodMessageHandler simpAnnotationMethodMessageHandler;
 
@@ -29,6 +33,8 @@ public class ConverterConfig extends WebMvcConfigurerAdapter {
 		DefaultFormattingConversionService conversionService
 				= (DefaultFormattingConversionService) simpAnnotationMethodMessageHandler.getConversionService();
 		conversionService.addConverterFactory(new Json.JacksonConverterFactory());
+
+		log.debug("{} initialised", ConverterConfig.class.getSimpleName());
 	}
 
 	@Override

@@ -5,6 +5,8 @@ import jokatu.game.input.InputDeserialiser;
 import ophelia.exceptions.voidmaybe.VoidMaybe;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
@@ -20,6 +22,8 @@ import java.util.stream.Collectors;
 @Configuration
 @ComponentScan("jokatu.game")
 public class InputDeserialisers {
+
+	private static final Logger log = LoggerFactory.getLogger(InputDeserialisers.class);
 
 	private Map<Class<? extends Input>, InputDeserialiser<?>> deserialiserMap = new HashMap<>();
 
@@ -39,6 +43,8 @@ public class InputDeserialisers {
 		if (deserialiserMap.isEmpty()) {
 			throw new Exception("No input deserialisers could be found.");
 		}
+
+		log.debug("{} initialised", InputDeserialisers.class.getSimpleName());
 	}
 
 	@Nullable

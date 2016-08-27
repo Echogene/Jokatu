@@ -1,6 +1,8 @@
 package jokatu.components.config;
 
 import ophelia.exceptions.voidmaybe.VoidMaybe;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,6 +30,8 @@ import static ophelia.exceptions.voidmaybe.VoidMaybe.wrap;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+	private static final Logger log = LoggerFactory.getLogger(SecurityConfiguration.class);
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		List<VoidMaybe> results = Arrays.stream(new String[]{"user", "user2", "user3", "user4"})
@@ -35,6 +39,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.collect(Collectors.toList());
 
 		mergeFailures(results).throwOnFailure();
+
+		log.debug("{} added user accounts", SecurityConfiguration.class.getSimpleName());
 	}
 
 	@Override
@@ -56,6 +62,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and()
 			.logout()
 				.logoutSuccessUrl("/");
+
+		log.debug("{} configured HTTP security", SecurityConfiguration.class.getSimpleName());
 	}
 
 	private void ignoreWsRequestsWhenSaving(HttpSecurity http) throws Exception {
