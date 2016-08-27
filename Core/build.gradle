@@ -2,10 +2,6 @@ version '1.0'
 
 sourceCompatibility = 1.8
 
-repositories {
-	mavenCentral()
-}
-
 dependencies {
 	compile 'org.springframework:spring-beans:4.3.2.RELEASE'
 	compile 'org.springframework:spring-context:4.3.2.RELEASE'
@@ -13,7 +9,5 @@ dependencies {
 	compile 'org.springframework:spring-websocket:4.3.2.RELEASE'
 	compile 'org.springframework:spring-messaging:4.3.2.RELEASE'
 	compile 'com.fasterxml.jackson.core:jackson-annotations:2.8.1'
-	compile 'org.jetbrains:annotations:15.0'
 	compile group: 'org.ejml', name: 'all', version: '0.29'
-	compile files(System.properties['user.home'] + '/.lib/java/Ophelia/Ophelia.jar')
 }

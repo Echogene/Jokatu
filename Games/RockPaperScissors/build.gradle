@@ -2,11 +2,6 @@ version '1.0'
 
 sourceCompatibility = 1.8
 
-repositories {
-	mavenCentral()
-}
-
 dependencies {
 	compile project(':Core')
-	testCompile 'org.hamcrest:hamcrest-all:1.3'
 }

@@ -21,11 +21,6 @@ apply plugin: 'spring-boot'
 sourceCompatibility = 1.8
 version = '1.0'
 
-repositories {
-	mavenCentral()
-	maven { url 'http://repo.spring.io/milestone' }
-}
-
 def games = project(':Games').getChildProjects().values()
 
 // Source sets for other projects are not available until after they are evaluated.
@@ -36,6 +31,11 @@ gradle.projectsEvaluated {
 	}
 }
 allprojects {
+	repositories {
+		mavenCentral()
+		maven { url 'http://repo.spring.io/milestone' }
+	}
+
 	lesscss {
 		source = fileTree('src/main/resources/static/less') {
 			include '**/*.less'
@@ -50,7 +50,12 @@ allprojects {
 	compileJava.options.encoding = 'UTF-8'
 
 	dependencies {
+		compile 'org.slf4j:jcl-over-slf4j:1.7.21'
+		compile 'org.jetbrains:annotations:15.0'
+		compile files(System.properties['user.home'] + '/.lib/java/Ophelia/Ophelia.jar')
+
 		testCompile group: 'junit', name: 'junit', version: '4.12'
+		testCompile 'org.hamcrest:hamcrest-all:1.3'
 	}
 }
 
@@ -70,9 +75,6 @@ dependencies {
 	compile 'org.springframework.security:spring-security-messaging:4.1.2.RELEASE'
 	compile 'org.springframework.session:spring-session:1.2.1.RELEASE'
 	compile 'org.codehaus.groovy:groovy-templates:2.4.7'
-	compile 'org.slf4j:jcl-over-slf4j:1.7.21'
 	compile 'ch.qos.logback:logback-classic:1.1.7'
 	compile 'org.apache.commons:commons-lang3:3.4'
-	compile 'org.jetbrains:annotations:15.0'
-	compile files(System.properties['user.home'] + '/.lib/java/Ophelia/Ophelia.jar')
 }
