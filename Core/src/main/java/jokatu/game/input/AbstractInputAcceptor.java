@@ -4,11 +4,9 @@ import jokatu.game.event.GameEvent;
 import jokatu.game.player.Player;
 import ophelia.collections.set.Singleton;
 import ophelia.event.observable.AbstractSynchronousObservable;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.jetbrains.annotations.NotNull;
-
-import java.text.MessageFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * An abstract version of {@link InputAcceptor} that only accepts a specific type of input from a specific type of
@@ -21,7 +19,7 @@ public abstract class AbstractInputAcceptor<I extends Input, P extends Player, E
 		extends AbstractSynchronousObservable<E>
 		implements InputAcceptor<E> {
 
-	private final Log log = LogFactory.getLog(getClass());
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	@NotNull
 	protected abstract Class<I> getInputClass();
@@ -49,20 +47,20 @@ public abstract class AbstractInputAcceptor<I extends Input, P extends Player, E
 	public final void accept(@NotNull Input input, @NotNull Player player) throws Exception {
 		Class<P> playerClass = getPlayerClass();
 		if (!playerClass.isInstance(player)) {
-			log.debug(MessageFormat.format(
-					"Ignoring player {0} because it was not a {1}",
+			log.debug(
+					"Ignoring player {} because it was not a {}",
 					input,
 					playerClass.getSimpleName()
-			));
+			);
 			return;
 		}
 		Class<I> inputClass = getInputClass();
 		if (!inputClass.isInstance(input)) {
-			log.debug(MessageFormat.format(
-					"Ignoring input {0} because it was not a {1}",
+			log.debug(
+					"Ignoring input {} because it was not a {}",
 					input,
 					inputClass.getSimpleName()
-			));
+			);
 			return;
 		}
 		acceptCastInputAndPlayer(castInput(input), castPlayer(player));
