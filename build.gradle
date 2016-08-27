@@ -46,9 +46,9 @@ allprojects {
 	build {
 		dependsOn 'lesscss'
 	}
-}
 
-compileJava.options.encoding = 'UTF-8'
+	compileJava.options.encoding = 'UTF-8'
+}
 
 dependencies {
 	compile project(':Core'),
