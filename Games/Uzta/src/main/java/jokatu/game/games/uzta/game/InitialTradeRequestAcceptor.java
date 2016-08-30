@@ -95,17 +95,26 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 						.map(name -> new Option(name, name, playerName.equals(name)))
 						.collect(toList())
 		);
-		List<FormField> fields = Arrays.stream(NodeType.values())
+		List<FormField> wantedFields = Arrays.stream(NodeType.values())
 				.map(type -> new FormInput<>(
 						type.toString(),
-						capitalize(type.getPlural()),
+						capitalize(type.getPlural()) + " to ask for",
 						NUMBER,
 						resource == type ? 1 : 0
 				))
 				.collect(toList());
+		List<FormField> givingFields = Arrays.stream(NodeType.values())
+				.map(type -> new FormInput<>(
+						type.toString() + "_give",
+						capitalize(type.getPlural()) + " to give",
+						NUMBER,
+						0
+				))
+				.collect(toList());
 		return new DialogFormBuilder()
 				.withField(playerField)
-				.withFields(fields)
+				.withFields(wantedFields)
+				.withFields(givingFields)
 				.build();
 	}
 
@@ -117,20 +126,42 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 		String playerName = fullPlayerTradeRequest.getPlayerName();
 		@NotNull
 		BaseIntegerBag<NodeType> wantedResources = fullPlayerTradeRequest.getWantedResources();
+		@NotNull
+		BaseIntegerBag<NodeType> givenResources = fullPlayerTradeRequest.getGivenResources();
 
 		@NotNull
-		UztaPlayer uztaPlayer = checkPlayerToTradeWith(inputter, playerName);
+		UztaPlayer playerToTradeWith = checkPlayerToTradeWith(inputter, playerName);
 
+
+		checkResources(
+				wantedResources,
+				playerToTradeWith,
+				"{0} doesn''t have enough resources to trade {1}.  They still need {2}."
+		);
+
+		// todo: remove cast
+		checkResources(
+				givenResources,
+				(UztaPlayer) inputter,
+				"You don''t have enough resources to give {1}.  You still need {2}."
+		);
+	}
+
+	private void checkResources(
+			@NotNull BaseIntegerBag<NodeType> resources,
+			@NotNull UztaPlayer player,
+			@NotNull String message
+	) throws UnacceptableInputException {
 		@NotNull
-		BaseIntegerBag<NodeType> resourcesLeftAfterTrade = uztaPlayer.getResourcesLeftAfter(wantedResources);
-		if (resourcesLeftAfterTrade.isLacking()) {
+		BaseIntegerBag<NodeType> resourcesLeftAfterGiving = player.getResourcesLeftAfter(resources);
+		if (resourcesLeftAfterGiving.isLacking()) {
 			throw new UnacceptableInputException(
-					"{0} doesn''t have enough resources to trade {1}.  They still need {2}.",
-					playerName,
-					wantedResources.stream()
+					message,
+					player.getName(),
+					resources.stream()
 							.map(entry -> entry.getLeft().getNumber(entry.getRight()))
 							.collect(joining(", ")),
-					resourcesLeftAfterTrade.stream()
+					resourcesLeftAfterGiving.stream()
 							.filter(entry -> entry.getRight() < 0)
 							.map(entry -> entry.getLeft().getNumber(-entry.getRight()))
 							.collect(joining(", "))

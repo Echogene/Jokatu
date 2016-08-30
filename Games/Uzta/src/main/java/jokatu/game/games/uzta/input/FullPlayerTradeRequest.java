@@ -9,16 +9,28 @@ public class FullPlayerTradeRequest implements Input {
 
 	private final BaseIntegerBag<NodeType> wantedResources;
 
+	private final BaseIntegerBag<NodeType> givenResources;
+
 	private final String playerName;
 
-	public FullPlayerTradeRequest(@NotNull BaseIntegerBag<NodeType> wantedResources, @NotNull String playerName) {
+	public FullPlayerTradeRequest(
+			@NotNull BaseIntegerBag<NodeType> wantedResources,
+			@NotNull BaseIntegerBag<NodeType> givenResources,
+			@NotNull String playerName
+	) {
 		this.wantedResources = wantedResources;
+		this.givenResources = givenResources;
 		this.playerName = playerName;
 	}
 
 	@NotNull
 	public BaseIntegerBag<NodeType> getWantedResources() {
 		return wantedResources;
+	}
+
+	@NotNull
+	public BaseIntegerBag<NodeType> getGivenResources() {
+		return givenResources;
 	}
 
 	@NotNull
