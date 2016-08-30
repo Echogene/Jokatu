@@ -54,7 +54,7 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 		} else {
 			checkPlayerToTradeWith(inputter, playerName);
 			Form form = constructFormForTradeConfirmation(inputter, playerName, input.getResource());
-			DialogRequest<FullPlayerTradeRequest>.DialogRequestEvent dialogRequestEvent = requestDialogFor(
+			DialogRequest<UztaPlayer, FullPlayerTradeRequest>.DialogRequestEvent dialogRequestEvent = requestDialogFor(
 					FullPlayerTradeRequest.class,
 					inputter,
 					"Request trade",
@@ -120,7 +120,7 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 
 	private void acceptFullRequest(
 			@NotNull FullPlayerTradeRequest fullPlayerTradeRequest,
-			@NotNull Player inputter
+			@NotNull UztaPlayer inputter
 	) throws UnacceptableInputException {
 		@NotNull
 		String playerName = fullPlayerTradeRequest.getPlayerName();
@@ -139,10 +139,9 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 				"{0} doesn''t have enough resources to trade {1}.  They still need {2}."
 		);
 
-		// todo: remove cast
 		checkResources(
 				givenResources,
-				(UztaPlayer) inputter,
+				inputter,
 				"You don''t have enough resources to give {1}.  You still need {2}."
 		);
 	}
