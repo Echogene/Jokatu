@@ -8,25 +8,31 @@ import java.util.List;
 
 public class DialogFormBuilder implements Builder<Form, DialogFormBuilder> {
 
-	private final List<FormElement> fields = new ArrayList<>();
+	private final List<FormElement> elements = new ArrayList<>();
 
 	@NotNull
 	@Override
 	public Form build() {
-		return new Form(fields);
+		return new Form(elements);
+	}
+
+	@NotNull
+	public DialogFormBuilder withDiv(@NotNull String label) {
+		elements.add(new FormDiv(label));
+		return this;
 	}
 
 	@NotNull
 	public DialogFormBuilder withField(
 			@NotNull FormField field
 	) {
-		fields.add(field);
+		elements.add(field);
 		return this;
 	}
 
 	@NotNull
 	public DialogFormBuilder withFields(@NotNull List<FormField> fields) {
-		this.fields.addAll(fields);
+		this.elements.addAll(fields);
 		return this;
 	}
 

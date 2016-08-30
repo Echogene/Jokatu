@@ -8,6 +8,16 @@
 			align-items: center;
 			padding: 0 .5em .5em .5em;
 
+			&.header {
+				text-align: center;
+				display: block;
+				font-weight: bold;
+				&:not(:first-child) {
+					padding-top: .5em;
+					border-top: 1px solid #aaa;
+				}
+			}
+
 			&.buttons {
 				justify-content: center;
 				border-top: 1px solid #aaa;

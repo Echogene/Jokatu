@@ -98,7 +98,7 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 		List<FormField> wantedFields = Arrays.stream(NodeType.values())
 				.map(type -> new FormInput<>(
 						type.toString(),
-						capitalize(type.getPlural()) + " to ask for",
+						capitalize(type.getPlural()),
 						NUMBER,
 						resource == type ? 1 : 0
 				))
@@ -106,14 +106,16 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 		List<FormField> givingFields = Arrays.stream(NodeType.values())
 				.map(type -> new FormInput<>(
 						type.toString() + "_give",
-						capitalize(type.getPlural()) + " to give",
+						capitalize(type.getPlural()),
 						NUMBER,
 						0
 				))
 				.collect(toList());
 		return new DialogFormBuilder()
 				.withField(playerField)
+				.withDiv("To ask for")
 				.withFields(wantedFields)
+				.withDiv("To give")
 				.withFields(givingFields)
 				.build();
 	}

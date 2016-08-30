@@ -43,41 +43,18 @@ JDialogProto._updateForm = function(form) {
 	}
 
 	if (form.fields) {
+		let focussed = false;
 		for (var i = 0; i < form.fields.length; i++) {
 			var field = form.fields[i];
 
 			let fieldDiv = document.createElement('div');
 
-			let fieldLabel = document.createElement('label');
-			fieldLabel.innerText = field.label;
-			fieldLabel.for = field.name;
-			fieldDiv.appendChild(fieldLabel);
-
-			let fieldElement;
-			if (field.type == 'select') {
-				fieldElement = document.createElement('select');
-				fieldElement.name = field.name;
-				field.options.forEach(o => {
-					let option = document.createElement('option');
-					option.value = o.name;
-					option.innerText = o.label;
-					if (o.selected) {
-						option.selected = true;
-					}
-					fieldElement.appendChild(option);
-				});
-				fieldDiv.appendChild(fieldElement);
-			} else {
-				fieldElement = document.createElement('input');
-				fieldElement.type = field.type;
-				fieldElement.name = field.name;
-				fieldElement.value = field.value;
-			}
-			fieldDiv.appendChild(fieldElement);
+			var formElement = this._addFormElement(fieldDiv, field);
 
 			this._form.insertBefore(fieldDiv, this._form.lastChild);
-			if (i == 0) {
-				fieldElement.focus();
+			if (!focussed && formElement) {
+				formElement.focus();
+				focussed = true;
 			}
 		}
 	}
@@ -87,6 +64,44 @@ JDialogProto._updateForm = function(form) {
 	this._dialogIdField.name = 'dialogId';
 	this._dialogIdField.value = this.getAttribute('dialogid');
 	this._form.insertBefore(this._dialogIdField, this._form.lastChild);
+};
+
+JDialogProto._addFormElement = function(fieldDiv, field) {
+
+	if (!field.type) {
+		fieldDiv.innerText = field.label;
+		fieldDiv.classList.add('header');
+		return;
+	}
+
+	let fieldLabel = document.createElement('label');
+	fieldLabel.innerText = field.label;
+	fieldLabel.for = field.name;
+	fieldDiv.appendChild(fieldLabel);
+
+	let fieldElement;
+	if (field.type == 'select') {
+		fieldElement = document.createElement('select');
+		fieldElement.name = field.name;
+		field.options.forEach(o => {
+			let option = document.createElement('option');
+			option.value = o.name;
+			option.innerText = o.label;
+			if (o.selected) {
+				option.selected = true;
+			}
+			fieldElement.appendChild(option);
+		});
+		fieldDiv.appendChild(fieldElement);
+	} else {
+		fieldElement = document.createElement('input');
+		fieldElement.type = field.type;
+		fieldElement.name = field.name;
+		fieldElement.value = field.value;
+	}
+	fieldDiv.appendChild(fieldElement);
+
+	return fieldElement;
 };
 
 JDialogProto._updateDialogId = function(dialogId) {
