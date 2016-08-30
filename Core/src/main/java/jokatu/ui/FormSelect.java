@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static jokatu.ui.Form.FormFieldType.SELECT;
+import static jokatu.ui.FormField.FormFieldType.SELECT;
 
 public class FormSelect implements FormField {
 

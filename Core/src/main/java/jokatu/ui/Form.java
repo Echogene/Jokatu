@@ -16,12 +16,4 @@ public class Form {
 	public List<FormElement> getFields() {
 		return fields;
 	}
-
-	public enum FormFieldType {
-		TEXT,
-		CHECKBOX,
-		RANGE,
-		NUMBER,
-		SELECT
-	}
 }

@@ -21,7 +21,7 @@ import java.util.Map;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static jokatu.game.event.DialogRequest.requestDialogFor;
-import static jokatu.ui.Form.FormFieldType.NUMBER;
+import static jokatu.ui.FormField.FormFieldType.NUMBER;
 import static ophelia.util.FunctionUtils.not;
 import static org.springframework.util.StringUtils.capitalize;
 

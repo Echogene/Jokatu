@@ -9,4 +9,12 @@ public interface FormField extends FormElement {
 
 	@NotNull
 	String getType();
+
+	enum FormFieldType {
+		TEXT,
+		CHECKBOX,
+		RANGE,
+		NUMBER,
+		SELECT
+	}
 }

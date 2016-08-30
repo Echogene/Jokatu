@@ -12,19 +12,19 @@ public class FormInput<T> implements FormField {
 	private final String label;
 
 	@NotNull
-	private final Form.FormFieldType type;
+	private final FormFieldType type;
 
 	@Nullable
 	private final T value;
 
-	public FormInput(@NotNull String name, @NotNull String label, @NotNull Form.FormFieldType type) {
+	public FormInput(@NotNull String name, @NotNull String label, @NotNull FormFieldType type) {
 		this(name, label, type, null);
 	}
 
 	public FormInput(
 			@NotNull String name,
 			@NotNull String label,
-			@NotNull Form.FormFieldType type,
+			@NotNull FormFieldType type,
 			@Nullable T value
 	) {
 		this.name = name;
