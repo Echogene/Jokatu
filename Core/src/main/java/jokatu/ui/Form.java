@@ -1,16 +1,19 @@
 package jokatu.ui;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public class Form {
 
-	private final List<FormField> fields;
+	private final List<FormElement> fields;
 
-	Form(List<FormField> fields) {
+	Form(@NotNull List<FormElement> fields) {
 		this.fields = fields;
 	}
 
-	public List<FormField> getFields() {
+	@NotNull
+	public List<FormElement> getFields() {
 		return fields;
 	}
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class DialogFormBuilder implements Builder<Form, DialogFormBuilder> {
 
-	private final List<FormField> fields = new ArrayList<>();
+	private final List<FormElement> fields = new ArrayList<>();
 
 	@NotNull
 	@Override

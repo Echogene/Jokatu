@@ -2,13 +2,10 @@ package jokatu.ui;
 
 import org.jetbrains.annotations.NotNull;
 
-public interface FormField {
+public interface FormField extends FormElement {
 
 	@NotNull
 	String getName();
-
-	@NotNull
-	String getLabel();
 
 	@NotNull
 	String getType();
