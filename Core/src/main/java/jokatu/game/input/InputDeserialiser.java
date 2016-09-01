@@ -45,9 +45,11 @@ public abstract class InputDeserialiser<I extends Input> {
 			throw new DeserialisationException(
 					json,
 					MessageFormat.format(
-							"The value for ''{0}'' was not a {1}.",
+							"The value for ''{0}'' was not a {1}: instead, was the {2} ''{3}''",
 							keyName,
-							type.getSimpleName()
+							type.getSimpleName(),
+							value.getClass().getSimpleName(),
+							value
 					)
 			);
 		}
