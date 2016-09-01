@@ -5,13 +5,20 @@ JFormProto.attachedCallback = function() {
 	this.addEventListener('submit', this._onSubmit.bind(this));
 
 	observeAttributes(this, new Map([
-		['destination', this._updateDestination.bind(this)]
+		['destination', this._updateDestination.bind(this)],
+		['submit-text', this._updateSubmitText.bind(this)]
 	]));
 };
 
 JFormProto._updateDestination = function(destination) {
 	if (this._submitButton) {
 		this._submitButton.setAttribute('destination', destination);
+	}
+};
+
+JFormProto._updateSubmitText = function(submitText) {
+	if (this._submitButton) {
+		this._submitButton.innerText = submitText || 'Submit';
 	}
 };
 
@@ -51,7 +58,7 @@ JFormProto.getSubmitButton = function() {
 	// Override the method so that the input can be based on the form's content.
 	this._submitButton._getInput = this._getInput.bind(this);
 	this._submitButton.id = this.id + "_submit";
-	this._submitButton.innerText = 'Submit';
+	this._submitButton.innerText = this.getAttribute('submit-text') || 'Submit';
 	this._submitButton.setAttribute('destination', this.getAttribute('destination'));
 	return this._submitButton;
 };
