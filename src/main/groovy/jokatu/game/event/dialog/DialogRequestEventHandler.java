@@ -5,8 +5,11 @@ import jokatu.components.ui.DialogRequestor;
 import jokatu.game.Game;
 import jokatu.game.event.SpecificEventHandler;
 import jokatu.game.exception.GameException;
+import jokatu.game.input.DeserialisationException;
 import jokatu.game.input.Input;
 import jokatu.game.input.InputDeserialiser;
+import jokatu.game.input.acknowledge.AcknowledgeInput;
+import jokatu.game.input.acknowledge.AcknowledgeInputDeserialiser;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,11 +19,17 @@ public class DialogRequestEventHandler extends SpecificEventHandler<DialogReques
 
 	private final DialogRequestor dialogRequestor;
 	private final InputDeserialisers inputDeserialisers;
+	private final AcknowledgeInputDeserialiser acknowledgeInputDeserialiser;
 
 	@Autowired
-	public DialogRequestEventHandler(DialogRequestor dialogRequestor, InputDeserialisers inputDeserialisers) {
+	public DialogRequestEventHandler(
+			DialogRequestor dialogRequestor,
+			InputDeserialisers inputDeserialisers,
+			AcknowledgeInputDeserialiser acknowledgeInputDeserialiser
+	) {
 		this.dialogRequestor = dialogRequestor;
 		this.inputDeserialisers = inputDeserialisers;
+		this.acknowledgeInputDeserialiser = acknowledgeInputDeserialiser;
 	}
 
 	@NotNull
@@ -44,6 +53,14 @@ public class DialogRequestEventHandler extends SpecificEventHandler<DialogReques
 								event.getInputClass().getSimpleName()
 						);
 					}
+					try {
+						AcknowledgeInput acknowledgeInput = acknowledgeInputDeserialiser.deserialise(json);
+						if (!acknowledgeInput.isAcknowledgement()) {
+							// todo: add a way to handle cancels on the dialog request
+							return;
+						}
+					} catch (DeserialisationException ignore) {}
+
 					Input input = null;
 					try {
 						input = deserialiser.deserialise(json);
