@@ -56,15 +56,14 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 		} else {
 			checkPlayerToTradeWith(inputter, playerName);
 			Form form = constructFormForTradeConfirmation(inputter, playerName, input.getResource());
-			DialogRequest<UztaPlayer, FullPlayerTradeRequest>.DialogRequestEvent dialogRequestEvent
-					= DialogRequestBuilder.forPlayer(inputter)
-							.withTitle("Request trade")
-							.withMessage("You can modify your trade before submitting.")
-							.withInputType(FullPlayerTradeRequest.class)
-							.withForm(form)
-							.build()
-							.then(this::acceptFullRequest);
-			fireEvent(dialogRequestEvent);
+			DialogRequest<UztaPlayer, FullPlayerTradeRequest> request = DialogRequestBuilder.forPlayer(inputter)
+					.withTitle("Request trade")
+					.withMessage("You can modify your trade before submitting.")
+					.withInputType(FullPlayerTradeRequest.class)
+					.withConsumer(this::acceptFullRequest)
+					.withForm(form)
+					.build();
+			fireEvent(request);
 		}
 	}
 
@@ -149,24 +148,23 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 				"You don''t have enough resources to give {1}.  You still need {2}."
 		);
 
-		DialogRequest<UztaPlayer, AcknowledgeInput>.DialogRequestEvent dialogRequestEvent
-				= DialogRequestBuilder.forPlayer(playerToTradeWith)
-						.withTitle(MessageFormat.format("{0} wants to trade with you", inputter.getName()))
-						.withMessage(MessageFormat.format(
-								"{0} would give you {1} in exchange for {2}",
-								inputter.getName(),
-								presentResources(givenResources),
-								presentResources(wantedResources)
-						))
-						.withInputType(AcknowledgeInput.class)
-						.build()
-						.then((ack, player) -> {
-							if (ack.isAcknowledgement()) {
-								// todo: finally do the trade
-							}
-						});
+		DialogRequest<UztaPlayer, AcknowledgeInput> request = DialogRequestBuilder.forPlayer(playerToTradeWith)
+				.withTitle(MessageFormat.format("{0} wants to trade with you", inputter.getName()))
+				.withMessage(MessageFormat.format(
+						"{0} would give you {1} in exchange for {2}",
+						inputter.getName(),
+						presentResources(givenResources),
+						presentResources(wantedResources)
+				))
+				.withInputType(AcknowledgeInput.class)
+				.withConsumer((ack, player) -> {
+					if (ack.isAcknowledgement()) {
+						// todo: finally do the trade
+					}
+				})
+				.build();
 
-		fireEvent(dialogRequestEvent);
+		fireEvent(request);
 	}
 
 	private void checkResources(

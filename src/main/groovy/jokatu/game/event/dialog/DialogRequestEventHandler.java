@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DialogRequestEventHandler extends SpecificEventHandler<DialogRequest.DialogRequestEvent> {
+public class DialogRequestEventHandler extends SpecificEventHandler<DialogRequest> {
 
 	private final DialogRequestor dialogRequestor;
 	private final InputDeserialisers inputDeserialisers;
@@ -25,12 +25,12 @@ public class DialogRequestEventHandler extends SpecificEventHandler<DialogReques
 
 	@NotNull
 	@Override
-	protected Class<DialogRequest.DialogRequestEvent> getEventClass() {
-		return DialogRequest.DialogRequestEvent.class;
+	protected Class<DialogRequest> getEventClass() {
+		return DialogRequest.class;
 	}
 
 	@Override
-	protected void handleCastEvent(@NotNull Game<?> game, @NotNull DialogRequest.DialogRequestEvent event) {
+	protected void handleCastEvent(@NotNull Game<?> game, @NotNull DialogRequest event) {
 		dialogRequestor.requestDialog(
 				event.getDialog(),
 				event.getPlayer().getName(),

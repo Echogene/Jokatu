@@ -7,5 +7,5 @@ import org.jetbrains.annotations.NotNull;
 public interface DialogRequestBuilderNeedingInputType<P extends Player> {
 
 	@NotNull
-	<I extends Input> MainDialogRequestBuilder<P, I> withInputType(@NotNull Class<I> inputType);
+	<I extends Input> DialogRequestBuilderNeedingConsumer<P, I> withInputType(@NotNull Class<I> inputType);
 }

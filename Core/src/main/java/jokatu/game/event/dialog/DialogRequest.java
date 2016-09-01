@@ -9,19 +9,21 @@ import ophelia.function.ExceptionalBiConsumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DialogRequest<P extends Player, I extends Input> {
+public class DialogRequest<P extends Player, I extends Input> implements GameEvent {
 
 	private final Class<I> expectedInput;
 	private final P player;
 	private final String title;
 	private final String message;
 	private final Form form;
+	private final ExceptionalBiConsumer<? super I, ? super P, ?> consumer;
 
 	DialogRequest(
 			@NotNull Class<I> expectedInput,
 			@NotNull P player,
 			@NotNull String title,
 			@NotNull String message,
+			@NotNull ExceptionalBiConsumer<? super I, ? super P, ?> consumer,
 			@Nullable Form form
 	) {
 		this.expectedInput = expectedInput;
@@ -29,36 +31,25 @@ public class DialogRequest<P extends Player, I extends Input> {
 		this.title = title;
 		this.message = message;
 		this.form = form;
+		this.consumer = consumer;
 	}
 
-	public DialogRequestEvent then(@NotNull ExceptionalBiConsumer<? super I, ? super P, ?> consumer) {
-		return new DialogRequestEvent(consumer);
+	void accept(@NotNull I i) throws Exception {
+		consumer.accept(i, player);
 	}
 
-	public class DialogRequestEvent implements GameEvent {
+	@NotNull
+	Class<I> getInputClass() {
+		return expectedInput;
+	}
 
-		private final ExceptionalBiConsumer<? super I, ? super P, ?> consumer;
+	@NotNull
+	Dialog getDialog() {
+		return new Dialog(title, message, form);
+	}
 
-		private DialogRequestEvent(@NotNull ExceptionalBiConsumer<? super I, ? super P, ?> consumer) {
-			this.consumer = consumer;
-		}
-
-		void accept(@NotNull I i) throws Exception {
-			consumer.accept(i, player);
-		}
-
-		@NotNull
-		Class<I> getInputClass() {
-			return expectedInput;
-		}
-
-		Dialog getDialog() {
-			return new Dialog(title, message, form);
-		}
-
-		@NotNull
-		Player getPlayer() {
-			return player;
-		}
+	@NotNull
+	Player getPlayer() {
+		return player;
 	}
 }
