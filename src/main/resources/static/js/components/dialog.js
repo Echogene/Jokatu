@@ -38,11 +38,7 @@ JDialogProto._updateForm = function(form) {
 		}
 	}
 
-	if (!form) {
-		return;
-	}
-
-	if (form.fields) {
+	if (form && form.fields) {
 		let focussed = false;
 		for (var i = 0; i < form.fields.length; i++) {
 			var field = form.fields[i];
