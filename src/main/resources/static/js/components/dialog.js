@@ -12,22 +12,12 @@ JDialogProto.attachedCallback = function() {
 	this._buttonBar.classList.add('buttons');
 	this._form.appendChild(this._buttonBar);
 
+	this._buttonBar.appendChild(this._form.getSubmitButton());
+
 	observeAttributes(this, new Map([
-		['data-buttons', this._updateButtons.bind(this)],
 		['dialogid', this._updateDialogId.bind(this)],
 		['data-form', this._updateForm.bind(this)]
 	]));
-};
-
-JDialogProto._updateButtons = function(buttons) {
-	while (this._buttonBar.firstChild) {
-		this._buttonBar.removeChild(this._buttonBar.firstChild);
-	}
-	if (!buttons) {
-		this._buttonBar.appendChild(this._form.getSubmitButton());
-	} else {
-
-	}
 };
 
 JDialogProto._updateForm = function(form) {
