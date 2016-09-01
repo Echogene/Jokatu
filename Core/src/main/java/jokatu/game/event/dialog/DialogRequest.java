@@ -7,6 +7,7 @@ import jokatu.ui.Dialog;
 import jokatu.ui.Form;
 import ophelia.function.ExceptionalBiConsumer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class DialogRequest<P extends Player, I extends Input> {
 
@@ -14,28 +15,20 @@ public class DialogRequest<P extends Player, I extends Input> {
 	private final P player;
 	private final String title;
 	private final String message;
-	private Form form;
+	private final Form form;
 
-	private DialogRequest(@NotNull Class<I> expectedInput, @NotNull P player, @NotNull String title, @NotNull String message) {
+	DialogRequest(
+			@NotNull Class<I> expectedInput,
+			@NotNull P player,
+			@NotNull String title,
+			@NotNull String message,
+			@Nullable Form form
+	) {
 		this.expectedInput = expectedInput;
 		this.player = player;
 		this.title = title;
 		this.message = message;
-	}
-
-	@NotNull
-	public static <P extends Player, I extends Input> DialogRequest<P, I> requestDialogFor(
-			@NotNull Class<I> expectedInput,
-			@NotNull P player,
-			@NotNull String title,
-			@NotNull String message
-	) {
-		return new DialogRequest<>(expectedInput, player, title, message);
-	}
-
-	public DialogRequest<P, I> withForm(@NotNull Form form) {
 		this.form = form;
-		return this;
 	}
 
 	public DialogRequestEvent then(@NotNull ExceptionalBiConsumer<? super I, ? super P, ?> consumer) {

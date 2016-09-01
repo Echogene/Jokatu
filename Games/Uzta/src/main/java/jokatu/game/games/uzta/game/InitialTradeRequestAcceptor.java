@@ -1,6 +1,7 @@
 package jokatu.game.games.uzta.game;
 
 import jokatu.game.event.dialog.DialogRequest;
+import jokatu.game.event.dialog.DialogRequestBuilder;
 import jokatu.game.games.uzta.graph.NodeType;
 import jokatu.game.games.uzta.input.FullPlayerTradeRequest;
 import jokatu.game.games.uzta.input.InitialTradeRequest;
@@ -22,7 +23,6 @@ import java.util.Map;
 
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
-import static jokatu.game.event.dialog.DialogRequest.requestDialogFor;
 import static jokatu.ui.FormField.FormFieldType.NUMBER;
 import static ophelia.util.FunctionUtils.not;
 import static org.springframework.util.StringUtils.capitalize;
@@ -56,14 +56,14 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 		} else {
 			checkPlayerToTradeWith(inputter, playerName);
 			Form form = constructFormForTradeConfirmation(inputter, playerName, input.getResource());
-			DialogRequest<UztaPlayer, FullPlayerTradeRequest>.DialogRequestEvent dialogRequestEvent = requestDialogFor(
-					FullPlayerTradeRequest.class,
-					inputter,
-					"Request trade",
-					"You can modify your trade before submitting."
-			)
-					.withForm(form)
-					.then(this::acceptFullRequest);
+			DialogRequest<UztaPlayer, FullPlayerTradeRequest>.DialogRequestEvent dialogRequestEvent
+					= DialogRequestBuilder.forPlayer(inputter)
+							.withTitle("Request trade")
+							.withMessage("You can modify your trade before submitting.")
+							.withInputType(FullPlayerTradeRequest.class)
+							.withForm(form)
+							.build()
+							.then(this::acceptFullRequest);
 			fireEvent(dialogRequestEvent);
 		}
 	}
@@ -149,22 +149,22 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 				"You don''t have enough resources to give {1}.  You still need {2}."
 		);
 
-		DialogRequest<UztaPlayer, AcknowledgeInput>.DialogRequestEvent dialogRequestEvent = requestDialogFor(
-				AcknowledgeInput.class,
-				playerToTradeWith,
-				MessageFormat.format("{0} wants to trade with you", inputter.getName()),
-				MessageFormat.format(
-						"{0} would give you {1} in exchange for {2}",
-						inputter.getName(),
-						presentResources(givenResources),
-						presentResources(wantedResources)
-				)
-		)
-				.then((ack, player) -> {
-					if (ack.isAcknowledgement()) {
-						// todo: finally do the trade
-					}
-				});
+		DialogRequest<UztaPlayer, AcknowledgeInput>.DialogRequestEvent dialogRequestEvent
+				= DialogRequestBuilder.forPlayer(playerToTradeWith)
+						.withTitle(MessageFormat.format("{0} wants to trade with you", inputter.getName()))
+						.withMessage(MessageFormat.format(
+								"{0} would give you {1} in exchange for {2}",
+								inputter.getName(),
+								presentResources(givenResources),
+								presentResources(wantedResources)
+						))
+						.withInputType(AcknowledgeInput.class)
+						.build()
+						.then((ack, player) -> {
+							if (ack.isAcknowledgement()) {
+								// todo: finally do the trade
+							}
+						});
 
 		fireEvent(dialogRequestEvent);
 	}
