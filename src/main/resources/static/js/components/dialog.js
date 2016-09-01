@@ -37,6 +37,7 @@ JDialogProto._updateForm = function(form) {
 			this._form.removeChild(element);
 		}
 	}
+	this._form.setAttribute('submit-text', 'Submit');
 
 	if (form && form.fields) {
 		let focussed = false;
@@ -53,6 +54,14 @@ JDialogProto._updateForm = function(form) {
 				focussed = true;
 			}
 		}
+	} else {
+		let acknowledge = document.createElement('input');
+		acknowledge.type = 'hidden';
+		acknowledge.name = 'acknowledge';
+		acknowledge.value = false;
+		this._form.insertBefore(acknowledge, this._form.lastChild);
+
+		this._form.setAttribute('submit-text', 'Cancel');
 	}
 
 	this._dialogIdField = document.createElement('input');

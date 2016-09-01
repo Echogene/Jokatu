@@ -7,6 +7,7 @@ import jokatu.game.games.uzta.input.InitialTradeRequest;
 import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.input.AnyEventInputAcceptor;
 import jokatu.game.input.UnacceptableInputException;
+import jokatu.game.input.acknowledge.AcknowledgeInput;
 import jokatu.game.player.Player;
 import jokatu.ui.*;
 import jokatu.ui.FormSelect.Option;
@@ -14,6 +15,7 @@ import ophelia.collections.bag.BaseIntegerBag;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -146,6 +148,25 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 				inputter,
 				"You don''t have enough resources to give {1}.  You still need {2}."
 		);
+
+		DialogRequest<UztaPlayer, AcknowledgeInput>.DialogRequestEvent dialogRequestEvent = requestDialogFor(
+				AcknowledgeInput.class,
+				playerToTradeWith,
+				MessageFormat.format("{0} wants to trade with you", inputter.getName()),
+				MessageFormat.format(
+						"{0} would give you {1} in exchange for {2}",
+						inputter.getName(),
+						presentResources(givenResources),
+						presentResources(wantedResources)
+				)
+		)
+				.then((ack, player) -> {
+					if (ack.isAcknowledgement()) {
+						// todo: finally do the trade
+					}
+				});
+
+		fireEvent(dialogRequestEvent);
 	}
 
 	private void checkResources(
@@ -159,14 +180,19 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 			throw new UnacceptableInputException(
 					message,
 					player.getName(),
-					resources.stream()
-							.map(entry -> entry.getLeft().getNumber(entry.getRight()))
-							.collect(joining(", ")),
+					presentResources(resources),
 					resourcesLeftAfterGiving.stream()
 							.filter(entry -> entry.getRight() < 0)
 							.map(entry -> entry.getLeft().getNumber(-entry.getRight()))
 							.collect(joining(", "))
 			);
 		}
+	}
+
+	@NotNull
+	private String presentResources(@NotNull BaseIntegerBag<NodeType> resources) {
+		return resources.stream()
+				.map(entry -> entry.getLeft().getNumber(entry.getRight()))
+				.collect(joining(", "));
 	}
 }
