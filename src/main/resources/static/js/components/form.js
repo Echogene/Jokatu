@@ -19,11 +19,23 @@ JFormProto._getInput = function() {
 	var object = {};
 	for (var i = 0; i < this.elements.length; i++) {
 		var element = this.elements[i];
-		if (element.value) {
-			object[element.name] = element.value;
+		if (typeof element.value !== 'undefined' && element.value !== '') {
+			object[element.name] = this._getFieldValue(element);
 		}
 	}
 	return object;
+};
+
+JFormProto._getFieldValue = function(fieldElement) {
+	if (fieldElement.value === 'true') {
+		return true;
+	} else if (fieldElement.value === 'false') {
+		return false;
+	} else if (fieldElement.type === 'number') {
+		return parseInt(fieldElement.value);
+	} else {
+		return fieldElement.value;
+	}
 };
 
 JFormProto._onSubmit = function(e) {
