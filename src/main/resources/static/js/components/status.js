@@ -94,7 +94,9 @@ JStatusProto._updateElement = function(element, status) {
 			if (attributeValue instanceof Object) {
 				attributeValue = JSON.stringify(attributeValue);
 			}
-			element.setAttribute(attributeName, attributeValue);
+			if (typeof attributeValue !== 'undefined') {
+				element.setAttribute(attributeName, attributeValue);
+			}
 		});
 	}
 };
