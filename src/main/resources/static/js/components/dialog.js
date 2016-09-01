@@ -28,10 +28,11 @@ JDialogProto._updateCancellable = function(cancellable) {
 			this._cancelButton.id = this.id + "_submit";
 			this._cancelButton.innerText = 'Cancel';
 			this._cancelButton.setAttribute('destination', this._form.getAttribute('destination'));
-			this._cancelButton.setAttribute('data-input', JSON.stringify({
+			// Override the method so that the input can be based on current dialog ID.
+			this._cancelButton._getInput = () => ({
 				dialogId: this.getAttribute('dialogid'),
 				acknowledge: false
-			}));
+			});
 
 			this._buttonBar.appendChild(this._cancelButton);
 		}
