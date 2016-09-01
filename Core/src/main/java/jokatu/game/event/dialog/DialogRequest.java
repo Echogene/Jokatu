@@ -17,6 +17,7 @@ public class DialogRequest<P extends Player, I extends Input> implements GameEve
 	private final String message;
 	private final Form form;
 	private final ExceptionalBiConsumer<? super I, ? super P, ?> consumer;
+	private final boolean cancellable;
 
 	DialogRequest(
 			@NotNull Class<I> expectedInput,
@@ -24,7 +25,8 @@ public class DialogRequest<P extends Player, I extends Input> implements GameEve
 			@NotNull String title,
 			@NotNull String message,
 			@NotNull ExceptionalBiConsumer<? super I, ? super P, ?> consumer,
-			@Nullable Form form
+			@Nullable Form form,
+			boolean cancellable
 	) {
 		this.expectedInput = expectedInput;
 		this.player = player;
@@ -32,6 +34,7 @@ public class DialogRequest<P extends Player, I extends Input> implements GameEve
 		this.message = message;
 		this.form = form;
 		this.consumer = consumer;
+		this.cancellable = cancellable;
 	}
 
 	void accept(@NotNull I i) throws Exception {
@@ -45,7 +48,7 @@ public class DialogRequest<P extends Player, I extends Input> implements GameEve
 
 	@NotNull
 	Dialog getDialog() {
-		return new Dialog(title, message, form);
+		return new Dialog(title, message, form, cancellable);
 	}
 
 	@NotNull

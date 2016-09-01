@@ -15,9 +15,30 @@ JDialogProto.attachedCallback = function() {
 	this._buttonBar.appendChild(this._form.getSubmitButton());
 
 	observeAttributes(this, new Map([
+		['cancellable', this._updateCancellable.bind(this)],
 		['dialogid', this._updateDialogId.bind(this)],
 		['data-form', this._updateForm.bind(this)]
 	]));
+};
+
+JDialogProto._updateCancellable = function(cancellable) {
+	if (cancellable) {
+		if (!this._cancelButton) {
+			this._cancelButton = new JButton();
+			this._cancelButton.id = this.id + "_submit";
+			this._cancelButton.innerText = 'Cancel';
+			this._cancelButton.setAttribute('destination', this._form.getAttribute('destination'));
+			this._cancelButton.setAttribute('data-input', JSON.stringify({
+				dialogId: this.getAttribute('dialogid'),
+				acknowledge: false
+			}));
+
+			this._buttonBar.appendChild(this._cancelButton);
+		}
+	} else if (this._cancelButton) {
+		this._buttonBar.removeChild(this._cancelButton);
+		delete this._cancelButton;
+	}
 };
 
 JDialogProto._updateForm = function(form) {
@@ -48,10 +69,10 @@ JDialogProto._updateForm = function(form) {
 		let acknowledge = document.createElement('input');
 		acknowledge.type = 'hidden';
 		acknowledge.name = 'acknowledge';
-		acknowledge.value = false;
+		acknowledge.value = true;
 		this._form.insertBefore(acknowledge, this._form.lastChild);
 
-		this._form.setAttribute('submit-text', 'Cancel');
+		this._form.setAttribute('submit-text', 'Ok');
 	}
 
 	this._dialogIdField = document.createElement('input');

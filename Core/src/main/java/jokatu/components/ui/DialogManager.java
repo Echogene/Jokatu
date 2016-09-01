@@ -4,12 +4,10 @@ import jokatu.components.stomp.StoringMessageSender;
 import jokatu.game.GameID;
 import jokatu.game.exception.GameException;
 import jokatu.ui.Dialog;
-import jokatu.ui.Form;
 import ophelia.function.ExceptionalConsumer;
 import ophelia.tuple.Pair;
 import ophelia.util.MapUtils;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -53,7 +51,7 @@ public class DialogManager implements DialogRequestor, DialogResponder {
 		DialogID dialogId = generateId(gameId);
 		Pair<GameID, String> gamePlayerKey = new Pair<>(gameId, playerName);
 
-		DialogUI dialogUi = new DialogUI(dialog.getTitle(), dialog.getMessage(), dialog.getForm(), dialogId.getDialogId());
+		DialogUI dialogUi = new DialogUI(dialog, dialogId.getDialogId());
 
 		MapUtils.updateListBasedMap(playersDialogs, gamePlayerKey, dialogUi);
 
@@ -103,31 +101,15 @@ public class DialogManager implements DialogRequestor, DialogResponder {
 		updatePlayerDialogs(gamePlayerKey);
 	}
 
-	private static class DialogUI {
-		private final String title;
-		private final String message;
-		private final Form form;
+	private static class DialogUI extends Dialog {
 		private final String dialogId;
 
-		private DialogUI(String title, String message, @Nullable Form form, String dialogId) {
-			this.title = title;
-			this.message = message;
-			this.form = form;
+		private DialogUI(@NotNull Dialog dialog, String dialogId) {
+			super(dialog.getTitle(), dialog.getMessage(), dialog.getForm(), dialog.isCancellable());
 			this.dialogId = dialogId;
 		}
 
-		public String getTitle() {
-			return title;
-		}
-
-		public String getMessage() {
-			return message;
-		}
-
-		public Form getForm() {
-			return form;
-		}
-
+		@NotNull
 		public String getDialogId() {
 			return dialogId;
 		}

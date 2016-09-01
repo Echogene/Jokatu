@@ -14,6 +14,7 @@ class BaseDialogRequestBuilder<P extends Player, I extends Input> implements Mai
 	private final ExceptionalBiConsumer<? super I, ? super P, ?> consumer;
 
 	private Form form;
+	private boolean cancellable = true;
 
 	BaseDialogRequestBuilder(
 			@NotNull Class<I> expectedInput,
@@ -32,7 +33,7 @@ class BaseDialogRequestBuilder<P extends Player, I extends Input> implements Mai
 	@Override
 	@NotNull
 	public DialogRequest<P, I> build() {
-		return new DialogRequest<>(expectedInput, player, title, message, consumer, form);
+		return new DialogRequest<>(expectedInput, player, title, message, consumer, form, cancellable);
 	}
 
 	@Override
@@ -45,6 +46,13 @@ class BaseDialogRequestBuilder<P extends Player, I extends Input> implements Mai
 	@Override
 	public MainDialogRequestBuilder<P, I> withForm(@NotNull Form form) {
 		this.form = form;
+		return this;
+	}
+
+	@NotNull
+	@Override
+	public MainDialogRequestBuilder<P, I> withoutCancelButton() {
+		this.cancellable = false;
 		return this;
 	}
 }

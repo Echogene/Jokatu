@@ -10,4 +10,7 @@ public interface MainDialogRequestBuilder<P extends Player, I extends Input> ext
 
 	@NotNull
 	MainDialogRequestBuilder<P, I> withForm(@NotNull Form form);
+
+	@NotNull
+	MainDialogRequestBuilder<P, I> withoutCancelButton();
 }

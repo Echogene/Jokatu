@@ -14,14 +14,13 @@ public class Dialog {
 	@Nullable
 	private final Form form;
 
-	public Dialog(@NotNull String title, @NotNull String message) {
-		this(title, message, null);
-	}
+	private final boolean cancellable;
 
-	public Dialog(@NotNull String title, @NotNull String message, @Nullable Form form) {
+	public Dialog(@NotNull String title, @NotNull String message, @Nullable Form form, boolean cancellable) {
 		this.title = title;
 		this.message = message;
 		this.form = form;
+		this.cancellable = cancellable;
 	}
 
 	@NotNull
@@ -37,5 +36,9 @@ public class Dialog {
 	@Nullable
 	public Form getForm() {
 		return form;
+	}
+
+	public boolean isCancellable() {
+		return cancellable;
 	}
 }
