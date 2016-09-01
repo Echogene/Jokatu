@@ -1,5 +1,6 @@
-package jokatu.game.event;
+package jokatu.game.event.dialog;
 
+import jokatu.game.event.GameEvent;
 import jokatu.game.input.Input;
 import jokatu.game.player.Player;
 import jokatu.ui.Dialog;

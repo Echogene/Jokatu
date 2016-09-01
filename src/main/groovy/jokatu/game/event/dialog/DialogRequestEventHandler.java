@@ -1,8 +1,9 @@
-package jokatu.game.event;
+package jokatu.game.event.dialog;
 
 import jokatu.components.config.InputDeserialisers;
 import jokatu.components.ui.DialogRequestor;
 import jokatu.game.Game;
+import jokatu.game.event.SpecificEventHandler;
 import jokatu.game.exception.GameException;
 import jokatu.game.input.Input;
 import jokatu.game.input.InputDeserialiser;
