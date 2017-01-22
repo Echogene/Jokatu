@@ -18,13 +18,6 @@ layout 'views/game_view.tpl', true,
 				"Create ${gameName}"
 			)
 		}
-		'j-integer'(
-			id: 'lol',
-			value: -6,
-			positivetext: 'plus',
-			negativetext: 'minus',
-			name: 'lol2'
-		) {}
 		yieldUnescaped markupGenerator.bindLast(
 			tag: 'j-status',
 			id: 'games',
