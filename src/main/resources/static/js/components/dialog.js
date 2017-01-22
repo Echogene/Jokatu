@@ -1,4 +1,4 @@
-var JDialogProto = Object.create(JPopup.prototype);
+const JDialogProto = Object.create(JPopup.prototype);
 
 JDialogProto.attachedCallback = function() {
 	JPopup.prototype.attachedCallback && JPopup.prototype.attachedCallback.call(this);
@@ -44,7 +44,7 @@ JDialogProto._updateCancellable = function(cancellable) {
 
 JDialogProto._updateForm = function(form) {
 	for (let i = this._form.childNodes.length - 1; i >= 0; i--) {
-		let element = this._form.childNodes[i];
+		const element = this._form.childNodes[i];
 		if (!element.classList.contains('buttons')) {
 			this._form.removeChild(element);
 		}
@@ -53,12 +53,12 @@ JDialogProto._updateForm = function(form) {
 
 	if (form && form.fields) {
 		let focussed = false;
-		for (var i = 0; i < form.fields.length; i++) {
-			var field = form.fields[i];
+		for (let i = 0; i < form.fields.length; i++) {
+			const field = form.fields[i];
 
-			let fieldDiv = document.createElement('div');
+			const fieldDiv = document.createElement('div');
 
-			var formElement = this._addFormElement(fieldDiv, field);
+			const formElement = this._addFormElement(fieldDiv, field);
 
 			this._form.insertBefore(fieldDiv, this._form.lastChild);
 			if (!focussed && formElement) {
@@ -67,7 +67,7 @@ JDialogProto._updateForm = function(form) {
 			}
 		}
 	} else {
-		let acknowledge = document.createElement('input');
+		const acknowledge = document.createElement('input');
 		acknowledge.type = 'hidden';
 		acknowledge.name = 'acknowledge';
 		acknowledge.value = true;
@@ -107,7 +107,7 @@ JDialogProto._addFormElement = function(fieldDiv, field) {
 		return;
 	}
 
-	let fieldLabel = document.createElement('label');
+	const fieldLabel = document.createElement('label');
 	fieldLabel.innerText = field.label;
 	fieldDiv.appendChild(fieldLabel);
 
