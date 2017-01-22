@@ -118,6 +118,7 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 				.withFields(wantedFields)
 				.withDiv("To give")
 				.withFields(givingFields)
+				.withField(new IntegerField("test", "Test", 0, "Good", "Bad"))
 				.build();
 	}
 

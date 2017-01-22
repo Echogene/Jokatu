@@ -87,14 +87,15 @@ JDialogProto._updateForm = function(form) {
  * @param {HTMLDivElement} fieldDiv
  * @param {{
  *     type: 'text' | 'checkbox' | 'range' | 'number' | 'select',
- *     name: string
- *     value: string
- *     label: string
+ *     name: string,
+ *     value: string,
+ *     label: string,
  *     options: {
  *         name: string,
  *         label: string,
  *         selected: boolean
- *     }[]
+ *     }[],
+ *     attributes: Object
  * }} field
  * @returns {HTMLElement | undefined}
  * @private
@@ -107,12 +108,15 @@ JDialogProto._addFormElement = function(fieldDiv, field) {
 		return;
 	}
 
+	const firstChar = field.type.charAt(0);
+
 	const fieldLabel = document.createElement('label');
 	fieldLabel.innerText = field.label;
 	fieldDiv.appendChild(fieldLabel);
 
 	let fieldElement;
 	if (field.type == 'select') {
+		// If the field is a select element, add options for it.
 		fieldElement = document.createElement('select');
 		fieldElement.name = field.name;
 		field.options.forEach(o => {
@@ -125,7 +129,16 @@ JDialogProto._addFormElement = function(fieldDiv, field) {
 			fieldElement.appendChild(option);
 		});
 		fieldDiv.appendChild(fieldElement);
+
+	} else if (firstChar === firstChar.toUpperCase() && window[field.type]) {
+		// If the field looks like some custom component that has been registered, create one.
+		const attributes = field.attributes || {};
+		attributes.name = field.name;
+		attributes.value = field.value;
+		fieldElement = createElement(field.type, attributes)
+
 	} else {
+		// Otherwise, assume it is a normal input with a specific type.
 		fieldElement = document.createElement('input');
 		fieldElement.type = field.type;
 		fieldElement.name = field.name;
