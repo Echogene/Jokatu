@@ -26,6 +26,9 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+/**
+ * Create some games at startup for testing.
+ */
 @Configuration
 public class TestGameCreator {
 
