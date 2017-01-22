@@ -9,13 +9,14 @@ JIntegerProto.attachedCallback = function() {
 
 	this._input = clone.querySelector('input');
 	this._input.addEventListener('change', this._onInputChange.bind(this));
-	this._input.addEventListener('wheel', this._onInputWheel.bind(this));
 
 	this._up = clone.querySelector('.up');
 	this._up.addEventListener('click', this._onClick.bind(this, 1));
 
 	this._down = clone.querySelector('.down');
 	this._down.addEventListener('click', this._onClick.bind(this, -1));
+
+	this.addEventListener('wheel', this._onInputWheel.bind(this));
 
 	observeAttributes(this, new Map([
 		['name', this._updateName.bind(this)],
