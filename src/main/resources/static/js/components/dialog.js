@@ -83,6 +83,22 @@ JDialogProto._updateForm = function(form) {
 	this._form.insertBefore(this._dialogIdField, this._form.lastChild);
 };
 
+/**
+ * @param {HTMLDivElement} fieldDiv
+ * @param {{
+ *     type: 'text' | 'checkbox' | 'range' | 'number' | 'select',
+ *     name: string
+ *     value: string
+ *     label: string
+ *     options: {
+ *         name: string,
+ *         label: string,
+ *         selected: boolean
+ *     }[]
+ * }} field
+ * @returns {HTMLElement | undefined}
+ * @private
+ */
 JDialogProto._addFormElement = function(fieldDiv, field) {
 
 	if (!field.type) {
@@ -93,7 +109,6 @@ JDialogProto._addFormElement = function(fieldDiv, field) {
 
 	let fieldLabel = document.createElement('label');
 	fieldLabel.innerText = field.label;
-	fieldLabel.for = field.name;
 	fieldDiv.appendChild(fieldLabel);
 
 	let fieldElement;
@@ -116,7 +131,7 @@ JDialogProto._addFormElement = function(fieldDiv, field) {
 		fieldElement.name = field.name;
 		fieldElement.value = field.value;
 	}
-	fieldDiv.appendChild(fieldElement);
+	fieldLabel.appendChild(fieldElement);
 
 	return fieldElement;
 };
