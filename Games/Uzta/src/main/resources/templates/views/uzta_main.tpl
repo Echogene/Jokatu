@@ -9,6 +9,7 @@ layout 'views/game_view.tpl', true,
 		include template: 'components/edge.tpl'
 		include template: 'components/button.tpl'
 		include template: 'components/counter.tpl'
+		include template: 'components/form/integer.tpl'
 		link(rel: 'stylesheet', href: '/css/uzta.css')
 		link(rel: 'stylesheet', href: '/css/uzta_main.css')
 	},

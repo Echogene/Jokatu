@@ -1,0 +1,34 @@
+j-integer {
+	width: 8em;
+	display: inline-flex;
+	justify-content: flex-end;
+
+	>.signText {
+		&:hover {
+			text-shadow: 0 0 .2em black;
+			cursor: default;
+		}
+	}
+
+	>input {
+		width: 3em;
+		flex-grow: 1;
+	}
+
+	>.spinner {
+		display: inline-flex;
+		flex-direction: column;
+
+		>button {
+			padding: 0;
+			height: 50%;
+			line-height: .5em;
+			border-width: 1px;
+
+			&:hover {
+				text-shadow: 0 0 .2em black;
+			}
+		}
+	}
+}
+

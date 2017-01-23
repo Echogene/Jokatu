@@ -12,7 +12,9 @@ import jokatu.game.input.acknowledge.AcknowledgeInput;
 import jokatu.game.player.Player;
 import jokatu.ui.*;
 import jokatu.ui.FormSelect.Option;
+import ophelia.collections.bag.BagCollectors;
 import ophelia.collections.bag.BaseIntegerBag;
+import ophelia.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,7 +25,6 @@ import java.util.Map;
 
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
-import static jokatu.ui.FormField.FormFieldType.NUMBER;
 import static ophelia.util.FunctionUtils.not;
 import static org.springframework.util.StringUtils.capitalize;
 
@@ -96,28 +97,19 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 						.map(name -> new Option(name, name, playerName.equals(name)))
 						.collect(toList())
 		);
-		List<FormField> wantedFields = Arrays.stream(NodeType.values())
-				.map(type -> new FormInput<>(
+		List<FormField> fields = Arrays.stream(NodeType.values())
+				.map(type -> new IntegerField(
 						type.toString(),
 						capitalize(type.getPlural()),
-						NUMBER,
-						resource == type ? 1 : 0
-				))
-				.collect(toList());
-		List<FormField> givingFields = Arrays.stream(NodeType.values())
-				.map(type -> new FormInput<>(
-						type.toString() + "_give",
-						capitalize(type.getPlural()),
-						NUMBER,
-						0
+						resource == type ? 1 : 0,
+						"I want",
+						"I will give"
 				))
 				.collect(toList());
 		return new DialogFormBuilder()
 				.withField(playerField)
 				.withDiv("To ask for")
-				.withFields(wantedFields)
-				.withDiv("To give")
-				.withFields(givingFields)
+				.withFields(fields)
 				.build();
 	}
 
@@ -128,9 +120,15 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 		@NotNull
 		String playerName = fullPlayerTradeRequest.getPlayerName();
 		@NotNull
-		BaseIntegerBag<NodeType> wantedResources = fullPlayerTradeRequest.getWantedResources();
+		BaseIntegerBag<NodeType> trade = fullPlayerTradeRequest.getTrade();
 		@NotNull
-		BaseIntegerBag<NodeType> givenResources = fullPlayerTradeRequest.getGivenResources();
+		BaseIntegerBag<NodeType> wantedResources = trade.stream()
+				.filter(p -> p.getRight() > 0)
+				.collect(BagCollectors.toBag(Pair::getLeft, Pair::getRight));
+		@NotNull
+		BaseIntegerBag<NodeType> givenResources = trade.stream()
+				.filter(p -> p.getRight() < 0)
+				.collect(BagCollectors.toBag(Pair::getLeft, p -> -p.getRight()));
 
 		@NotNull
 		UztaPlayer playerToTradeWith = checkPlayerToTradeWith(inputter, playerName);
