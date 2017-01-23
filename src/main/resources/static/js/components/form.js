@@ -30,6 +30,7 @@ JFormProto._getInput = function() {
 			typeof element.value !== 'undefined'
 				&& typeof element.name === 'string'
 				&& element.value !== ''
+				&& element.name !== ''
 		) {
 			object[element.name] = this._getFieldValue(element);
 		}
@@ -42,7 +43,11 @@ JFormProto._getFieldValue = function(fieldElement) {
 		return true;
 	} else if (fieldElement.value === 'false') {
 		return false;
-	} else if (fieldElement.type === 'number') {
+	} else if (
+		fieldElement.type === 'number'
+			|| fieldElement.inputmode === 'numeric'
+			|| fieldElement.getAttribute('inputmode') === 'numeric'
+	) {
 		return parseInt(fieldElement.value);
 	} else {
 		return fieldElement.value;
