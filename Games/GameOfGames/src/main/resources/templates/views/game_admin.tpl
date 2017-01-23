@@ -4,7 +4,6 @@ layout 'views/game_view.tpl', true,
 		include template: 'components/button.tpl'
 		include template: 'components/line.tpl'
 		include template: 'components/game_entry.tpl'
-		include template: 'components/form/integer.tpl'
 		link(rel: 'stylesheet', href: '/css/game_admin.css')
 	},
 
