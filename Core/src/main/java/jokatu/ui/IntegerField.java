@@ -3,8 +3,6 @@ package jokatu.ui;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-
 public class IntegerField extends CustomFormField<Integer, IntegerField.Attributes> {
 	public IntegerField(
 			@NotNull String name,
@@ -16,13 +14,26 @@ public class IntegerField extends CustomFormField<Integer, IntegerField.Attribut
 		super(name, label, "JInteger", value, new Attributes(positiveText, negativeText));
 	}
 
-	static class Attributes extends HashMap<String, String> {
+	static class Attributes {
+		private final String positiveText;
+		private final String negativeText;
+
 		private Attributes(
 				@Nullable String positiveText,
 				@Nullable String negativeText
 		) {
-			if (positiveText != null) put("positivetext", positiveText);
-			if (negativeText != null) put("negativetext", negativeText);
+			this.positiveText = positiveText;
+			this.negativeText = negativeText;
+		}
+
+		@Nullable
+		public String getPositiveText() {
+			return positiveText;
+		}
+
+		@Nullable
+		public String getNegativeText() {
+			return negativeText;
 		}
 	}
 }

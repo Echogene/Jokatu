@@ -23,8 +23,8 @@ JIntegerProto.attachedCallback = function() {
 	observeAttributes(this, new Map([
 		['name', this._updateName.bind(this)],
 		['value', this._updateValue.bind(this)],
-		['postivetext', this._updatePositiveText.bind(this)],
-		['negativetext', this._updateNegativeText.bind(this)]
+		['positiveText', this._updatePositiveText.bind(this)],
+		['negativeText', this._updateNegativeText.bind(this)]
 	]));
 
 	this.appendChild(clone);
@@ -45,11 +45,11 @@ JIntegerProto._onInvert = function() {
 };
 
 JIntegerProto._updatePositiveText = function(signText = '') {
-	this._signText.innerText = this.getAttribute('value') < 0 ? this.getAttribute('negativetext') : signText;
+	this._signText.innerText = this.getAttribute('value') < 0 ? this.getAttribute('negativeText') : signText;
 };
 
 JIntegerProto._updateNegativeText = function(signText = '−') {
-	this._signText.innerText = this.getAttribute('value') < 0 ? signText : this.getAttribute('positivetext');
+	this._signText.innerText = this.getAttribute('value') < 0 ? signText : this.getAttribute('positiveText');
 };
 
 JIntegerProto._updateName = function(name) {
@@ -59,7 +59,7 @@ JIntegerProto._updateName = function(name) {
 JIntegerProto._update = function() {
 	this._valueHolder.value = this._value;
 	this._input.value = Math.abs(this._value);
-	this._signText.innerText = this._value < 0 ? this.getAttribute('negativetext') : this.getAttribute('positivetext');
+	this._signText.innerText = this._value < 0 ? this.getAttribute('negativeText') : this.getAttribute('positiveText');
 };
 
 JIntegerProto._updateValue = function(value) {
