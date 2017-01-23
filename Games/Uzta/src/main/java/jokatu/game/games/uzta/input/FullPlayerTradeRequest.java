@@ -7,30 +7,21 @@ import org.jetbrains.annotations.NotNull;
 
 public class FullPlayerTradeRequest implements Input {
 
-	private final BaseIntegerBag<NodeType> wantedResources;
-
-	private final BaseIntegerBag<NodeType> givenResources;
+	private final BaseIntegerBag<NodeType> trade;
 
 	private final String playerName;
 
 	public FullPlayerTradeRequest(
-			@NotNull BaseIntegerBag<NodeType> wantedResources,
-			@NotNull BaseIntegerBag<NodeType> givenResources,
+			@NotNull BaseIntegerBag<NodeType> trade,
 			@NotNull String playerName
 	) {
-		this.wantedResources = wantedResources;
-		this.givenResources = givenResources;
+		this.trade = trade;
 		this.playerName = playerName;
 	}
 
 	@NotNull
-	public BaseIntegerBag<NodeType> getWantedResources() {
-		return wantedResources;
-	}
-
-	@NotNull
-	public BaseIntegerBag<NodeType> getGivenResources() {
-		return givenResources;
+	public BaseIntegerBag<NodeType> getTrade() {
+		return trade;
 	}
 
 	@NotNull
