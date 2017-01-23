@@ -23,10 +23,14 @@ JFormProto._updateSubmitText = function(submitText) {
 };
 
 JFormProto._getInput = function() {
-	var object = {};
-	for (var i = 0; i < this.elements.length; i++) {
-		var element = this.elements[i];
-		if (typeof element.value !== 'undefined' && element.value !== '') {
+	const object = {};
+	for (let i = 0; i < this.elements.length; i++) {
+		const element = this.elements[i];
+		if (
+			typeof element.value !== 'undefined'
+				&& typeof element.name === 'string'
+				&& element.value !== ''
+		) {
 			object[element.name] = this._getFieldValue(element);
 		}
 	}
