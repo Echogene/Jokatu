@@ -5,7 +5,7 @@ template(id: 'integer_template') {
 	input(type: 'text', class: 'numericInput', pattern: '[\\d]*', inputmode: 'numeric') {}
 	input(type: 'hidden', class: 'valueHolder') {}
 	span(class: 'spinner') {
-		button(class: 'up', '▴')
-		button(class: 'down', '▾')
+		button(class: 'up', type: 'button', '▴')
+		button(class: 'down', type: 'button', '▾')
 	}
 }
