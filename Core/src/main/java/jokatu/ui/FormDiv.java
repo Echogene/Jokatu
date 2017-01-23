@@ -4,7 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class FormDiv implements FormElement {
 
-	private String label;
+	@NotNull
+	private final String label;
 
 	public FormDiv(@NotNull String label) {
 		this.label = label;
