@@ -7,8 +7,10 @@ JIntegerProto.attachedCallback = function() {
 	this._signText = clone.querySelector('.signText');
 	this._signText.addEventListener('click', this._onInvert.bind(this));
 
-	this._input = clone.querySelector('input');
+	this._input = clone.querySelector('.numericInput');
 	this._input.addEventListener('change', this._onInputChange.bind(this));
+
+	this._valueHolder = clone.querySelector('.valueHolder');
 
 	this._up = clone.querySelector('.up');
 	this._up.addEventListener('click', this._onClick.bind(this, 1));
@@ -51,10 +53,11 @@ JIntegerProto._updateNegativeText = function(signText = '−') {
 };
 
 JIntegerProto._updateName = function(name) {
-	this._input.name = name;
+	this._valueHolder.name = name;
 };
 
 JIntegerProto._update = function() {
+	this._valueHolder.value = this._value;
 	this._input.value = Math.abs(this._value);
 	this._signText.innerText = this._value < 0 ? this.getAttribute('negativetext') : this.getAttribute('positivetext');
 };
