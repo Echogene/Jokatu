@@ -133,7 +133,6 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 		@NotNull
 		UztaPlayer playerToTradeWith = checkPlayerToTradeWith(inputter, playerName);
 
-
 		checkResources(
 				wantedResources,
 				playerToTradeWith,
@@ -157,7 +156,8 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 				.withInputType(AcknowledgeInput.class)
 				.withConsumer((ack, player) -> {
 					if (ack.isAcknowledgement()) {
-						// todo: finally do the trade
+						inputter.giveResources(trade);
+						playerToTradeWith.giveResources(trade.getInverse());
 					}
 				})
 				.build();
