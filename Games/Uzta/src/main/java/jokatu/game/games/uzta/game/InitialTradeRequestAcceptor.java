@@ -187,6 +187,9 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 
 	@NotNull
 	private String presentResources(@NotNull BaseIntegerBag<NodeType> resources) {
+		if (resources.isEmpty()) {
+			return "nothing";
+		}
 		return resources.stream()
 				.map(entry -> entry.getLeft().getNumber(entry.getRight()))
 				.collect(joining(", "));
