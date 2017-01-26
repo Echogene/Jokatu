@@ -25,20 +25,18 @@ public class ResourcesUpdatedEvent implements PublicGameEvent {
 	@Override
 	public String getMessage() {
 		List<String> messages = new ArrayList<>();
-		if (resources.hasItems()) {
+		if (resources.hasSurplusItems()) {
 			messages.add(MessageFormat.format(
 					"gained {0}",
-					resources.stream()
-							.filter(entry -> entry.getRight() > 0)
+					resources.getSurplusItems().stream()
 							.map(entry -> entry.getLeft().getNumber(entry.getRight()))
 							.collect(joining(", "))
 			));
 		}
-		if (resources.isLacking()) {
+		if (resources.hasLackingItems()) {
 			messages.add(MessageFormat.format(
 					"paid {0}",
-					resources.stream()
-							.filter(entry -> entry.getRight() < 0)
+					resources.getLackingItems().stream()
 							.map(entry -> entry.getLeft().getNumber(-entry.getRight()))
 							.collect(joining(", "))
 			));

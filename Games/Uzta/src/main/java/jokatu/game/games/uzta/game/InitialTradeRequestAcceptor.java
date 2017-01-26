@@ -12,9 +12,7 @@ import jokatu.game.input.acknowledge.AcknowledgeInput;
 import jokatu.game.player.Player;
 import jokatu.ui.*;
 import jokatu.ui.FormSelect.Option;
-import ophelia.collections.bag.BagCollectors;
 import ophelia.collections.bag.BaseIntegerBag;
-import ophelia.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -122,13 +120,9 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 		@NotNull
 		BaseIntegerBag<NodeType> trade = fullPlayerTradeRequest.getTrade();
 		@NotNull
-		BaseIntegerBag<NodeType> wantedResources = trade.stream()
-				.filter(p -> p.getRight() > 0)
-				.collect(BagCollectors.toBag(Pair::getLeft, Pair::getRight));
+		BaseIntegerBag<NodeType> wantedResources = trade.getSurplusItems();
 		@NotNull
-		BaseIntegerBag<NodeType> givenResources = trade.stream()
-				.filter(p -> p.getRight() < 0)
-				.collect(BagCollectors.toBag(Pair::getLeft, p -> -p.getRight()));
+		BaseIntegerBag<NodeType> givenResources = trade.getLackingItems().getInverse();
 
 		@NotNull
 		UztaPlayer playerToTradeWith = checkPlayerToTradeWith(inputter, playerName);
@@ -172,7 +166,7 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 	) throws UnacceptableInputException {
 		@NotNull
 		BaseIntegerBag<NodeType> resourcesLeftAfterGiving = player.getResourcesLeftAfter(resources);
-		if (resourcesLeftAfterGiving.isLacking()) {
+		if (resourcesLeftAfterGiving.hasLackingItems()) {
 			throw new UnacceptableInputException(
 					message,
 					player.getName(),
