@@ -59,6 +59,12 @@ public class UztaIntegrationTest {
 
 	@Test
 	public void players_should_be_able_to_join() throws Exception {
+		Uzta uzta = setUpGameWithThreePlayers();
+
+		assertThat(uzta.getPlayers(), hasSize(3));
+	}
+
+	private Uzta setUpGameWithThreePlayers() throws GameException {
 		Uzta uzta = createUzta();
 
 		gameController.input(
@@ -76,8 +82,7 @@ public class UztaIntegrationTest {
 				createMap("join", true),
 				getPrincipal("user3")
 		);
-
-		assertThat(uzta.getPlayers(), hasSize(3));
+		return uzta;
 	}
 
 }
