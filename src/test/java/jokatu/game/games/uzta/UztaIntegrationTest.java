@@ -4,6 +4,7 @@ import jokatu.components.controllers.game.GameController;
 import jokatu.components.dao.GameDao;
 import jokatu.game.Game;
 import jokatu.game.GameID;
+import jokatu.game.exception.GameException;
 import jokatu.game.games.uzta.game.Uzta;
 import jokatu.game.player.Player;
 import jokatu.test.JokatuTest;
@@ -31,6 +32,10 @@ public class UztaIntegrationTest {
 
 	@Test
 	public void should_be_able_to_create_Uzta() throws Exception {
+		createUzta();
+	}
+
+	private Uzta createUzta() throws GameException {
 		long originalCount = gameDao.count();
 		gameController.input(
 				new GameID(0),
@@ -41,5 +46,7 @@ public class UztaIntegrationTest {
 
 		Game<? extends Player> newGame = gameDao.read(new GameID(originalCount));
 		assertThat(newGame, instanceOf(Uzta.class));
+
+		return (Uzta) newGame;
 	}
 }
