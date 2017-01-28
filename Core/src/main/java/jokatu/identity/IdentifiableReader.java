@@ -11,4 +11,9 @@ public interface IdentifiableReader<I extends Identity, J extends Identifiable<I
 
 	@Nullable
 	J read(@NotNull I identity);
+
+	/**
+	 * @return a count of all the entities that can be read
+	 */
+	long count();
 }

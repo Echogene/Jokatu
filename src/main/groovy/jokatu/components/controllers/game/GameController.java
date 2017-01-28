@@ -88,7 +88,7 @@ public class GameController {
 	}
 
 	@MessageMapping("/topic/input.game.{identity}")
-	void input(@DestinationVariable("identity") GameID identity, @Payload Map<String, Object> json, Principal principal)
+	public void input(@DestinationVariable("identity") GameID identity, @Payload Map<String, Object> json, Principal principal)
 			throws GameException {
 
 		Game<? extends Player> game = gameDao.read(identity);

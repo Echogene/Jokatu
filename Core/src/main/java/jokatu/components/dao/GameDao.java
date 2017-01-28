@@ -27,6 +27,11 @@ public class GameDao implements IdentifiableDao<GameID, Game<? extends Player>> 
 	}
 
 	@Override
+	public long count() {
+		return games.size();
+	}
+
+	@Override
 	public void register(@NotNull Game<? extends Player> identifiable) {
 		games.put(identifiable.getIdentifier(), identifiable);
 	}
