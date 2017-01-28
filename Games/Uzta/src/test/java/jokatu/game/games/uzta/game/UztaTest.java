@@ -26,6 +26,7 @@ import ophelia.collections.bag.ModifiableIntegerBag;
 import ophelia.collections.list.UnmodifiableList;
 import ophelia.collections.set.HashSet;
 import ophelia.exceptions.voidmaybe.VoidMaybe;
+import org.hamcrest.collection.IsCollectionWithSize;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Rule;
@@ -217,7 +218,7 @@ public class UztaTest {
 				.filter(AwaitingInputEvent.class::isInstance)
 				.map(AwaitingInputEvent.class::cast)
 				.collect(Collectors.toList());
-		assertThat(awaitingInputEvents, org.hamcrest.collection.IsCollectionWithSize.hasSize(1));
+		assertThat(awaitingInputEvents, IsCollectionWithSize.hasSize(1));
 		assertThat(awaitingInputEvents, hasItem(instanceOf(StageOverEvent.class)));
 	}
 
@@ -240,11 +241,11 @@ public class UztaTest {
 				.filter(edge -> player.equals(edge.getOwner()))
 				.collect(Collectors.toList());
 
-		assertThat(edges, org.hamcrest.collection.IsCollectionWithSize.hasSize(2));
+		assertThat(edges, IsCollectionWithSize.hasSize(2));
 		List<Node> ownedNodes = edges.stream()
 				.flatMap(LineSegment::stream)
 				.collect(Collectors.toList());
-		assertThat(ownedNodes, org.hamcrest.collection.IsCollectionWithSize.hasSize(4));
+		assertThat(ownedNodes, IsCollectionWithSize.hasSize(4));
 		ModifiableIntegerBag<NodeType> expectedResources = ownedNodes.stream()
 				.map(Node::getType)
 				.collect(BagCollectors.toBag());
