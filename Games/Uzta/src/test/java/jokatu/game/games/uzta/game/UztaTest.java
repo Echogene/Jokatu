@@ -3,12 +3,14 @@ package jokatu.game.games.uzta.game;
 import jokatu.game.GameID;
 import jokatu.game.event.GameEvent;
 import jokatu.game.event.StageOverEvent;
+import jokatu.game.event.dialog.DialogRequest;
 import jokatu.game.exception.GameException;
 import jokatu.game.games.uzta.event.GraphUpdatedEvent;
 import jokatu.game.games.uzta.graph.LineSegment;
 import jokatu.game.games.uzta.graph.ModifiableUztaGraph;
 import jokatu.game.games.uzta.graph.Node;
 import jokatu.game.games.uzta.graph.NodeType;
+import jokatu.game.games.uzta.input.InitialTradeRequest;
 import jokatu.game.games.uzta.input.RandomiseGraphInput;
 import jokatu.game.games.uzta.input.SelectEdgeInput;
 import jokatu.game.games.uzta.player.UztaPlayer;
@@ -35,6 +37,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
+import static jokatu.game.games.uzta.graph.NodeType.CIRCLE;
 import static junit.framework.TestCase.assertFalse;
 import static ophelia.collections.matchers.IsCollectionWithSize.hasSize;
 import static ophelia.collections.matchers.IsEmptyCollection.empty;
@@ -221,26 +224,7 @@ public class UztaTest {
 	@Test
 	public void turn_order_should_be_correct_for_three_players() throws Exception {
 
-		goToSetupStageWithThreePlayers();
-		FirstPlacementStage currentStage = (FirstPlacementStage) game.getCurrentStage();
-		assert currentStage != null;
-		UnmodifiableList<UztaPlayer> playersInOrder = currentStage.getPlayersInOrder();
-		UztaPlayer firstPlayer = playersInOrder.get(0);
-		UztaPlayer secondPlayer = playersInOrder.get(1);
-		UztaPlayer thirdPlayer = playersInOrder.get(2);
-
-		HashSet<LineSegment> edges = game.getGraph().getEdges();
-
-		List<LineSegment> fourEdges = edges.stream()
-				.limit(6)
-				.collect(toList());
-
-		selectEdge(firstPlayer, fourEdges.get(0));
-		selectEdge(secondPlayer, fourEdges.get(1));
-		selectEdge(thirdPlayer, fourEdges.get(2));
-		selectEdge(thirdPlayer, fourEdges.get(3));
-		selectEdge(secondPlayer, fourEdges.get(4));
-		selectEdge(firstPlayer, fourEdges.get(5));
+		goToMainStageWithThreePlayers();
 	}
 
 	@Test
@@ -280,6 +264,18 @@ public class UztaTest {
 		assertThat(events, hasItem(instanceOf(TurnChangedEvent.class)));
 	}
 
+	@Test
+	public void player_should_be_able_to_request_a_trade() throws Exception {
+		goToMainStageWithThreePlayers();
+
+		List<GameEvent> events = captureEvents();
+
+		// Player requests circles from player two.
+		game.accept(new InitialTradeRequest(player2.getName(), CIRCLE), player);
+
+		assertThat(events, hasItem(instanceOf(DialogRequest.class)));
+	}
+
 	private void selectEdge(UztaPlayer firstPlayer, LineSegment edge) throws GameException {
 		game.accept(new SelectEdgeInput(edge.getFirst().getId(), edge.getSecond().getId()), firstPlayer);
 	}
@@ -296,7 +292,7 @@ public class UztaTest {
 		assertThat(game.getCurrentStage(), instanceOf(FirstPlacementStage.class));
 	}
 
-	private void goToSetupStageWithThreePlayers() throws GameException {
+	private void goToFirstPlacementStageWithThreePlayers() throws GameException {
 		game.accept(new JoinInput(), player);
 		game.accept(new JoinInput(), player2);
 		game.accept(new JoinInput(), player3);
@@ -340,6 +336,32 @@ public class UztaTest {
 				.map(edge -> new SelectEdgeInput(edge.getFirst().getId(), edge.getSecond().getId()))
 				.map(VoidMaybe.wrap(input -> game.accept(input, player)))
 				.forEach(result -> result.throwMappedFailure(RuntimeException::new));
+
+		game.advanceStage();
+		assertThat(game.getCurrentStage(), instanceOf(MainStage.class));
+	}
+
+	private void goToMainStageWithThreePlayers() throws GameException {
+		goToFirstPlacementStageWithThreePlayers();
+		FirstPlacementStage currentStage = (FirstPlacementStage) game.getCurrentStage();
+		assert currentStage != null;
+		UnmodifiableList<UztaPlayer> playersInOrder = currentStage.getPlayersInOrder();
+		UztaPlayer firstPlayer = playersInOrder.get(0);
+		UztaPlayer secondPlayer = playersInOrder.get(1);
+		UztaPlayer thirdPlayer = playersInOrder.get(2);
+
+		HashSet<LineSegment> edges = game.getGraph().getEdges();
+
+		List<LineSegment> sixEdges = edges.stream()
+				.limit(6)
+				.collect(toList());
+
+		selectEdge(firstPlayer, sixEdges.get(0));
+		selectEdge(secondPlayer, sixEdges.get(1));
+		selectEdge(thirdPlayer, sixEdges.get(2));
+		selectEdge(thirdPlayer, sixEdges.get(3));
+		selectEdge(secondPlayer, sixEdges.get(4));
+		selectEdge(firstPlayer, sixEdges.get(5));
 
 		game.advanceStage();
 		assertThat(game.getCurrentStage(), instanceOf(MainStage.class));
