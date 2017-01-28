@@ -71,16 +71,16 @@ public class TestGameCreator {
 
 		HashSet<LineSegment> edges = game.getGraph().getEdges();
 
-		List<LineSegment> fourEdges = edges.stream()
+		List<LineSegment> sixEdges = edges.stream()
 				.limit(6)
 				.collect(toList());
 
-		selectEdge(game, firstPlayer, fourEdges.get(0));
-		selectEdge(game, secondPlayer, fourEdges.get(1));
-		selectEdge(game, thirdPlayer, fourEdges.get(2));
-		selectEdge(game, thirdPlayer, fourEdges.get(3));
-		selectEdge(game, secondPlayer, fourEdges.get(4));
-		selectEdge(game, firstPlayer, fourEdges.get(5));
+		selectEdge(game, firstPlayer, sixEdges.get(0));
+		selectEdge(game, secondPlayer, sixEdges.get(1));
+		selectEdge(game, thirdPlayer, sixEdges.get(2));
+		selectEdge(game, thirdPlayer, sixEdges.get(3));
+		selectEdge(game, secondPlayer, sixEdges.get(4));
+		selectEdge(game, firstPlayer, sixEdges.get(5));
 
 		log.debug("{} initialised", TestGameCreator.class.getSimpleName());
 	}
