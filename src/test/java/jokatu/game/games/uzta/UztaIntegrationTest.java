@@ -8,6 +8,7 @@ import jokatu.game.exception.GameException;
 import jokatu.game.games.uzta.game.Uzta;
 import jokatu.game.player.Player;
 import jokatu.test.JokatuTest;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static jokatu.game.games.uzta.game.Uzta.UZTA;
+import static ophelia.collections.matchers.IsCollectionWithSize.hasSize;
 import static ophelia.util.MapUtils.createMap;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -40,7 +42,7 @@ public class UztaIntegrationTest {
 		gameController.input(
 				new GameID(0),
 				createMap("gameName", UZTA),
-				new UsernamePasswordAuthenticationToken("user", "lol")
+				getPrincipal("user")
 		);
 		assertThat(gameDao.count(), is(originalCount + 1));
 
@@ -49,4 +51,33 @@ public class UztaIntegrationTest {
 
 		return (Uzta) newGame;
 	}
+
+	@NotNull
+	private UsernamePasswordAuthenticationToken getPrincipal(String name) {
+		return new UsernamePasswordAuthenticationToken(name, "lol");
+	}
+
+	@Test
+	public void players_should_be_able_to_join() throws Exception {
+		Uzta uzta = createUzta();
+
+		gameController.input(
+				uzta.getIdentifier(),
+				createMap("join", true),
+				getPrincipal("user")
+		);
+		gameController.input(
+				uzta.getIdentifier(),
+				createMap("join", true),
+				getPrincipal("user2")
+		);
+		gameController.input(
+				uzta.getIdentifier(),
+				createMap("join", true),
+				getPrincipal("user3")
+		);
+
+		assertThat(uzta.getPlayers(), hasSize(3));
+	}
+
 }
