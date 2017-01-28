@@ -266,7 +266,7 @@ public class UztaTest {
 				.collect(BagCollectors.toBag());
 
 		BaseIntegerBag<NodeType> resourcesLeft = player.getResourcesLeftAfter(expectedResources);
-		assertFalse("The player should have at least the resources they start with", resourcesLeft.isLacking());
+		assertFalse("The player should have at least the resources they start with", resourcesLeft.hasLackingItems());
 	}
 
 	@Test

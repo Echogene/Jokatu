@@ -50,7 +50,7 @@ public class MainStageSelectEdgeInputAcceptor extends AbstractSelectEdgeInputAcc
 
 		BaseIntegerBag<NodeType> edgeCost = getCost(edge);
 		BaseIntegerBag<NodeType> resourcesLeft = inputter.getResourcesLeftAfter(edgeCost);
-		if (resourcesLeft.isLacking()) {
+		if (resourcesLeft.hasLackingItems()) {
 			throw new UnacceptableInputException(
 					"You can''t afford that edge.  You still need {0}.",
 					resourcesLeft.stream()
