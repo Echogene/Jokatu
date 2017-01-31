@@ -6,10 +6,15 @@ import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.exception.GameException;
 import jokatu.game.games.uzta.game.FirstPlacementStage;
+import jokatu.game.games.uzta.game.MainStage;
 import jokatu.game.games.uzta.game.SetupStage;
 import jokatu.game.games.uzta.game.Uzta;
+import jokatu.game.games.uzta.graph.LineSegment;
+import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.player.Player;
 import jokatu.test.JokatuTest;
+import ophelia.collections.list.UnmodifiableList;
+import ophelia.collections.set.HashSet;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.HashMap;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 import static jokatu.game.games.uzta.game.Uzta.UZTA;
 import static ophelia.collections.matchers.IsCollectionWithSize.hasSize;
 import static ophelia.util.MapUtils.createMap;
@@ -121,5 +130,48 @@ public class UztaIntegrationTest {
 				getPrincipal("user")
 		);
 		return uzta;
+	}
+	@Test
+	public void should_be_able_to_get_to_main_stage() throws Exception {
+		Uzta uzta = setUpMainStageWithThreePlayers();
+
+		assertThat(uzta.getCurrentStage(), instanceOf(MainStage.class));
+	}
+
+	private Uzta setUpMainStageWithThreePlayers() throws GameException {
+		Uzta uzta = setUpFirstPlacementStageWithThreePlayers();
+
+		FirstPlacementStage currentStage = (FirstPlacementStage) uzta.getCurrentStage();
+		assert currentStage != null;
+		UnmodifiableList<UztaPlayer> playersInOrder = currentStage.getPlayersInOrder();
+		UztaPlayer firstPlayer = playersInOrder.get(0);
+		UztaPlayer secondPlayer = playersInOrder.get(1);
+		UztaPlayer thirdPlayer = playersInOrder.get(2);
+
+		HashSet<LineSegment> edges = uzta.getGraph().getEdges();
+
+		List<LineSegment> sixEdges = edges.stream()
+				.limit(6)
+				.collect(toList());
+
+		selectEdge(uzta, firstPlayer, sixEdges.get(0));
+		selectEdge(uzta, secondPlayer, sixEdges.get(1));
+		selectEdge(uzta, thirdPlayer, sixEdges.get(2));
+		selectEdge(uzta, thirdPlayer, sixEdges.get(3));
+		selectEdge(uzta, secondPlayer, sixEdges.get(4));
+		selectEdge(uzta, firstPlayer, sixEdges.get(5));
+
+		return uzta;
+	}
+
+	private void selectEdge(Uzta uzta, UztaPlayer firstPlayer, LineSegment lineSegment) throws GameException {
+		gameController.input(
+				uzta.getIdentifier(),
+				new HashMap<String, Object>() {{
+					put("start", lineSegment.getFirst().getId());
+					put("end", lineSegment.getSecond().getId());
+				}},
+				getPrincipal(firstPlayer.getName())
+		);
 	}
 }
