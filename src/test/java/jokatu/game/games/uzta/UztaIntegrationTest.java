@@ -10,11 +10,13 @@ import jokatu.game.games.uzta.game.MainStage;
 import jokatu.game.games.uzta.game.SetupStage;
 import jokatu.game.games.uzta.game.Uzta;
 import jokatu.game.games.uzta.graph.LineSegment;
+import jokatu.game.games.uzta.graph.NodeType;
 import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.player.Player;
 import jokatu.test.JokatuTest;
 import ophelia.collections.list.UnmodifiableList;
 import ophelia.collections.set.HashSet;
+import ophelia.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -131,6 +133,7 @@ public class UztaIntegrationTest {
 		);
 		return uzta;
 	}
+
 	@Test
 	public void should_be_able_to_get_to_main_stage() throws Exception {
 		Uzta uzta = setUpMainStageWithThreePlayers();
@@ -172,6 +175,28 @@ public class UztaIntegrationTest {
 					put("end", lineSegment.getSecond().getId());
 				}},
 				getPrincipal(firstPlayer.getName())
+		);
+	}
+
+	@SuppressWarnings("OptionalGetWithoutIsPresent")
+	@Test
+	public void should_be_able_to_request_a_trade() throws Exception {
+		Uzta uzta = setUpMainStageWithThreePlayers();
+		// Look at the current stage for tasty sideeffects.
+		assertThat(uzta.getCurrentStage(), instanceOf(MainStage.class));
+
+		UztaPlayer trader = uzta.getPlayers().stream().findAny().get();
+		UztaPlayer tradee = uzta.getOtherPlayers(trader.getName()).stream().findAny().get();
+
+		NodeType resourceToTrade = tradee.getResources().stream().map(Pair::getLeft).findAny().get();
+
+		gameController.input(
+				uzta.getIdentifier(),
+				new HashMap<String, Object>() {{
+					put("player", tradee.getName());
+					put("resource", resourceToTrade.toString());
+				}},
+				getPrincipal(trader.getName())
 		);
 	}
 }

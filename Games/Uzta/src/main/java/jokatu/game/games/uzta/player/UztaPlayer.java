@@ -22,7 +22,8 @@ public class UztaPlayer extends AbstractSynchronousObservable<GameEvent> impleme
 	private final String name;
 	private UztaColour colour;
 
-	private ModifiableIntegerBag<NodeType> resources = new HashBag<>();
+	@NotNull
+	private final ModifiableIntegerBag<NodeType> resources = new HashBag<>();
 
 	public UztaPlayer(@NotNull String username) {
 		this.name = username;
@@ -72,6 +73,11 @@ public class UztaPlayer extends AbstractSynchronousObservable<GameEvent> impleme
 
 	public int getNumberOfType(@NotNull NodeType type) {
 		return resources.getNumberOf(type);
+	}
+
+	@NotNull
+	public BaseIntegerBag<NodeType> getResources() {
+		return resources;
 	}
 
 	public static class NotEnoughResourcesException extends RuntimeException {
