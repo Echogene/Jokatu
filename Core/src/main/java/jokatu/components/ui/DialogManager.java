@@ -1,9 +1,12 @@
 package jokatu.components.ui;
 
 import jokatu.components.stomp.StoringMessageSender;
+import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.exception.GameException;
+import jokatu.game.player.Player;
 import jokatu.ui.Dialog;
+import ophelia.collections.list.UnmodifiableList;
 import ophelia.function.ExceptionalConsumer;
 import ophelia.tuple.Pair;
 import ophelia.util.MapUtils;
@@ -16,6 +19,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
+
+import static java.util.Collections.emptyList;
 
 @Component
 public class DialogManager implements DialogRequestor, DialogResponder {
@@ -78,8 +83,13 @@ public class DialogManager implements DialogRequestor, DialogResponder {
 			@NotNull String playerName,
 			@NotNull Map<String, Object> json
 	) throws GameException {
+		Pair<GameID, String> gamePlayerKey = new Pair<>(dialogId.getGameId(), playerName);
+		boolean isActuallyPlayersDialog = playersDialogs.getOrDefault(gamePlayerKey, emptyList())
+				.stream()
+				.anyMatch(ui -> ui.getDialogId().equals(dialogId.getDialogId()));
+
 		ExceptionalConsumer<Map<String, Object>, GameException> dialog = dialogs.get(dialogId);
-		if (dialog == null) {
+		if (dialog == null || !isActuallyPlayersDialog) {
 			throw new GameException(
 					dialogId.getGameId(),
 					"Dialog with ID ''{0}'' could not be found.",
@@ -88,7 +98,6 @@ public class DialogManager implements DialogRequestor, DialogResponder {
 		}
 		dialog.accept(json);
 
-		Pair<GameID, String> gamePlayerKey = new Pair<>(dialogId.getGameId(), playerName);
 		List<DialogUI> dialogUIs = playersDialogs.get(gamePlayerKey);
 		if (dialogUIs == null) {
 			throw new GameException(
@@ -101,7 +110,14 @@ public class DialogManager implements DialogRequestor, DialogResponder {
 		updatePlayerDialogs(gamePlayerKey);
 	}
 
-	private static class DialogUI extends Dialog {
+	public <P extends Player> UnmodifiableList<DialogUI> getDialogsForPlayer(
+			@NotNull final Game<P> game,
+			@NotNull final P player
+	) {
+		return new UnmodifiableList<>(playersDialogs.get(new Pair<>(game.getIdentifier(), player.getName())));
+	}
+
+	public static class DialogUI extends Dialog {
 		private final String dialogId;
 
 		private DialogUI(@NotNull Dialog dialog, String dialogId) {

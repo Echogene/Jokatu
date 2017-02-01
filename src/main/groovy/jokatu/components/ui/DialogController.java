@@ -29,7 +29,7 @@ public class DialogController {
 	}
 
 	@MessageMapping("/topic/input.dialog.game.{identity}")
-	void input(@DestinationVariable("identity") GameID identity, @Payload Map<String, Object> json, Principal principal)
+	public void input(@DestinationVariable("identity") GameID identity, @Payload Map<String, Object> json, Principal principal)
 			throws GameException {
 
 		if (!json.containsKey(DIALOG_ID)) {

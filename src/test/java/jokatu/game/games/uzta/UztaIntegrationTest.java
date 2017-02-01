@@ -2,6 +2,9 @@ package jokatu.game.games.uzta;
 
 import jokatu.components.controllers.game.GameController;
 import jokatu.components.dao.GameDao;
+import jokatu.components.ui.DialogController;
+import jokatu.components.ui.DialogManager;
+import jokatu.components.ui.DialogManager.DialogUI;
 import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.exception.GameException;
@@ -28,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static jokatu.components.ui.DialogResponder.DIALOG_ID;
 import static jokatu.game.games.uzta.game.Uzta.UZTA;
 import static ophelia.collections.matchers.IsCollectionWithSize.hasSize;
 import static ophelia.util.MapUtils.createMap;
@@ -44,6 +48,12 @@ public class UztaIntegrationTest {
 
 	@Autowired
 	private GameController gameController;
+
+	@Autowired
+	private DialogManager dialogManager;
+
+	@Autowired
+	private DialogController dialogController;
 
 	@Test
 	public void should_be_able_to_create_Uzta() throws Exception {
@@ -180,7 +190,7 @@ public class UztaIntegrationTest {
 
 	@SuppressWarnings("OptionalGetWithoutIsPresent")
 	@Test
-	public void should_be_able_to_request_a_trade() throws Exception {
+	public void should_be_able_to_trade() throws Exception {
 		Uzta uzta = setUpMainStageWithThreePlayers();
 		// Look at the current stage for tasty sideeffects.
 		assertThat(uzta.getCurrentStage(), instanceOf(MainStage.class));
@@ -197,6 +207,34 @@ public class UztaIntegrationTest {
 					put("resource", resourceToTrade.toString());
 				}},
 				getPrincipal(trader.getName())
+		);
+
+		UnmodifiableList<DialogUI> dialogsForTrader = dialogManager.getDialogsForPlayer(uzta, trader);
+		assertThat(dialogsForTrader, hasSize(1));
+		DialogUI traderDialog = dialogsForTrader.stream().findAny().get();
+
+		dialogController.input(
+				uzta.getIdentifier(),
+				new HashMap<String, Object>() {{
+					put("player", tradee.getName());
+					put(resourceToTrade.toString(), 1);
+					put(DIALOG_ID, traderDialog.getDialogId());
+				}},
+				getPrincipal(trader.getName())
+		);
+		dialogsForTrader = dialogManager.getDialogsForPlayer(uzta, trader);
+		assertThat(dialogsForTrader, hasSize(0));
+
+		UnmodifiableList<DialogUI> dialogsForTradee = dialogManager.getDialogsForPlayer(uzta, tradee);
+		assertThat(dialogsForTradee, hasSize(1));
+		DialogUI tradeeDialog = dialogsForTradee.stream().findAny().get();
+		dialogController.input(
+				uzta.getIdentifier(),
+				new HashMap<String, Object>() {{
+					put("acknowledge", true);
+					put(DIALOG_ID, tradeeDialog.getDialogId());
+				}},
+				getPrincipal(tradee.getName())
 		);
 	}
 }
