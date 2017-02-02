@@ -191,14 +191,15 @@ public class UztaIntegrationTest {
 	@SuppressWarnings("OptionalGetWithoutIsPresent")
 	@Test
 	public void should_be_able_to_trade() throws Exception {
-		Uzta uzta = setUpMainStageWithThreePlayers();
+		final Uzta uzta = setUpMainStageWithThreePlayers();
 		// Look at the current stage for tasty sideeffects.
 		assertThat(uzta.getCurrentStage(), instanceOf(MainStage.class));
 
-		UztaPlayer trader = uzta.getPlayers().stream().findAny().get();
-		UztaPlayer tradee = uzta.getOtherPlayers(trader.getName()).stream().findAny().get();
+		final UztaPlayer trader = uzta.getPlayers().stream().findAny().get();
+		final UztaPlayer tradee = uzta.getOtherPlayers(trader.getName()).stream().findAny().get();
 
-		NodeType resourceToTrade = tradee.getResources().stream().map(Pair::getLeft).findAny().get();
+		final NodeType resourceToTrade = tradee.getResources().stream().map(Pair::getLeft).findAny().get();
+		final Integer originalNumber = tradee.getResources().getNumberOf(resourceToTrade);
 
 		gameController.input(
 				uzta.getIdentifier(),
@@ -211,7 +212,7 @@ public class UztaIntegrationTest {
 
 		UnmodifiableList<DialogUI> dialogsForTrader = dialogManager.getDialogsForPlayer(uzta, trader);
 		assertThat(dialogsForTrader, hasSize(1));
-		DialogUI traderDialog = dialogsForTrader.stream().findAny().get();
+		final DialogUI traderDialog = dialogsForTrader.stream().findAny().get();
 
 		dialogController.input(
 				uzta.getIdentifier(),
@@ -227,7 +228,7 @@ public class UztaIntegrationTest {
 
 		UnmodifiableList<DialogUI> dialogsForTradee = dialogManager.getDialogsForPlayer(uzta, tradee);
 		assertThat(dialogsForTradee, hasSize(1));
-		DialogUI tradeeDialog = dialogsForTradee.stream().findAny().get();
+		final DialogUI tradeeDialog = dialogsForTradee.stream().findAny().get();
 		dialogController.input(
 				uzta.getIdentifier(),
 				new HashMap<String, Object>() {{
@@ -236,5 +237,10 @@ public class UztaIntegrationTest {
 				}},
 				getPrincipal(tradee.getName())
 		);
+		dialogsForTradee = dialogManager.getDialogsForPlayer(uzta, tradee);
+		assertThat(dialogsForTradee, hasSize(0));
+
+		// The trade should have completed.
+		assertThat(tradee.getResources().getNumberOf(resourceToTrade), is(originalNumber - 1));
 	}
 }
