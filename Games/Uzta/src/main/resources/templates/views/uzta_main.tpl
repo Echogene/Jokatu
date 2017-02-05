@@ -33,6 +33,7 @@ layout 'views/game_view.tpl', true,
 								)
 								button(
 									is: 'j-button',
+									id: "trade_${p.name}_${type}",
 									destination: "/topic/input.game.${gameId}",
 									'data-input': "{\"resource\": \"${type}\", \"player\": \"${p.name}\"}",
 									title: "Request ${type.plural} from ${p.name}.",
@@ -71,6 +72,7 @@ layout 'views/game_view.tpl', true,
 							)
 							button(
 								is: 'j-button',
+								id: "trade_${username}_${type}",
 								destination: "/topic/input.game.${gameId}",
 								'data-input': "{\"resource\": \"${type}\"}",
 								title: "Request ${type.plural} from the supply.",
