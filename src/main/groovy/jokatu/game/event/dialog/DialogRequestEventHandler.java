@@ -3,6 +3,7 @@ package jokatu.game.event.dialog;
 import jokatu.components.config.InputDeserialisers;
 import jokatu.components.ui.DialogRequestor;
 import jokatu.game.Game;
+import jokatu.game.event.EventHandler;
 import jokatu.game.event.SpecificEventHandler;
 import jokatu.game.exception.GameException;
 import jokatu.game.input.DeserialisationException;
@@ -14,6 +15,9 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * An {@link EventHandler} for {@link DialogRequest}s.
+ */
 @Component
 public class DialogRequestEventHandler extends SpecificEventHandler<DialogRequest> {
 
