@@ -17,6 +17,7 @@ import jokatu.game.games.uzta.graph.NodeType;
 import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.player.Player;
 import jokatu.test.JokatuTest;
+import ophelia.collections.bag.HashBag;
 import ophelia.collections.list.UnmodifiableList;
 import ophelia.collections.set.HashSet;
 import ophelia.tuple.Pair;
@@ -242,5 +243,19 @@ public class UztaIntegrationTest {
 
 		// The trade should have completed.
 		assertThat(tradee.getResources().getNumberOf(resourceToTrade), is(originalNumber - 1));
+	}
+
+	@SuppressWarnings("OptionalGetWithoutIsPresent")
+	@Test
+	public void should_be_able_to_trade_with_the_supply() throws Exception {
+		final Uzta uzta = setUpMainStageWithThreePlayers();
+		// Look at the current stage for tasty sideeffects.
+		assertThat(uzta.getCurrentStage(), instanceOf(MainStage.class));
+
+		final UztaPlayer trader = uzta.getPlayers().stream().findAny().get();
+
+		final NodeType resourceToTrade = trader.getResources().stream().map(Pair::getLeft).findAny().get();
+		// Cheat the game by giving the trader some extra resources.
+		trader.giveResources(HashBag.of(3, resourceToTrade));
 	}
 }
