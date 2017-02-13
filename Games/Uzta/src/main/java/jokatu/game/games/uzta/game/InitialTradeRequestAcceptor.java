@@ -56,7 +56,7 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 			Form form = constructFormForSupplyTrade(input.getResource());
 			DialogRequest<UztaPlayer, SupplyTradeRequest> request = DialogRequestBuilder.forPlayer(inputter)
 					.withTitle("Trade with the supply")
-					.withMessage("Resources can be traded with the supply in a ratio of 3:1.")
+					.withMessage("Resources can be traded with the supply at a ratio of 3:1.")
 					.withInputType(SupplyTradeRequest.class)
 					.withConsumer(this::acceptSupplyRequest)
 					.withForm(form)
