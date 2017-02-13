@@ -95,11 +95,16 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 	) throws StackedException, UnacceptableInputException {
 		BaseIntegerBag<NodeType> trade = supplyTradeRequest.getTrade();
 
-		BaseIntegerBag<NodeType> givenResources = trade.getLackingItems();
+		BaseIntegerBag<NodeType> givenResources = trade.getLackingItems().getInverse();
+		checkResources(
+				givenResources,
+				trader,
+				"You don''t have enough resources to give {1}.  You still need {2}."
+		);
 		verifyGivenResourcesForSupplyTrade(givenResources);
 
 		BaseIntegerBag<NodeType> gainedResources = trade.getSurplusItems();
-		if (0 != gainedResources.size() + givenResources.size() / 3) {
+		if (0 != gainedResources.size() - givenResources.size() / 3) {
 			throw new UnacceptableInputException(
 					"The trade did not balance.  {0}",
 					BagUtils.presentBag(
@@ -121,10 +126,10 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 					int number = givenResources.getNumberOf(resource);
 					if (0 != (number % SUPPLY_RATIO)) {
 						throw new UnacceptableInputException(
-								"{0} is not a multiple of {1} for the given resource {2}",
-								-number,
-								SUPPLY_RATIO,
-								resource
+								"You can''t give {0}: {1} is not a multiple of {2}",
+								resource.getNumber(number),
+								number,
+								SUPPLY_RATIO
 						);
 					}
 				}))
