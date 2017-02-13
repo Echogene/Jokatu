@@ -1,6 +1,5 @@
 package jokatu.components.config;
 
-import ophelia.exceptions.voidmaybe.VoidMaybe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,11 +16,9 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import static ophelia.exceptions.voidmaybe.VoidMaybe.mergeFailures;
 import static ophelia.exceptions.voidmaybe.VoidMaybe.wrap;
+import static ophelia.exceptions.voidmaybe.VoidMaybeCollectors.merge;
 
 /**
  * Sets up how users log in.
@@ -34,12 +31,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		List<VoidMaybe> results = Arrays.stream(new String[]{"user", "user2", "user3", "user4"})
+		Arrays.stream(new String[]{"user", "user2", "user3", "user4"})
 				.map(wrap(name -> auth.inMemoryAuthentication().withUser(name).password("password").roles("USER")))
-				.collect(Collectors.toList());
-
-		mergeFailures(results).throwOnFailure();
-
+				.collect(merge()).throwOnFailure();
 		log.debug("{} added user accounts", SecurityConfiguration.class.getSimpleName());
 	}
 

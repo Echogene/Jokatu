@@ -13,21 +13,27 @@ import jokatu.game.input.acknowledge.AcknowledgeInput;
 import jokatu.game.player.Player;
 import jokatu.ui.*;
 import jokatu.ui.FormSelect.Option;
+import ophelia.collections.bag.BagUtils;
 import ophelia.collections.bag.BaseIntegerBag;
+import ophelia.exceptions.StackedException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.MessageFormat;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
+import static ophelia.exceptions.voidmaybe.VoidMaybe.wrap;
+import static ophelia.exceptions.voidmaybe.VoidMaybeCollectors.merge;
 import static ophelia.util.FunctionUtils.not;
 import static org.springframework.util.StringUtils.capitalize;
 
 public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTradeRequest, UztaPlayer> {
+
+	public static final int SUPPLY_RATIO = 3;
 
 	@NotNull
 	private final Map<String, UztaPlayer> players;
@@ -60,7 +66,10 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 			Form form = constructFormForSupplyTrade(input.getResource());
 			DialogRequest<UztaPlayer, SupplyTradeRequest> request = DialogRequestBuilder.forPlayer(inputter)
 					.withTitle("Trade with the supply")
-					.withMessage("Resources can be traded with the supply at a ratio of 3:1.")
+					.withMessage(MessageFormat.format(
+							"Resources can be traded with the supply at a ratio of {0}:1.",
+							SUPPLY_RATIO
+					))
 					.withInputType(SupplyTradeRequest.class)
 					.withConsumer(this::acceptSupplyRequest)
 					.withForm(form)
@@ -80,14 +89,53 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 		}
 	}
 
-	private void acceptSupplyRequest(SupplyTradeRequest supplyTradeRequest, UztaPlayer uztaPlayer) {
-		// todo: verify the trade and do it
+	private void acceptSupplyRequest(
+			@NotNull SupplyTradeRequest supplyTradeRequest,
+			@NotNull UztaPlayer trader
+	) throws StackedException, UnacceptableInputException {
+		BaseIntegerBag<NodeType> trade = supplyTradeRequest.getTrade();
+
+		BaseIntegerBag<NodeType> givenResources = trade.getLackingItems();
+		verifyGivenResourcesForSupplyTrade(givenResources);
+
+		BaseIntegerBag<NodeType> gainedResources = trade.getSurplusItems();
+		if (0 != gainedResources.size() + givenResources.size() / 3) {
+			throw new UnacceptableInputException(
+					"The trade did not balance.  {0}",
+					BagUtils.presentBag(
+							trade,
+							NodeType::getNumber,
+							joining(", ", "You can't get ", " "),
+							joining(", ", "by giving ", ".")
+					)
+			);
+		}
+		trader.giveResources(trade);
+	}
+
+	private void verifyGivenResourcesForSupplyTrade(
+			@NotNull BaseIntegerBag<NodeType> givenResources
+	) throws StackedException {
+		stream(NodeType.values())
+				.map(wrap(resource -> {
+					int number = givenResources.getNumberOf(resource);
+					if (0 != (number % SUPPLY_RATIO)) {
+						throw new UnacceptableInputException(
+								"{0} is not a multiple of {1} for the given resource {2}",
+								-number,
+								SUPPLY_RATIO,
+								resource
+						);
+					}
+				}))
+				.collect(merge())
+				.throwOnFailure();
 	}
 
 	@NotNull
 	private UztaPlayer checkPlayerToTradeWith(
 			@NotNull Player inputter,
-			@NotNull  String playerName
+			@NotNull String playerName
 	) throws UnacceptableInputException {
 		UztaPlayer requestedPlayer = players.get(playerName);
 		if (requestedPlayer == null) {
@@ -105,7 +153,7 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 	private Form constructFormForSupplyTrade(
 			@NotNull NodeType resource
 	) {
-		List<FormField> fields = Arrays.stream(NodeType.values())
+		List<FormField> fields = stream(NodeType.values())
 				.map(type -> new IntegerField(
 						type.toString(),
 						capitalize(type.getPlural()),
@@ -133,7 +181,7 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 						.map(name -> new Option(name, name, playerName.equals(name)))
 						.collect(toList())
 		);
-		List<FormField> fields = Arrays.stream(NodeType.values())
+		List<FormField> fields = stream(NodeType.values())
 				.map(type -> new IntegerField(
 						type.toString(),
 						capitalize(type.getPlural()),

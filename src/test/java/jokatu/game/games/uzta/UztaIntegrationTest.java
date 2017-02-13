@@ -8,10 +8,7 @@ import jokatu.components.ui.DialogManager.DialogUI;
 import jokatu.game.Game;
 import jokatu.game.GameID;
 import jokatu.game.exception.GameException;
-import jokatu.game.games.uzta.game.FirstPlacementStage;
-import jokatu.game.games.uzta.game.MainStage;
-import jokatu.game.games.uzta.game.SetupStage;
-import jokatu.game.games.uzta.game.Uzta;
+import jokatu.game.games.uzta.game.*;
 import jokatu.game.games.uzta.graph.LineSegment;
 import jokatu.game.games.uzta.graph.NodeType;
 import jokatu.game.games.uzta.player.UztaPlayer;
@@ -35,6 +32,7 @@ import java.util.List;
 import static java.util.function.Predicate.isEqual;
 import static java.util.stream.Collectors.toList;
 import static jokatu.components.ui.DialogResponder.DIALOG_ID;
+import static jokatu.game.games.uzta.game.InitialTradeRequestAcceptor.SUPPLY_RATIO;
 import static jokatu.game.games.uzta.game.Uzta.UZTA;
 import static ophelia.collections.matchers.IsCollectionWithSize.hasSize;
 import static ophelia.util.FunctionUtils.not;
@@ -258,16 +256,19 @@ public class UztaIntegrationTest {
 
 		final UztaPlayer trader = uzta.getPlayers().stream().findAny().get();
 
-		final NodeType resourceToTrade = trader.getResources().stream().map(Pair::getLeft).findAny().get();
+		final NodeType resourceToGive = trader.getResources().stream().map(Pair::getLeft).findAny().get();
 		// Cheat the game by giving the trader some extra resources.
-		trader.giveResources(HashBag.of(3, resourceToTrade));
+		trader.giveResources(HashBag.of(SUPPLY_RATIO, resourceToGive));
 
-		assertThat(trader.getNumberOfType(resourceToTrade), is(greaterThanOrEqualTo(3)));
+		int originalGivenResourceNumber = trader.getNumberOfType(resourceToGive);
+		assertThat(originalGivenResourceNumber, is(greaterThanOrEqualTo(SUPPLY_RATIO)));
 
+		// Find any other resource to gain.
 		final NodeType resourceToGain = Arrays.stream(NodeType.values())
-				.filter(not(isEqual(resourceToTrade)))
+				.filter(not(isEqual(resourceToGive)))
 				.findAny()
 				.get();
+		int originalGainedResourceNumber = trader.getNumberOfType(resourceToGain);
 
 		// Attempt to trade with the supply.
 		gameController.input(
@@ -285,7 +286,7 @@ public class UztaIntegrationTest {
 		dialogController.input(
 				uzta.getIdentifier(),
 				new HashMap<String, Object>() {{
-					put(resourceToTrade.toString(), 3);
+					put(resourceToGive.toString(), -SUPPLY_RATIO);
 					put(resourceToGain.toString(), 1);
 					put(DIALOG_ID, traderDialog.getDialogId());
 				}},
@@ -293,5 +294,11 @@ public class UztaIntegrationTest {
 		);
 		dialogsForTrader = dialogManager.getDialogsForPlayer(uzta, trader);
 		assertThat(dialogsForTrader, hasSize(0));
+
+		int newGivenResourceNumber = trader.getNumberOfType(resourceToGive);
+		assertThat(newGivenResourceNumber, is(originalGivenResourceNumber - SUPPLY_RATIO));
+
+		int newGainedResourceNumber = trader.getNumberOfType(resourceToGain);
+		assertThat(newGainedResourceNumber, is(originalGainedResourceNumber + 1));
 	}
 }

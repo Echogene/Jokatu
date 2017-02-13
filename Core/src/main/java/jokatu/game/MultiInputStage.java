@@ -9,13 +9,15 @@ import ophelia.collections.BaseCollection;
 import ophelia.collections.UnmodifiableCollection;
 import ophelia.event.observable.AbstractSynchronousObservable;
 import ophelia.exceptions.StackedException;
-import ophelia.exceptions.voidmaybe.VoidMaybe;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static ophelia.exceptions.voidmaybe.VoidMaybe.wrap;
+import static ophelia.exceptions.voidmaybe.VoidMaybeCollectors.merge;
 
 /**
  * A stage that can accept multiple types of {@link Input}s by using some {@link InputAcceptor}s
@@ -41,10 +43,9 @@ public abstract class MultiInputStage extends AbstractSynchronousObservable<Game
 
 	@Override
 	public final void accept(@NotNull Input input, @NotNull Player player) throws StackedException {
-		VoidMaybe.mergeFailures(
-				inputAcceptors.stream()
-						.map(VoidMaybe.wrap(acceptor -> acceptor.accept(input, player)))
-						.collect(Collectors.toList())
-		).throwOnFailure();
+		inputAcceptors.stream()
+				.map(wrap(acceptor -> acceptor.accept(input, player)))
+				.collect(merge())
+				.throwOnFailure();
 	}
 }

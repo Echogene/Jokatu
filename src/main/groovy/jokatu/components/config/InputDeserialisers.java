@@ -2,7 +2,6 @@ package jokatu.components.config;
 
 import jokatu.game.input.Input;
 import jokatu.game.input.InputDeserialiser;
-import ophelia.exceptions.voidmaybe.VoidMaybe;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -16,8 +15,14 @@ import javax.annotation.PostConstruct;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import static ophelia.exceptions.voidmaybe.VoidMaybe.wrap;
+import static ophelia.exceptions.voidmaybe.VoidMaybeCollectors.merge;
 
 @Configuration
 @ComponentScan("jokatu.game")
@@ -36,10 +41,10 @@ public class InputDeserialisers {
 
 	@PostConstruct
 	public void populateDeserialisers() throws Exception {
-		List<VoidMaybe> maybes = applicationContext.getBeansOfType(InputDeserialiser.class).values().stream()
-				.map(VoidMaybe.wrap(this::addDeserialiser))
-				.collect(Collectors.toList());
-		VoidMaybe.mergeFailures(maybes).throwOnFailure();
+		applicationContext.getBeansOfType(InputDeserialiser.class).values().stream()
+				.map(wrap(this::addDeserialiser))
+				.collect(merge())
+				.throwOnFailure();
 		if (deserialiserMap.isEmpty()) {
 			throw new Exception("No input deserialisers could be found.");
 		}
