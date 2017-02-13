@@ -28,9 +28,11 @@ import static ophelia.util.FunctionUtils.not;
 import static org.springframework.util.StringUtils.capitalize;
 
 public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTradeRequest, UztaPlayer> {
+
+	@NotNull
 	private final Map<String, UztaPlayer> players;
 
-	InitialTradeRequestAcceptor(Map<String, UztaPlayer> players) {
+	InitialTradeRequestAcceptor(@NotNull Map<String, UztaPlayer> players) {
 		this.players = players;
 	}
 
@@ -47,8 +49,10 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 	}
 
 	@Override
-	protected void acceptCastInputAndPlayer(@NotNull InitialTradeRequest input, @NotNull UztaPlayer inputter) throws
-			Exception {
+	protected void acceptCastInputAndPlayer(
+			@NotNull InitialTradeRequest input,
+			@NotNull UztaPlayer inputter
+	) throws Exception {
 		@Nullable
 		String playerName = input.getPlayerName();
 		if (playerName == null) {
@@ -81,8 +85,10 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 	}
 
 	@NotNull
-	private UztaPlayer checkPlayerToTradeWith(@NotNull Player inputter, String playerName) throws
-			UnacceptableInputException {
+	private UztaPlayer checkPlayerToTradeWith(
+			@NotNull Player inputter,
+			@NotNull  String playerName
+	) throws UnacceptableInputException {
 		UztaPlayer requestedPlayer = players.get(playerName);
 		if (requestedPlayer == null) {
 			throw new UnacceptableInputException(
@@ -113,7 +119,7 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 				.build();
 	}
 
-			@NotNull
+	@NotNull
 	private Form constructFormForTradeConfirmation(
 			@NotNull UztaPlayer inputter,
 			@NotNull String playerName,
