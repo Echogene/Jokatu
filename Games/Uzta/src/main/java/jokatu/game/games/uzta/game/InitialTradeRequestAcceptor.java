@@ -5,6 +5,7 @@ import jokatu.game.event.dialog.DialogRequestBuilder;
 import jokatu.game.games.uzta.graph.NodeType;
 import jokatu.game.games.uzta.input.FullPlayerTradeRequest;
 import jokatu.game.games.uzta.input.InitialTradeRequest;
+import jokatu.game.games.uzta.input.SupplyTradeRequest;
 import jokatu.game.games.uzta.player.UztaPlayer;
 import jokatu.game.input.AnyEventInputAcceptor;
 import jokatu.game.input.UnacceptableInputException;
@@ -51,7 +52,16 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 		@Nullable
 		String playerName = input.getPlayerName();
 		if (playerName == null) {
-
+			// The player wants to trade with the supply.
+			Form form = constructFormForSupplyTrade(input.getResource());
+			DialogRequest<UztaPlayer, SupplyTradeRequest> request = DialogRequestBuilder.forPlayer(inputter)
+					.withTitle("Trade with the supply")
+					.withMessage("Resources can be traded with the supply in a ratio of 3:1.")
+					.withInputType(SupplyTradeRequest.class)
+					.withConsumer(this::acceptSupplyRequest)
+					.withForm(form)
+					.build();
+			fireEvent(request);
 		} else {
 			checkPlayerToTradeWith(inputter, playerName);
 			Form form = constructFormForTradeConfirmation(inputter, playerName, input.getResource());
@@ -64,6 +74,10 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 					.build();
 			fireEvent(request);
 		}
+	}
+
+	private void acceptSupplyRequest(SupplyTradeRequest supplyTradeRequest, UztaPlayer uztaPlayer) {
+		// todo: verify the trade and do it
 	}
 
 	@NotNull
@@ -82,6 +96,24 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 	}
 
 	@NotNull
+	private Form constructFormForSupplyTrade(
+			@NotNull NodeType resource
+	) {
+		List<FormField> fields = Arrays.stream(NodeType.values())
+				.map(type -> new IntegerField(
+						type.toString(),
+						capitalize(type.getPlural()),
+						resource == type ? 1 : 0,
+						"I want",
+						"I will give"
+				))
+				.collect(toList());
+		return new DialogFormBuilder()
+				.withFields(fields)
+				.build();
+	}
+
+			@NotNull
 	private Form constructFormForTradeConfirmation(
 			@NotNull UztaPlayer inputter,
 			@NotNull String playerName,

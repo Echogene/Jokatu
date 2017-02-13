@@ -65,15 +65,15 @@ public class DialogRequestEventHandler extends SpecificEventHandler<DialogReques
 						}
 					} catch (DeserialisationException ignore) {}
 
-					Input input = null;
 					try {
-						input = deserialiser.deserialise(json);
+						Input input = deserialiser.deserialise(json);
 						event.accept(input);
 					} catch (Exception e) {
+						String message = e.getMessage();
 						throw new GameException(
 								game.getIdentifier(),
 								e,
-								e.getMessage()
+								message == null ? e.getClass().getSimpleName() : message
 						);
 					}
 				}

@@ -28,17 +28,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import static java.util.function.Predicate.isEqual;
 import static java.util.stream.Collectors.toList;
 import static jokatu.components.ui.DialogResponder.DIALOG_ID;
 import static jokatu.game.games.uzta.game.Uzta.UZTA;
 import static ophelia.collections.matchers.IsCollectionWithSize.hasSize;
+import static ophelia.util.FunctionUtils.not;
 import static ophelia.util.MapUtils.createMap;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.number.OrderingComparison.greaterThanOrEqualTo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @JokatuTest
@@ -257,5 +261,37 @@ public class UztaIntegrationTest {
 		final NodeType resourceToTrade = trader.getResources().stream().map(Pair::getLeft).findAny().get();
 		// Cheat the game by giving the trader some extra resources.
 		trader.giveResources(HashBag.of(3, resourceToTrade));
+
+		assertThat(trader.getNumberOfType(resourceToTrade), is(greaterThanOrEqualTo(3)));
+
+		final NodeType resourceToGain = Arrays.stream(NodeType.values())
+				.filter(not(isEqual(resourceToTrade)))
+				.findAny()
+				.get();
+
+		// Attempt to trade with the supply.
+		gameController.input(
+				uzta.getIdentifier(),
+				new HashMap<String, Object>() {{
+					put("resource", resourceToGain.toString());
+				}},
+				getPrincipal(trader.getName())
+		);
+
+		UnmodifiableList<DialogUI> dialogsForTrader = dialogManager.getDialogsForPlayer(uzta, trader);
+		assertThat(dialogsForTrader, hasSize(1));
+		final DialogUI traderDialog = dialogsForTrader.stream().findAny().get();
+
+		dialogController.input(
+				uzta.getIdentifier(),
+				new HashMap<String, Object>() {{
+					put(resourceToTrade.toString(), 3);
+					put(resourceToGain.toString(), 1);
+					put(DIALOG_ID, traderDialog.getDialogId());
+				}},
+				getPrincipal(trader.getName())
+		);
+		dialogsForTrader = dialogManager.getDialogsForPlayer(uzta, trader);
+		assertThat(dialogsForTrader, hasSize(0));
 	}
 }
