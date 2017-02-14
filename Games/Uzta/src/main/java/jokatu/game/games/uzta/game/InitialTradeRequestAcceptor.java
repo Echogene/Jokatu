@@ -89,7 +89,7 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 		}
 	}
 
-	private void acceptSupplyRequest(
+	void acceptSupplyRequest(
 			@NotNull SupplyTradeRequest supplyTradeRequest,
 			@NotNull UztaPlayer trader
 	) throws StackedException, UnacceptableInputException {
@@ -126,7 +126,7 @@ public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTr
 					int number = givenResources.getNumberOf(resource);
 					if (0 != (number % SUPPLY_RATIO)) {
 						throw new UnacceptableInputException(
-								"You can''t give {0}: {1} is not a multiple of {2}",
+								"You can''t give {0}: {1} is not a multiple of {2}.",
 								resource.getNumber(number),
 								number,
 								SUPPLY_RATIO
