@@ -19,7 +19,7 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.emptySet;
 import static java.util.stream.Collectors.*;
 import static ophelia.collections.bag.BagCollectors.toBag;
-import static ophelia.util.FunctionUtils.notNull;
+import static ophelia.util.function.PredicateUtils.notNull;
 
 class ResourceDistributor extends AbstractSynchronousObservable<GraphUpdatedEvent> {
 

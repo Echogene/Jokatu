@@ -28,7 +28,7 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static ophelia.exceptions.voidmaybe.VoidMaybe.wrap;
 import static ophelia.exceptions.voidmaybe.VoidMaybeCollectors.merge;
-import static ophelia.util.FunctionUtils.not;
+import static ophelia.util.function.PredicateUtils.not;
 import static org.springframework.util.StringUtils.capitalize;
 
 public class InitialTradeRequestAcceptor extends AnyEventInputAcceptor<InitialTradeRequest, UztaPlayer> {

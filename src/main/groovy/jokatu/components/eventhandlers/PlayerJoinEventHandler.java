@@ -29,7 +29,7 @@ import static java.text.MessageFormat.format;
 import static java.util.Collections.emptyMap;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.stream.Collectors.toSet;
-import static ophelia.util.FunctionUtils.not;
+import static ophelia.util.function.PredicateUtils.not;
 
 /**
  * When a player joins a game, we need to move them from the observers list to the players list.  When a player stops

@@ -35,7 +35,7 @@ import static jokatu.components.ui.DialogResponder.DIALOG_ID;
 import static jokatu.game.games.uzta.game.InitialTradeRequestAcceptor.SUPPLY_RATIO;
 import static jokatu.game.games.uzta.game.Uzta.UZTA;
 import static ophelia.collections.matchers.IsCollectionWithSize.hasSize;
-import static ophelia.util.FunctionUtils.not;
+import static ophelia.util.function.PredicateUtils.not;
 import static ophelia.util.MapUtils.createMap;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
