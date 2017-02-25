@@ -73,14 +73,18 @@ JStatusProto._updateElement = function(element, status) {
 	element.style.display = '';
 	if (typeof status === 'string') {
 		element.textContent = status;
+
+	} else if (typeof status === 'number') {
+		element.textContent = String(status);
+
 	} else if (status && typeof status === 'object' && typeof status.text === 'string') {
 		element.textContent = status.text;
 	}
-	
+
 	if (status && typeof status === 'object' && typeof status.id === 'string') {
 		element.id = status.id;
 	}
-	
+
 	var attributeName = this.getAttribute('attributeName');
 	if (attributeName) {
 		var statusString = JSON.stringify(status);
