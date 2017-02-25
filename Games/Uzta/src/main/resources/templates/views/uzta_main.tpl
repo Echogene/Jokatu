@@ -42,6 +42,15 @@ layout 'views/game_view.tpl', true,
 							}
 						}
 					}
+					div(class: 'score') {
+						span('Score: ')
+						yieldUnescaped markupGenerator.bindLast(
+							tag: 'j-status',
+							id: "${p.name}_score",
+							wrapperElement: 'span',
+							destination: "/topic/score.game.${gameId}.${p.name}"
+						)
+					}
 				}
 			}
 		}
@@ -80,6 +89,15 @@ layout 'views/game_view.tpl', true,
 							)
 						}
 					}
+				}
+				div(class: 'score') {
+					span('Score: ')
+					yieldUnescaped markupGenerator.bindLast(
+						tag: 'j-status',
+						id: "${username}_score",
+						wrapperElement: 'span',
+						destination: "/topic/score.game.${gameId}.${username}"
+					)
 				}
 			}
 
