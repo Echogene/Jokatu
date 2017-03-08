@@ -12,6 +12,9 @@ import java.text.MessageFormat;
 
 import static java.util.function.Predicate.isEqual;
 
+/**
+ * When the {@link GraphUpdatedEvent graph is updated}, update each player's score.
+ */
 @Component
 public class ScoreUpdatedEventHandler extends AbstractEventHandler<Uzta, GraphUpdatedEvent> {
 	@NotNull
