@@ -83,6 +83,7 @@ dependencies {
 	compile 'org.codehaus.groovy:groovy-templates:2.4.7'
 	compile 'ch.qos.logback:logback-classic:1.1.7'
 	compile 'org.apache.commons:commons-lang3:3.4'
+	compile 'com.codepoetics:protonpack:1.9'
 
 	testCompile group: 'org.springframework', name: 'spring-test', version: "$springVersion"
 	testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
