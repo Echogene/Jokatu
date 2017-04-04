@@ -4,7 +4,7 @@ import jokatu.game.games.uzta.graph.NodeType
 layout 'views/game_view.tpl', true,
 
 	additionalHeaders: contents {
-		include template: 'components/graph.tpl'
+		include template: 'components/graph2.tpl'
 		include template: 'components/node.tpl'
 		include template: 'components/edge.tpl'
 		include template: 'components/button.tpl'
@@ -56,7 +56,7 @@ layout 'views/game_view.tpl', true,
 		}
 
 		yieldUnescaped markupGenerator.bindLast(
-				tag: 'j-graph',
+				tag: 'j-graph2',
 				id: 'graph',
 				nodeElement: 'JNode',
 				edgeElement: 'JEdge',
