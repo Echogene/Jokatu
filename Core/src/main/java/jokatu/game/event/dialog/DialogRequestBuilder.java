@@ -5,6 +5,10 @@ import jokatu.game.player.Player;
 import ophelia.function.ExceptionalBiConsumer;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * The beginning of sequence of builders that eventually result in a {@link DialogRequest} being sent to a player.
+ * @param <P> the type of player to be presented with the dialog
+ */
 public class DialogRequestBuilder<P extends Player> implements DialogRequestBuilderNeedingTitle {
 
 	private final P player;
