@@ -42,7 +42,7 @@ layout 'layouts/main.tpl', true,
 				yieldUnescaped markupGenerator.bindLast(
 						tag: 'j-status',
 						id: 'players',
-						wrapperElement: 'JPlayer',
+						wrapperElement: 'j-player',
 						attributeName: 'data-player',
 						removeOldChildren: 'true',
 						destination: "/topic/players.game.${gameId}"
@@ -63,7 +63,7 @@ layout 'layouts/main.tpl', true,
 				tag: 'j-status',
 				id: 'dialogs',
 				class: 'overlay',
-				wrapperElement: 'JDialog',
+				wrapperElement: 'j-dialog',
 				'data-attributeMapping': '{\"data-title\": \"title\", \"data-message\": \"message\", \"dialogid\": \"dialogId\", \"data-form\": \"form\", \"cancellable\": \"cancellable\"}',
 				destination: "/user/topic/dialogs.game.${gameId}",
 				user: "${username}"

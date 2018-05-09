@@ -1,6 +1,7 @@
 yieldUnescaped '<!DOCTYPE html>'
 html {
 	head {
+		meta(charset: 'UTF-8')
 		title(pageTitle)
 		link(rel: 'stylesheet', href: '/css/main.css')
 		script(type: 'text/javascript',

@@ -14,7 +14,7 @@ layout 'views/game_view.tpl', true,
 					tag: 'j-status',
 					class: 'button',
 					id: "cell_${cell}",
-					wrapperElement: 'JButton',
+					wrapperElement: 'j-button',
 					attributeName: 'data-contents',
 					showAll: true,
 					'data-defaultAttributes': "{\"destination\": \"/topic/input.game.${gameId}\", \"data-input\": {\"choice\": ${cell}}}",
@@ -25,7 +25,7 @@ layout 'views/game_view.tpl', true,
 		yieldUnescaped markupGenerator.bindLast(
 			tag: 'j-status',
 			id: 'lines',
-			wrapperElement: 'JLine',
+			wrapperElement: 'j-line',
 			attributeName: 'data-ends',
 			destination: "/topic/substatus.game.${gameId}.lines"
 		)

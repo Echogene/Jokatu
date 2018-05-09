@@ -1,34 +1,38 @@
-var JPlayerProto = Object.create(HTMLElement.prototype);
+class JPlayer extends HTMLElement {
+	constructor() {
+		super();
 
-JPlayerProto.createdCallback = function() {
+		observeAttributes(this, new Map([
+			['data-player', this._updateStatus.bind(this)]
+		]));
+	};
 
-	var template = document.querySelector('#player_template');
-	this._content = document.importNode(template.content, true);
+	connectedCallback() {
+		if (!this._alreadySetUp) {
+			const template = document.querySelector('#player_template');
+			this._content = document.importNode(template.content, true);
 
-	this._name = this._content.querySelector('.name');
-	this._status = this._content.querySelector('.status');
+			this._name = this._content.querySelector('.name');
+			this._status = this._content.querySelector('.status');
 
-	observeAttributes(this, new Map([
-		['data-player', this._updateStatus.bind(this)]
-	]));
-
-	this.appendChild(this._content);
-};
-
-JPlayerProto._updateStatus = function(status) {
-	if (!status) {
-		return;
+			this.appendChild(this._content);
+		}
+		this._alreadySetUp = true;
 	}
-	this._name.innerText = status.name;
-	if (status.online) {
-		this.classList.add('online');
-		this.title = `${status.name} is online`;
-	} else {
-		this.classList.remove('online');
-		this.title = `${status.name} is offline`;
-	}
-};
 
-var JPlayer = document.registerElement('j-player', {
-	prototype: JPlayerProto
-});
+	_updateStatus(status) {
+		if (!status) {
+			return;
+		}
+		this._name.innerText = status.name;
+		if (status.online) {
+			this.classList.add('online');
+			this.title = `${status.name} is online`;
+		} else {
+			this.classList.remove('online');
+			this.title = `${status.name} is offline`;
+		}
+	};
+}
+
+customElements.define('j-player', JPlayer);

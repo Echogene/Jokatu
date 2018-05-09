@@ -1,54 +1,55 @@
-var JNodeProto = Object.create(HTMLElement.prototype);
+class JNode extends HTMLElement {
+	constructor() {
+		super();
 
-JNodeProto.attachedCallback = function() {
+		observeAttributes(this, new Map([
+			['data-node', this._updateNode.bind(this)]
+		]));
+	};
 
-	var template = document.querySelector('#node-template');
-	var clone = document.importNode(template.content, true);
+	connectedCallback() {
+		if (!this._alreadySetUp) {
+			const template = document.querySelector('#node-template');
+			const clone = document.importNode(template.content, true);
 
-	this._background = clone.querySelector('.background');
-	this._valuesContainer = clone.querySelector('.values');
+			this._background = clone.querySelector('.background');
+			this._valuesContainer = clone.querySelector('.values');
 
-	this.appendChild(clone);
-
-	observeAttributes(this, new Map([
-		['data-node', this._updateNode.bind(this)]
-	]));
-};
-
-JNodeProto._updateNode = function(node) {
-	if (!node) {
-		return;
-	}
-	this._ensureEnoughElements(node.values.length);
-	
-	for (var i = this._valuesContainer.childNodes.length - 1; i >= 0; i--) {
-		var element = this._valuesContainer.childNodes[i];
-		var value = node.values[i];
-		if (value) {
-			this._updateElement(element, value);
-		} else {
-			// Remove the element.
-			this._valuesContainer.removeChild(element);
+			this.appendChild(clone);
 		}
+		this._alreadySetUp = true;
 	}
-};
 
-JNodeProto._ensureEnoughElements = function(number) {
-	var elementsNeeded = number - this._valuesContainer.childNodes.length;
-	if (elementsNeeded > 0) {
-		for (var i = 0; i < elementsNeeded; i++) {
-			this._valuesContainer.appendChild(document.createElement('span'));
+	_updateNode(node) {
+		if (!node) {
+			return;
 		}
-	}
-};
+		this._ensureEnoughElements(node.values.length);
 
-JNodeProto._updateElement = function(element, value) {
-	element.innerText = value;
-};
+		for (let i = this._valuesContainer.childNodes.length - 1; i >= 0; i--) {
+			const element = this._valuesContainer.childNodes[i];
+			const value = node.values[i];
+			if (value) {
+				JNode._updateElement(element, value);
+			} else {
+				// Remove the element.
+				this._valuesContainer.removeChild(element);
+			}
+		}
+	};
 
-/**
- * A JGraph is an element that listens to updates on a STOMP destination and manages nodes and edges on a graph
- */
-var JNode = document.registerElement('j-node', {
-	prototype: JNodeProto
-});
+	_ensureEnoughElements(number) {
+		const elementsNeeded = number - this._valuesContainer.childNodes.length;
+		if (elementsNeeded > 0) {
+			for (let i = 0; i < elementsNeeded; i++) {
+				this._valuesContainer.appendChild(document.createElement('span'));
+			}
+		}
+	};
+
+	static _updateElement(element, value) {
+		element.innerText = value;
+	};
+}
+
+customElements.define('j-node', JNode);

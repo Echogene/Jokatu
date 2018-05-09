@@ -58,8 +58,8 @@ layout 'views/game_view.tpl', true,
 		yieldUnescaped markupGenerator.bindLast(
 				tag: 'j-graph',
 				id: 'graph',
-				nodeElement: 'JNode',
-				edgeElement: 'JEdge',
+				nodeElement: 'j-node',
+				edgeElement: 'j-edge',
 				'data-defaultEdgeAttributes': "{\"destination\": \"/topic/input.game.${gameId}\"}",
 				destination: "/topic/graph.game.${gameId}"
 		)

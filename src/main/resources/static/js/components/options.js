@@ -1,54 +1,54 @@
-var JOptionsProto = Object.create(HTMLElement.prototype);
-
-JOptionsProto.createdCallback = function() {
-
-	observeAttributes(this, new Map([
-		['data-options', this._updateOptions.bind(this)]
-	]));
-};
-
-/**
- * @param {Array.<{input: string|Object, display: string}>} options
- * @private
- */
-JOptionsProto._updateOptions = function(options) {
-	if (!options) {
-		return;
-	}
-	this._ensureEnoughElements(options.length);
-	for (var i = 0; i < this.childNodes.length; i++) {
-		var button = this.childNodes[i];
-		var option = options[i];
-		if (option) {
-			this._updateElement(button, option);
-		} else {
-			// Remove the button.
-			this.removeChild(button);
+class JOptions extends HTMLElement {
+	connectedCallback() {
+		if (!this._alreadySetUp) {
+			observeAttributes(this, new Map([
+				['data-options', this._updateOptions.bind(this)]
+			]));
 		}
+		this._alreadySetUp = true;
 	}
-};
 
-JOptionsProto._updateElement = function(button, option) {
-	button.textContent = option.display;
-	button.setAttribute('data-input', JSON.stringify(option.input));
-	button.setAttribute('destination', this.getAttribute('destination'));
-};
-
-JOptionsProto._ensureEnoughElements = function(number) {
-	var elementsNeeded = number - this.childNodes.length;
-	if (elementsNeeded > 0) {
-		for (var i = 0; i < elementsNeeded; i++) {
-			this._createOptionButton();
+			/**
+	 * @param {Array.<{input: string|Object, display: string}>} options
+	 * @private
+	 */
+	_updateOptions(options) {
+		if (!options) {
+			return;
 		}
-	}
-};
+		this._ensureEnoughElements(options.length);
+		for (let i = 0; i < this.childNodes.length; i++) {
+			const button = this.childNodes[i];
+			const option = options[i];
+			if (option) {
+				this._updateElement(button, option);
+			} else {
+				// Remove the button.
+				this.removeChild(button);
+			}
+		}
+	};
 
-JOptionsProto._createOptionButton = function() {
-	var newButton = new JButton();
-	newButton.id = `${this.id}_${this.childNodes.length}`;
-	this.appendChild(newButton);
-};
+	_updateElement(button, option) {
+		button.textContent = option.display;
+		button.setAttribute('data-input', JSON.stringify(option.input));
+		button.setAttribute('destination', this.getAttribute('destination'));
+	};
 
-var JOptions = document.registerElement('j-options', {
-	prototype: JOptionsProto
-});
+	_ensureEnoughElements(number) {
+		const elementsNeeded = number - this.childNodes.length;
+		if (elementsNeeded > 0) {
+			for (let i = 0; i < elementsNeeded; i++) {
+				this._createOptionButton();
+			}
+		}
+	};
+
+	_createOptionButton() {
+		const newButton = new JButton();
+		newButton.id = `${this.id}_${this.childNodes.length}`;
+		this.appendChild(newButton);
+	};
+}
+
+customElements.define('j-options', JOptions);

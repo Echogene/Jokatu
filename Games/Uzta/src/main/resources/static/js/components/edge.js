@@ -1,33 +1,38 @@
-var JEdgeProto = Object.create(JLine.prototype);
-mixin(JEdgeProto, JButton.prototype);
+class JEdge extends JLine {
+	constructor() {
+		super();
+		JButton.prototype.listenToClick && JButton.prototype.listenToClick.call(this);
 
-JEdgeProto.attachedCallback = function() {
-	JLine.prototype.attachedCallback && JLine.prototype.attachedCallback.call(this);
-	JButton.prototype.attachedCallback && JButton.prototype.attachedCallback.call(this);
+		observeAttributes(this, new Map([
+			['data-ends', this._updateInput.bind(this)],
+			['data-colour', this._updateColour.bind(this)]
+		]));
+	};
 
-	observeAttributes(this, new Map([
-		['data-ends', this._updateInput.bind(this)],
-		['data-colour', this._updateColour.bind(this)]
-	]));
-};
+	connectedCallback() {
+		if (!this._alreadySetUp) {
+			this.innerHTML = '&nbsp;';
 
-JEdgeProto._updateInput = function(ends) {
-	if (!ends) {
-		return;
+			this.classList.add('edge');
+		}
+		this._alreadySetUp = true;
 	}
-	this.setAttribute('data-input', JSON.stringify(ends));
-};
 
-JEdgeProto._updateColour = function(colour) {
-	if (!colour) {
-		// todo: remove current colour
-		// this.classList.remove();
-	} else {
-		this.classList.add(colour.toLowerCase());
-	}
-};
+	_updateInput(ends) {
+		if (!ends) {
+			return;
+		}
+		this.setAttribute('data-input', JSON.stringify(ends));
+	};
 
-var JEdge = document.registerElement('j-edge', {
-	prototype: JEdgeProto,
-	extends: 'div'
-});
+	_updateColour(colour) {
+		if (!colour) {
+			// todo: remove current colour
+			// this.classList.remove();
+		} else {
+			this.classList.add(colour.toLowerCase());
+		}
+	};
+}
+
+customElements.define('j-edge', JEdge, {extends: 'div'});

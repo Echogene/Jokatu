@@ -13,7 +13,7 @@ layout 'views/game_view.tpl', true,
 		yieldUnescaped markupGenerator.bindLast(
 				tag: 'j-graph',
 				id: 'graph',
-				nodeElement: 'JNode',
+				nodeElement: 'j-node',
 				destination: "/topic/graph.game.${gameId}"
 		)
 		button(

@@ -1,26 +1,27 @@
-var JErrorProto = Object.create(JPopup.prototype);
+class JError extends JPopup {
+	connectedCallback() {
+		if (!this._alreadySetUp) {
+			super.connectedCallback();
 
-JErrorProto.createdCallback = function() {
-	JPopup.prototype.createdCallback && JPopup.prototype.createdCallback.call(this);
-
-	this._titleBar.addEventListener('mouseup', (e) => {
-		if (e.button === 1) {
-			this.hide();
+			this._titleBar.addEventListener('mouseup', (e) => {
+				if (e.button === 1) {
+					this.hide();
+				}
+			});
 		}
-	});
-};
-
-JErrorProto.placeInDefaultContainer = function() {
-	var container = document.getElementById('popup-container');
-	if (!container) {
-		container = document.createElement('div');
-		container.id = 'popup-container';
-		container.classList.add('overlay');
-		document.body.appendChild(container);
+		this._alreadySetUp = true;
 	}
-	container.appendChild(this);
-};
 
-var JError = document.registerElement('j-error-popup', {
-	prototype: JErrorProto
-});
+	placeInDefaultContainer() {
+		let container = document.getElementById('popup-container');
+		if (!container) {
+			container = document.createElement('div');
+			container.id = 'popup-container';
+			container.classList.add('overlay');
+			document.body.appendChild(container);
+		}
+		container.appendChild(this);
+	};
+}
+
+customElements.define('j-error-popup', JError);

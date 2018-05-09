@@ -1,16 +1,14 @@
 createElement = function(elementName, attributes) {
-	var firstChar = elementName.charAt(0);
-	var newElement;
-	if (firstChar == firstChar.toUpperCase()) {
-		// If the first character is uppercase, assume we want to wrap a JavaScript object.
-		newElement = new window[elementName];
+	let newElement;
+	const CustomConstructor = customElements.get(elementName);
+	if (CustomConstructor) {
+		newElement = new CustomConstructor;
 	} else {
-		// Otherwise, we want to wrap a normal element.
-		newElement = document.createElement(elementName);
+		newElement = document.createElement(elementName)
 	}
 	if (attributes) {
 		Object.keys(attributes).forEach(key => {
-			var attribute = attributes[key];
+			let attribute = attributes[key];
 			if (attribute instanceof Object) {
 				attribute = JSON.stringify(attribute);
 			}

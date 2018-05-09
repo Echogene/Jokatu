@@ -47,7 +47,7 @@ layout 'views/game_view.tpl', true,
 			yieldUnescaped markupGenerator.bindUserLast(
 				tag: 'j-status',
 				id: 'hand',
-				wrapperElement: 'JCard',
+				wrapperElement: 'j-card',
 				attributeName: 'data-card',
 				removeOldChildren: true,
 				'data-defaultAttributes': "{\"destination\": \"/topic/input.game.${gameId}\"}",

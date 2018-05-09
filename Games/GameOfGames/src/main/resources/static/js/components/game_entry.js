@@ -1,29 +1,33 @@
-var JGameEntryProto = Object.create(HTMLElement.prototype);
+class JGameEntry extends HTMLElement {
+	constructor() {
+		super();
 
-JGameEntryProto.createdCallback = function() {
+		observeAttributes(this, new Map([
+			['data-game', this._updateStatus.bind(this)]
+		]));
+	};
 
-	var template = document.querySelector('#game_entry_template');
-	this._content = document.importNode(template.content, true);
+	connectedCallback() {
+		if (!this._alreadySetUp) {
+			const template = document.querySelector('#game_entry_template');
+			this._content = document.importNode(template.content, true);
 
-	this._id = this._content.querySelector('.id');
-	this._name = this._content.querySelector('.name');
+			this._id = this._content.querySelector('.id');
+			this._name = this._content.querySelector('.name');
 
-	observeAttributes(this, new Map([
-		['data-game', this._updateStatus.bind(this)]
-	]));
-
-	this.appendChild(this._content);
-};
-
-JGameEntryProto._updateStatus = function(status) {
-	if (!status) {
-		return;
+			this.appendChild(this._content);
+		}
+		this._alreadySetUp = true;
 	}
-	this._id.innerText = status.gameId;
-	this._name.innerText = status.gameName;
-	this._name.href = `/game/${status.gameId}`
-};
 
-var JGameEntry = document.registerElement('j-game-entry', {
-	prototype: JGameEntryProto
-});
+	_updateStatus(status) {
+		if (!status) {
+			return;
+		}
+		this._id.innerText = status.gameId;
+		this._name.innerText = status.gameName;
+		this._name.href = `/game/${status.gameId}`
+	}
+}
+
+customElements.define('j-game-entry', JGameEntry);

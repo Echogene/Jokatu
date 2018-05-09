@@ -20,7 +20,7 @@ layout 'views/game_view.tpl', true,
 		yieldUnescaped markupGenerator.bindLast(
 			tag: 'j-status',
 			id: 'games',
-			wrapperElement: 'JGameEntry',
+			wrapperElement: 'j-game-entry',
 			attributeName: 'data-game',
 			destination: "/topic/games.game.${gameId}"
 		)
