@@ -10,6 +10,7 @@ import ophelia.collections.list.UnmodifiableList
 import ophelia.function.ExceptionalConsumer
 import ophelia.tuple.Pair
 import ophelia.util.MapUtils
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.Collections.emptyList
@@ -18,8 +19,10 @@ import java.util.concurrent.atomic.AtomicLong
 import java.util.function.Supplier
 
 @Component
-class DialogManager @Autowired
-constructor(private val sender: StoringMessageSender) : DialogRequestor, DialogResponder {
+class DialogManager
+@Autowired constructor(
+		private val sender: StoringMessageSender
+) : DialogRequestor, DialogResponder {
 
 	private val dialogs = ConcurrentHashMap<DialogResponder.DialogID, ExceptionalConsumer<Map<String, Any>, GameException>>()
 
@@ -39,6 +42,7 @@ constructor(private val sender: StoringMessageSender) : DialogRequestor, DialogR
 			gameId: GameID,
 			jsonConsumer: ExceptionalConsumer<Map<String, Any>, GameException>
 	) {
+		log.debug("Requesting dialog $dialog for $playerName in game $gameId")
 		val dialogId = generateId(gameId)
 		val gamePlayerKey = Pair(gameId, playerName)
 
@@ -99,4 +103,8 @@ constructor(private val sender: StoringMessageSender) : DialogRequestor, DialogR
 	}
 
 	class DialogUI constructor(dialog: Dialog, val dialogId: String) : Dialog(dialog.title, dialog.message, dialog.form, dialog.isCancellable)
+
+	companion object {
+		private val log = LoggerFactory.getLogger(DialogManager::class.java)
+	}
 }
