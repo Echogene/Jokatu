@@ -9,3 +9,5 @@ import jokatu.game.status.Status
 interface StatusUpdateEvent : GameEvent {
 	val status: Status
 }
+
+class StandardStatusUpdateEvent(override val status: Status) : StatusUpdateEvent

@@ -1,6 +1,7 @@
 package jokatu.game.status
 
 import com.fasterxml.jackson.annotation.JsonValue
+import jokatu.game.event.StandardStatusUpdateEvent
 import jokatu.game.event.StatusUpdateEvent
 import ophelia.event.observable.AbstractSynchronousObservable
 
@@ -17,9 +18,6 @@ class StandardTextStatus : AbstractSynchronousObservable<StatusUpdateEvent>(), S
 
 	fun setText(text: String, vararg arguments: Any) {
 		this.text = MessageFormat.format(text, *arguments)
-		fireEvent(object : StatusUpdateEvent {
-			override val status: Status
-				get() = this@StandardTextStatus
-		})
+		fireEvent(StandardStatusUpdateEvent(this))
 	}
 }
