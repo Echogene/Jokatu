@@ -109,3 +109,7 @@ dependencies {
 	testCompile group: 'org.springframework', name: 'spring-test', version: "$springVersion"
 	testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
 }
+
+bootRun {
+	jvmArgs '-Dfile.encoding=UTF8'
+}
