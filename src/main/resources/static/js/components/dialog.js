@@ -1,16 +1,8 @@
 class JDialog extends JPopup {
-	constructor() {
-		super();
-
-		observeAttributes(this, new Map([
-			['cancellable', this._updateCancellable.bind(this)],
-			['dialogid', this._updateDialogId.bind(this)],
-			['data-form', this._updateForm.bind(this)]
-		]));
-	};
-
 	connectedCallback() {
 		if (!this._alreadySetUp) {
+			super.connectedCallback();
+
 			this._form = new JForm();
 			this._form.id = `${this.id}_form`;
 			this._form.setAttribute('destination', `/topic/input.dialog.game.${gameId}`);
@@ -21,6 +13,12 @@ class JDialog extends JPopup {
 			this._form.appendChild(this._buttonBar);
 
 			this._buttonBar.appendChild(this._form.getSubmitButton());
+
+			observeAttributes(this, new Map([
+				['cancellable', this._updateCancellable.bind(this)],
+				['dialogid', this._updateDialogId.bind(this)],
+				['data-form', this._updateForm.bind(this)]
+			]));
 		}
 		this._alreadySetUp = true;
 	}

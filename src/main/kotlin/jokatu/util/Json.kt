@@ -2,6 +2,7 @@ package jokatu.util
 
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import org.springframework.core.convert.converter.Converter
 import org.springframework.core.convert.converter.ConverterFactory
 import java.io.IOException
@@ -13,6 +14,10 @@ import java.util.*
 object Json {
 
 	private val OBJECT_MAPPER = ObjectMapper()
+
+	init {
+		OBJECT_MAPPER.registerKotlinModule()
+	}
 
 	@Throws(JsonProcessingException::class)
 	// This is called from the Groovy Templates.
