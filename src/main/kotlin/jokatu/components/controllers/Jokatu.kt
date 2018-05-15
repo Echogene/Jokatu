@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Import
  */
 @SpringBootApplication
 @Import(MainConfiguration::class)
-open class Jokatu
+class Jokatu
 
 fun main(args: Array<String>) {
 	SpringApplication.run(Jokatu::class.java, *args)

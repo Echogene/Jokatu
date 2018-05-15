@@ -67,7 +67,7 @@ public class UztaIntegrationTest {
 		long originalCount = gameDao.count();
 		gameController.input(
 				new GameID(0),
-				createMap("gameName", UZTA),
+				createMap("gameName", Companion.getUZTA()),
 				getPrincipal("user")
 		);
 		assertThat(gameDao.count(), is(originalCount + 1));
@@ -222,7 +222,7 @@ public class UztaIntegrationTest {
 				new HashMap<String, Object>() {{
 					put("player", tradee.getName());
 					put(resourceToTrade.toString(), 1);
-					put(DIALOG_ID, traderDialog.getDialogId());
+					put(Companion.getDIALOG_ID(), traderDialog.getDialogId());
 				}},
 				getPrincipal(trader.getName())
 		);
@@ -236,7 +236,7 @@ public class UztaIntegrationTest {
 				uzta.getIdentifier(),
 				new HashMap<String, Object>() {{
 					put("acknowledge", true);
-					put(DIALOG_ID, tradeeDialog.getDialogId());
+					put(Companion.getDIALOG_ID(), tradeeDialog.getDialogId());
 				}},
 				getPrincipal(tradee.getName())
 		);
@@ -258,10 +258,10 @@ public class UztaIntegrationTest {
 
 		final NodeType resourceToGive = trader.getResources().stream().map(Pair::getLeft).findAny().get();
 		// Cheat the game by giving the trader some extra resources.
-		trader.giveResources(HashBag.of(SUPPLY_RATIO, resourceToGive));
+		trader.giveResources(HashBag.of(Companion.getSUPPLY_RATIO(), resourceToGive));
 
 		int originalGivenResourceNumber = trader.getNumberOfType(resourceToGive);
-		assertThat(originalGivenResourceNumber, is(greaterThanOrEqualTo(SUPPLY_RATIO)));
+		assertThat(originalGivenResourceNumber, is(greaterThanOrEqualTo(Companion.getSUPPLY_RATIO())));
 
 		// Find any other resource to gain.
 		final NodeType resourceToGain = Arrays.stream(NodeType.values())
@@ -286,9 +286,9 @@ public class UztaIntegrationTest {
 		dialogController.input(
 				uzta.getIdentifier(),
 				new HashMap<String, Object>() {{
-					put(resourceToGive.toString(), -SUPPLY_RATIO);
+					put(resourceToGive.toString(), -Companion.getSUPPLY_RATIO());
 					put(resourceToGain.toString(), 1);
-					put(DIALOG_ID, traderDialog.getDialogId());
+					put(Companion.getDIALOG_ID(), traderDialog.getDialogId());
 				}},
 				getPrincipal(trader.getName())
 		);
@@ -296,7 +296,7 @@ public class UztaIntegrationTest {
 		assertThat(dialogsForTrader, hasSize(0));
 
 		int newGivenResourceNumber = trader.getNumberOfType(resourceToGive);
-		assertThat(newGivenResourceNumber, is(originalGivenResourceNumber - SUPPLY_RATIO));
+		assertThat(newGivenResourceNumber, is(originalGivenResourceNumber - Companion.getSUPPLY_RATIO()));
 
 		int newGainedResourceNumber = trader.getNumberOfType(resourceToGain);
 		assertThat(newGainedResourceNumber, is(originalGainedResourceNumber + 1));

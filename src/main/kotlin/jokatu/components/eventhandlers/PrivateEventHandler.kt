@@ -1,0 +1,27 @@
+package jokatu.components.eventhandlers
+
+import jokatu.game.Game
+import jokatu.game.event.PrivateGameEvent
+import jokatu.game.event.SpecificEventHandler
+import org.springframework.stereotype.Component
+
+/**
+ * Private events should be forwarded to the users they specify.
+ * @author Steven Weston
+ */
+@Component
+class PrivateEventHandler : SpecificEventHandler<PrivateGameEvent>() {
+
+	override val eventClass: Class<PrivateGameEvent>
+		get() = PrivateGameEvent::class.java
+
+	override fun handleCastEvent(game: Game<*>, event: PrivateGameEvent) {
+		event.players.stream().forEach { player ->
+			sender.sendToUser(
+					player.name,
+					"/topic/private.game." + game.identifier,
+					event.message
+			)
+		}
+	}
+}
