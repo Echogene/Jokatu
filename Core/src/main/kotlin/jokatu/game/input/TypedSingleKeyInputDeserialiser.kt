@@ -12,7 +12,7 @@ abstract class TypedSingleKeyInputDeserialiser<T, I : Input>(
 ) : SingleKeyInputDeserialiser<I>() {
 
 	@Suppress("UNCHECKED_CAST")
-	protected val wrappedType: Class<T> = ClassUtils.resolvePrimitiveIfNecessary(rawType) as Class<T>
+	private val wrappedType: Class<T> = ClassUtils.resolvePrimitiveIfNecessary(rawType) as Class<T>
 
 	@Throws(DeserialisationException::class)
 	override fun deserialiseSingleValue(json: Map<String, Any>, value: Any): I {
