@@ -110,8 +110,6 @@ class JDialog extends JPopup {
 			return;
 		}
 
-		const firstChar = field.type.charAt(0);
-
 		const fieldLabel = document.createElement('label');
 		fieldLabel.innerText = field.label;
 		fieldDiv.appendChild(fieldLabel);
@@ -132,8 +130,8 @@ class JDialog extends JPopup {
 			});
 			fieldDiv.appendChild(fieldElement);
 
-		} else if (firstChar === firstChar.toUpperCase() && window[field.type]) {
-			// If the field looks like some custom component that has been registered, create one.
+		} else if (customElements.get(field.type)) {
+			// If the field's type is some custom component that has been registered, create such an element.
 			const attributes = field.attributes || {};
 			attributes.name = field.name;
 			attributes.value = field.value;

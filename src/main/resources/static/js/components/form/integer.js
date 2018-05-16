@@ -3,13 +3,6 @@ class JInteger extends HTMLElement {
 		super();
 
 		this.addEventListener('wheel', this._onInputWheel.bind(this));
-
-		observeAttributes(this, new Map([
-			['name', this._updateName.bind(this)],
-			['value', this._updateValue.bind(this)],
-			['positiveText', this._updatePositiveText.bind(this)],
-			['negativeText', this._updateNegativeText.bind(this)]
-		]));
 	};
 
 	connectedCallback() {
@@ -32,6 +25,13 @@ class JInteger extends HTMLElement {
 			this._down.addEventListener('click', this._onClick.bind(this, -1));
 
 			this.appendChild(clone);
+
+			observeAttributes(this, new Map([
+				['name', this._updateName.bind(this)],
+				['value', this._updateValue.bind(this)],
+				['positiveText', this._updatePositiveText.bind(this)],
+				['negativeText', this._updateNegativeText.bind(this)]
+			]));
 		}
 		this._alreadySetUp = true;
 	}
