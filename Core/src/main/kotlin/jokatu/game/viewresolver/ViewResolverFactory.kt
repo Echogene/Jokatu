@@ -3,8 +3,6 @@ package jokatu.game.viewresolver
 import jokatu.game.Game
 import jokatu.game.player.Player
 
-import java.text.MessageFormat
-
 /**
  * A factory for [ViewResolver]s.
  * @author steven
@@ -22,7 +20,7 @@ abstract class ViewResolverFactory<P : Player, G : Game<P>> {
 		val gameClass = gameClass
 		if (!gameClass.isInstance(game)) {
 			throw IllegalArgumentException(
-					MessageFormat.format("Game was not of the right type.  Expected {0}.", gameClass)
+					"Game was not of the right type.  Expected ${gameClass.simpleName} but was ${game.javaClass.simpleName}."
 			)
 		}
 		return gameClass.cast(game)

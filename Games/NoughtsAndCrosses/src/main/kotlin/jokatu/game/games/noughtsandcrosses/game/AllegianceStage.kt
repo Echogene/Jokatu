@@ -19,11 +19,7 @@ class AllegianceStage internal constructor(players: Collection<NoughtsAndCrosses
 		get() = NoughtsAndCrossesPlayer::class.java
 
 	init {
-		status.setText(
-				"Waiting for either {0} or {1} to choose an allegiance.",
-				this.players.first!!,
-				this.players.second!!
-		)
+		status.text = "Waiting for either ${this.players.first} or ${this.players.second} to choose an allegiance."
 	}
 
 	@Throws(Exception::class)

@@ -9,7 +9,6 @@ import jokatu.game.games.gameofgames.game.GameOfGames
 import ophelia.util.MapUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.text.MessageFormat.format
 import java.util.*
 import javax.annotation.PostConstruct
 
@@ -43,7 +42,7 @@ class GameCreatedEventHandler
 		MapUtils.updateListBasedMap(entries, id, GameEntry(game))
 
 		sender.send(
-				format("/topic/games.game.{0}", id),
+				"/topic/games.game.$id",
 				entries[id]!!
 		)
 	}

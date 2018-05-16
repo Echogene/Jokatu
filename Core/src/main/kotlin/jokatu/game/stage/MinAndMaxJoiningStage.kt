@@ -24,11 +24,7 @@ class MinAndMaxJoiningStage<P : Player>(
 ) : MultiInputStage() {
 
 	init {
-		status.setText(
-				"Waiting for at least {0} player{1} to join.",
-				minimum,
-				if (minimum == 1) "" else "s"
-		)
+		status.text = "Waiting for at least $minimum player${if (minimum == 1) "" else "s"} to join."
 
 		val joinInputAcceptor = JoinInputAcceptor(playerClass, players, maximum)
 		joinInputAcceptor.observe(::onPlayerJoin)
@@ -44,18 +40,12 @@ class MinAndMaxJoiningStage<P : Player>(
 		} else {
 			var more = minimum - players.size
 			if (more > 0) {
-				status.setText(
-						"Waiting for {0} more player{1} to join.",
-						more,
-						if (more == 1) "" else "s"
-				)
+				status.text = "Waiting for $more more player${if (more == 1) "" else "s"} to join."
 			} else {
 				more = maximum - players.size
-				status.setText(
-						"Waiting for someone to start the game or up to {0} more player{1} to join.",
-						more,
-						if (more == 1) "" else "s"
-				)
+				status.text = "Waiting for someone to start the game or up to $more more " +
+						"player${if (more == 1) "" else "s"} to join."
+
 			}
 		}
 	}

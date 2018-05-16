@@ -4,8 +4,6 @@ import jokatu.game.Game
 import jokatu.game.player.Player
 import org.springframework.web.servlet.ModelAndView
 
-import java.text.MessageFormat
-
 /**
  * Determine which view a player should see when requesting a game.
  * @author steven
@@ -28,7 +26,7 @@ abstract class ViewResolver<P : Player, G : Game<P>> protected constructor(prote
 		val playerClass = playerClass
 		if (!playerClass.isInstance(player)) {
 			throw IllegalArgumentException(
-					MessageFormat.format("Player was not of the right type.  Expected {0}.", playerClass)
+					"Player was not of the right type.  Expected ${playerClass.simpleName} but was ${player.javaClass.simpleName}."
 			)
 		}
 		return playerClass.cast(player)

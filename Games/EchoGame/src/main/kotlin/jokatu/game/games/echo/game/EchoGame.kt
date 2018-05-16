@@ -23,7 +23,7 @@ class EchoGame internal constructor(identifier: GameID) : Game<StandardPlayer>(i
 		Timer().scheduleAtFixedRate(
 				object : TimerTask() {
 					override fun run() {
-						status.setText("The time is: ${now().format(ofPattern("HH:mm:ss"))}")
+						status.text = "The time is: ${now().format(ofPattern("HH:mm:ss"))}"
 					}
 				},
 				0,

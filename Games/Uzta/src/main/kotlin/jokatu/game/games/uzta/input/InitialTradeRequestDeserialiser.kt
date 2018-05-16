@@ -5,7 +5,6 @@ import jokatu.game.games.uzta.input.InitialTradeRequest.Companion.SUPPLY
 import jokatu.game.input.DeserialisationException
 import jokatu.game.input.InputDeserialiser
 import org.springframework.stereotype.Component
-import java.text.MessageFormat
 import java.util.Arrays.stream
 import java.util.stream.Collectors.joining
 
@@ -30,15 +29,12 @@ class InitialTradeRequestDeserialiser : InputDeserialiser<InitialTradeRequest>()
 		try {
 			resource = NodeType.valueOf(resourceName)
 		} catch (e: IllegalArgumentException) {
+			val nodeTypes = stream(NodeType.values())
+					.map({ it.toString() })
+					.collect(joining(", ", "[", "]"))
 			throw DeserialisationException(
 					json,
-					MessageFormat.format(
-							"{0} was not a valid node type.  Expected one of {1}.",
-							resourceName,
-							stream(NodeType.values())
-									.map({ it.toString() })
-									.collect(joining(", ", "[", "]"))
-					)
+					"$resourceName was not a valid node type.  Expected one of $nodeTypes."
 			)
 		}
 

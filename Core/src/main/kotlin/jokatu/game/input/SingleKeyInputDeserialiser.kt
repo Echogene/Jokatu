@@ -3,7 +3,7 @@ package jokatu.game.input
 /**
  * An [InputDeserialiser] where the JSON is expected to have only one key.
  * @param <I> the type of the [Input] to output
-</I> */
+ */
 abstract class SingleKeyInputDeserialiser<I : Input> : InputDeserialiser<I>() {
 
 	protected abstract val keyName: String

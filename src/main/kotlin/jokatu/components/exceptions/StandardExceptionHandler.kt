@@ -14,7 +14,6 @@ import org.springframework.messaging.support.ErrorMessage
 import org.springframework.messaging.support.GenericMessage
 import org.springframework.stereotype.Component
 import java.security.Principal
-import java.text.MessageFormat
 import java.util.regex.Pattern
 
 @Component
@@ -34,10 +33,7 @@ class StandardExceptionHandler @Autowired constructor(private val sender: Storin
 			}
 		}
 		log.error(
-				MessageFormat.format(
-						"Exception occurred when receiving message\n{0}",
-						accessor.getDetailedLogMessage(originalMessage.payload)
-				),
+				"Exception occurred when receiving message\n${accessor.getDetailedLogMessage(originalMessage.payload)}",
 				e
 		)
 	}

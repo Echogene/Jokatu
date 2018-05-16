@@ -32,7 +32,7 @@ class MainStage internal constructor(
 		addInputAcceptor(endTurnInputAcceptor)
 
 		turnManager.observe { e ->
-			status.setText("Waiting for {0} to buy edges or pass.", e.newPlayer)
+			status.text = "Waiting for ${e.newPlayer} to buy edges or pass."
 			// Forward the event.
 			fireEvent(e)
 		}

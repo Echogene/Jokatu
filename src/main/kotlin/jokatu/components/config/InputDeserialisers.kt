@@ -11,7 +11,6 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import java.lang.reflect.Modifier
-import java.text.MessageFormat
 import java.util.*
 import java.util.stream.Collectors
 import javax.annotation.PostConstruct
@@ -46,14 +45,13 @@ class InputDeserialisers
 	private fun addDeserialiser(inputDeserialiser: InputDeserialiser<*>) {
 		val inputType = getInputType(inputDeserialiser)
 		if (isAbstract(inputType)) {
-			throw Exception(MessageFormat.format(
-					"The deserialiser {0} returns the abstract input class {1}",
-					inputDeserialiser.javaClass.simpleName,
-					inputType.simpleName
-			))
+			throw Exception(
+					"The deserialiser ${inputDeserialiser.javaClass.simpleName} returns the abstract input class "
+							+ "${inputType.simpleName}."
+			)
 		}
 		if (deserialiserMap.containsKey(inputType)) {
-			throw Exception(MessageFormat.format("The input class {0} has multiple deserialisers", inputType.simpleName))
+			throw Exception("The input class ${inputType.simpleName} has multiple deserialisers.")
 		}
 		deserialiserMap[inputType] = inputDeserialiser
 	}
@@ -71,16 +69,14 @@ class InputDeserialisers
 				.collect(Collectors.toSet())
 		when {
 			deserialiseReturnClasses.size == 1 -> return deserialiseReturnClasses.iterator().next() as Class<out Input>
-			deserialiseReturnClasses.size > 1 -> throw Exception(MessageFormat.format(
-					"The deserialiser {0} has multiple declared methods that have a return type of a strict subclass of {1}.",
-					deserialiser.javaClass.simpleName,
-					Input::class.java.simpleName
-			))
-			else -> throw Exception(MessageFormat.format(
-					"The deserialiser {0} has no declared methods that have a return type of a strict subclass of {1}.",
-					deserialiser.javaClass.simpleName,
-					Input::class.java.simpleName
-			))
+			deserialiseReturnClasses.size > 1 -> throw Exception(
+					"The deserialiser ${deserialiser.javaClass.simpleName} has multiple declared methods that have a "
+							+ "return type of a strict subclass of ${Input::class.java.simpleName}."
+			)
+			else -> throw Exception(
+					"The deserialiser ${deserialiser.javaClass.simpleName} has no declared methods that have a return "
+							+ "type of a strict subclass of ${Input::class.java.simpleName}."
+			)
 		}
 	}
 

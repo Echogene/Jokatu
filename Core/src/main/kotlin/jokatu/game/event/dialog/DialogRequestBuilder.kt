@@ -7,7 +7,7 @@ import ophelia.function.ExceptionalBiConsumer
 /**
  * The beginning of sequence of builders that eventually result in a [DialogRequest] being sent to a player.
  * @param <P> the type of player to be presented with the dialog
-</P> */
+ */
 class DialogRequestBuilder<P : Player> private constructor(private val player: P) : DialogRequestBuilderNeedingTitle<P> {
 
 	override fun withTitle(title: String): DialogRequestBuilderNeedingMessage<P> {

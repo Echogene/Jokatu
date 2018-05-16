@@ -34,8 +34,7 @@ class DialogRequestEventHandler @Autowired constructor(
 				ExceptionalConsumer { json ->
 					val deserialiser = inputDeserialisers.getDeserialiser(event.inputClass) ?: throw GameException(
 							game.identifier,
-							"Could not find deserialiser for {0} while responding to dialog.",
-							event.inputClass.simpleName
+							"Could not find deserialiser for ${event.inputClass.simpleName} while responding to dialog."
 					)
 					try {
 						val acknowledgeInput = acknowledgeInputDeserialiser.deserialise(json)

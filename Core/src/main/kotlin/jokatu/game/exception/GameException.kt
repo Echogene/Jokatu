@@ -2,8 +2,6 @@ package jokatu.game.exception
 
 import jokatu.game.GameID
 
-import java.text.MessageFormat
-
 /**
  * An exception that occurs within a particular game.
  * @author steven
@@ -24,8 +22,4 @@ class GameException : Exception {
 	) : super(message, cause) {
 		this.id = id
 	}
-
-	constructor(id: GameID, cause: Throwable, pattern: String, vararg arguments: Any?) : this(id, cause, MessageFormat.format(pattern, *arguments))
-
-	constructor(id: GameID, pattern: String, vararg arguments: Any?) : this(id, MessageFormat.format(pattern, *arguments))
 }

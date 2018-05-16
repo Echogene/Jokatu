@@ -2,8 +2,6 @@ package jokatu.game.player
 
 import jokatu.game.Game
 
-import java.text.MessageFormat
-
 /**
  * A [PlayerFactory] that produces players for a specific game type.
  * @param <P> the type of [Player] to produce
@@ -17,7 +15,8 @@ abstract class AbstractPlayerFactory<P : Player, G : Game<P>> : PlayerFactory<P>
 		val gameClass = gameClass
 		if (!gameClass.isInstance(game)) {
 			throw IllegalArgumentException(
-					MessageFormat.format("Game was not of the right type.  Expected {0}.", gameClass)
+					"Game was not of the right type.  Expected ${gameClass.simpleName} but was " +
+							"${game.javaClass.simpleName}."
 			)
 		}
 		return gameClass.cast(game)

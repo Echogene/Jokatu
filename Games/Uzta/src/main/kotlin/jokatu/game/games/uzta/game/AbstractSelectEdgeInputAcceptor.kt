@@ -35,20 +35,20 @@ abstract class AbstractSelectEdgeInputAcceptor protected constructor(protected v
 
 		val startId = input.startId
 		val start = graph.getNode(startId)
-				.orElseThrow { UnacceptableInputException("Could not find node with id ''{0}''", startId) }
+				.orElseThrow { UnacceptableInputException("Could not find node with id '$startId'") }
 
 		val endId = input.endId
 		val end = graph.getNode(endId)
-				.orElseThrow { UnacceptableInputException("Could not find node with id ''{0}''", endId) }
+				.orElseThrow { UnacceptableInputException("Could not find node with id '$endId'") }
 
 		val edge = graph.getEdge(start, end)
-				.orElseThrow { UnacceptableInputException("Could not find edge between {0} and {1}", start, end) }
+				.orElseThrow { UnacceptableInputException("Could not find edge between $start and $end") }
 
 		if (edge.owner != null) {
 			if (edge.owner == inputter) {
 				throw UnacceptableInputException("You already own that edge!")
 			} else {
-				throw UnacceptableInputException("{0} already owns this edge.", edge.owner!!.name)
+				throw UnacceptableInputException("${edge.owner!!.name} already owns this edge.")
 			}
 		}
 		return edge

@@ -30,11 +30,7 @@ internal class InputStage(players: Collection<StandardPlayer>, private val statu
 	init {
 		this.players = ArrayList(players)
 
-		status.setText(
-				"Waiting for inputs from {0} and {1}.",
-				this.players[0],
-				this.players[1]
-		)
+		status.text = "Waiting for inputs from ${this.players[0]} and ${this.players[1]}."
 	}
 
 	override fun start() {
@@ -64,7 +60,7 @@ internal class InputStage(players: Collection<StandardPlayer>, private val statu
 			}
 		} else {
 			val other = getOtherPlayer(inputter)
-			status.setText("Waiting for input from {0}.", other.name)
+			status.text = "Waiting for input from ${other.name}."
 			fireEvent(AwaitingInputEvent(other))
 		}
 	}

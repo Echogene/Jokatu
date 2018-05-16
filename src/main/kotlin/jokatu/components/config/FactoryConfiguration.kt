@@ -11,7 +11,6 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
-import java.text.MessageFormat.format
 import java.util.*
 import java.util.stream.Collectors.toMap
 import javax.annotation.PostConstruct
@@ -43,7 +42,7 @@ class FactoryConfiguration {
 
 	private fun <T: Any> getGameNameFromFactoryAnnotation(factory: T): String {
 		val annotation = factory.javaClass.getAnnotation(GameComponent::class.java)
-				?: throw RuntimeException(format("{0} was not annotated with @GameComponent.", factory))
+				?: throw RuntimeException("$factory was not annotated with @GameComponent.")
 		return annotation.gameName
 	}
 
@@ -53,16 +52,16 @@ class FactoryConfiguration {
 	}
 
 	inner class GameFactories {
-		val gameNames: List<String>
+		val gameNames: MutableList<String>
 
 		init {
 			gameNames = ArrayList(configs.keys)
-			Collections.sort(gameNames)
+			gameNames.sort()
 		}
 
 		private fun getConfig(gameName: String): GameConfiguration {
 			return configs[gameName]
-					?: throw IllegalArgumentException(format("Unrecognised game name ''{0}''.", gameName))
+					?: throw IllegalArgumentException("Unrecognised game name '$gameName'.")
 		}
 
 		fun getFactory(gameName: String): GameFactory<*> {
@@ -82,7 +81,6 @@ class FactoryConfiguration {
 	}
 
 	companion object {
-
 		private val log = LoggerFactory.getLogger(FactoryConfiguration::class.java)
 	}
 }

@@ -5,7 +5,6 @@ import jokatu.game.games.uzta.game.Uzta
 import jokatu.game.games.uzta.graph.UztaGraph
 import jokatu.game.games.uzta.player.UztaPlayer
 import org.springframework.stereotype.Component
-import java.text.MessageFormat
 import java.util.function.Predicate.isEqual
 
 /**
@@ -24,11 +23,7 @@ class ScoreUpdatedEventHandler : AbstractEventHandler<Uzta, GraphUpdatedEvent>()
 	) {
 		game.getPlayers().forEach { player ->
 			sender.send(
-					MessageFormat.format(
-							"/topic/score.game.{0}.{1}",
-							game.identifier,
-							player.name
-					),
+					"/topic/score.game.${game.identifier}.${player.name}",
 					calculateScore(player, game.graph)
 			)
 		}

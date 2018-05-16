@@ -9,7 +9,6 @@ import ophelia.collections.bag.BagUtils
 import ophelia.collections.bag.BaseIntegerBag
 import ophelia.collections.bag.HashBag
 import ophelia.event.observable.AbstractSynchronousObservable
-import java.text.MessageFormat
 import java.util.stream.Collectors.joining
 
 class UztaPlayer(override val name: String) : AbstractSynchronousObservable<GameEvent>(), Player {
@@ -19,16 +18,13 @@ class UztaPlayer(override val name: String) : AbstractSynchronousObservable<Game
 
 	fun giveResources(givenResources: BaseIntegerBag<NodeType>) {
 		if (resources.getSum(givenResources).hasLackingItems()) {
-			throw NotEnoughResourcesException(
-					"{0} does not have enough resources {1}",
-					name,
-					BagUtils.presentBag(
-							givenResources,
-							{ obj, number -> obj.getNumber(number) },
-							joining(", ", "to be given ", " "),
-							joining(", ", "and to give ", ".")
-					)
+			val bagMessage = BagUtils.presentBag(
+					givenResources,
+					{ obj, number -> obj.getNumber(number) },
+					joining(", ", "to be given ", " "),
+					joining(", ", "and to give ", ".")
 			)
+			throw NotEnoughResourcesException("$name does not have enough resources $bagMessage")
 		}
 		resources.merge(givenResources)
 		fireEvent(ResourcesUpdatedEvent(this, givenResources))
@@ -50,5 +46,5 @@ class UztaPlayer(override val name: String) : AbstractSynchronousObservable<Game
 		return resources
 	}
 
-	class NotEnoughResourcesException(pattern: String, vararg arguments: Any) : RuntimeException(MessageFormat.format(pattern, *arguments))
+	class NotEnoughResourcesException(message: String) : RuntimeException(message)
 }

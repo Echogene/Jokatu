@@ -26,7 +26,6 @@ import ophelia.util.function.PredicateUtils.not
 import org.springframework.util.StringUtils.capitalize
 import java.text.MessageFormat
 import java.util.Arrays.stream
-import java.util.function.BiFunction
 import java.util.stream.Collectors.joining
 import java.util.stream.Collectors.toList
 
@@ -49,10 +48,7 @@ class InitialTradeRequestAcceptor internal constructor(private val players: Map<
 			val form = constructFormForSupplyTrade(input.resource)
 			val request = DialogRequestBuilder.forPlayer(inputter)
 					.withTitle("Trade with the supply")
-					.withMessage(MessageFormat.format(
-							"Resources can be traded with the supply at a ratio of {0}:1.",
-							SUPPLY_RATIO
-					))
+					.withMessage("Resources can be traded with the supply at a ratio of $SUPPLY_RATIO:1.")
 					.withInputType(SupplyTradeRequest::class.java)
 					.withConsumer(ExceptionalBiConsumer<SupplyTradeRequest, UztaPlayer, Exception> { supplyTradeRequest, trader -> this.acceptSupplyRequest(supplyTradeRequest, trader) })
 					.withForm(form)
@@ -89,15 +85,13 @@ class InitialTradeRequestAcceptor internal constructor(private val players: Map<
 
 		val gainedResources = trade.surplusItems
 		if (0 != gainedResources.size() - givenResources.size() / 3) {
-			throw UnacceptableInputException(
-					"The trade did not balance.  {0}",
-					BagUtils.presentBag(
-							trade,
-							BiFunction<NodeType, Int, String> { obj, number -> obj.getNumber(number) },
-							joining(", ", "You can't get ", " "),
-							joining(", ", "by giving ", ".")
-					)
+			val message = BagUtils.presentBag(
+					trade,
+					{ obj, number -> obj.getNumber(number) },
+					joining(", ", "You can't get ", " "),
+					joining(", ", "by giving ", ".")
 			)
+			throw UnacceptableInputException("The trade did not balance.  $message")
 		}
 		trader.giveResources(trade)
 	}
@@ -110,12 +104,8 @@ class InitialTradeRequestAcceptor internal constructor(private val players: Map<
 				.map<VoidMaybe>(wrap { resource ->
 					val number = givenResources.getNumberOf(resource)
 					if (0 != number % SUPPLY_RATIO) {
-						throw UnacceptableInputException(
-								"You can''t give {0}: {1} is not a multiple of {2}.",
-								resource.getNumber(number),
-								number,
-								SUPPLY_RATIO
-						)
+						throw UnacceptableInputException("You can't give ${resource.getNumber(number)}: $number is not "
+								+ "a multiple of $SUPPLY_RATIO.")
 					}
 				})
 				.collect<VoidMaybe, Map<Boolean, Set<VoidMaybe>>>(merge())
@@ -128,7 +118,7 @@ class InitialTradeRequestAcceptor internal constructor(private val players: Map<
 			playerName: String
 	): UztaPlayer {
 		val requestedPlayer = players[playerName] ?: throw UnacceptableInputException(
-				"You can''t request at trade from {0}; they are not playing the game!", playerName
+				"You can't request at trade from $playerName; they are not playing the game!"
 		)
 		if (requestedPlayer == inputter) {
 			throw UnacceptableInputException("You can't trade with yourself!")
@@ -211,13 +201,9 @@ class InitialTradeRequestAcceptor internal constructor(private val players: Map<
 		)
 
 		val request = DialogRequestBuilder.forPlayer(playerToTradeWith)
-				.withTitle(MessageFormat.format("{0} wants to trade with you", inputter.name))
-				.withMessage(MessageFormat.format(
-						"{0} would give you {1} in exchange for {2}",
-						inputter.name,
-						presentResources(givenResources),
-						presentResources(wantedResources)
-				))
+				.withTitle("${inputter.name} wants to trade with you")
+				.withMessage("${inputter.name} would give you ${presentResources(givenResources)} in exchange for "
+						+ "${presentResources(wantedResources)}.")
 				.withInputType(AcknowledgeInput::class.java)
 				.withConsumer(ExceptionalBiConsumer<AcknowledgeInput, UztaPlayer, Exception> { ack, _ ->
 					if (ack.isAcknowledgement) {
@@ -238,7 +224,7 @@ class InitialTradeRequestAcceptor internal constructor(private val players: Map<
 	) {
 		val resourcesLeftAfterGiving = player.getResourcesLeftAfter(resources)
 		if (resourcesLeftAfterGiving.hasLackingItems()) {
-			throw UnacceptableInputException(
+			throw UnacceptableInputException(MessageFormat.format(
 					message,
 					player.name,
 					presentResources(resources),
@@ -246,7 +232,7 @@ class InitialTradeRequestAcceptor internal constructor(private val players: Map<
 							.filter { entry -> entry.right < 0 }
 							.map { entry -> entry.left.getNumber(-entry.right) }
 							.collect(joining(", "))
-			)
+			))
 		}
 	}
 

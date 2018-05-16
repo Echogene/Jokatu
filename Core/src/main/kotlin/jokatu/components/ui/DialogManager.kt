@@ -80,16 +80,14 @@ class DialogManager
 		if (dialog == null || !isActuallyPlayersDialog) {
 			throw GameException(
 					dialogId.gameId,
-					"Dialog with ID ''{0}'' could not be found.",
-					dialogId.dialogId
+					"Dialog with ID '${dialogId.dialogId}' could not be found."
 			)
 		}
 		dialog.accept(json)
 
 		val dialogUIs = playersDialogs[gamePlayerKey] ?: throw GameException(
 				dialogId.gameId,
-				"You have no dialogs.",
-				dialogId.dialogId
+				"You have no dialogs."
 		)
 		dialogUIs.removeIf { dialogUI -> dialogUI.dialogId == dialogId.dialogId }
 		updatePlayerDialogs(gamePlayerKey)

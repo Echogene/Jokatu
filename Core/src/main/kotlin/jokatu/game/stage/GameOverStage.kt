@@ -15,7 +15,7 @@ import ophelia.event.observable.AbstractSynchronousObservable
 class GameOverStage(status: StandardTextStatus) : AbstractSynchronousObservable<GameEvent>(), Stage<GameEvent> {
 
 	init {
-		status.setText("Game over.")
+		status.text = "Game over."
 	}
 
 	override val acceptedInputs: BaseCollection<Class<out Input>>

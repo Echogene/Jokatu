@@ -1,6 +1,5 @@
 package jokatu.game.games.noughtsandcrosses.input
 
-import java.text.MessageFormat
 import java.util.*
 
 enum class NoughtOrCross constructor(private val displayText: String) {
@@ -22,10 +21,9 @@ enum class NoughtOrCross constructor(private val displayText: String) {
 					.filter { noughtOrCross -> noughtOrCross.displayText == displayText }
 					.findAny()
 					.orElseThrow {
-						IllegalArgumentException(MessageFormat.format(
-								"Could not find nought or cross with display text ''{0}''",
-								displayText
-						))
+						IllegalArgumentException(
+								"Could not find nought or cross with display text '$displayText'."
+						)
 					}
 		}
 	}

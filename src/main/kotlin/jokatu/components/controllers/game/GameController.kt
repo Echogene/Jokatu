@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.ModelAndView
 import org.springframework.web.servlet.view.RedirectView
 import java.security.Principal
-import java.text.MessageFormat.format
 
 /**
  * A big controller (that should probably be several) that controls client requests for games.
@@ -68,7 +67,7 @@ constructor(
 
 		val game = gameDao.read(identity) ?: throw GameException(
 				identity,
-				format("Game with ID {0} does not exist.  You can''t input to a game that does not exist.", identity)
+				"Game with ID $identity does not exist.  You can't input to a game that does not exist."
 		)
 
 		val player = getPlayer(game, principal.name)
@@ -83,7 +82,7 @@ constructor(
 					.map<Maybe<Input>>(wrap({ deserialiser -> deserialiser!!.deserialise(json) }))
 					.collect(toUniqueSuccess<Input>())
 					.returnOnSuccess()
-					.throwMappedFailure({ e -> GameException(identity, e, "Could not deserialise ''{0}''.", json) })
+					.throwMappedFailure { e -> GameException(identity, e, "Could not deserialise '$json'.") }
 		}
 		game.accept(input, player)
 	}

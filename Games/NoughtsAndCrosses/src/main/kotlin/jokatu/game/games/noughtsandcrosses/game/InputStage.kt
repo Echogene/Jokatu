@@ -15,7 +15,6 @@ import jokatu.game.turn.TurnManager
 import ophelia.collections.list.UnmodifiableList
 import ophelia.collections.set.HashSet
 import ophelia.collections.set.UnmodifiableSet
-import java.text.MessageFormat.format
 import java.util.*
 import java.util.Arrays.asList
 import java.util.Arrays.stream
@@ -42,10 +41,9 @@ internal class InputStage(players: Collection<NoughtsAndCrossesPlayer>, status: 
 				.collect(Collectors.toList())
 
 	init {
-
 		turnManager = TurnManager(this.players)
 		turnManager.observe { e ->
-			status.text = format("Waiting for {0} to choose a cell.", e.newPlayer)
+			status.text = "Waiting for ${e.newPlayer} to choose a cell."
 			// Forward the event.
 			fireEvent(e)
 		}
@@ -66,7 +64,7 @@ internal class InputStage(players: Collection<NoughtsAndCrossesPlayer>, status: 
 
 		val cell = input.cellId
 		if (inputs.containsKey(cell)) {
-			throw UnacceptableInputException("Cell {0} already contained a {1}.", cell, inputs[cell])
+			throw UnacceptableInputException("Cell $cell already contained a ${inputs[cell]}.")
 		}
 		inputs[cell] = inputter.allegiance!!
 

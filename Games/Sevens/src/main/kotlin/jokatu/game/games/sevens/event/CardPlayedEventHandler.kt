@@ -3,7 +3,6 @@ package jokatu.game.games.sevens.event
 import jokatu.game.event.AbstractEventHandler
 import jokatu.game.games.sevens.game.SevensGame
 import org.springframework.stereotype.Component
-import java.text.MessageFormat.format
 
 /**
  * @author Steven Weston
@@ -20,7 +19,7 @@ class CardPlayedEventHandler : AbstractEventHandler<SevensGame, CardPlayedEvent>
 	override fun handleCastGameAndEvent(game: SevensGame, event: CardPlayedEvent) {
 		val suit = event.card.suit
 		sender.send(
-				format("/topic/substatus.game.{0}.{1}", game.identifier, suit),
+				"/topic/substatus.game.${game.identifier}.$suit",
 				game.getCardsOfSuitPlayed(suit)
 		)
 	}

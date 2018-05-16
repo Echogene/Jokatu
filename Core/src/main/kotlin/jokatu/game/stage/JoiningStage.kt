@@ -28,17 +28,12 @@ class JoiningStage<P : Player>(
 		get() = inputAcceptor.acceptedInputs
 
 	init {
+		status.text = "Waiting for $number player${if (number == 1) "" else "s"} to join."
 
-		status.setText(
-				"Waiting for {0} player{1} to join.",
-				number,
-				if (number == 1) "" else "s"
-		)
-
-		inputAcceptor.observe({ this.onPlayerJoin(it) })
+		inputAcceptor.observe(::onPlayerJoin)
 
 		// Forward the events.
-		inputAcceptor.observe({ this.fireEvent(it) })
+		inputAcceptor.observe(::fireEvent)
 	}
 
 	private fun onPlayerJoin(gameEvent: PlayerJoinedEvent) {
@@ -46,11 +41,7 @@ class JoiningStage<P : Player>(
 			fireEvent(StageOverEvent())
 		} else {
 			val more = number - players.size
-			status.setText(
-					"Waiting for {0} more player{1} to join.",
-					more,
-					if (more == 1) "" else "s"
-			)
+			status.text = "Waiting for $more more player${if (more == 1) "" else "s"} to join."
 		}
 	}
 

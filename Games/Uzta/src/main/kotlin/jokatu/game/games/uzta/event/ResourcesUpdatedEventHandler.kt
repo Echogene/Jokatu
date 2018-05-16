@@ -4,7 +4,6 @@ import jokatu.game.Game
 import jokatu.game.event.SpecificEventHandler
 import jokatu.game.games.uzta.graph.NodeType
 import org.springframework.stereotype.Component
-import java.text.MessageFormat
 
 @Component
 class ResourcesUpdatedEventHandler : SpecificEventHandler<ResourcesUpdatedEvent>() {
@@ -16,12 +15,7 @@ class ResourcesUpdatedEventHandler : SpecificEventHandler<ResourcesUpdatedEvent>
 
 		for (type in NodeType.values()) {
 			sender.send(
-					MessageFormat.format(
-							"/topic/resource.game.{0}.{1}.{2}",
-							game.identifier,
-							player.name,
-							type.toString()
-					),
+					"/topic/resource.game.${game.identifier}.${player.name}.$type",
 					player.getNumberOfType(type)
 			)
 		}

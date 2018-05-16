@@ -9,10 +9,8 @@ import jokatu.game.games.sevens.input.SkipInputAcceptor
 import jokatu.game.games.sevens.player.SevensPlayer
 import jokatu.game.status.StandardTextStatus
 import jokatu.game.turn.TurnManager
-import java.text.MessageFormat.format
 import java.util.*
 import java.util.Collections.shuffle
-import java.util.function.Supplier
 
 internal class SevensStage(players: Map<String, SevensPlayer>, status: StandardTextStatus, playedCards: Map<Suit, TreeSet<Card>>) : MultiInputStage() {
 
@@ -23,7 +21,7 @@ internal class SevensStage(players: Map<String, SevensPlayer>, status: StandardT
 		get() = players.stream()
 				.filter { player -> player.hand.contains(Cards.SEVEN_OF_DIAMONDS) }
 				.findAny()
-				.orElseThrow<IllegalStateException>(Supplier { IllegalStateException() })
+				.orElseThrow { IllegalStateException() }
 
 	init {
 		this.players = assignDealOrder(players)
@@ -33,7 +31,7 @@ internal class SevensStage(players: Map<String, SevensPlayer>, status: StandardT
 
 		turnManager = TurnManager(this.players)
 		turnManager.observe { e ->
-			status.text = format("Waiting for {0} to play a card or pass.", e.newPlayer)
+			status.text = "Waiting for ${e.newPlayer} to play a card or pass."
 			// Forward the event.
 			fireEvent(e)
 		}

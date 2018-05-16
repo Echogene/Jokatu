@@ -4,8 +4,6 @@ import jokatu.game.Game
 import jokatu.game.event.SpecificEventHandler
 import org.springframework.stereotype.Component
 
-import java.text.MessageFormat.format
-
 /**
  * Private events should be forwarded to the users they specify.
  * @author Steven Weston
@@ -17,13 +15,12 @@ class CellChosenEventHandler : SpecificEventHandler<CellChosenEvent>() {
 		get() = CellChosenEvent::class.java
 
 	override fun handleCastEvent(game: Game<*>, event: CellChosenEvent) {
-
 		sender.send(
-				format("/topic/substatus.game.{0}.cell_{1}", game.identifier, event.cell),
+				"/topic/substatus.game.${game.identifier}.cell_${event.cell}",
 				event.getNoughtOrCross()
 		)
 		sender.send(
-				format("/topic/substatus.game.{0}.lines", game.identifier),
+				"/topic/substatus.game.${game.identifier}.lines",
 				event.lines
 		)
 	}

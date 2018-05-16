@@ -11,7 +11,6 @@ import jokatu.game.turn.TurnManager
 import ophelia.collections.bag.BaseIntegerBag
 import ophelia.collections.bag.HashBag
 import ophelia.tuple.Pair
-import java.text.MessageFormat
 import java.util.*
 import java.util.stream.Collectors
 
@@ -28,7 +27,7 @@ class MainStageSelectEdgeInputAcceptor internal constructor(graph: UztaGraph, tu
 	private fun roll() {
 		val roll = 1 + die.nextInt(Uzta.DICE_SIZE)
 		val currentPlayer = turnManager.currentPlayer!!
-		fireEvent(StandardPublicGameEvent(MessageFormat.format("{0} rolled {1}", currentPlayer.name, roll)))
+		fireEvent(StandardPublicGameEvent("${currentPlayer.name} rolled $roll"))
 
 		resourceDistributor.distributeResourcesForRoll(roll)
 	}
@@ -40,13 +39,11 @@ class MainStageSelectEdgeInputAcceptor internal constructor(graph: UztaGraph, tu
 		val edgeCost = getCost(edge)
 		val resourcesLeft = inputter.getResourcesLeftAfter(edgeCost)
 		if (resourcesLeft.hasLackingItems()) {
-			throw UnacceptableInputException(
-					"You can''t afford that edge.  You still need {0}.",
-					resourcesLeft.stream()
-							.filter { pair -> pair.right < 0 }
-							.map { this.presentNeededResources(it) }
-							.collect(Collectors.joining(", "))
-			)
+			val neededResources = resourcesLeft.stream()
+					.filter { pair -> pair.right < 0 }
+					.map { this.presentNeededResources(it) }
+					.collect(Collectors.joining(", "))
+			throw UnacceptableInputException("You can''t afford that edge.  You still need $neededResources.")
 		}
 
 		setOwner(edge, inputter)

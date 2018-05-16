@@ -7,7 +7,7 @@ import jokatu.game.player.Player
  * Accepts [JoinInput]s from players and adds them to the game if there is enough room.  It fires a
  * [PlayerJoinedEvent] if the joining was successful.
  * @param <P> the type of [Player] to accept input from
-</P> */
+ */
 class JoinInputAcceptor<P : Player>(
 		override val playerClass: Class<P>, private val players: MutableMap<String, P>,
 		/**

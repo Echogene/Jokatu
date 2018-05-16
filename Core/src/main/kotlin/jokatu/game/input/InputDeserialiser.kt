@@ -1,11 +1,9 @@
 package jokatu.game.input
 
-import java.text.MessageFormat
-
 /**
  * This takes JSON from the client and turns it into input.
  * @param <I> the type of the [Input] to output
-</I> */
+ */
 abstract class InputDeserialiser<I : Input> {
 
 	@Throws(DeserialisationException::class)
@@ -14,10 +12,10 @@ abstract class InputDeserialiser<I : Input> {
 	@Throws(DeserialisationException::class)
 	protected fun getMandatoryKeyValue(keyName: String, json: Map<String, Any>): Any {
 		if (!json.containsKey(keyName)) {
-			throw DeserialisationException(json, MessageFormat.format("Did not contain the key ''{0}''.", keyName))
+			throw DeserialisationException(json, "Did not contain the key '$keyName'.")
 		}
 		return json[keyName]
-				?: throw DeserialisationException(json, MessageFormat.format("The value for the key ''{0}'' was null.", keyName))
+				?: throw DeserialisationException(json, "The value for the key '$keyName' was null.")
 	}
 
 	@Throws(DeserialisationException::class)
@@ -39,13 +37,7 @@ abstract class InputDeserialiser<I : Input> {
 		if (!type.isInstance(value)) {
 			throw DeserialisationException(
 					json,
-					MessageFormat.format(
-							"The value for ''{0}'' was not a {1}: instead, was the {2} ''{3}''",
-							keyName,
-							type.simpleName,
-							value.javaClass.simpleName,
-							value
-					)
+					"The value for '$keyName' was not a ${type.simpleName}: instead, was the ${value.javaClass.simpleName} '$value'."
 			)
 		}
 		return type.cast(value)

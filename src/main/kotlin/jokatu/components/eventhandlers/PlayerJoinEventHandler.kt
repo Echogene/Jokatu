@@ -13,7 +13,6 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 import org.springframework.stereotype.Component
 import org.springframework.web.socket.messaging.SessionDisconnectEvent
 import org.springframework.web.socket.messaging.SessionSubscribeEvent
-import java.text.MessageFormat.format
 import java.util.Collections.emptyMap
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.Executors
@@ -96,13 +95,13 @@ class PlayerJoinEventHandler
 			val observers = userNames.stream()
 					.filter(not { game.hasPlayer(it) })
 					.collect(toSet())
-			sender.send(format("/topic/observers.game.{0}", gameId), observers)
+			sender.send("/topic/observers.game.$gameId", observers)
 
 			val playerStatuses = game.getPlayers().stream()
 					.map({ it.name })
 					.map { name -> PlayerStatus(userNames.contains(name), name) }
 					.collect(toSet())
-			sender.send(format("/topic/players.game.{0}", gameId), playerStatuses)
+			sender.send("/topic/players.game.$gameId", playerStatuses)
 		}, 500, MILLISECONDS)
 		gameUpdates[gameId] = future
 	}

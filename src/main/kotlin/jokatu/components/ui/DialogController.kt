@@ -1,6 +1,7 @@
 package jokatu.components.ui
 
 import jokatu.components.exceptions.StandardExceptionHandler
+import jokatu.components.ui.DialogResponder.Companion.DIALOG_ID
 import jokatu.game.GameID
 import jokatu.game.exception.GameException
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,22 +23,17 @@ class DialogController @Autowired constructor(
 	@Throws(GameException::class)
 	fun input(@DestinationVariable("identity") identity: GameID, @Payload json: MutableMap<String, Any>, principal: Principal) {
 
-		if (!json.containsKey(DialogResponder.DIALOG_ID)) {
+		if (!json.containsKey(DIALOG_ID)) {
 			throw GameException(
 					identity,
-					"The key ''{0}'' was missing in the dialog response {1}.",
-					DialogResponder.DIALOG_ID,
-					json
+					"The key '$DIALOG_ID' was missing in the dialog response $json."
 			)
 		}
-		val dialogId = json.remove(DialogResponder.DIALOG_ID)
+		val dialogId = json.remove(DIALOG_ID)
 		if (dialogId !is String) {
 			throw GameException(
 					identity,
-					"The value ''{0}'' for the key ''{1}'' was not a string in the dialog response {2}.",
-					dialogId,
-					DialogResponder.DIALOG_ID,
-					json
+					"The value '$dialogId' for the key '$DIALOG_ID' was not a string in the dialog response $json."
 			)
 		}
 		dialogResponder.respondToDialog(DialogResponder.DialogID(identity, dialogId), principal.name, json)
