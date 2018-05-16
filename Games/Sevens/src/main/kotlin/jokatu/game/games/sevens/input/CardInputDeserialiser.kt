@@ -6,10 +6,7 @@ import jokatu.game.input.TypedSingleKeyInputDeserialiser
 import org.springframework.stereotype.Component
 
 @Component
-class CardInputDeserialiser : TypedSingleKeyInputDeserialiser<String, CardInput>() {
-
-	override val type: Class<String>
-		get() = String::class.java
+class CardInputDeserialiser : TypedSingleKeyInputDeserialiser<String, CardInput>(String::class.java) {
 
 	override val keyName: String
 		get() = "card"

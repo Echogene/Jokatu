@@ -5,10 +5,7 @@ import jokatu.game.input.TypedSingleKeyInputDeserialiser
 import org.springframework.stereotype.Component
 
 @Component
-class EchoInputDeserialiser : TypedSingleKeyInputDeserialiser<String, EchoInput>() {
-
-	override val type: Class<String>
-		get() = String::class.java
+class EchoInputDeserialiser : TypedSingleKeyInputDeserialiser<String, EchoInput>(String::class.java) {
 
 	override val keyName: String
 		get() = "text"
