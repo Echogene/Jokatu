@@ -25,7 +25,7 @@ class StoringMessageSender @Autowired constructor(
 
 	@Throws(MessagingException::class)
 	fun sendMessageToUser(user: String, destination: String, message: Message<*>) {
-		log.debug("Sending message '$message' to $destination for $user")
+		log.trace("Sending message '$message' to $destination for $user")
 		messageStore.storeForUser(user, destination, message)
 		simpMessagingTemplate.convertAndSendToUser(user, destination, message.payload, message.headers)
 	}
@@ -37,7 +37,7 @@ class StoringMessageSender @Autowired constructor(
 
 	@Throws(MessagingException::class)
 	fun sendMessage(destination: String, message: Message<*>) {
-		log.debug("Sending message '$message' to $destination")
+		log.trace("Sending message '$message' to $destination")
 		messageStore.store(destination, message)
 		simpMessagingTemplate.convertAndSend(destination, message.payload, message.headers)
 	}
