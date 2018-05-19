@@ -22,6 +22,9 @@ class EventBroadcaster @Autowired constructor(private val applicationContext: Ap
 		eventHandlers = applicationContext.getBeansOfType(EventHandler::class.java).values
 	}
 
+	/**
+	 * Broadcast the given [event][GameEvent] for the given [game][Game] to all [event handler beans][EventHandler].
+	 */
 	fun broadcast(game: Game<*>, event: GameEvent) {
 		eventHandlers.forEach { eventHandler -> eventHandler.handle(game, event) }
 	}

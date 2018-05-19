@@ -6,6 +6,9 @@ package jokatu.identity
  */
 interface IdentifiableReader<I : Identity, J : Identifiable<I>> {
 
+	/**
+	 * @return the [Identifiable] with the given [Identity] or `null` if no such `Identifiable` exists
+	 */
 	fun read(identity: I): J?
 
 	/**
