@@ -1,7 +1,7 @@
 class JEdge extends JLine {
 	constructor() {
 		super();
-		JButton.prototype.listenToClick && JButton.prototype.listenToClick.call(this);
+		this.listenToClick();
 
 		observeAttributes(this, new Map([
 			['data-ends', this._updateInput.bind(this)],
@@ -34,5 +34,7 @@ class JEdge extends JLine {
 		}
 	};
 }
+
+mixin(JButton, JEdge);
 
 customElements.define('j-edge', JEdge, {extends: 'div'});
