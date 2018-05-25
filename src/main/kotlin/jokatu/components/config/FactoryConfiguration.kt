@@ -7,6 +7,7 @@ import jokatu.game.player.PlayerFactory
 import jokatu.game.viewresolver.ViewResolver
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.getBeansOfType
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Configuration
 import java.util.*
 import java.util.stream.Collectors.toMap
 import javax.annotation.PostConstruct
+import kotlin.reflect.KClass
 
 /**
  * Autodetect and wire up all the relevant factories for games.
@@ -30,13 +32,13 @@ class FactoryConfiguration {
 	// This is called by Spring
 	@PostConstruct
 	fun populateFactories() {
-		configs = getFactoryMap(GameConfiguration::class.java)
+		configs = getFactoryMap(GameConfiguration::class)
 
 		log.debug("{} initialised", FactoryConfiguration::class.java.simpleName)
 	}
 
-	private fun <T: Any> getFactoryMap(clazz: Class<T>): Map<String, T> {
-		return applicationContext.getBeansOfType(clazz).values.stream()
+	private fun <T: Any> getFactoryMap(clazz: KClass<T>): Map<String, T> {
+		return applicationContext.getBeansOfType(clazz).stream()
 				.collect(toMap(::getGameNameFromFactoryAnnotation, {t: T -> t}))
 	}
 

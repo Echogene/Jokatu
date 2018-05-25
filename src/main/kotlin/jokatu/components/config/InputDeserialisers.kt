@@ -7,6 +7,7 @@ import ophelia.exceptions.voidmaybe.VoidMaybeCollectors.merge
 import ophelia.function.ExceptionalConsumer
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.getBeansOfType
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
@@ -26,7 +27,7 @@ class InputDeserialisers
 	@PostConstruct
 	@Throws(Exception::class)
 	fun populateDeserialisers() {
-		applicationContext.getBeansOfType(InputDeserialiser::class.java).values.stream()
+		applicationContext.getBeansOfType(InputDeserialiser::class).stream()
 				.map(wrap(ExceptionalConsumer<InputDeserialiser<*>, Exception> { this.addDeserialiser(it) }))
 				.collect(merge())
 				.throwOnFailure()

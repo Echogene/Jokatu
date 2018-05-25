@@ -4,6 +4,7 @@ import jokatu.game.Game
 import jokatu.game.event.EventHandler
 import jokatu.game.event.GameEvent
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.getBeansOfType
 import org.springframework.context.ApplicationContext
 import org.springframework.stereotype.Component
 
@@ -19,7 +20,7 @@ class EventBroadcaster @Autowired constructor(private val applicationContext: Ap
 
 	@PostConstruct
 	fun wireEventListeners() {
-		eventHandlers = applicationContext.getBeansOfType(EventHandler::class.java).values
+		eventHandlers = applicationContext.getBeansOfType(EventHandler::class)
 	}
 
 	/**
