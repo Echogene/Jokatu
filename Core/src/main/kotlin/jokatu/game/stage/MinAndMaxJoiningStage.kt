@@ -8,6 +8,7 @@ import jokatu.game.joining.PlayerJoinedEvent
 import jokatu.game.joining.finish.FinishJoiningInputAcceptor
 import jokatu.game.player.Player
 import jokatu.game.status.StandardTextStatus
+import kotlin.reflect.KClass
 
 /**
  * A [Stage] in which a maximum and minimum number of players can join.  When there are enough players, it
@@ -16,7 +17,7 @@ import jokatu.game.status.StandardTextStatus
  * @param <P> the type of player that should be joining the stage
  */
 class MinAndMaxJoiningStage<P : Player>(
-		playerClass: Class<P>,
+		playerClass: KClass<P>,
 		private val players: MutableMap<String, P>,
 		private val minimum: Int,
 		private val maximum: Int,

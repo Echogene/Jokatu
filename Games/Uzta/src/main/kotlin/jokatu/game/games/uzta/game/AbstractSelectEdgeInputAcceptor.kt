@@ -12,18 +12,14 @@ import jokatu.game.turn.TurnManager
 import ophelia.util.MapUtils.updateSetBasedMap
 import java.util.*
 
-abstract class AbstractSelectEdgeInputAcceptor protected constructor(protected val graph: UztaGraph, protected val turnManager: TurnManager<UztaPlayer>) : AbstractInputAcceptor<SelectEdgeInput, UztaPlayer, GameEvent>() {
+abstract class AbstractSelectEdgeInputAcceptor protected constructor(
+		protected val graph: UztaGraph,
+		protected val turnManager: TurnManager<UztaPlayer>
+) : AbstractInputAcceptor<SelectEdgeInput, UztaPlayer, GameEvent>(SelectEdgeInput::class, UztaPlayer::class) {
+
 	protected val ownedEdgesPerPlayer: Map<UztaPlayer, Set<LineSegment>> = HashMap()
 
-
-	override val inputClass: Class<SelectEdgeInput>
-		get() = SelectEdgeInput::class.java
-
-	override val playerClass: Class<UztaPlayer>
-		get() = UztaPlayer::class.java
-
 	init {
-
 		graph.edges.stream()
 				.filter { edge -> edge.owner != null }
 				.forEach { edge -> updateSetBasedMap(ownedEdgesPerPlayer, edge.owner, edge) }

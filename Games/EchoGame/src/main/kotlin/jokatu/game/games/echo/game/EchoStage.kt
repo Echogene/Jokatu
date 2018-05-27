@@ -5,12 +5,7 @@ import jokatu.game.games.echo.input.EchoInput
 import jokatu.game.player.StandardPlayer
 import jokatu.game.stage.AnyEventSingleInputStage
 
-internal class EchoStage : AnyEventSingleInputStage<EchoInput, StandardPlayer>() {
-	override val inputClass: Class<EchoInput>
-		get() = EchoInput::class.java
-
-	override val playerClass: Class<StandardPlayer>
-		get() = StandardPlayer::class.java
+internal class EchoStage : AnyEventSingleInputStage<EchoInput, StandardPlayer>(EchoInput::class, StandardPlayer::class) {
 
 	@Throws(Exception::class)
 	override fun acceptCastInputAndPlayer(input: EchoInput, inputter: StandardPlayer) {

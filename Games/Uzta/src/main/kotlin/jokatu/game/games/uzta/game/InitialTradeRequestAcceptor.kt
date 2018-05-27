@@ -29,13 +29,9 @@ import java.util.Arrays.stream
 import java.util.stream.Collectors.joining
 import java.util.stream.Collectors.toList
 
-class InitialTradeRequestAcceptor internal constructor(private val players: Map<String, UztaPlayer>) : AnyEventInputAcceptor<InitialTradeRequest, UztaPlayer>() {
-
-	override val inputClass: Class<InitialTradeRequest>
-		get() = InitialTradeRequest::class.java
-
-	override val playerClass: Class<UztaPlayer>
-		get() = UztaPlayer::class.java
+class InitialTradeRequestAcceptor internal constructor(
+		private val players: Map<String, UztaPlayer>
+) : AnyEventInputAcceptor<InitialTradeRequest, UztaPlayer>(InitialTradeRequest::class, UztaPlayer::class) {
 
 	@Throws(Exception::class)
 	override fun acceptCastInputAndPlayer(
@@ -49,7 +45,7 @@ class InitialTradeRequestAcceptor internal constructor(private val players: Map<
 			val request = DialogRequestBuilder.forPlayer(inputter)
 					.withTitle("Trade with the supply")
 					.withMessage("Resources can be traded with the supply at a ratio of $SUPPLY_RATIO:1.")
-					.withInputType(SupplyTradeRequest::class.java)
+					.withInputType(SupplyTradeRequest::class)
 					.withConsumer(ExceptionalBiConsumer<SupplyTradeRequest, UztaPlayer, Exception> { supplyTradeRequest, trader -> this.acceptSupplyRequest(supplyTradeRequest, trader) })
 					.withForm(form)
 					.build()
@@ -60,7 +56,7 @@ class InitialTradeRequestAcceptor internal constructor(private val players: Map<
 			val request = DialogRequestBuilder.forPlayer(inputter)
 					.withTitle("Request trade")
 					.withMessage("You can modify your trade before submitting.")
-					.withInputType(FullPlayerTradeRequest::class.java)
+					.withInputType(FullPlayerTradeRequest::class)
 					.withConsumer(ExceptionalBiConsumer<FullPlayerTradeRequest, UztaPlayer, Exception> { fullPlayerTradeRequest, inputter -> this.acceptFullRequest(fullPlayerTradeRequest, inputter) })
 					.withForm(form)
 					.build()
@@ -204,7 +200,7 @@ class InitialTradeRequestAcceptor internal constructor(private val players: Map<
 				.withTitle("${inputter.name} wants to trade with you")
 				.withMessage("${inputter.name} would give you ${presentResources(givenResources)} in exchange for "
 						+ "${presentResources(wantedResources)}.")
-				.withInputType(AcknowledgeInput::class.java)
+				.withInputType(AcknowledgeInput::class)
 				.withConsumer(ExceptionalBiConsumer<AcknowledgeInput, UztaPlayer, Exception> { ack, _ ->
 					if (ack.isAcknowledgement) {
 						inputter.giveResources(trade)

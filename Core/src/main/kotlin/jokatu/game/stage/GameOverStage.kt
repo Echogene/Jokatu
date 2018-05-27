@@ -5,9 +5,8 @@ import jokatu.game.input.Input
 import jokatu.game.input.UnacceptableInputException
 import jokatu.game.player.Player
 import jokatu.game.status.StandardTextStatus
-import ophelia.collections.BaseCollection
-import ophelia.collections.set.EmptySet.emptySet
 import ophelia.event.observable.AbstractSynchronousObservable
+import kotlin.reflect.KClass
 
 /**
  * A [Stage] that happens after the game is over.  No more input should be accepted at this point.
@@ -18,10 +17,8 @@ class GameOverStage(status: StandardTextStatus) : AbstractSynchronousObservable<
 		status.text = "Game over."
 	}
 
-	override val acceptedInputs: BaseCollection<Class<out Input>>
-		get() {
-			return emptySet()
-		}
+	override val acceptedInputs: Collection<KClass<out Input>>
+		get() = setOf()
 
 	@Throws(Exception::class)
 	override fun accept(input: Input, player: Player) {

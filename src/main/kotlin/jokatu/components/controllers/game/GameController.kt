@@ -74,7 +74,7 @@ constructor(
 
 		val currentStage = game.currentStage ?: throw GameException(identity, "The game hasn't started yet.")
 		val acceptedInputs = currentStage.acceptedInputs
-		val input: Input = if (acceptedInputs.isEmpty) {
+		val input: Input = if (acceptedInputs.isEmpty()) {
 			object : Input {}
 		} else {
 			acceptedInputs.stream()

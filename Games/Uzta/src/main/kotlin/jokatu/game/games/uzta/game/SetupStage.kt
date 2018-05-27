@@ -7,7 +7,6 @@ import jokatu.game.input.EndStageInputAcceptor
 import jokatu.game.status.StandardTextStatus
 import ophelia.collections.set.UnmodifiableSet
 import java.util.*
-import java.util.stream.IntStream
 
 /**
  * The stage of [Uzta] where the game is set up.
@@ -19,15 +18,14 @@ class SetupStage internal constructor(graph: ModifiableUztaGraph, players: Map<S
 	init {
 		addInputAcceptor(randomiseGraphInputAcceptor)
 
-		addInputAcceptor(EndStageInputAcceptor(UztaPlayer::class.java, UnmodifiableSet(players.values)))
+		addInputAcceptor(EndStageInputAcceptor(UztaPlayer::class, UnmodifiableSet(players.values)))
 
 		assignColours(players.values)
 	}
 
 	private fun assignColours(players: Collection<UztaPlayer>) {
 		val orderedPlayers = ArrayList(players)
-		IntStream.range(0, orderedPlayers.size)
-				.forEach { i -> orderedPlayers[i].colour = UztaColour.values()[i] }
+		orderedPlayers.forEachIndexed { i, uztaPlayer -> uztaPlayer.colour = UztaColour.values()[i] }
 	}
 
 	override fun start() {

@@ -16,9 +16,8 @@ class RockPaperScissorsGame internal constructor(identifier: GameID) : Game<Stan
 		get() = ROCK_PAPER_SCISSORS
 
 	init {
-
 		stageMachine = SequentialStageMachine(
-				{ JoiningStage(StandardPlayer::class.java, players, 2, status) },
+				{ JoiningStage(StandardPlayer::class, players, 2, status) },
 				{ InputStage(players.values, status) },
 				{ GameOverStage(status) }
 		)

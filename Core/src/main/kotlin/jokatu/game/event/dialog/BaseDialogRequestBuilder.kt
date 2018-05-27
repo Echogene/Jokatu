@@ -4,9 +4,10 @@ import jokatu.game.input.Input
 import jokatu.game.player.Player
 import jokatu.ui.Form
 import ophelia.function.ExceptionalBiConsumer
+import kotlin.reflect.KClass
 
 internal class BaseDialogRequestBuilder<P : Player, I : Input>(
-		private val expectedInput: Class<I>,
+		private val expectedInput: KClass<I>,
 		private val player: P,
 		private val title: String,
 		private val message: String,

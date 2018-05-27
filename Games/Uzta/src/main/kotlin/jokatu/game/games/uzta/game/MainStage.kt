@@ -28,7 +28,7 @@ class MainStage internal constructor(
 		val initialTradeRequestAcceptor = InitialTradeRequestAcceptor(players)
 		addInputAcceptor(initialTradeRequestAcceptor)
 
-		val endTurnInputAcceptor = EndTurnInputAcceptor(turnManager, UztaPlayer::class.java)
+		val endTurnInputAcceptor = EndTurnInputAcceptor(turnManager, UztaPlayer::class)
 		addInputAcceptor(endTurnInputAcceptor)
 
 		turnManager.observe { e ->

@@ -3,8 +3,8 @@ package jokatu.game.input
 import jokatu.game.Game
 import jokatu.game.event.GameEvent
 import jokatu.game.player.Player
-import ophelia.collections.BaseCollection
 import ophelia.event.observable.Observable
+import kotlin.reflect.KClass
 
 /**
  * Accepts an [Input] from a [Player], handles it, and may fire [GameEvent]s.  These are to be
@@ -15,7 +15,7 @@ import ophelia.event.observable.Observable
  */
 interface InputAcceptor<E : GameEvent> : Observable<E> {
 
-	val acceptedInputs: BaseCollection<Class<out Input>>
+	val acceptedInputs: Collection<KClass<out Input>>
 
 	@Throws(Exception::class)
 	fun accept(input: Input, player: Player)

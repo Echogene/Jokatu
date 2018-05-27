@@ -16,9 +16,8 @@ class NoughtsAndCrossesGame internal constructor(identifier: GameID) : Game<Noug
 		get() = NOUGHTS_AND_CROSSES
 
 	init {
-
 		stageMachine = SequentialStageMachine(
-				{ JoiningStage(NoughtsAndCrossesPlayer::class.java, players, 2, status) },
+				{ JoiningStage(NoughtsAndCrossesPlayer::class, players, 2, status) },
 				{ AllegianceStage(players.values, status) },
 				{ InputStage(players.values, status) },
 				{ GameOverStage(status) }

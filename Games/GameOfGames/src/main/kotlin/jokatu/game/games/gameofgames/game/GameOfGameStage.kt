@@ -5,12 +5,7 @@ import jokatu.game.games.gameofgames.input.CreateGameInput
 import jokatu.game.player.StandardPlayer
 import jokatu.game.stage.SingleInputStage
 
-internal class GameOfGameStage : SingleInputStage<CreateGameInput, StandardPlayer, GameCreatedEvent>() {
-	override val inputClass: Class<CreateGameInput>
-		get() = CreateGameInput::class.java
-
-	override val playerClass: Class<StandardPlayer>
-		get() = StandardPlayer::class.java
+internal class GameOfGameStage : SingleInputStage<CreateGameInput, StandardPlayer, GameCreatedEvent>(CreateGameInput::class, StandardPlayer::class) {
 
 	@Throws(Exception::class)
 	override fun acceptCastInputAndPlayer(input: CreateGameInput, inputter: StandardPlayer) {

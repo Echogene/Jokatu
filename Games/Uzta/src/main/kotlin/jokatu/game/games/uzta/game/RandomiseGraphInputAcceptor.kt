@@ -17,17 +17,13 @@ import java.util.stream.IntStream.rangeClosed
 /**
  * Randomise the graph whenever a user wants to.
  */
-internal class RandomiseGraphInputAcceptor(graph: ModifiableUztaGraph) : AbstractInputAcceptor<RandomiseGraphInput, UztaPlayer, GameEvent>() {
+internal class RandomiseGraphInputAcceptor(
+		graph: ModifiableUztaGraph
+) : AbstractInputAcceptor<RandomiseGraphInput, UztaPlayer, GameEvent>(RandomiseGraphInput::class, UztaPlayer::class) {
 
 	private val graph: BiGraph<Node, LineSegment>
 	private val nodes: MutableList<Node>
 	private val edges: MutableSet<LineSegment>
-
-	override val inputClass: Class<RandomiseGraphInput>
-		get() = RandomiseGraphInput::class.java
-
-	override val playerClass: Class<UztaPlayer>
-		get() = UztaPlayer::class.java
 
 	init {
 		this.graph = graph

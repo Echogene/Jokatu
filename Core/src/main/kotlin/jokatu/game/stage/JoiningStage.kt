@@ -7,8 +7,8 @@ import jokatu.game.joining.JoinInputAcceptor
 import jokatu.game.joining.PlayerJoinedEvent
 import jokatu.game.player.Player
 import jokatu.game.status.StandardTextStatus
-import ophelia.collections.BaseCollection
 import ophelia.event.observable.AbstractSynchronousObservable
+import kotlin.reflect.KClass
 
 /**
  * A [Stage] in which a fixed number of players have to join.  When the limit is reached, the next stage starts
@@ -16,7 +16,7 @@ import ophelia.event.observable.AbstractSynchronousObservable
  * @param <P> the type of player that should be joining the stage
  */
 class JoiningStage<P : Player>(
-		playerClass: Class<P>,
+		playerClass: KClass<P>,
 		private val players: MutableMap<String, P>,
 		private val number: Int,
 		private val status: StandardTextStatus
@@ -24,7 +24,7 @@ class JoiningStage<P : Player>(
 
 	private val inputAcceptor: JoinInputAcceptor<P> = JoinInputAcceptor(playerClass, players, number)
 
-	override val acceptedInputs: BaseCollection<Class<out Input>>
+	override val acceptedInputs: Collection<KClass<out Input>>
 		get() = inputAcceptor.acceptedInputs
 
 	init {

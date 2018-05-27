@@ -24,9 +24,8 @@ class Uzta internal constructor(identifier: GameID) : Game<UztaPlayer>(identifie
 		get() = UZTA
 
 	init {
-
 		stageMachine = SequentialStageMachine(
-				{ MinAndMaxJoiningStage(UztaPlayer::class.java, players, 1, 6, status) },
+				{ MinAndMaxJoiningStage(UztaPlayer::class, players, 1, 6, status) },
 				{ SetupStage(graph, players, status) },
 				{ FirstPlacementStage(graph, determineTurnOrder(players), status) },
 				{ MainStage(graph, players, determineTurnOrder(players), status) },

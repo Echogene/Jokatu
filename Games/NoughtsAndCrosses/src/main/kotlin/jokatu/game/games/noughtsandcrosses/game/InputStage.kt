@@ -21,18 +21,15 @@ import java.util.Arrays.stream
 import java.util.stream.Collectors
 import java.util.stream.IntStream
 
-internal class InputStage(players: Collection<NoughtsAndCrossesPlayer>, status: StandardTextStatus) : AnyEventSingleInputStage<NoughtsAndCrossesInput, NoughtsAndCrossesPlayer>() {
+internal class InputStage(
+		players: Collection<NoughtsAndCrossesPlayer>,
+		status: StandardTextStatus
+) : AnyEventSingleInputStage<NoughtsAndCrossesInput, NoughtsAndCrossesPlayer>(NoughtsAndCrossesInput::class, NoughtsAndCrossesPlayer::class) {
 
 	private val inputs: MutableMap<Int, NoughtOrCross> = HashMap()
 
 	private val players: ArrayList<NoughtsAndCrossesPlayer> = ArrayList(players)
 	private val turnManager: TurnManager<NoughtsAndCrossesPlayer>
-
-	override val inputClass: Class<NoughtsAndCrossesInput>
-		get() = NoughtsAndCrossesInput::class.java
-
-	override val playerClass: Class<NoughtsAndCrossesPlayer>
-		get() = NoughtsAndCrossesPlayer::class.java
 
 	private val completedLines: List<Line>
 		get() = stream(NoughtOrCross.values()).map({ this.fireLineCompletedEventsForPlayer(it) })
@@ -94,7 +91,6 @@ internal class InputStage(players: Collection<NoughtsAndCrossesPlayer>, status: 
 	}
 
 	companion object {
-
 		private val LINES: UnmodifiableSet<UnmodifiableList<Int>>
 
 		init {

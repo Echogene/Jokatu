@@ -2,6 +2,7 @@ package jokatu.game.joining
 
 import jokatu.game.input.AbstractInputAcceptor
 import jokatu.game.player.Player
+import kotlin.reflect.KClass
 
 /**
  * Accepts [JoinInput]s from players and adds them to the game if there is enough room.  It fires a
@@ -9,15 +10,13 @@ import jokatu.game.player.Player
  * @param <P> the type of [Player] to accept input from
  */
 class JoinInputAcceptor<P : Player>(
-		override val playerClass: Class<P>, private val players: MutableMap<String, P>,
+		playerClass: KClass<P>,
+		private val players: MutableMap<String, P>,
 		/**
 		 * The maximum number of players that can join the game needs before it starts.
 		 */
 		private val maximum: Int
-) : AbstractInputAcceptor<JoinInput, P, PlayerJoinedEvent>() {
-
-	override val inputClass: Class<JoinInput>
-		get() = JoinInput::class.java
+) : AbstractInputAcceptor<JoinInput, P, PlayerJoinedEvent>(JoinInput::class, playerClass) {
 
 	@Throws(Exception::class)
 	override fun acceptCastInputAndPlayer(input: JoinInput, inputter: P) {

@@ -13,15 +13,12 @@ import jokatu.game.turn.TurnManager
 import ophelia.collections.set.HashSet
 import java.util.*
 
-class CardInputAcceptor(private val turnManager: TurnManager<SevensPlayer>, private val playedCards: Map<Suit, TreeSet<Card>>) : AnyEventInputAcceptor<CardInput, SevensPlayer>() {
+class CardInputAcceptor(
+		private val turnManager: TurnManager<SevensPlayer>,
+		private val playedCards: Map<Suit, TreeSet<Card>>
+) : AnyEventInputAcceptor<CardInput, SevensPlayer>(CardInput::class, SevensPlayer::class) {
 
 	private val extremeCards = HashSet<Card>()
-
-	override val inputClass: Class<CardInput>
-		get() = CardInput::class.java
-
-	override val playerClass: Class<SevensPlayer>
-		get() = SevensPlayer::class.java
 
 	@Throws(Exception::class)
 	override fun acceptCastInputAndPlayer(input: CardInput, inputter: SevensPlayer) {

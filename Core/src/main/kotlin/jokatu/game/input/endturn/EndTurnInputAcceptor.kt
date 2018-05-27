@@ -4,11 +4,12 @@ import jokatu.game.input.AnyEventInputAcceptor
 import jokatu.game.player.Player
 import jokatu.game.turn.TurnChangedEvent
 import jokatu.game.turn.TurnManager
+import kotlin.reflect.KClass
 
-open class EndTurnInputAcceptor<P : Player>(private val turnManager: TurnManager<P>, override val playerClass: Class<P>) : AnyEventInputAcceptor<EndTurnInput, P>() {
-
-	override val inputClass: Class<EndTurnInput>
-		get() = EndTurnInput::class.java
+open class EndTurnInputAcceptor<P : Player>(
+		private val turnManager: TurnManager<P>,
+		playerClass: KClass<P>
+) : AnyEventInputAcceptor<EndTurnInput, P>(EndTurnInput::class, playerClass) {
 
 	@Throws(Exception::class)
 	override fun acceptCastInputAndPlayer(input: EndTurnInput, inputter: P) {

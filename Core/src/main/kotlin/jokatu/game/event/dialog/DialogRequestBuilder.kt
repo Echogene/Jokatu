@@ -3,6 +3,7 @@ package jokatu.game.event.dialog
 import jokatu.game.input.Input
 import jokatu.game.player.Player
 import ophelia.function.ExceptionalBiConsumer
+import kotlin.reflect.KClass
 
 /**
  * The beginning of sequence of builders that eventually result in a [DialogRequest] being sent to a player.
@@ -22,11 +23,11 @@ class DialogRequestBuilder<P : Player> private constructor(private val player: P
 
 		private inner class NeedingInputType internal constructor(private val message: String) : DialogRequestBuilderNeedingInputType<P> {
 
-			override fun <I : Input> withInputType(inputType: Class<I>): DialogRequestBuilderNeedingConsumer<P, I> {
+			override fun <I : Input> withInputType(inputType: KClass<I>): DialogRequestBuilderNeedingConsumer<P, I> {
 				return NeedingConsumer(inputType)
 			}
 
-			private inner class NeedingConsumer<I : Input> internal constructor(private val inputType: Class<I>) : DialogRequestBuilderNeedingConsumer<P, I> {
+			private inner class NeedingConsumer<I : Input> internal constructor(private val inputType: KClass<I>) : DialogRequestBuilderNeedingConsumer<P, I> {
 
 				override fun withConsumer(consumer: ExceptionalBiConsumer<in I, in P, *>): MainDialogRequestBuilder<P, I> {
 					return BaseDialogRequestBuilder(inputType, player, title, message, consumer)

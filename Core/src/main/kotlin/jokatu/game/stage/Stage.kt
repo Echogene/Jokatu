@@ -5,7 +5,6 @@ import jokatu.game.event.GameEvent
 import jokatu.game.input.InputAcceptor
 
 /**
- *
  * [Game]s are logically partitioned into separate stages where different inputs are possible.
  *
  * e.g.
@@ -13,7 +12,6 @@ import jokatu.game.input.InputAcceptor
  * Some games have setup, where specific rules or aspects are decided, such as whether aces are high or low or
  * where players should start on the board.
  * After a game ends, no further input should be accepted, so most games have a [GameOverStage].
- *
  *
  * @param <E>
  */

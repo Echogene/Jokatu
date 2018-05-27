@@ -15,17 +15,14 @@ import java.util.*
 import java.util.Arrays.asList
 import java.util.concurrent.ConcurrentHashMap
 
-internal class InputStage(players: Collection<StandardPlayer>, private val status: StandardTextStatus) : AnyEventSingleInputStage<RockPaperScissorsInput, StandardPlayer>() {
+internal class InputStage(
+		players: Collection<StandardPlayer>,
+		private val status: StandardTextStatus
+) : AnyEventSingleInputStage<RockPaperScissorsInput, StandardPlayer>(RockPaperScissorsInput::class, StandardPlayer::class) {
 
 	private val players: List<StandardPlayer>
 
 	private val inputs = ConcurrentHashMap<StandardPlayer, RockPaperScissors>()
-
-	override val inputClass: Class<RockPaperScissorsInput>
-		get() = RockPaperScissorsInput::class.java
-
-	override val playerClass: Class<StandardPlayer>
-		get() = StandardPlayer::class.java
 
 	init {
 		this.players = ArrayList(players)

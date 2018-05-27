@@ -15,12 +15,16 @@ import java.util.Collections.emptySet
 /**
  * The stage where players determine their starting positions.
  */
-class FirstPlacementStage internal constructor(graph: UztaGraph, playersInOrder: List<UztaPlayer>, private val status: StandardTextStatus) : AbstractSelectEdgeInputAcceptor(graph, TurnManager(playersInOrder)), Stage<GameEvent> {
+class FirstPlacementStage internal constructor(
+		graph: UztaGraph,
+		playersInOrder: List<UztaPlayer>,
+		private val status: StandardTextStatus
+) : AbstractSelectEdgeInputAcceptor(graph, TurnManager(playersInOrder)), Stage<GameEvent> {
 
 	val playersInOrder: UnmodifiableList<UztaPlayer> = UnmodifiableList(playersInOrder)
 
 	init {
-		this.turnManager.observe({ this.fireEvent(it) })
+		this.turnManager.observe { this.fireEvent(it) }
 	}
 
 	override fun start() {

@@ -26,9 +26,8 @@ class SevensGame internal constructor(identifier: GameID) : Game<SevensPlayer>(i
 		get() = SEVENS
 
 	init {
-
 		stageMachine = SequentialStageMachine(
-				{ MinAndMaxJoiningStage(SevensPlayer::class.java, players, 3, 7, status) },
+				{ MinAndMaxJoiningStage(SevensPlayer::class, players, 3, 7, status) },
 				{ SevensStage(players, status, playedCards) },
 				{ GameOverStage(status) }
 		)

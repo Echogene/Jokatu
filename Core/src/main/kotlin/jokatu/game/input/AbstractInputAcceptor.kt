@@ -2,9 +2,10 @@ package jokatu.game.input
 
 import jokatu.game.event.GameEvent
 import jokatu.game.player.Player
-import ophelia.collections.set.Singleton
 import ophelia.event.observable.AbstractSynchronousObservable
 import org.slf4j.LoggerFactory
+import kotlin.reflect.KClass
+import kotlin.reflect.full.cast
 
 /**
  * An abstract version of [InputAcceptor] that only accepts a specific type of input from a specific type of
@@ -13,16 +14,14 @@ import org.slf4j.LoggerFactory
  * @param <P> the type of the [Player] to accept
  * @param <E> the type of [GameEvent] this can fire
  */
-abstract class AbstractInputAcceptor<I : Input, P : Player, E : GameEvent> : AbstractSynchronousObservable<E>(), InputAcceptor<E> {
+abstract class AbstractInputAcceptor<I : Input, P : Player, E : GameEvent>(
+		private val inputClass: KClass<I>,
+		protected val playerClass: KClass<P>
+) : AbstractSynchronousObservable<E>(), InputAcceptor<E> {
 
 	private val log = LoggerFactory.getLogger(javaClass)
 
-	protected abstract val inputClass: Class<I>
-
-	protected abstract val playerClass: Class<P>
-
-	override val acceptedInputs: Singleton<Class<out Input>>
-		get() = Singleton(inputClass)
+	override val acceptedInputs = setOf(inputClass)
 
 	private fun castInput(input: Input): I {
 		return inputClass.cast(input)

@@ -8,15 +8,12 @@ import jokatu.game.stage.SingleInputStage
 import jokatu.game.status.StandardTextStatus
 import ophelia.collections.set.bounded.BoundedPair
 
-class AllegianceStage internal constructor(players: Collection<NoughtsAndCrossesPlayer>, status: StandardTextStatus) : SingleInputStage<AllegianceInput, NoughtsAndCrossesPlayer, StageOverEvent>() {
+class AllegianceStage internal constructor(
+		players: Collection<NoughtsAndCrossesPlayer>,
+		status: StandardTextStatus
+) : SingleInputStage<AllegianceInput, NoughtsAndCrossesPlayer, StageOverEvent>(AllegianceInput::class, NoughtsAndCrossesPlayer::class) {
 
 	private val players: BoundedPair<NoughtsAndCrossesPlayer> = BoundedPair(players)
-
-	override val inputClass: Class<AllegianceInput>
-		get() = AllegianceInput::class.java
-
-	override val playerClass: Class<NoughtsAndCrossesPlayer>
-		get() = NoughtsAndCrossesPlayer::class.java
 
 	init {
 		status.text = "Waiting for either ${this.players.first} or ${this.players.second} to choose an allegiance."

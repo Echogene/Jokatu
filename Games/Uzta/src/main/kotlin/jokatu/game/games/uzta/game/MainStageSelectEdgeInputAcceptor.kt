@@ -15,7 +15,12 @@ import java.util.*
 import java.util.stream.Collectors
 
 
-class MainStageSelectEdgeInputAcceptor internal constructor(graph: UztaGraph, turnManager: TurnManager<UztaPlayer>, private val resourceDistributor: ResourceDistributor) : AbstractSelectEdgeInputAcceptor(graph, turnManager) {
+class MainStageSelectEdgeInputAcceptor internal constructor(
+		graph: UztaGraph,
+		turnManager: TurnManager<UztaPlayer>,
+		private val resourceDistributor: ResourceDistributor
+) : AbstractSelectEdgeInputAcceptor(graph, turnManager) {
+
 	private val die: Random
 
 	init {

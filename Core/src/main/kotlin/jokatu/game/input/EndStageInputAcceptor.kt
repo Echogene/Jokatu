@@ -4,11 +4,12 @@ import jokatu.game.event.StageOverEvent
 import jokatu.game.input.finishstage.EndStageInput
 import jokatu.game.player.Player
 import ophelia.collections.BaseCollection
+import kotlin.reflect.KClass
 
-class EndStageInputAcceptor<P : Player>(override val playerClass: Class<P>, private val players: BaseCollection<P>) : AbstractInputAcceptor<EndStageInput, P, StageOverEvent>() {
-
-	override val inputClass: Class<EndStageInput>
-		get() = EndStageInput::class.java
+class EndStageInputAcceptor<P : Player>(
+		playerClass: KClass<P>,
+		private val players: BaseCollection<P>
+) : AbstractInputAcceptor<EndStageInput, P, StageOverEvent>(EndStageInput::class, playerClass) {
 
 	@Throws(Exception::class)
 	override fun acceptCastInputAndPlayer(input: EndStageInput, inputter: P) {
