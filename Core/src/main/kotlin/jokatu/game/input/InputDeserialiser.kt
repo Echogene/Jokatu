@@ -1,5 +1,8 @@
 package jokatu.game.input
 
+import kotlin.reflect.KClass
+import kotlin.reflect.full.cast
+
 /**
  * This takes JSON from the client and turns it into input.
  * @param <I> the type of the [Input] to output
@@ -19,8 +22,8 @@ abstract class InputDeserialiser<I : Input> {
 	}
 
 	@Throws(DeserialisationException::class)
-	protected fun <T> getMandatoryKeyValueOfType(
-			type: Class<T>,
+	protected fun <T : Any> getMandatoryKeyValueOfType(
+			type: KClass<T>,
 			keyName: String,
 			json: Map<String, Any>
 	): T {
@@ -28,8 +31,8 @@ abstract class InputDeserialiser<I : Input> {
 	}
 
 	@Throws(DeserialisationException::class)
-	protected fun <T> castValue(
-			type: Class<T>,
+	protected fun <T : Any> castValue(
+			type: KClass<T>,
 			keyName: String,
 			value: Any,
 			json: Map<String, Any>

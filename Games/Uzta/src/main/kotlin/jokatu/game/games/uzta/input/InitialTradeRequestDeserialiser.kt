@@ -15,7 +15,7 @@ class InitialTradeRequestDeserialiser : InputDeserialiser<InitialTradeRequest>()
 		val resource = getResource(json)
 
 		return if (json.containsKey("player")) {
-			val playerName = getMandatoryKeyValueOfType(String::class.java, "player", json)
+			val playerName = getMandatoryKeyValueOfType(String::class, "player", json)
 			InitialTradeRequest(playerName, resource)
 		} else {
 			InitialTradeRequest(SUPPLY, resource)
@@ -24,7 +24,7 @@ class InitialTradeRequestDeserialiser : InputDeserialiser<InitialTradeRequest>()
 
 	@Throws(DeserialisationException::class)
 	private fun getResource(json: Map<String, Any>): NodeType {
-		val resourceName = getMandatoryKeyValueOfType(String::class.java, "resource", json)
+		val resourceName = getMandatoryKeyValueOfType(String::class, "resource", json)
 		val resource: NodeType
 		try {
 			resource = NodeType.valueOf(resourceName)

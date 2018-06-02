@@ -16,7 +16,7 @@ class FullPlayerTradeRequestDeserialiser : InputDeserialiser<FullPlayerTradeRequ
 				.map { n -> Pair(n, json.getOrDefault(n.toString(), 0) as Int) }
 				.collect(toBag<Pair<NodeType, Int>, NodeType>({ it.left }, { it.right }))
 
-		val playerName = getMandatoryKeyValueOfType(String::class.java, "player", json)
+		val playerName = getMandatoryKeyValueOfType(String::class, "player", json)
 		return FullPlayerTradeRequest(trade, playerName)
 	}
 }

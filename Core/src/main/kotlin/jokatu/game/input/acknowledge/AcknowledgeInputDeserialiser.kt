@@ -5,7 +5,7 @@ import jokatu.game.input.TypedSingleKeyInputDeserialiser
 import org.springframework.stereotype.Component
 
 @Component
-class AcknowledgeInputDeserialiser : TypedSingleKeyInputDeserialiser<Boolean, AcknowledgeInput>(Boolean::class.java) {
+class AcknowledgeInputDeserialiser : TypedSingleKeyInputDeserialiser<Boolean, AcknowledgeInput>(Boolean::class) {
 	@Throws(DeserialisationException::class)
 	override fun deserialiseTypedSingleValue(
 			json: Map<String, Any>, value: Boolean

@@ -5,7 +5,7 @@ import jokatu.game.input.TypedSingleKeyInputDeserialiser
 import org.springframework.stereotype.Component
 
 @Component
-class NoughtsAndCrossesInputDeserialiser : TypedSingleKeyInputDeserialiser<Int, NoughtsAndCrossesInput>(Int::class.java) {
+class NoughtsAndCrossesInputDeserialiser : TypedSingleKeyInputDeserialiser<Int, NoughtsAndCrossesInput>(Int::class) {
 
 	override val keyName: String
 		get() = "choice"
