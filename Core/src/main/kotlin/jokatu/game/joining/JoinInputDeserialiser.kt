@@ -8,11 +8,7 @@ import org.springframework.stereotype.Component
  * Deserialises [JoinInput]s.  The correct JSON should look like `{"join": true}`.
  */
 @Component
-class JoinInputDeserialiser : SingleKeyInputDeserialiser<JoinInput>() {
-
-	override val keyName: String
-		get() = "join"
-
+class JoinInputDeserialiser : SingleKeyInputDeserialiser<JoinInput>("join") {
 	@Throws(DeserialisationException::class)
 	override fun deserialiseSingleValue(json: Map<String, Any>, value: Any): JoinInput {
 		return JoinInput()

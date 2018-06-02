@@ -5,11 +5,7 @@ import jokatu.game.input.SingleKeyInputDeserialiser
 import org.springframework.stereotype.Component
 
 @Component
-class RandomiseGraphInputDeserialiser : SingleKeyInputDeserialiser<RandomiseGraphInput>() {
-
-	override val keyName: String
-		get() = "randomise"
-
+class RandomiseGraphInputDeserialiser : SingleKeyInputDeserialiser<RandomiseGraphInput>("randomise") {
 	@Throws(DeserialisationException::class)
 	override fun deserialiseSingleValue(json: Map<String, Any>, value: Any): RandomiseGraphInput {
 		return RandomiseGraphInput()

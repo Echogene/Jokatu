@@ -5,11 +5,7 @@ import jokatu.game.input.SingleKeyInputDeserialiser
 import org.springframework.stereotype.Component
 
 @Component
-class EndTurnInputDeserialiser : SingleKeyInputDeserialiser<EndTurnInput>() {
-
-	override val keyName: String
-		get() = "skip"
-
+class EndTurnInputDeserialiser : SingleKeyInputDeserialiser<EndTurnInput>("skip") {
 	@Throws(DeserialisationException::class)
 	override fun deserialiseSingleValue(json: Map<String, Any>, value: Any): EndTurnInput {
 		return EndTurnInput()

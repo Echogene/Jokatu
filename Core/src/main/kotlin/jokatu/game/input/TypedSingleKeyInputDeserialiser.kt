@@ -8,8 +8,9 @@ import kotlin.reflect.KClass
  * @param <I> the type of the [Input] to output
  */
 abstract class TypedSingleKeyInputDeserialiser<T : Any, I : Input>(
-		private val type: KClass<T>
-) : SingleKeyInputDeserialiser<I>() {
+		private val type: KClass<T>,
+		keyName: String
+) : SingleKeyInputDeserialiser<I>(keyName) {
 
 	@Throws(DeserialisationException::class)
 	override fun deserialiseSingleValue(json: Map<String, Any>, value: Any): I {

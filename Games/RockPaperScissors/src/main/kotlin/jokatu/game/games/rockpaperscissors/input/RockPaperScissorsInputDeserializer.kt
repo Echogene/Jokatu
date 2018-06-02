@@ -5,11 +5,7 @@ import jokatu.game.input.TypedSingleKeyInputDeserialiser
 import org.springframework.stereotype.Component
 
 @Component
-class RockPaperScissorsInputDeserializer : TypedSingleKeyInputDeserialiser<String, RockPaperScissorsInput>(String::class) {
-
-	override val keyName: String
-		get() = "choice"
-
+class RockPaperScissorsInputDeserializer : TypedSingleKeyInputDeserialiser<String, RockPaperScissorsInput>(String::class, "choice") {
 	override fun deserialiseTypedSingleValue(json: Map<String, Any>, choice: String): RockPaperScissorsInput {
 		return RockPaperScissorsInput(RockPaperScissors.valueOf(choice))
 	}

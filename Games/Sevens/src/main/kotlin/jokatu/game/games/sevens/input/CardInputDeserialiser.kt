@@ -6,11 +6,7 @@ import jokatu.game.input.TypedSingleKeyInputDeserialiser
 import org.springframework.stereotype.Component
 
 @Component
-class CardInputDeserialiser : TypedSingleKeyInputDeserialiser<String, CardInput>(String::class) {
-
-	override val keyName: String
-		get() = "card"
-
+class CardInputDeserialiser : TypedSingleKeyInputDeserialiser<String, CardInput>(String::class, "card") {
 	@Throws(DeserialisationException::class)
 	override fun deserialiseTypedSingleValue(json: Map<String, Any>, cardDisplay: String): CardInput {
 		if (!Cards.CARDS_BY_DISPLAY.containsKey(cardDisplay)) {
