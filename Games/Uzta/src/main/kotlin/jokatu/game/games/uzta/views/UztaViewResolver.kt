@@ -8,22 +8,17 @@ import jokatu.game.stage.MinAndMaxJoiningStage
 import jokatu.game.viewresolver.ViewResolver
 import org.springframework.web.servlet.ModelAndView
 
-internal class UztaViewResolver(castGame: Uzta) : ViewResolver<UztaPlayer, Uzta>(castGame) {
+internal class UztaViewResolver(castGame: Uzta) : ViewResolver<UztaPlayer, Uzta>(UztaPlayer::class, castGame) {
 
 	override val defaultView: ModelAndView
-		get() {
-			val currentStage = game.currentStage
-			val view = when (currentStage) {
-				is MinAndMaxJoiningStage<*> -> "views/game_join_with_start"
-				is SetupStage -> "views/uzta_setup"
-				is FirstPlacementStage -> "views/uzta"
-				else -> "views/uzta_main"
-			}
-			return ModelAndView(view)
-		}
-
-	override val playerClass: Class<UztaPlayer>
-		get() = UztaPlayer::class.java
+		get() = ModelAndView(
+				when (game.currentStage) {
+					is MinAndMaxJoiningStage<*> -> "views/game_join_with_start"
+					is SetupStage -> "views/uzta_setup"
+					is FirstPlacementStage -> "views/uzta"
+					else -> "views/uzta_main"
+				}
+		)
 
 	override fun getViewFor(player: UztaPlayer): ModelAndView {
 		return defaultView

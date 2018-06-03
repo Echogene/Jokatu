@@ -6,19 +6,15 @@ import jokatu.game.stage.MinAndMaxJoiningStage
 import jokatu.game.viewresolver.ViewResolver
 import org.springframework.web.servlet.ModelAndView
 
-internal class SevensViewResolver(game: SevensGame) : ViewResolver<SevensPlayer, SevensGame>(game) {
+internal class SevensViewResolver(game: SevensGame) : ViewResolver<SevensPlayer, SevensGame>(SevensPlayer::class, game) {
 
 	override val defaultView: ModelAndView
-		get() {
-			val view = when {
-				game.currentStage is MinAndMaxJoiningStage<*> -> "views/game_join_with_start"
-				else -> "views/sevens"
-			}
-			return ModelAndView(view)
-		}
-
-	override val playerClass: Class<SevensPlayer>
-		get() = SevensPlayer::class.java
+		get() = ModelAndView(
+				when (game.currentStage) {
+					is MinAndMaxJoiningStage<*> -> "views/game_join_with_start"
+					else -> "views/sevens"
+				}
+		)
 
 	override fun getViewFor(player: SevensPlayer): ModelAndView {
 		return defaultView

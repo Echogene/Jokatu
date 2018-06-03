@@ -3,19 +3,22 @@ package jokatu.game.viewresolver
 import jokatu.game.Game
 import jokatu.game.player.Player
 import org.springframework.web.servlet.ModelAndView
+import kotlin.reflect.KClass
+import kotlin.reflect.full.cast
 
 /**
  * Determine which view a player should see when requesting a game.
  * @author steven
  */
-abstract class ViewResolver<P : Player, G : Game<P>> protected constructor(protected val game: G) {
+abstract class ViewResolver<P : Player, G : Game<P>> protected constructor(
+		protected val playerClass: KClass<P>,
+		protected val game: G
+) {
 
 	val viewForObserver: ModelAndView
 		get() = defaultView
 
 	protected abstract val defaultView: ModelAndView
-
-	protected abstract val playerClass: Class<P>
 
 	fun getViewForPlayer(player: Player): ModelAndView {
 		val castPlayer = castPlayer(player)

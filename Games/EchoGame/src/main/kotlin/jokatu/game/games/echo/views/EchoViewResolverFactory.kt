@@ -16,12 +16,9 @@ class EchoViewResolverFactory : ViewResolverFactory<StandardPlayer, EchoGame>() 
 		get() = EchoGame::class.java
 
 	override fun getResolverFor(castGame: EchoGame): ViewResolver<StandardPlayer, EchoGame> {
-		return object : ViewResolver<StandardPlayer, EchoGame>(castGame) {
+		return object : ViewResolver<StandardPlayer, EchoGame>(StandardPlayer::class, castGame) {
 			override val defaultView: ModelAndView
 				get() = ModelAndView("views/echo_view")
-
-			override val playerClass: Class<StandardPlayer>
-				get() = StandardPlayer::class.java
 
 			override fun getViewFor(player: StandardPlayer): ModelAndView {
 				return defaultView

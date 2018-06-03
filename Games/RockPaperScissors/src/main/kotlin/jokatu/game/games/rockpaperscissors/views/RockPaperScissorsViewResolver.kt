@@ -9,19 +9,15 @@ import org.springframework.web.servlet.ModelAndView
 /**
  * @author steven
  */
-internal class RockPaperScissorsViewResolver(game: RockPaperScissorsGame) : ViewResolver<StandardPlayer, RockPaperScissorsGame>(game) {
+internal class RockPaperScissorsViewResolver(game: RockPaperScissorsGame) : ViewResolver<StandardPlayer, RockPaperScissorsGame>(StandardPlayer::class, game) {
 
 	override val defaultView: ModelAndView
-		get() {
-			val view = when {
-				game.currentStage is JoiningStage<*> -> "views/game_join"
-				else -> "views/rock_paper_scissors"
-			}
-			return ModelAndView(view)
-		}
-
-	override val playerClass: Class<StandardPlayer>
-		get() = StandardPlayer::class.java
+		get() = ModelAndView(
+				when (game.currentStage) {
+					is JoiningStage<*> -> "views/game_join"
+					else -> "views/rock_paper_scissors"
+				}
+		)
 
 	override fun getViewFor(player: StandardPlayer): ModelAndView {
 		return defaultView

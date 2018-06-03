@@ -10,25 +10,16 @@ import org.springframework.web.servlet.ModelAndView
 /**
  * @author steven
  */
-internal class NoughtsAndCrossesViewResolver(game: NoughtsAndCrossesGame) : ViewResolver<NoughtsAndCrossesPlayer, NoughtsAndCrossesGame>(game) {
+internal class NoughtsAndCrossesViewResolver(game: NoughtsAndCrossesGame) : ViewResolver<NoughtsAndCrossesPlayer, NoughtsAndCrossesGame>(NoughtsAndCrossesPlayer::class, game) {
 
 	override val defaultView: ModelAndView
-		get() {
-			val view: String
-			if (game.currentStage is JoiningStage<*>) {
-				view = "views/game_join"
-
-			} else if (game.currentStage is AllegianceStage) {
-				view = "views/allegiance"
-
-			} else {
-				view = "views/noughts_and_crosses"
-			}
-			return ModelAndView(view)
-		}
-
-	override val playerClass: Class<NoughtsAndCrossesPlayer>
-		get() = NoughtsAndCrossesPlayer::class.java
+		get() = ModelAndView(
+				when (game.currentStage) {
+					is JoiningStage<*> -> "views/game_join"
+					is AllegianceStage -> "views/allegiance"
+					else -> "views/noughts_and_crosses"
+				}
+		)
 
 	override fun getViewFor(player: NoughtsAndCrossesPlayer): ModelAndView {
 		return defaultView
