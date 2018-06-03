@@ -5,7 +5,7 @@ import jokatu.components.stomp.StoringMessageSender
 import jokatu.stomp.SendErrorMessage
 import jokatu.stomp.SubscriptionErrorMessage
 import ophelia.util.MapUtils
-import org.slf4j.LoggerFactory
+import org.slf4j.getLogger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.Message
 import org.springframework.messaging.simp.stomp.StompCommand
@@ -67,7 +67,7 @@ class StandardExceptionHandler @Autowired constructor(private val sender: Storin
 	}
 
 	companion object {
-		private val log = LoggerFactory.getLogger(GameController::class.java)
+		private val log = getLogger(GameController::class)
 
 		private val GAME_CHANNEL_PATTERN = Pattern.compile(".*\\.game\\.(\\d+).*")
 	}

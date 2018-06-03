@@ -5,7 +5,7 @@ import jokatu.game.Game
 import jokatu.game.GameFactory
 import jokatu.game.player.PlayerFactory
 import jokatu.game.viewresolver.ViewResolver
-import org.slf4j.LoggerFactory
+import org.slf4j.getLogger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.getBeansOfType
 import org.springframework.context.ApplicationContext
@@ -34,7 +34,7 @@ class FactoryConfiguration {
 	fun populateFactories() {
 		configs = getFactoryMap(GameConfiguration::class)
 
-		log.debug("{} initialised", FactoryConfiguration::class.java.simpleName)
+		log.debug("{} initialised", FactoryConfiguration::class.simpleName)
 	}
 
 	private fun <T: Any> getFactoryMap(clazz: KClass<T>): Map<String, T> {
@@ -83,6 +83,6 @@ class FactoryConfiguration {
 	}
 
 	companion object {
-		private val log = LoggerFactory.getLogger(FactoryConfiguration::class.java)
+		private val log = getLogger(FactoryConfiguration::class)
 	}
 }

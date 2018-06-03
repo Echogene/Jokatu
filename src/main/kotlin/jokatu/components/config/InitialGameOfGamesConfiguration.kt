@@ -3,7 +3,7 @@ package jokatu.components.config
 import jokatu.components.eventhandlers.EventBroadcaster
 import jokatu.game.games.gameofgames.game.GameOfGames
 import jokatu.game.games.gameofgames.game.GameOfGamesFactory
-import org.slf4j.LoggerFactory
+import org.slf4j.getLogger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
 import javax.annotation.PostConstruct
@@ -28,10 +28,10 @@ class InitialGameOfGamesConfiguration
 		// Now we are observing events, start the game.
 		theGameOfGames.advanceStage()
 
-		log.debug("{} initialised", InitialGameOfGamesConfiguration::class.java.simpleName)
+		log.debug("{} initialised", InitialGameOfGamesConfiguration::class.simpleName)
 	}
 
 	companion object {
-		private val log = LoggerFactory.getLogger(InitialGameOfGamesConfiguration::class.java)
+		private val log = getLogger(InitialGameOfGamesConfiguration::class)
 	}
 }

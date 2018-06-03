@@ -15,7 +15,7 @@ import jokatu.game.games.uzta.player.UztaPlayer
 import jokatu.game.input.finishstage.EndStageInput
 import jokatu.game.joining.JoinInput
 import jokatu.game.player.StandardPlayer
-import org.slf4j.LoggerFactory
+import org.slf4j.getLogger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
 import java.util.stream.Collectors.toList
@@ -70,7 +70,7 @@ class TestGameCreator
 		selectEdge(game, secondPlayer, sixEdges[4])
 		selectEdge(game, firstPlayer, sixEdges[5])
 
-		log.debug("{} initialised", TestGameCreator::class.java.simpleName)
+		log.debug("{} initialised", TestGameCreator::class.simpleName)
 	}
 
 	@Throws(GameException::class)
@@ -83,6 +83,6 @@ class TestGameCreator
 	}
 
 	companion object {
-		private val log = LoggerFactory.getLogger(TestGameCreator::class.java)
+		private val log = getLogger(TestGameCreator::class)
 	}
 }

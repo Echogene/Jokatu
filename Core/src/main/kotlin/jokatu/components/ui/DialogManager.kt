@@ -10,7 +10,7 @@ import ophelia.collections.list.UnmodifiableList
 import ophelia.function.ExceptionalConsumer
 import ophelia.tuple.Pair
 import ophelia.util.MapUtils
-import org.slf4j.LoggerFactory
+import org.slf4j.getLogger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.Collections.emptyList
@@ -103,6 +103,6 @@ class DialogManager
 	class DialogUI constructor(dialog: Dialog, val dialogId: String) : Dialog(dialog.title, dialog.message, dialog.form, dialog.isCancellable)
 
 	companion object {
-		private val log = LoggerFactory.getLogger(DialogManager::class.java)
+		private val log = getLogger(DialogManager::class)
 	}
 }

@@ -1,7 +1,7 @@
 package jokatu.components.config
 
 import jokatu.templates.IncludeOnlyOnceTemplate
-import org.slf4j.LoggerFactory
+import org.slf4j.getLogger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.view.groovy.GroovyMarkupConfigurer
@@ -17,11 +17,11 @@ class GroovyTemplateConfig @Autowired constructor(private val groovyMarkupConfig
 	fun setUp() {
 		groovyMarkupConfigurer.baseTemplateClass = IncludeOnlyOnceTemplate::class.java
 
-		log.debug("{} initialised", GroovyTemplateConfig::class.java.simpleName)
+		log.debug("{} initialised", GroovyTemplateConfig::class.simpleName)
 	}
 
 	companion object {
 
-		private val log = LoggerFactory.getLogger(GroovyTemplateConfig::class.java)
+		private val log = getLogger(GroovyTemplateConfig::class)
 	}
 }

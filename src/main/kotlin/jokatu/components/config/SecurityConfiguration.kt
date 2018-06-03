@@ -2,7 +2,7 @@ package jokatu.components.config
 
 import ophelia.exceptions.voidmaybe.VoidMaybe.wrap
 import ophelia.exceptions.voidmaybe.VoidMaybeCollectors.merge
-import org.slf4j.LoggerFactory
+import org.slf4j.getLogger
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -28,7 +28,7 @@ class SecurityConfiguration : WebSecurityConfigurerAdapter() {
 		Arrays.stream(arrayOf("user", "user2", "user3", "user4"))
 				.map(wrap { name -> auth!!.inMemoryAuthentication().withUser(name).password("password").roles("USER") })
 				.collect(merge()).throwOnFailure()
-		log.debug("{} added user accounts", SecurityConfiguration::class.java.simpleName)
+		log.debug("{} added user accounts", SecurityConfiguration::class.simpleName)
 	}
 
 	@Throws(Exception::class)
@@ -51,7 +51,7 @@ class SecurityConfiguration : WebSecurityConfigurerAdapter() {
 			.logout()
 				.logoutSuccessUrl("/")
 
-		log.debug("{} configured HTTP security", SecurityConfiguration::class.java.simpleName)
+		log.debug("{} configured HTTP security", SecurityConfiguration::class.simpleName)
 	}
 
 	@Throws(Exception::class)
@@ -76,6 +76,6 @@ class SecurityConfiguration : WebSecurityConfigurerAdapter() {
 	}
 
 	companion object {
-		private val log = LoggerFactory.getLogger(SecurityConfiguration::class.java)
+		private val log = getLogger(SecurityConfiguration::class)
 	}
 }

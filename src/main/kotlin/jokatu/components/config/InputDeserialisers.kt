@@ -5,7 +5,7 @@ import jokatu.game.input.InputDeserialiser
 import ophelia.exceptions.voidmaybe.VoidMaybe.wrap
 import ophelia.exceptions.voidmaybe.VoidMaybeCollectors.merge
 import ophelia.function.ExceptionalConsumer
-import org.slf4j.LoggerFactory
+import org.slf4j.getLogger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.getBeansOfType
 import org.springframework.context.ApplicationContext
@@ -38,7 +38,7 @@ class InputDeserialisers
 			throw Exception("No input deserialisers could be found.")
 		}
 
-		log.debug("{} initialised", InputDeserialisers::class.java.simpleName)
+		log.debug("{} initialised", InputDeserialisers::class.simpleName)
 	}
 
 	fun getDeserialiser(inputClass: KClass<out Input>): InputDeserialiser<*>? {
@@ -83,6 +83,6 @@ class InputDeserialisers
 	}
 
 	companion object {
-		private val log = LoggerFactory.getLogger(InputDeserialisers::class.java)
+		private val log = getLogger(InputDeserialisers::class)
 	}
 }

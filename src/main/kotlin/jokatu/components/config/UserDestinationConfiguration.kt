@@ -1,6 +1,6 @@
 package jokatu.components.config
 
-import org.slf4j.LoggerFactory
+import org.slf4j.getLogger
 import org.springframework.context.annotation.Configuration
 import org.springframework.messaging.simp.user.DefaultUserDestinationResolver
 import org.springframework.messaging.simp.user.UserDestinationResolver
@@ -31,10 +31,10 @@ class UserDestinationConfiguration(private val userDestinationResolver: UserDest
 		keepLeadingSlash.isAccessible = true
 		keepLeadingSlash.set(userDestinationResolver, true)
 
-		log.debug("{} initialised", UserDestinationConfiguration::class.java.simpleName)
+		log.debug("{} initialised", UserDestinationConfiguration::class.simpleName)
 	}
 
 	companion object {
-		private val log = LoggerFactory.getLogger(UserDestinationConfiguration::class.java)
+		private val log = getLogger(UserDestinationConfiguration::class)
 	}
 }

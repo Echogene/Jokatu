@@ -1,7 +1,7 @@
 package jokatu.components.stomp
 
 import jokatu.components.stores.MessageStorer
-import org.slf4j.LoggerFactory
+import org.slf4j.getLogger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.Message
 import org.springframework.messaging.MessagingException
@@ -43,6 +43,6 @@ class StoringMessageSender @Autowired constructor(
 	}
 
 	companion object {
-		private val log = LoggerFactory.getLogger(StoringMessageSender::class.java)
+		private val log = getLogger(StoringMessageSender::class)
 	}
 }
