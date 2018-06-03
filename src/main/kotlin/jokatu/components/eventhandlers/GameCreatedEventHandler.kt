@@ -21,13 +21,10 @@ class GameCreatedEventHandler
 @Autowired constructor(
 		private val gameFactories: GameFactories,
 		private val eventBroadcaster: EventBroadcaster
-) : SpecificEventHandler<GameCreatedEvent>() {
+) : SpecificEventHandler<GameCreatedEvent>(GameCreatedEvent::class) {
 
 	// todo: move this map to its own bean
 	private val entries = HashMap<GameID, List<GameEntry>>()
-
-	override val eventClass: Class<GameCreatedEvent>
-		get() = GameCreatedEvent::class.java
 
 	// todo: is it possible to remove this circular dependency?
 	@PostConstruct

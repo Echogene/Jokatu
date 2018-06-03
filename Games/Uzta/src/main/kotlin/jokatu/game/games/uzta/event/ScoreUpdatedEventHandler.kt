@@ -11,16 +11,8 @@ import java.util.function.Predicate.isEqual
  * When the [graph is updated][GraphUpdatedEvent], update each player's score.
  */
 @Component
-class ScoreUpdatedEventHandler : AbstractEventHandler<Uzta, GraphUpdatedEvent>() {
-	override val eventClass: Class<GraphUpdatedEvent>
-		get() = GraphUpdatedEvent::class.java
-
-	override val gameClass: Class<Uzta>
-		get() = Uzta::class.java
-
-	override fun handleCastGameAndEvent(
-			game: Uzta, event: GraphUpdatedEvent
-	) {
+class ScoreUpdatedEventHandler : AbstractEventHandler<Uzta, GraphUpdatedEvent>(Uzta::class, GraphUpdatedEvent::class) {
+	override fun handleCastGameAndEvent(game: Uzta, event: GraphUpdatedEvent) {
 		game.getPlayers().forEach { player ->
 			sender.send(
 					"/topic/score.game.${game.identifier}.${player.name}",

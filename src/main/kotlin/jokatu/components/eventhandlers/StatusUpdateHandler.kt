@@ -10,11 +10,7 @@ import org.springframework.stereotype.Component
  * @author Steven Weston
  */
 @Component
-class StatusUpdateHandler : SpecificEventHandler<StatusUpdateEvent>() {
-
-	override val eventClass: Class<StatusUpdateEvent>
-		get() = StatusUpdateEvent::class.java
-
+class StatusUpdateHandler : SpecificEventHandler<StatusUpdateEvent>(StatusUpdateEvent::class) {
 	override fun handleCastEvent(game: Game<*>, event: StatusUpdateEvent) {
 		val text = event.status.text
 		if (text != null) {

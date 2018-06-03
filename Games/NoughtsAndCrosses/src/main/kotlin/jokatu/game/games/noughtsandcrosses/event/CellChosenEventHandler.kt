@@ -9,11 +9,7 @@ import org.springframework.stereotype.Component
  * @author Steven Weston
  */
 @Component
-class CellChosenEventHandler : SpecificEventHandler<CellChosenEvent>() {
-
-	override val eventClass: Class<CellChosenEvent>
-		get() = CellChosenEvent::class.java
-
+class CellChosenEventHandler : SpecificEventHandler<CellChosenEvent>(CellChosenEvent::class) {
 	override fun handleCastEvent(game: Game<*>, event: CellChosenEvent) {
 		sender.send(
 				"/topic/substatus.game.${game.identifier}.cell_${event.cell}",

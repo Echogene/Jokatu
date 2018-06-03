@@ -5,10 +5,7 @@ import jokatu.game.event.SpecificEventHandler
 import org.springframework.stereotype.Component
 
 @Component
-class GraphUpdatedEventHandler : SpecificEventHandler<GraphUpdatedEvent>() {
-	override val eventClass: Class<GraphUpdatedEvent>
-		get() = GraphUpdatedEvent::class.java
-
+class GraphUpdatedEventHandler : SpecificEventHandler<GraphUpdatedEvent>(GraphUpdatedEvent::class) {
 	override fun handleCastEvent(game: Game<*>, event: GraphUpdatedEvent) {
 		sender.send("/topic/graph.game." + game.identifier, event.graph)
 	}

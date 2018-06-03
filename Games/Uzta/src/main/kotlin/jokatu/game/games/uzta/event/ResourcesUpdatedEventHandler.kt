@@ -6,10 +6,7 @@ import jokatu.game.games.uzta.graph.NodeType
 import org.springframework.stereotype.Component
 
 @Component
-class ResourcesUpdatedEventHandler : SpecificEventHandler<ResourcesUpdatedEvent>() {
-	override val eventClass: Class<ResourcesUpdatedEvent>
-		get() = ResourcesUpdatedEvent::class.java
-
+class ResourcesUpdatedEventHandler : SpecificEventHandler<ResourcesUpdatedEvent>(ResourcesUpdatedEvent::class) {
 	override fun handleCastEvent(game: Game<*>, event: ResourcesUpdatedEvent) {
 		val player = event.player
 

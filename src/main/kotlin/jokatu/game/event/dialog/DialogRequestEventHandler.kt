@@ -21,11 +21,7 @@ class DialogRequestEventHandler @Autowired constructor(
 		private val dialogRequestor: DialogRequestor,
 		private val inputDeserialisers: InputDeserialisers,
 		private val acknowledgeInputDeserialiser: AcknowledgeInputDeserialiser
-) : SpecificEventHandler<DialogRequest<*, *>>() {
-
-	override val eventClass: Class<DialogRequest<*, *>>
-		get() = DialogRequest::class.java
-
+) : SpecificEventHandler<DialogRequest<*, *>>(DialogRequest::class) {
 	override fun handleCastEvent(game: Game<*>, event: DialogRequest<*, *>) {
 		dialogRequestor.requestDialog(
 				event.dialog,

@@ -10,11 +10,7 @@ import org.springframework.stereotype.Component
  * @author Steven Weston
  */
 @Component
-class PublicEventHandler : SpecificEventHandler<PublicGameEvent>() {
-
-	override val eventClass: Class<PublicGameEvent>
-		get() = PublicGameEvent::class.java
-
+class PublicEventHandler : SpecificEventHandler<PublicGameEvent>(PublicGameEvent::class) {
 	public override fun handleCastEvent(game: Game<*>, event: PublicGameEvent) {
 		sender.send("/topic/public.game." + game.identifier, event.message)
 	}

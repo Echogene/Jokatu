@@ -30,16 +30,13 @@ import java.util.stream.Collectors.toSet
 class PlayerJoinEventHandler
 @Autowired constructor(
 		private val gameDao: GameDao
-) : SpecificEventHandler<PlayerJoinedEvent>(), ApplicationListener<ApplicationEvent> {
+) : SpecificEventHandler<PlayerJoinedEvent>(PlayerJoinedEvent::class), ApplicationListener<ApplicationEvent> {
 
 	private val gameUsers = ConcurrentHashMap<GameID, MutableMap<String, String>>()
 	private val gameUpdates = ConcurrentHashMap<GameID, ScheduledFuture<*>>()
 	private val sessionGames = ConcurrentHashMap<String, GameID>()
 
 	private val executorService = Executors.newScheduledThreadPool(2)
-
-	override val eventClass: Class<PlayerJoinedEvent>
-		get() = PlayerJoinedEvent::class.java
 
 	override fun onApplicationEvent(event: ApplicationEvent) {
 

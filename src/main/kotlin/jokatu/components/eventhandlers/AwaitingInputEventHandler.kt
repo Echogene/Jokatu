@@ -6,11 +6,7 @@ import jokatu.game.input.AwaitingInputEvent
 import org.springframework.stereotype.Component
 
 @Component
-class AwaitingInputEventHandler : SpecificEventHandler<AwaitingInputEvent>() {
-
-	override val eventClass: Class<AwaitingInputEvent>
-		get() = AwaitingInputEvent::class.java
-
+class AwaitingInputEventHandler : SpecificEventHandler<AwaitingInputEvent>(AwaitingInputEvent::class) {
 	override fun handleCastEvent(game: Game<*>, event: AwaitingInputEvent) {
 		game.getPlayers().stream().forEach { player ->
 			sender.sendToUser(

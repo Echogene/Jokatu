@@ -9,11 +9,7 @@ import org.springframework.stereotype.Component
  * @author Steven Weston
  */
 @Component
-class HandChangedEventHandler : SpecificEventHandler<HandChangedEvent>() {
-
-	override val eventClass: Class<HandChangedEvent>
-		get() = HandChangedEvent::class.java
-
+class HandChangedEventHandler : SpecificEventHandler<HandChangedEvent>(HandChangedEvent::class) {
 	override fun handleCastEvent(game: Game<*>, event: HandChangedEvent) {
 		val player = event.player
 		sender.sendToUser(

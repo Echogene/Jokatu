@@ -9,10 +9,7 @@ import org.springframework.stereotype.Component
  * At the end of a game, send the message of the [PlayerResult] to a special STOMP destination.
  */
 @Component
-class PlayerResultHandler : SpecificEventHandler<PlayerResult>() {
-	override val eventClass: Class<PlayerResult>
-		get() = PlayerResult::class.java
-
+class PlayerResultHandler : SpecificEventHandler<PlayerResult>(PlayerResult::class) {
 	override fun handleCastEvent(game: Game<*>, event: PlayerResult) {
 		sender.send("/topic/result.game." + game.identifier, event.message)
 	}

@@ -10,11 +10,7 @@ import org.springframework.stereotype.Component
  * @author Steven Weston
  */
 @Component
-class PrivateEventHandler : SpecificEventHandler<PrivateGameEvent>() {
-
-	override val eventClass: Class<PrivateGameEvent>
-		get() = PrivateGameEvent::class.java
-
+class PrivateEventHandler : SpecificEventHandler<PrivateGameEvent>(PrivateGameEvent::class) {
 	override fun handleCastEvent(game: Game<*>, event: PrivateGameEvent) {
 		event.players.stream().forEach { player ->
 			sender.sendToUser(

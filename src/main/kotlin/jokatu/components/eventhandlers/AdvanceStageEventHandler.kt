@@ -9,11 +9,7 @@ import org.springframework.stereotype.Component
  * When a stage says it is over, move the game onto the next stage.
  */
 @Component
-class AdvanceStageEventHandler : SpecificEventHandler<StageOverEvent>() {
-
-	override val eventClass: Class<StageOverEvent>
-		get() = StageOverEvent::class.java
-
+class AdvanceStageEventHandler : SpecificEventHandler<StageOverEvent>(StageOverEvent::class) {
 	override fun handleCastEvent(game: Game<*>, event: StageOverEvent) {
 		game.advanceStage()
 
