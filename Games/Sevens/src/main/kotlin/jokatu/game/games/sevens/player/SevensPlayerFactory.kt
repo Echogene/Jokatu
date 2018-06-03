@@ -5,11 +5,7 @@ import jokatu.game.player.AbstractPlayerFactory
 import org.springframework.stereotype.Component
 
 @Component
-class SevensPlayerFactory : AbstractPlayerFactory<SevensPlayer, SevensGame>() {
-
-	override val gameClass: Class<SevensGame>
-		get() = SevensGame::class.java
-
+class SevensPlayerFactory : AbstractPlayerFactory<SevensPlayer, SevensGame>(SevensGame::class) {
 	override fun produceInCastGame(sevensGame: SevensGame, username: String): SevensPlayer {
 		val player = SevensPlayer(username)
 		sevensGame.register(player)

@@ -32,11 +32,11 @@ class SevensGame internal constructor(identifier: GameID) : Game<SevensPlayer>(i
 				{ GameOverStage(status) }
 		)
 
-		status.observe({ this.fireEvent(it) })
+		status.observe(::fireEvent)
 	}
 
 	fun register(player: SevensPlayer) {
-		player.observe({ this.fireEvent(it) })
+		player.observe(::fireEvent)
 	}
 
 	fun getCardsOfSuitPlayed(suit: Suit): UnmodifiableSet<Card> {

@@ -1,18 +1,16 @@
 package jokatu.game.player
 
 import jokatu.game.Game
+import kotlin.reflect.KClass
+import kotlin.reflect.full.cast
 
 /**
  * A [PlayerFactory] that produces players for a specific game type.
  * @param <P> the type of [Player] to produce
  * @param <G> the type of [Game] to create the players for
  */
-abstract class AbstractPlayerFactory<P : Player, G : Game<P>> : PlayerFactory<P> {
-
-	protected abstract val gameClass: Class<G>
-
+abstract class AbstractPlayerFactory<P : Player, G : Game<P>>(private val gameClass: KClass<G>) : PlayerFactory<P> {
 	private fun castGame(game: Game<*>): G {
-		val gameClass = gameClass
 		if (!gameClass.isInstance(game)) {
 			throw IllegalArgumentException(
 					"Game was not of the right type.  Expected ${gameClass.simpleName} but was " +
