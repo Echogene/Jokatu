@@ -10,10 +10,7 @@ import org.springframework.stereotype.Component
  * @author steven
  */
 @Component
-class RockPaperScissorsViewResolverFactory : ViewResolverFactory<StandardPlayer, RockPaperScissorsGame>() {
-	override val gameClass: Class<RockPaperScissorsGame>
-		get() = RockPaperScissorsGame::class.java
-
+class RockPaperScissorsViewResolverFactory : ViewResolverFactory<StandardPlayer, RockPaperScissorsGame>(RockPaperScissorsGame::class) {
 	override fun getResolverFor(castGame: RockPaperScissorsGame): ViewResolver<StandardPlayer, RockPaperScissorsGame> {
 		return RockPaperScissorsViewResolver(castGame)
 	}

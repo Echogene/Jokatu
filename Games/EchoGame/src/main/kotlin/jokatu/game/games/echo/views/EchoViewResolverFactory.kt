@@ -11,10 +11,7 @@ import org.springframework.web.servlet.ModelAndView
  * @author steven
  */
 @Component
-class EchoViewResolverFactory : ViewResolverFactory<StandardPlayer, EchoGame>() {
-	override val gameClass: Class<EchoGame>
-		get() = EchoGame::class.java
-
+class EchoViewResolverFactory : ViewResolverFactory<StandardPlayer, EchoGame>(EchoGame::class) {
 	override fun getResolverFor(castGame: EchoGame): ViewResolver<StandardPlayer, EchoGame> {
 		return object : ViewResolver<StandardPlayer, EchoGame>(StandardPlayer::class, castGame) {
 			override val defaultView: ModelAndView

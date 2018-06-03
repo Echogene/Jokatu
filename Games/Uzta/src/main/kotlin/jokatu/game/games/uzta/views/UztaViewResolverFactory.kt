@@ -10,10 +10,7 @@ import org.springframework.stereotype.Component
  * @author steven
  */
 @Component
-class UztaViewResolverFactory : ViewResolverFactory<UztaPlayer, Uzta>() {
-	override val gameClass: Class<Uzta>
-		get() = Uzta::class.java
-
+class UztaViewResolverFactory : ViewResolverFactory<UztaPlayer, Uzta>(Uzta::class) {
 	override fun getResolverFor(castGame: Uzta): ViewResolver<UztaPlayer, Uzta> {
 		return UztaViewResolver(castGame)
 	}

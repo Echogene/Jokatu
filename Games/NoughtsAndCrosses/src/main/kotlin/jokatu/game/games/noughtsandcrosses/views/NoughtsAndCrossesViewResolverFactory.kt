@@ -10,10 +10,7 @@ import org.springframework.stereotype.Component
  * @author steven
  */
 @Component
-class NoughtsAndCrossesViewResolverFactory : ViewResolverFactory<NoughtsAndCrossesPlayer, NoughtsAndCrossesGame>() {
-	override val gameClass: Class<NoughtsAndCrossesGame>
-		get() = NoughtsAndCrossesGame::class.java
-
+class NoughtsAndCrossesViewResolverFactory : ViewResolverFactory<NoughtsAndCrossesPlayer, NoughtsAndCrossesGame>(NoughtsAndCrossesGame::class) {
 	override fun getResolverFor(castGame: NoughtsAndCrossesGame): ViewResolver<NoughtsAndCrossesPlayer, NoughtsAndCrossesGame> {
 		return NoughtsAndCrossesViewResolver(castGame)
 	}

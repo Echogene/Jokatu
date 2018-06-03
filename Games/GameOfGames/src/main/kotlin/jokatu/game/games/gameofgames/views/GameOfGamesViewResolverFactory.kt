@@ -7,10 +7,7 @@ import jokatu.game.viewresolver.ViewResolverFactory
 import org.springframework.stereotype.Component
 
 @Component
-class GameOfGamesViewResolverFactory : ViewResolverFactory<StandardPlayer, GameOfGames>() {
-	override val gameClass: Class<GameOfGames>
-		get() = GameOfGames::class.java
-
+class GameOfGamesViewResolverFactory : ViewResolverFactory<StandardPlayer, GameOfGames>(GameOfGames::class) {
 	override fun getResolverFor(castGame: GameOfGames): ViewResolver<StandardPlayer, GameOfGames> {
 		return GameOfGamesViewResolver(castGame)
 	}
