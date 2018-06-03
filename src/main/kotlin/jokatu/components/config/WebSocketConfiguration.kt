@@ -1,6 +1,6 @@
 package jokatu.components.config
 
-import org.slf4j.LoggerFactory
+import org.slf4j.getLogger
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.messaging.simp.config.MessageBrokerRegistry
@@ -24,14 +24,14 @@ class WebSocketConfiguration : AbstractSessionWebSocketMessageBrokerConfigurer<M
 	override fun configureStompEndpoints(registry: StompEndpointRegistry) {
 		registry.addEndpoint("/ws")
 
-		log.debug("{} configured STOMP endpoints", WebSocketConfiguration::class.java.simpleName)
+		log.debug("{} configured STOMP endpoints", WebSocketConfiguration::class.simpleName)
 	}
 
 	override fun configureMessageBroker(registry: MessageBrokerRegistry?) {
 		registry!!.enableStompBrokerRelay("/topic/", "/queue/")
 		registry.setPathMatcher(AntPathMatcher("."))
 
-		log.debug("{} configured message broker", WebSocketConfiguration::class.java.simpleName)
+		log.debug("{} configured message broker", WebSocketConfiguration::class.simpleName)
 	}
 
 	@Bean
@@ -40,7 +40,7 @@ class WebSocketConfiguration : AbstractSessionWebSocketMessageBrokerConfigurer<M
 	}
 
 	companion object {
-		private val log = LoggerFactory.getLogger(WebSocketConfiguration::class.java)
+		private val log = getLogger(WebSocketConfiguration::class)
 	}
 
 	//	@Override
