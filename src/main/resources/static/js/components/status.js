@@ -1,21 +1,23 @@
 /**
  * A JStatus is an element that listens to updates on a STOMP destination and manages its child elements with the data
  * received from that destination.  If the data returned is an array, it spawns/hides children per array element.  If
- * the data is not an array, it is treated as a singleton array.
+ * the data is not an array, that single object is wrapped in an array and then it spawns a single child (and hides all
+ * others) as above.
  *
- * When it has spawned/hidden the appropriate children, it passes the corresponding array element into each child's
- * <code>data-status</code> attribute and updates the child's text content if the array element is a string or is an
- * object with a <code>text</code> string field.
+ * When it has spawned/hidden the appropriate children, it passes to each child their corresponding array element using
+ * the child's attribute with the name given by the value of the JStatus attribute <code>attributeName</code>.  If the
+ * corresponding array element is a mere string or an object with a <code>text</code> string field, then the child's
+ * text content is updated with the contents of such a string as well.
  *
  * Attributes:<ul>
  *     <li><code>destination</code>: the STOMP destination to subscribe to.</li>
- *     <li><code>wrapperElement</code>: the name of the element to use as the child elements.  This should be the tag
- *         name for standard elements and the JavaScript class name for custom elements.</li>
- *     <li><code>data-defaultAttributes</code>: when creating a child element, an object to use whose keys and values
- *         will be the attributes and values to set on the child element.</li>
+ *     <li><code>wrapperElement</code>: the name of the element to use as the child elements.  This should be the
+ *         lowercase tag name of the element, e.g. <code>span</code> or <code>j-button</code>.</li>
+ *     <li><code>data-defaultAttributes</code>: when creating a child element, use the keys and values of this object
+ *         to set corresponding attributes and values on the child element.</li>
  *     <li><code>attributeName</code>: an attribute name to set on each child element with the status for that element.
  *         </li>
- *     <li><code>data-attributeMapping</code>: a map whose keys should be attribute names of the wrapped elements and
+ *     <li><code>data-attributeMapping</code>: a map whose keys should be attribute names of the child elements and
  *         whose values should be field names of the status object.  When the status is updated, each of the
  *         mapped attributes of each wrapped element will be populated with the values for the corresponding
  *         (by <code>data-attributeMapping</code>) fields of the status corresponding to the wrapped element.</li>
@@ -122,15 +124,23 @@ class JStatus extends HTMLElement {
 			Object.keys(attributeMapping).forEach(attributeName => {
 				const statusField = attributeMapping[attributeName];
 				let attributeValue = status[statusField];
-				if (attributeValue instanceof Object) {
-					attributeValue = JSON.stringify(attributeValue);
-				}
-				if (typeof attributeValue !== 'undefined') {
-					element.setAttribute(attributeName, attributeValue);
-				}
+				JStatus.mapAttributeOnElement(element, attributeName, attributeValue);
 			});
 		}
 	};
+
+	static mapAttributeOnElement(element, attributeName, attributeValue) {
+		if (attributeValue instanceof Object) {
+			attributeValue = JSON.stringify(attributeValue);
+		}
+		if (typeof attributeValue !== 'undefined') {
+			if (attributeName === 'innerText') {
+				element.innerText = attributeValue;
+			} else {
+				element.setAttribute(attributeName, attributeValue);
+			}
+		}
+	}
 }
 
 customElements.define('j-status', JStatus);

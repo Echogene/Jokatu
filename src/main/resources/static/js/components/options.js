@@ -1,3 +1,9 @@
+/**
+ * An element that maintains an enumerated list of buttons depending on how many options it has.
+ *
+ * todo: can this be replaced by j-status?  It listens to an attribute to change its children rather than a websocket
+ * todo: destination
+ */
 class JOptions extends HTMLElement {
 	connectedCallback() {
 		if (!this._alreadySetUp) {
@@ -8,7 +14,7 @@ class JOptions extends HTMLElement {
 		this._alreadySetUp = true;
 	}
 
-			/**
+	/**
 	 * @param {Array.<{input: string|Object, display: string}>} options
 	 * @private
 	 */

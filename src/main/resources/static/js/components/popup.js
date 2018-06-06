@@ -25,6 +25,7 @@ class JPopup extends HTMLElement {
 			this.parentNode.removeChild(this._line);
 		}
 		this.parentNode.removeChild(this);
+		this.dispatchEvent(new Event('hide'));
 	};
 
 	_updateTitle(title) {
@@ -47,6 +48,17 @@ class JPopup extends HTMLElement {
 			// The covee has been removed, so hide this.
 			this.hide();
 		}
+	};
+
+	placeInDefaultContainer() {
+		let container = document.getElementById('popup-container');
+		if (!container) {
+			container = document.createElement('div');
+			container.id = 'popup-container';
+			container.classList.add('overlay');
+			document.body.appendChild(container);
+		}
+		container.appendChild(this);
 	};
 }
 

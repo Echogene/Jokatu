@@ -10,6 +10,7 @@ layout 'views/game_view.tpl', true,
 		include template: 'components/button.tpl'
 		include template: 'components/counter.tpl'
 		include template: 'components/form/integer.tpl'
+		include template: 'components/annotated.tpl'
 		link(rel: 'stylesheet', href: '/css/uzta.css')
 		link(rel: 'stylesheet', href: '/css/uzta_main.css')
 	},
@@ -47,7 +48,8 @@ layout 'views/game_view.tpl', true,
 						yieldUnescaped markupGenerator.bindLast(
 							tag: 'j-status',
 							id: "${p.name}_score",
-							wrapperElement: 'span',
+							wrapperElement: 'j-annotated',
+							'data-attributeMapping': '{\"data-popup\": \"annotation\", \"innerText\": \"number\"}',
 							destination: "/topic/score.game.${gameId}.${p.name}"
 						)
 					}
@@ -95,7 +97,8 @@ layout 'views/game_view.tpl', true,
 					yieldUnescaped markupGenerator.bindLast(
 						tag: 'j-status',
 						id: "${username}_score",
-						wrapperElement: 'span',
+						wrapperElement: 'j-annotated',
+						'data-attributeMapping': '{\"data-popup\": \"annotation\", \"innerText\": \"number\"}',
 						destination: "/topic/score.game.${gameId}.${username}"
 					)
 				}

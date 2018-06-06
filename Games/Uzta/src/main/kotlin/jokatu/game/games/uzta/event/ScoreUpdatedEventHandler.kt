@@ -6,6 +6,7 @@ import jokatu.game.games.uzta.graph.UztaGraph
 import jokatu.game.games.uzta.player.UztaPlayer
 import org.springframework.stereotype.Component
 import java.util.function.Predicate.isEqual
+import java.util.stream.Collectors.joining
 
 /**
  * When the [graph is updated][GraphUpdatedEvent], update each player's score.
@@ -21,10 +22,29 @@ class ScoreUpdatedEventHandler : AbstractEventHandler<Uzta, GraphUpdatedEvent>(U
 		}
 	}
 
-	private fun calculateScore(player: UztaPlayer, graph: UztaGraph): Long {
-		return graph.edges.stream()
+	private fun calculateScore(player: UztaPlayer, graph: UztaGraph): AnnotatedInt {
+		val ownedEdges = graph.edges.stream()
 				.map { it.owner }
 				.filter(isEqual(player))
-				.count()
+				.count().toInt()
+		return IntFrom(ownedEdges, "from owned edges")
 	}
+}
+
+interface AnnotatedInt {
+	val number: Int
+	val annotation: String
+}
+
+class IntFrom(override val number: Int, from: String): AnnotatedInt {
+	override val annotation = "$number $from"
+}
+
+class AnnotatedSum(summands: Collection<AnnotatedInt>): AnnotatedInt {
+	override val number = summands.sumBy { it.number }
+
+	override val annotation = "$number, the sum of" +
+			summands.stream()
+					.map { "\t${it.annotation}" }
+					.collect(joining("\n"))
 }
