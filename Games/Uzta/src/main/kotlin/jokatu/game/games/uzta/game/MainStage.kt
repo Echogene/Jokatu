@@ -37,7 +37,7 @@ class MainStage internal constructor(
 			fireEvent(e)
 		}
 
-		playersInOrder.forEach { player -> player.observe({ this.fireEvent(it) }) }
+		playersInOrder.forEach { player -> player.observe { this.fireEvent(it) } }
 	}
 
 	override fun start() {

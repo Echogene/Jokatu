@@ -78,8 +78,8 @@ constructor(
 			object : Input {}
 		} else {
 			acceptedInputs.stream()
-					.map({ inputDeserialisers.getDeserialiser(it) })
-					.map<Maybe<Input>>(wrap({ deserialiser -> deserialiser!!.deserialise(json) }))
+					.map { inputDeserialisers.getDeserialiser(it) }
+					.map<Maybe<Input>>(wrap { deserialiser -> deserialiser!!.deserialise(json) })
 					.collect(toUniqueSuccess<Input>())
 					.returnOnSuccess()
 					.throwMappedFailure { e -> GameException(identity, e, "Could not deserialise '$json'.") }

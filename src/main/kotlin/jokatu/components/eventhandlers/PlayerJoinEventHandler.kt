@@ -95,7 +95,7 @@ class PlayerJoinEventHandler
 			sender.send("/topic/observers.game.$gameId", observers)
 
 			val playerStatuses = game.getPlayers().stream()
-					.map({ it.name })
+					.map { it.name }
 					.map { name -> PlayerStatus(userNames.contains(name), name) }
 					.collect(toSet())
 			sender.send("/topic/players.game.$gameId", playerStatuses)

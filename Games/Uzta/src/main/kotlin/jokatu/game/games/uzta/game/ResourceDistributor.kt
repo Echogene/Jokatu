@@ -36,7 +36,7 @@ internal class ResourceDistributor(private val graph: UztaGraph) : AbstractSynch
 				.filter { edge -> edge.owner != null }
 				.flatMap { getStartingResourcesForEdge(it) }
 				.collect(groupingBy({ n: UserTappedNode -> n.left }, mapping({ it.right }, toBag<NodeType>())))
-		startingResources.forEach({ obj, givenResources -> obj.giveResources(givenResources) })
+		startingResources.forEach { obj, givenResources -> obj.giveResources(givenResources) }
 	}
 
 	private fun getStartingResourcesForEdge(edge: LineSegment): Stream<Pair<UztaPlayer, NodeType>> {

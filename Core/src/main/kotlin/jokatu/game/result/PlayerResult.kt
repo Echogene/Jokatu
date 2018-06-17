@@ -15,7 +15,7 @@ class PlayerResult(result: Result, players: Collection<Player>) : StageOverEvent
 
 	init {
 		val playerNames = players.stream()
-				.map({ it.name })
+				.map { it.name }
 				.collect(Collectors.joining(", "))
 		message = "$playerNames ${result.get3rdPersonPresent(players.size)}."
 	}

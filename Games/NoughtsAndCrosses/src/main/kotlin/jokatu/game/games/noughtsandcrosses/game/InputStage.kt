@@ -32,9 +32,9 @@ internal class InputStage(
 	private val turnManager: TurnManager<NoughtsAndCrossesPlayer>
 
 	private val completedLines: List<Line>
-		get() = stream(NoughtOrCross.values()).map({ this.fireLineCompletedEventsForPlayer(it) })
-				.flatMap({ it.stream() })
-				.map({ Line(it) })
+		get() = stream(NoughtOrCross.values()).map { this.fireLineCompletedEventsForPlayer(it) }
+				.flatMap { it.stream() }
+				.map { Line(it) }
 				.collect(Collectors.toList())
 
 	init {
@@ -79,14 +79,14 @@ internal class InputStage(
 	private fun fireLineCompletedEventsForPlayer(noughtOrCross: NoughtOrCross): List<UnmodifiableList<Int>> {
 		val cellsForPlayer = getCellsForPlayer(noughtOrCross)
 		return LINES.stream()
-				.filter { line -> line.stream().allMatch({ cellsForPlayer.contains(it) }) }
+				.filter { line -> line.stream().allMatch { cellsForPlayer.contains(it) } }
 				.collect(Collectors.toList())
 	}
 
 	private fun getCellsForPlayer(noughtOrCross: NoughtOrCross): Set<Int> {
 		return inputs.entries.stream()
 				.filter { entry -> entry.value == noughtOrCross }
-				.map({ it.key })
+				.map { it.key }
 				.collect(Collectors.toSet())
 	}
 

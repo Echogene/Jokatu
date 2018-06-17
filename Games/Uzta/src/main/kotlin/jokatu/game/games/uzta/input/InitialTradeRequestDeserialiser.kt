@@ -30,7 +30,7 @@ class InitialTradeRequestDeserialiser : InputDeserialiser<InitialTradeRequest>()
 			resource = NodeType.valueOf(resourceName)
 		} catch (e: IllegalArgumentException) {
 			val nodeTypes = stream(NodeType.values())
-					.map({ it.toString() })
+					.map { it.toString() }
 					.collect(joining(", ", "[", "]"))
 			throw DeserialisationException(
 					json,

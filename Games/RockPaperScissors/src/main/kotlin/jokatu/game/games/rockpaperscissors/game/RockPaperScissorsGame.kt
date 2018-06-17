@@ -22,7 +22,7 @@ class RockPaperScissorsGame internal constructor(identifier: GameID) : Game<Stan
 				{ GameOverStage(status) }
 		)
 
-		status.observe({ this.fireEvent(it) })
+		status.observe(::fireEvent)
 	}
 
 	companion object {

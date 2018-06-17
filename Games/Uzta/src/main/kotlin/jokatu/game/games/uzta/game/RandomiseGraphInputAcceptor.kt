@@ -80,7 +80,7 @@ internal class RandomiseGraphInputAcceptor(
 		}
 
 		trigonation.stream()
-				.filter { Δ -> Δ.nodes.stream().noneMatch({ superTrigon.nodes.contains(it) }) }
+				.filter { Δ -> Δ.nodes.stream().noneMatch { superTrigon.nodes.contains(it) } }
 				.map { it.edges }
 				.flatMap { it.stream() }
 				.forEach { edges.add(it) }

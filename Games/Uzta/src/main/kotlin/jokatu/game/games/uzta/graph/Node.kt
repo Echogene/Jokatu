@@ -29,7 +29,7 @@ class Node(val id: String, val x: Double, val y: Double) {
 	}
 
 	fun nearest(): Comparator<Node> {
-		return comparingDouble({ this.squareDistanceFrom(it) })
+		return comparingDouble { this.squareDistanceFrom(it) }
 	}
 
 	override fun equals(other: Any?): Boolean {

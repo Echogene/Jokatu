@@ -150,7 +150,7 @@ class InitialTradeRequestAcceptor internal constructor(
 				"player",
 				"Player",
 				players.keys.stream()
-						.filter(not({ inputter.name == it }))
+						.filter(not { inputter.name == it })
 						.map { name -> Option(name, name, playerName == name) }
 						.collect(toList())
 		)
