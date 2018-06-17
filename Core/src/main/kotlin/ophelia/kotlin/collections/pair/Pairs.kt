@@ -1,18 +1,18 @@
 package ophelia.kotlin.collections.pair
 
-interface Pair<out N>: Collection<N> {
+interface Pair<out E: Any>: Collection<E> {
 	override val size: Int
 		get() = 2
 
 	override fun isEmpty() = false
 
-	override fun containsAll(elements: Collection<@UnsafeVariance N>) = elements.all(::contains)
+	override fun containsAll(elements: Collection<@UnsafeVariance E>) = elements.all(::contains)
 }
 
-open class UnorderedPair<out E>(protected val first: E, protected val second: E): Pair<E> {
+abstract class AbstractPair<out E: Any>(protected val first: E, protected val second: E): Pair<E> {
 	init {
 		if (first === second) {
-			throw IllegalArgumentException("The two entries to an unordered pair cannot be the same.")
+			throw IllegalArgumentException("The two entries in a pair cannot be the same.")
 		}
 	}
 
@@ -33,9 +33,29 @@ open class UnorderedPair<out E>(protected val first: E, protected val second: E)
 			return element
 		}
 	}
+
+	fun other(element: @UnsafeVariance E) = when (element) {
+		first -> second
+		second -> first
+		else -> null
+	}
 }
 
-class OrderedPair<out E>(first: E, second: E): UnorderedPair<E>(first, second), List<E> {
+class UnorderedPair<out E: Any>(first: E, second: E): AbstractPair<E>(first, second), Set<E> {
+	override fun toString(): String = "{$first, $second}"
+
+	override fun equals(other: Any?) = when (other) {
+		is UnorderedPair<*> -> (first == other.first && second == other.second)
+							|| (first == other.second && second == other.first)
+		else -> false
+	}
+
+	override fun hashCode(): Int {
+		return first.hashCode() xor second.hashCode()
+	}
+}
+
+class OrderedPair<out E: Any>(first: E, second: E): AbstractPair<E>(first, second), List<E> {
 	override fun get(index: Int) = when (index) {
 		0 -> first
 		1 -> second
@@ -84,6 +104,19 @@ class OrderedPair<out E>(first: E, second: E): UnorderedPair<E>(first, second), 
 			return element
 		}
 	}
+
+	override fun toString(): String = "[$first, $second]"
+
+	override fun equals(other: Any?) = when (other) {
+		is OrderedPair<*> -> (first == other.first && second == other.second)
+		else -> false
+	}
+
+	override fun hashCode(): Int {
+		var result = first.hashCode()
+		result = 31 * result + second.hashCode()
+		return result
+	}
 }
 
 /**
@@ -129,8 +162,8 @@ class SingletonListIterator<out E>(private val elementSupplier: () -> E): ListIt
 
 	override fun hasNext() = !readFirst
 	override fun hasPrevious() = readFirst
-	override fun nextIndex() = 0
-	override fun previousIndex() = 0
+	override fun nextIndex() = if (readFirst) 1 else 0
+	override fun previousIndex() = if (readFirst) 0 else -1
 
 	override fun next() = when {
 		readFirst -> throw NoSuchElementException()
