@@ -1,13 +1,8 @@
 package jokatu.game.games.uzta.graph
 
-import ophelia.collections.list.ArrayList
-import ophelia.collections.set.HashSet
-import ophelia.graph.ModifiableBiGraph
+import ophelia.kotlin.graph.MutableUndirectedGraph
 
-class ModifiableUztaGraph : UztaGraph, ModifiableBiGraph<Node, LineSegment> {
-	private val nodes: ArrayList<Node> = ArrayList()
-	private val edges: HashSet<LineSegment> = HashSet()
-
-	override fun getNodes() = nodes
-	override fun getEdges() = edges
+class ModifiableUztaGraph : UztaGraph, MutableUndirectedGraph<Node, LineSegment> {
+	override val nodes: MutableList<Node> = ArrayList()
+	override val edges: MutableSet<LineSegment> = HashSet()
 }

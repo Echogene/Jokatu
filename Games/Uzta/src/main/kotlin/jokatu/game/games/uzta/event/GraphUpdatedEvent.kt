@@ -1,7 +1,7 @@
 package jokatu.game.games.uzta.event
 
 import jokatu.game.event.GameEvent
-import ophelia.graph.Graph
+import ophelia.kotlin.graph.Graph
 
 /**
  * An event fired when a graph is updated.

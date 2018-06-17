@@ -7,7 +7,7 @@ import jokatu.game.games.uzta.input.RandomiseGraphInput
 import jokatu.game.games.uzta.player.UztaPlayer
 import jokatu.game.input.AbstractInputAcceptor
 import ophelia.collections.set.HashSet
-import ophelia.graph.BiGraph
+import ophelia.kotlin.graph.UndirectedGraph
 import java.util.*
 import java.util.Arrays.stream
 import java.util.stream.Collectors.toSet
@@ -21,7 +21,7 @@ internal class RandomiseGraphInputAcceptor(
 		graph: ModifiableUztaGraph
 ) : AbstractInputAcceptor<RandomiseGraphInput, UztaPlayer, GameEvent>(RandomiseGraphInput::class, UztaPlayer::class) {
 
-	private val graph: BiGraph<Node, LineSegment>
+	private val graph: UndirectedGraph<Node, LineSegment>
 	private val nodes: MutableList<Node>
 	private val edges: MutableSet<LineSegment>
 

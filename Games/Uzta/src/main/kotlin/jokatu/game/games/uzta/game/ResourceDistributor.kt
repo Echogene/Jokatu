@@ -9,30 +9,32 @@ import jokatu.game.games.uzta.player.UztaPlayer
 import ophelia.collections.bag.BagCollectors.toBag
 import ophelia.event.observable.AbstractSynchronousObservable
 import ophelia.tuple.Pair
-import ophelia.util.MapUtils
 import ophelia.util.function.PredicateUtils.notNull
 import java.util.*
 import java.util.Collections.emptyList
 import java.util.Collections.emptySet
 import java.util.stream.Collectors.*
 import java.util.stream.Stream
+import kotlin.collections.HashSet
 
 typealias UserTappedNode = Pair<UztaPlayer, NodeType>
 
 internal class ResourceDistributor(private val graph: UztaGraph) : AbstractSynchronousObservable<GraphUpdatedEvent>() {
-	private val nodeToOwningEdges: MutableMap<Node, Set<LineSegment>>
+	private val nodeToOwningEdges: MutableMap<Node, MutableSet<LineSegment>> = HashMap()
 
 	init {
-		nodeToOwningEdges = HashMap()
-
 		graph.edges.stream()
-				.forEach { edge -> edge.forEach { node -> MapUtils.updateSetBasedMap(nodeToOwningEdges, node, edge) } }
+				.forEach { edge ->
+					edge.forEach { node ->
+						nodeToOwningEdges.computeIfAbsent(node) { HashSet() }.add(edge)
+					}
+				}
 	}
 
 	fun distributeStartingResources() {
 		val startingResources = graph.edges.stream()
 				.filter { edge -> edge.owner != null }
-				.flatMap({ getStartingResourcesForEdge(it) })
+				.flatMap { getStartingResourcesForEdge(it) }
 				.collect(groupingBy({ n: UserTappedNode -> n.left }, mapping({ it.right }, toBag<NodeType>())))
 		startingResources.forEach({ obj, givenResources -> obj.giveResources(givenResources) })
 	}
@@ -59,15 +61,15 @@ internal class ResourceDistributor(private val graph: UztaGraph) : AbstractSynch
 		fireEvent(GraphUpdatedEvent(graph))
 
 		val resources = nodesForRoll.stream()
-				.flatMap({ getResourcesForNode(it) })
+				.flatMap { getResourcesForNode(it) }
 				.collect(groupingBy({ n: UserTappedNode -> n.left }, mapping({ it.right }, toBag<NodeType>())))
-		resources.forEach({ obj, givenResources -> obj.giveResources(givenResources) })
+		resources.forEach { obj, givenResources -> obj.giveResources(givenResources) }
 	}
 
 	private fun getResourcesForNode(node: Node): Stream<UserTappedNode> {
 		val edges = nodeToOwningEdges.getOrDefault(node, emptySet())
 		return edges.stream()
-				.map({ it.owner })
+				.map { it.owner }
 				.filter(notNull())
 				.map { owner -> Pair(owner!!, node.type!!) }
 	}

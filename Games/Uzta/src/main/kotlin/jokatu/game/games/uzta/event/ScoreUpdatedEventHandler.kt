@@ -5,8 +5,10 @@ import jokatu.game.games.uzta.game.Uzta
 import jokatu.game.games.uzta.graph.UztaGraph
 import jokatu.game.games.uzta.player.UztaPlayer
 import org.springframework.stereotype.Component
+import java.util.*
 import java.util.function.Predicate.isEqual
 import java.util.stream.Collectors.joining
+import java.util.stream.Collectors.toSet
 
 /**
  * When the [graph is updated][GraphUpdatedEvent], update each player's score.
@@ -17,7 +19,7 @@ class ScoreUpdatedEventHandler : AbstractEventHandler<Uzta, GraphUpdatedEvent>(U
 		game.getPlayers().forEach { player ->
 			sender.send(
 					"/topic/score.game.${game.identifier}.${player.name}",
-					calculateScore(player, game.graph)
+					calculateScore(player, game.finalisedGraph)
 			)
 		}
 	}
@@ -26,8 +28,13 @@ class ScoreUpdatedEventHandler : AbstractEventHandler<Uzta, GraphUpdatedEvent>(U
 		val ownedEdges = graph.edges.stream()
 				.map { it.owner }
 				.filter(isEqual(player))
-				.count().toInt()
-		return IntFrom(ownedEdges, "from owned edges")
+				.collect(toSet())
+
+		val ownedEdgesNumber = IntFrom(ownedEdges.size, "from owned edges")
+
+		return AnnotatedSum(
+				ownedEdgesNumber
+		)
 	}
 }
 
@@ -40,11 +47,15 @@ class IntFrom(override val number: Int, from: String): AnnotatedInt {
 	override val annotation = "$number $from"
 }
 
-class AnnotatedSum(summands: Collection<AnnotatedInt>): AnnotatedInt {
+class AnnotatedSum(vararg summands: AnnotatedInt): AnnotatedInt {
 	override val number = summands.sumBy { it.number }
 
-	override val annotation = "$number, the sum of" +
-			summands.stream()
-					.map { "\t${it.annotation}" }
-					.collect(joining("\n"))
+	override val annotation = when {
+		summands.isEmpty() -> "0, the empty sum"
+		summands.size == 1 -> summands[0].annotation
+		else -> "$number, the sum of" +
+				Arrays.stream(summands)
+						.map { "\t${it.annotation}" }
+						.collect(joining("\n"))
+	}
 }

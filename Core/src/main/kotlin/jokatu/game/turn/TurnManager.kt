@@ -26,7 +26,7 @@ class TurnManager<P : Player>(private val players: List<P>) : AbstractSynchronou
 			throw NotAPlayerException()
 		}
 		if (player !== this.currentPlayer) {
-			throw NotYourTurnException(this.currentPlayer!!)
+			throw NotYourTurnException(player, this.currentPlayer!!)
 		}
 	}
 

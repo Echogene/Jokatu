@@ -9,7 +9,7 @@ interface Pair<out E: Any>: Collection<E> {
 	override fun containsAll(elements: Collection<@UnsafeVariance E>) = elements.all(::contains)
 }
 
-abstract class AbstractPair<out E: Any>(protected val first: E, protected val second: E): Pair<E> {
+abstract class AbstractPair<out E: Any>(val first: E, val second: E): Pair<E> {
 	init {
 		if (first === second) {
 			throw IllegalArgumentException("The two entries in a pair cannot be the same.")
@@ -41,7 +41,7 @@ abstract class AbstractPair<out E: Any>(protected val first: E, protected val se
 	}
 }
 
-class UnorderedPair<out E: Any>(first: E, second: E): AbstractPair<E>(first, second), Set<E> {
+open class UnorderedPair<out E: Any>(first: E, second: E): AbstractPair<E>(first, second), Set<E> {
 	override fun toString(): String = "{$first, $second}"
 
 	override fun equals(other: Any?) = when (other) {

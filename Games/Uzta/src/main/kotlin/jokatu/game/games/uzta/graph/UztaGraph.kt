@@ -1,10 +1,10 @@
 package jokatu.game.games.uzta.graph
 
-import ophelia.graph.BiGraph
+import ophelia.kotlin.graph.UndirectedGraph
 import java.util.*
 import java.util.Optional.empty
 
-interface UztaGraph : BiGraph<Node, LineSegment> {
+interface UztaGraph : UndirectedGraph<Node, LineSegment> {
 
 	fun getNode(id: String): Optional<Node> {
 		return nodes.stream()

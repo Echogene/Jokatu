@@ -8,12 +8,12 @@ import jokatu.game.player.Player
 import jokatu.game.stage.Stage
 import jokatu.game.stage.machine.StageMachine
 import jokatu.identity.Identifiable
-import ophelia.collections.set.UnmodifiableSet
 import ophelia.event.observable.AbstractSynchronousObservable
 import ophelia.event.observable.Observable
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.stream.Collectors
+import kotlin.collections.HashSet
 
 /**
  * A game has a collection of [Player]s and a current [Stage].
@@ -75,8 +75,8 @@ abstract class Game<P : Player> protected constructor(override val identifier: G
 		newStage.observe(::fireEvent)
 	}
 
-	fun getPlayers(): UnmodifiableSet<P> {
-		return UnmodifiableSet(players.values)
+	fun getPlayers(): Set<P> {
+		return HashSet(players.values)
 	}
 
 	fun getOtherPlayers(name: String): Set<P> {

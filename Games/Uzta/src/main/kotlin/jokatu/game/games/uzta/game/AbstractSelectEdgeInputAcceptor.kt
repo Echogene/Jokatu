@@ -9,7 +9,6 @@ import jokatu.game.games.uzta.player.UztaPlayer
 import jokatu.game.input.AbstractInputAcceptor
 import jokatu.game.input.UnacceptableInputException
 import jokatu.game.turn.TurnManager
-import ophelia.util.MapUtils.updateSetBasedMap
 import java.util.*
 
 abstract class AbstractSelectEdgeInputAcceptor protected constructor(
@@ -17,12 +16,12 @@ abstract class AbstractSelectEdgeInputAcceptor protected constructor(
 		protected val turnManager: TurnManager<UztaPlayer>
 ) : AbstractInputAcceptor<SelectEdgeInput, UztaPlayer, GameEvent>(SelectEdgeInput::class, UztaPlayer::class) {
 
-	protected val ownedEdgesPerPlayer: Map<UztaPlayer, Set<LineSegment>> = HashMap()
+	protected val ownedEdgesPerPlayer: MutableMap<UztaPlayer, MutableSet<LineSegment>> = HashMap()
 
 	init {
 		graph.edges.stream()
 				.filter { edge -> edge.owner != null }
-				.forEach { edge -> updateSetBasedMap(ownedEdgesPerPlayer, edge.owner, edge) }
+				.forEach { edge -> ownedEdgesPerPlayer.computeIfAbsent(edge.owner!!) { HashSet() }.add(edge) }
 	}
 
 	@Throws(Exception::class)
@@ -52,7 +51,7 @@ abstract class AbstractSelectEdgeInputAcceptor protected constructor(
 
 	protected fun setOwner(edge: LineSegment, inputter: UztaPlayer) {
 		edge.owner = inputter
-		updateSetBasedMap(ownedEdgesPerPlayer, inputter, edge)
+		ownedEdgesPerPlayer.computeIfAbsent(inputter) { HashSet() }.add(edge)
 		fireEvent(GraphUpdatedEvent(graph))
 	}
 

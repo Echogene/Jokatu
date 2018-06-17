@@ -2,6 +2,7 @@ package jokatu.game.games.uzta.game
 
 import jokatu.game.Game
 import jokatu.game.GameID
+import jokatu.game.games.uzta.graph.FinalisedUztaGraph
 import jokatu.game.games.uzta.graph.ModifiableUztaGraph
 import jokatu.game.games.uzta.player.UztaPlayer
 import jokatu.game.stage.GameOverStage
@@ -18,6 +19,10 @@ class Uzta internal constructor(identifier: GameID) : Game<UztaPlayer>(identifie
 
 	val graph = ModifiableUztaGraph()
 
+	val finalisedGraph: FinalisedUztaGraph by lazy {
+		FinalisedUztaGraph(graph)
+	}
+
 	private val status = StandardTextStatus()
 
 	override val gameName: String
@@ -27,8 +32,8 @@ class Uzta internal constructor(identifier: GameID) : Game<UztaPlayer>(identifie
 		stageMachine = SequentialStageMachine(
 				{ MinAndMaxJoiningStage(UztaPlayer::class, players, 1, 6, status) },
 				{ SetupStage(graph, players, status) },
-				{ FirstPlacementStage(graph, determineTurnOrder(players), status) },
-				{ MainStage(graph, players, determineTurnOrder(players), status) },
+				{ FirstPlacementStage(finalisedGraph, determineTurnOrder(players), status) },
+				{ MainStage(finalisedGraph, players, determineTurnOrder(players), status) },
 				{ GameOverStage(status) }
 		)
 

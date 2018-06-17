@@ -57,7 +57,7 @@ class TestGameCreator
 		val secondPlayer = playersInOrder.get(1)
 		val thirdPlayer = playersInOrder.get(2)
 
-		val edges = game.graph.edges
+		val edges = game.finalisedGraph.edges
 
 		val sixEdges = edges.stream()
 				.limit(6)
