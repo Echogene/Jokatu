@@ -71,13 +71,13 @@ object Cards {
 	val QUEEN_OF_CLUBS = createCard("\ud83c\udcdd", QUEEN, CLUBS)
 	val KING_OF_CLUBS = createCard("\ud83c\udcde", KING, CLUBS)
 
-	val CARDS_BY_DISPLAY = ALL_CARDS.stream()
+	val CARDS_BY_DISPLAY: Map<String, Card> = ALL_CARDS.stream()
 			.collect(toMap({ it.toString() }, { c: Card -> c }))
 
-	val CARDS_BY_SUIT_AND_RANK = ALL_CARDS.stream()
+	val CARDS_BY_SUIT_AND_RANK: Map<Suit, Map<Rank, Card>> = ALL_CARDS.stream()
 			.collect(groupingBy({ it.suit }, toMap({ it.rank }, { c: Card -> c })))
 
-	val CARDS_BY_RANK_AND_SUIT = ALL_CARDS.stream()
+	val CARDS_BY_RANK_AND_SUIT: Map<Rank, Map<Suit, Card>> = ALL_CARDS.stream()
 			.collect(groupingBy({ it.rank }, toMap({ it.suit }, { c: Card -> c })))
 
 	val newDeck: List<Card>

@@ -37,7 +37,7 @@ class Trigon(private val Δ1: Node, Δ2: Node, Δ3: Node) {
 		}
 	}
 
-	constructor(edge: LineSegment, Δ3: Node) : this(edge.first, edge.second, Δ3) {}
+	constructor(edge: LineSegment, Δ3: Node) : this(edge.first, edge.second, Δ3)
 
 	fun circumcircleContains(node: Node): Boolean {
 		val circumcircle = SimpleMatrix(4, 4, true,

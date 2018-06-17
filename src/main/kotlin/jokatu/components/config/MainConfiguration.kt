@@ -9,4 +9,4 @@ import org.springframework.context.annotation.Configuration
  */
 @Configuration
 @ComponentScan("jokatu.components")
-open class MainConfiguration
+class MainConfiguration

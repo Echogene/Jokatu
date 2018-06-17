@@ -1,6 +1,6 @@
 package jokatu.game.games.uzta.graph
 
-enum class NodeType private constructor(
+enum class NodeType(
 		private val singular: String,
 		val plural: String,
 		val symbol: String
