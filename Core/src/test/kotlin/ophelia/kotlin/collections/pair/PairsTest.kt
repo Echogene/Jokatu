@@ -2,6 +2,7 @@ package ophelia.kotlin.collections.pair
 
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
+import org.hamcrest.core.IsNot.not
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -86,5 +87,17 @@ class PairsTest {
 		assertThat(iterator.previousIndex(), `is`(-1))
 		assertFailure { iterator.previous() }
 		assertThat(iterator.next(), `is`(1))
+	}
+
+	@Test
+	fun `should consider unordered pairs the same`() {
+		assertThat(UnorderedPair(1, 2), `is`(UnorderedPair(2, 1)))
+		assertThat(UnorderedPair(1, 2).hashCode(), `is`(UnorderedPair(2, 1).hashCode()))
+	}
+
+	@Test
+	fun `should consider ordered pairs not the same`() {
+		assertThat(OrderedPair(1, 2), `is`(not(OrderedPair(2, 1))))
+		assertThat(OrderedPair(1, 2).hashCode(), `is`(not(OrderedPair(2, 1).hashCode())))
 	}
 }
