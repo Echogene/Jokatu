@@ -9,7 +9,6 @@ import jokatu.game.stage.GameOverStage
 import jokatu.game.stage.MinAndMaxJoiningStage
 import jokatu.game.stage.machine.SequentialStageMachine
 import jokatu.game.status.StandardTextStatus
-import ophelia.collections.set.UnmodifiableSet
 import java.util.*
 
 class SevensGame internal constructor(identifier: GameID) : Game<SevensPlayer>(identifier) {
@@ -39,9 +38,7 @@ class SevensGame internal constructor(identifier: GameID) : Game<SevensPlayer>(i
 		player.observe(::fireEvent)
 	}
 
-	fun getCardsOfSuitPlayed(suit: Suit): UnmodifiableSet<Card> {
-		return UnmodifiableSet(playedCards[suit]!!)
-	}
+	fun getCardsOfSuitPlayed(suit: Suit) = playedCards[suit]!!
 
 	companion object {
 		const val SEVENS = "Sevens"

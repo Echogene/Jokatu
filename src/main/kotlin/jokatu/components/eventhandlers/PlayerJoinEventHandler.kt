@@ -1,10 +1,13 @@
 package jokatu.components.eventhandlers
 
 import jokatu.components.dao.GameDao
+import jokatu.components.stomp.GameObservers
+import jokatu.components.stomp.GamePlayers
 import jokatu.game.Game
 import jokatu.game.GameID
 import jokatu.game.event.SpecificEventHandler
 import jokatu.game.joining.PlayerJoinedEvent
+import jokatu.game.player.PlayerStatus
 import ophelia.util.function.PredicateUtils.not
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationEvent
@@ -92,13 +95,13 @@ class PlayerJoinEventHandler
 			val observers = userNames.stream()
 					.filter(not { game.hasPlayer(it) })
 					.collect(toSet())
-			sender.send("/topic/observers.game.$gameId", observers)
+			sender.send(GameObservers(game), observers)
 
 			val playerStatuses = game.getPlayers().stream()
 					.map { it.name }
 					.map { name -> PlayerStatus(userNames.contains(name), name) }
 					.collect(toSet())
-			sender.send("/topic/players.game.$gameId", playerStatuses)
+			sender.send(GamePlayers(game), playerStatuses)
 		}, 500, MILLISECONDS)
 		gameUpdates[gameId] = future
 	}
@@ -106,9 +109,6 @@ class PlayerJoinEventHandler
 	override fun handleCastEvent(game: Game<*>, event: PlayerJoinedEvent) {
 		scheduleUpdate(game.identifier)
 	}
-
-	// This is converted to JSON using Jackson.
-	private class PlayerStatus constructor(val isOnline: Boolean, val name: String)
 
 	companion object {
 		private val STATUS_REGEX = Pattern.compile("/topic/observers\\.game\\.(\\d+)")

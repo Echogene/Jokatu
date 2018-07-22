@@ -1,5 +1,6 @@
 package jokatu.components.eventhandlers
 
+import jokatu.components.stomp.GameStatus
 import jokatu.game.Game
 import jokatu.game.event.SpecificEventHandler
 import jokatu.game.event.StatusUpdateEvent
@@ -14,7 +15,7 @@ class StatusUpdateHandler : SpecificEventHandler<StatusUpdateEvent>(StatusUpdate
 	override fun handleCastEvent(game: Game<*>, event: StatusUpdateEvent) {
 		val text = event.status.text
 		if (text != null) {
-			sender.send("/topic/status.game." + game.identifier, text)
+			sender.send(GameStatus(game), text)
 		}
 	}
 }

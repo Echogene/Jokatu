@@ -2,6 +2,7 @@ package jokatu.components.exceptions
 
 import jokatu.components.controllers.game.GameController
 import jokatu.components.stomp.StoringMessageSender
+import jokatu.components.stomp.Topic
 import jokatu.stomp.SendErrorMessage
 import jokatu.stomp.SubscriptionErrorMessage
 import ophelia.util.MapUtils
@@ -11,7 +12,6 @@ import org.springframework.messaging.Message
 import org.springframework.messaging.simp.stomp.StompCommand
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 import org.springframework.messaging.support.ErrorMessage
-import org.springframework.messaging.support.GenericMessage
 import org.springframework.stereotype.Component
 import java.security.Principal
 import java.util.regex.Pattern
@@ -25,7 +25,7 @@ class StandardExceptionHandler @Autowired constructor(private val sender: Storin
 		val matcher = GAME_CHANNEL_PATTERN.matcher(destination)
 		if (matcher.matches()) {
 			val errorMessage = getErrorMessage(e, accessor)
-			val errorDestination = "/topic/errors.game." + matcher.group(1)
+			val errorDestination = ErrorDestination(matcher.group(1))
 			try {
 				sender.sendMessageToUser(principal.name, errorDestination, errorMessage)
 			} catch (f: Exception) {
@@ -52,17 +52,17 @@ class StandardExceptionHandler @Autowired constructor(private val sender: Storin
 		}
 	}
 
-	private fun getBackupErrorMessage(e: Throwable, accessor: StompHeaderAccessor): Message<*> {
+	private fun getBackupErrorMessage(e: Throwable, accessor: StompHeaderAccessor): ErrorMessage {
 		return when (accessor.command) {
 			StompCommand.SUBSCRIBE -> {
 				val subscribeId = accessor.getNativeHeader("id")[0]
-				GenericMessage<String>(e.message, MapUtils.createMap<String, Any>("subscribe-id", subscribeId))
+				ErrorMessage(e, MapUtils.createMap<String, Any>("subscribe-id", subscribeId))
 			}
 			StompCommand.SEND -> {
 				val sendReceipt = accessor.getNativeHeader("receipt")[0]
-				GenericMessage<String>(e.message, MapUtils.createMap<String, Any>("receipt-id", sendReceipt))
+				ErrorMessage(e, MapUtils.createMap<String, Any>("receipt-id", sendReceipt))
 			}
-			else -> GenericMessage<String>(e.message)
+			else -> ErrorMessage(e)
 		}
 	}
 
@@ -72,3 +72,5 @@ class StandardExceptionHandler @Autowired constructor(private val sender: Storin
 		private val GAME_CHANNEL_PATTERN = Pattern.compile(".*\\.game\\.(\\d+).*")
 	}
 }
+
+private class ErrorDestination(gameId: String): Topic<Throwable>("errors.game.$gameId")

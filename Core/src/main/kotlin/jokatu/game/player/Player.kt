@@ -7,3 +7,6 @@ package jokatu.game.player
 interface Player {
 	val name: String
 }
+
+// This is converted to JSON using Jackson.
+class PlayerStatus constructor(val isOnline: Boolean, val name: String)
