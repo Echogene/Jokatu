@@ -1,16 +1,42 @@
 package jokatu.game.games.uzta.graph
 
-import ophelia.collections.set.HashSet
 import org.ejml.simple.SimpleMatrix
 
-class Trigon(private val Δ1: Node, Δ2: Node, Δ3: Node) {
+/**
+ * A trigon (AKA triangle) has three points.
+ */
+class Trigon(
+		/**
+		 * The first point of the trigon.
+		 */
+		private val Δ1: Node,
+		Δ2: Node,
+		Δ3: Node
+) {
+	/**
+	 * The second point of the trigon.  It is the next one anticlockwise (about the centre) from [Δ1].
+	 */
 	private val Δ2: Node
+
+	/**
+	 * The third point of the trigon.  It is the next one anticlockwise (about the centre) from [Δ2], and therefore the
+	 * next one clockwise from [Δ1].
+	 */
 	private val Δ3: Node
+
+	/**
+	 * The set of three edges of this trigon.
+	 */
 	val edges: Set<LineSegment>
+
+	/**
+	 * The set of three points of this trigon.
+	 */
 	val nodes: Set<Node>
 
-	init {
+	constructor(edge: LineSegment, Δ3: Node) : this(edge.first, edge.second, Δ3)
 
+	init {
 		val anticlockwise = (Δ2.x - Δ1.x) * (Δ3.y - Δ1.y) - (Δ2.y - Δ1.y) * (Δ3.x - Δ1.x)
 		if (anticlockwise > 0) {
 			this.Δ2 = Δ2
@@ -20,25 +46,14 @@ class Trigon(private val Δ1: Node, Δ2: Node, Δ3: Node) {
 			this.Δ3 = Δ2
 		}
 
-		nodes = object : HashSet<Node>() {
-			init {
-				add(Δ1)
-				add(Δ2)
-				add(Δ3)
-			}
-		}
+		nodes = setOf(Δ1, Δ2, Δ3)
 
-		edges = object : HashSet<LineSegment>() {
-			init {
-				add(LineSegment(Δ1, Δ2))
-				add(LineSegment(Δ2, Δ3))
-				add(LineSegment(Δ3, Δ1))
-			}
-		}
+		edges = setOf(LineSegment(Δ1, Δ2), LineSegment(Δ2, Δ3), LineSegment(Δ3, Δ1))
 	}
 
-	constructor(edge: LineSegment, Δ3: Node) : this(edge.first, edge.second, Δ3)
-
+	/**
+	 * Does the circumcircle of this trigon contain the given node?
+	 */
 	fun circumcircleContains(node: Node): Boolean {
 		val circumcircle = SimpleMatrix(4, 4, true,
 				Δ1.x, Δ1.y, Δ1.x * Δ1.x + Δ1.y * Δ1.y, 1.0,
@@ -51,13 +66,15 @@ class Trigon(private val Δ1: Node, Δ2: Node, Δ3: Node) {
 
 	override fun equals(other: Any?): Boolean {
 		if (this === other) return true
-		if (other == null || javaClass != other.javaClass) return false
+		if (javaClass != other?.javaClass) return false
 
-		val trigon = other as Trigon?
+		other as Trigon
 
-		if (Δ1 != trigon!!.Δ1) return false
-		return if (Δ2 != trigon.Δ2) false else Δ3 == trigon.Δ3
+		if (Δ1 != other.Δ1) return false
+		if (Δ2 != other.Δ2) return false
+		if (Δ3 != other.Δ3) return false
 
+		return true
 	}
 
 	override fun hashCode(): Int {
