@@ -19,27 +19,27 @@ class StoringMessageSender @Autowired constructor(
 ) {
 
 	@Throws(MessagingException::class)
-	fun sendToUser(user: String, destination: String, payload: Any) {
+	fun <T: Any> sendToUser(user: String, destination: Destination<T>, payload: T) {
 		sendMessageToUser(user, destination, GenericMessage(payload))
 	}
 
 	@Throws(MessagingException::class)
-	fun sendMessageToUser(user: String, destination: String, message: Message<*>) {
+	fun <T: Any> sendMessageToUser(user: String, destination: Destination<T>, message: Message<T>) {
 		log.trace("Sending message '$message' to $destination for $user")
 		messageStore.storeForUser(user, destination, message)
-		simpMessagingTemplate.convertAndSendToUser(user, destination, message.payload, message.headers)
+		simpMessagingTemplate.convertAndSendToUser(user, destination.toString(), message.payload, message.headers)
 	}
 
 	@Throws(MessagingException::class)
-	fun send(destination: String, payload: Any) {
+	fun <T: Any> send(destination: Destination<T>, payload: T) {
 		sendMessage(destination, GenericMessage(payload))
 	}
 
 	@Throws(MessagingException::class)
-	fun sendMessage(destination: String, message: Message<*>) {
+	fun <T: Any> sendMessage(destination: Destination<T>, message: Message<T>) {
 		log.trace("Sending message '$message' to $destination")
 		messageStore.store(destination, message)
-		simpMessagingTemplate.convertAndSend(destination, message.payload, message.headers)
+		simpMessagingTemplate.convertAndSend(destination.toString(), message.payload, message.headers)
 	}
 
 	companion object {

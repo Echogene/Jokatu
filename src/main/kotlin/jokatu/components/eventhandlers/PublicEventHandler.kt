@@ -1,5 +1,6 @@
 package jokatu.components.eventhandlers
 
+import jokatu.components.stomp.PublicMessage
 import jokatu.game.Game
 import jokatu.game.event.PublicGameEvent
 import jokatu.game.event.SpecificEventHandler
@@ -12,6 +13,6 @@ import org.springframework.stereotype.Component
 @Component
 class PublicEventHandler : SpecificEventHandler<PublicGameEvent>(PublicGameEvent::class) {
 	public override fun handleCastEvent(game: Game<*>, event: PublicGameEvent) {
-		sender.send("/topic/public.game." + game.identifier, event.message)
+		sender.send(PublicMessage(game), event.message)
 	}
 }

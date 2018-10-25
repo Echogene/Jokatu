@@ -1,6 +1,7 @@
 package jokatu.components.eventhandlers
 
 import jokatu.components.config.FactoryConfiguration.GameFactories
+import jokatu.components.stomp.Topic
 import jokatu.game.Game
 import jokatu.game.GameID
 import jokatu.game.event.SpecificEventHandler
@@ -32,16 +33,13 @@ class GameCreatedEventHandler
 		eventBroadcaster.wireEventListeners()
 	}
 
-	override fun handleCastEvent(gameOfGames: Game<*>, gameCreatedEvent: GameCreatedEvent) {
-		val game = createGame(gameCreatedEvent.gameName, gameCreatedEvent.player.name)
+	override fun handleCastEvent(game: Game<*>, event: GameCreatedEvent) {
+		val newGame = createGame(event.gameName, event.player.name)
 
-		val id = gameOfGames.identifier
-		MapUtils.updateListBasedMap(entries, id, GameEntry(game))
+		val id = game.identifier
+		MapUtils.updateListBasedMap(entries, id, GameEntry(newGame))
 
-		sender.send(
-				"/topic/games.game.$id",
-				entries[id]!!
-		)
+		sender.send(GameGames(game), entries[id]!!)
 	}
 
 	private fun createGame(gameName: String, playerName: String): Game<*> {
@@ -56,10 +54,12 @@ class GameCreatedEventHandler
 
 		return game
 	}
-
-	// This is converted to JSON using Jackson.
-	private inner class GameEntry internal constructor(game: Game<*>) {
-		val gameId: GameID = game.identifier
-		val gameName: String = game.gameName
-	}
 }
+
+// This is converted to JSON using Jackson.
+private class GameEntry internal constructor(game: Game<*>) {
+	val gameId: GameID = game.identifier
+	val gameName: String = game.gameName
+}
+
+private class GameGames(game: Game<*>): Topic<List<GameEntry>>("games.game.${game.identifier}")

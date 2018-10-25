@@ -1,6 +1,7 @@
 package jokatu.components.ui
 
 import jokatu.components.stomp.StoringMessageSender
+import jokatu.components.stomp.Topic
 import jokatu.game.Game
 import jokatu.game.GameID
 import jokatu.game.exception.GameException
@@ -58,7 +59,7 @@ class DialogManager
 	private fun updatePlayerDialogs(gamePlayerKey: Pair<GameID, String>) {
 		val dialogUIs = playersDialogs[gamePlayerKey]!!
 
-		sender.sendToUser(gamePlayerKey.right, "/topic/dialogs.game." + gamePlayerKey.left, dialogUIs)
+		sender.sendToUser(gamePlayerKey.right, PlayerDialogs(gamePlayerKey.left), dialogUIs)
 	}
 
 	private fun generateId(gameId: GameID): DialogResponder.DialogID {
@@ -100,9 +101,11 @@ class DialogManager
 		return UnmodifiableList(playersDialogs[Pair(game.identifier, player.name)])
 	}
 
-	class DialogUI constructor(dialog: Dialog, val dialogId: String) : Dialog(dialog.title, dialog.message, dialog.form, dialog.isCancellable)
-
 	companion object {
 		private val log = getLogger(DialogManager::class)
 	}
 }
+
+class DialogUI constructor(dialog: Dialog, val dialogId: String) : Dialog(dialog.title, dialog.message, dialog.form, dialog.isCancellable)
+
+class PlayerDialogs(id: GameID): Topic<List<DialogUI>>("dialogs.game.$id")

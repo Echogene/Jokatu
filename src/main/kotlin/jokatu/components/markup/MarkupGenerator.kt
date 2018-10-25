@@ -1,6 +1,7 @@
 package jokatu.components.markup
 
 import com.fasterxml.jackson.core.JsonProcessingException
+import jokatu.components.stomp.UnknownDestination
 import jokatu.components.stores.MessageRepository
 import jokatu.util.Json
 import org.springframework.beans.factory.annotation.Autowired
@@ -48,7 +49,7 @@ class MarkupGenerator {
 	fun getHistory(properties: Map<*, *>): String {
 		val destination = properties["destination"].toString()
 
-		return Json.serialiseAndEscape(messageRepository.getMessageHistory(destination))
+		return Json.serialiseAndEscape(messageRepository.getMessageHistory(UnknownDestination(destination)))
 	}
 
 	@Throws(JsonProcessingException::class)
@@ -56,14 +57,14 @@ class MarkupGenerator {
 		val destination = (properties["destination"].toString()).replaceFirst("^/user".toRegex(), "")
 
 		val username = properties.remove("user").toString()
-		return Json.serialiseAndEscape(messageRepository.getMessageHistoryForUser(username, destination))
+		return Json.serialiseAndEscape(messageRepository.getMessageHistoryForUser(username, UnknownDestination(destination)))
 	}
 
 	@Throws(JsonProcessingException::class)
 	fun getLast(properties: Map<*, *>): String {
 		val destination = properties["destination"].toString()
 
-		return Json.serialiseAndEscape(messageRepository.getLastMessage(destination))
+		return Json.serialiseAndEscape(messageRepository.getLastMessage(UnknownDestination(destination)))
 	}
 
 	@Throws(JsonProcessingException::class)
@@ -71,7 +72,7 @@ class MarkupGenerator {
 		val destination = (properties["destination"].toString()).replaceFirst("^/user".toRegex(), "")
 
 		val username = properties.remove("user").toString()
-		return Json.serialiseAndEscape(messageRepository.getLastMessageForUser(username, destination))
+		return Json.serialiseAndEscape(messageRepository.getLastMessageForUser(username, UnknownDestination(destination)))
 	}
 
 	fun generateTagMarkup(properties: MutableMap<*, *>, initialData: String): String {

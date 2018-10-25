@@ -1,5 +1,6 @@
 package jokatu.components.stores
 
+import jokatu.components.stomp.Destination
 import ophelia.util.ListUtils
 import org.springframework.messaging.Message
 import org.springframework.util.StringUtils
@@ -10,29 +11,33 @@ import org.springframework.util.StringUtils
  */
 abstract class AbstractMessageStore : MessageStorer, MessageRepository {
 
-	override fun storeForUser(user: String, destination: String, message: Message<*>) {
+	override fun <T: Any> storeForUser(user: String, destination: Destination<T>, message: Message<T>) {
 		store(getUserDestination(user, destination), message)
 	}
 
-	private fun getUserDestination(user: String, destination: String): String {
+	private fun <T: Any> getUserDestination(user: String, destination: Destination<T>): Destination<T> {
 		// This doesn't need to be the actual destination used by STOMP, just a key to uniquely identify the user's
 		// destination.
-		return StringUtils.replace(user, "/", "%2F") + "/" + destination
+		return UserDestination(user, destination)
 	}
 
-	override fun getMessageHistoryForUser(user: String, destination: String): List<Message<*>> {
+	override fun <T: Any> getMessageHistoryForUser(user: String, destination: Destination<T>): List<Message<T>> {
 		return getMessageHistory(getUserDestination(user, destination))
 	}
 
-	override fun getLastMessage(destination: String): Message<*>? {
-		return ListUtils.maybeLast<Message<*>>(getMessageHistory(destination))
+	override fun <T: Any> getLastMessage(destination: Destination<T>): Message<T>? {
+		return ListUtils.maybeLast(getMessageHistory(destination))
 				.returnOnSuccess()
 				.nullOnFailure()
 	}
 
-	override fun getLastMessageForUser(user: String, destination: String): Message<*>? {
-		return ListUtils.maybeLast<Message<*>>(getMessageHistoryForUser(user, destination))
+	override fun <T: Any> getLastMessageForUser(user: String, destination: Destination<T>): Message<T>? {
+		return ListUtils.maybeLast(getMessageHistoryForUser(user, destination))
 				.returnOnSuccess()
 				.nullOnFailure()
 	}
+}
+
+class UserDestination<T: Any>(user: String, destination: Destination<T>): Destination<T>() {
+	override val destination = StringUtils.replace(user, "/", "%2F") + "/" + destination
 }

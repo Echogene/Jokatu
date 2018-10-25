@@ -1,5 +1,6 @@
 package jokatu.components.stores
 
+import jokatu.components.stomp.Destination
 import org.springframework.messaging.Message
 
 /**
@@ -7,7 +8,7 @@ import org.springframework.messaging.Message
  */
 interface MessageStorer {
 
-	fun store(destination: String, message: Message<*>)
+	fun <T: Any> store(destination: Destination<T>, message: Message<T>)
 
-	fun storeForUser(user: String, destination: String, message: Message<*>)
+	fun <T: Any> storeForUser(user: String, destination: Destination<T>, message: Message<T>)
 }

@@ -1,5 +1,6 @@
 package jokatu.components.eventhandlers
 
+import jokatu.components.stomp.GameAdvance
 import jokatu.game.Game
 import jokatu.game.event.SpecificEventHandler
 import jokatu.game.event.StageOverEvent
@@ -13,6 +14,6 @@ class AdvanceStageEventHandler : SpecificEventHandler<StageOverEvent>(StageOverE
 	override fun handleCastEvent(game: Game<*>, event: StageOverEvent) {
 		game.advanceStage()
 
-		sender.send("/topic/advance.game." + game.identifier, true)
+		sender.send(GameAdvance(game), true)
 	}
 }

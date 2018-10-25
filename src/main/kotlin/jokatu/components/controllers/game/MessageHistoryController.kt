@@ -1,5 +1,6 @@
 package jokatu.components.controllers.game
 
+import jokatu.components.stomp.UnknownDestination
 import jokatu.components.stores.MessageRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.Message
@@ -18,18 +19,18 @@ class MessageHistoryController @Autowired constructor(private val messageReposit
 	@RequestMapping(value = ["/messages"], method = [GET])
 	internal fun getMessages(@RequestParam("destination") destination: String, principal: Principal): List<Message<*>> {
 		return if (destination.startsWith("/user")) {
-			messageRepository.getMessageHistoryForUser(principal.name, destination.substring(5))
+			messageRepository.getMessageHistoryForUser(principal.name, UnknownDestination(destination.substring(5)))
 		} else {
-			messageRepository.getMessageHistory(destination)
+			messageRepository.getMessageHistory(UnknownDestination(destination))
 		}
 	}
 
 	@RequestMapping(value = ["/last_message"], method = [GET])
 	internal fun getLastMessage(@RequestParam("destination") destination: String, principal: Principal): Message<*>? {
 		return if (destination.startsWith("/user")) {
-			messageRepository.getLastMessageForUser(principal.name, destination.substring(5))
+			messageRepository.getLastMessageForUser(principal.name, UnknownDestination(destination.substring(5)))
 		} else {
-			messageRepository.getLastMessage(destination)
+			messageRepository.getLastMessage(UnknownDestination(destination))
 		}
 	}
 }
