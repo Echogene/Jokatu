@@ -10,3 +10,6 @@ Notes
 gradlew
 gradlew.bat
 *.iml
+
+out
+*/out
