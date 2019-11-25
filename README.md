@@ -39,3 +39,10 @@ Jokatu has a few games implemented; they exist mainly as an excuse to build up s
     - The players' ‘moves’ are to send messages to the board
 - The Game of Games
     - The players' ‘moves’ are to create other games
+
+Prerequisites
+-------------
+### A message broker for STOMP
+#### Option 1: RabbitMQ
+- Install RabbitMQ
+- Enable the STOMP plugin `rabbitmq-plugins enable rabbitmq_stomp`
