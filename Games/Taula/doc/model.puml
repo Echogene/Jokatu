@@ -1,0 +1,135 @@
+@startuml
+
+hide empty members
+'-------------------------------------------------------------------------------
+class Entity<Relationship> {
+    weight: Integer
+    ==
+    e.g. Characters, creatures
+}
+
+class Relationship {
+    name: String
+    description: String
+    ==
+    Two entities
+}
+Relationship --|> J
+Entity .right. Relationship
+Entity --|> Habendum
+'-------------------------------------------------------------------------------
+hide J circle
+class J
+
+class Habendum<J: Any> {
+    name: String
+    description: String
+}
+Entity }o--o{ Habendum
+(Entity, Habendum) -- J
+'-------------------------------------------------------------------------------
+class Score {
+    score: Integer
+}
+J <|-- Score
+
+class Ability<Score> {
+    e.g. Charisma, strength,
+    flying speed, Sp. Atk
+}
+Habendum <|-- Ability
+Score .. Ability
+'-------------------------------------------------------------------------------
+class Quantity {
+    quantity: Integer
+}
+J <|-- Quantity
+
+class Item<Quantity> {
+    Items are entities that are
+    fungible i.e. an item of
+    one type is exchangeable
+    with items of the same
+    type.
+
+    e.g. Coins, simple clothes
+}
+Entity <|-- Item
+Quantity .. Item
+'-------------------------------------------------------------------------------
+class Weapon {
+    e.g. Sword, gun
+}
+Item <|-- Weapon
+'-------------------------------------------------------------------------------
+class Companion {
+    e.g. Familiar, animal
+    companion, pet
+}
+Entity <|-left- Companion
+'-------------------------------------------------------------------------------
+class Spell {
+    e.g. Fireball
+}
+Item <|-- Spell
+'-------------------------------------------------------------------------------
+class Level {
+    maximum: Integer
+    current: Integer
+}
+J <|-- Level
+
+class Pool<Level> {
+    e.g. Shields, health,
+    stamina
+}
+Habendum <|-- Pool
+Level .. Pool
+'-------------------------------------------------------------------------------
+class Feat<Void> {
+    e.g. Cold resistance,
+    Wonder Guard
+}
+Habendum <|--- Feat
+'-------------------------------------------------------------------------------
+class Status<Void> {
+    e.g. Poisoned, slowed,
+    confused
+}
+Habendum <|--- Status
+'-------------------------------------------------------------------------------
+class Competence {
+    name: String
+    level: Integer
+    ==
+    e.g. Novice, expert
+}
+J <|-- Competence
+
+class Skill<Competence> {
+    e.g. Crafting, athletics
+}
+Habendum <|-- Skill
+Competence .. Skill
+'-------------------------------------------------------------------------------
+class Attack<Damage> {
+    e.g. Unarmed attack,
+    Hyper Beam
+}
+Habendum <|-- Attack
+Damage .. Attack
+
+class Damage {
+    base: Integer
+    range: Integer
+    dice: Integer
+}
+J <|-- Damage
+
+enum "Die type" {
+    e.g. d4, d20
+}
+"Die type" ||--|| Damage
+'-------------------------------------------------------------------------------
+
+@enduml
