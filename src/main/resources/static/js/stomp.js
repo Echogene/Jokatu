@@ -45,6 +45,7 @@ Socket.prototype.onmessage = function(message) {
 
 	console.log(`Received:\n${data}`);
 
+
 	var commandEnd = data.indexOf('\n');
 	var command = data.substring(0, commandEnd).trim();
 	data = data.substring(commandEnd + 1);
@@ -96,6 +97,7 @@ Socket.prototype._onConnect = function() {
 	this._connected = true;
 	this._queue.forEach((message) => {
 		console.log(`Sending:\n${message}`);
+
 		this._ws.send(message)
 	});
 };
@@ -147,6 +149,7 @@ Socket.prototype._message = function(command, headers, body) {
 
 	if (this._connected || command == 'CONNECT') {
 		console.log(`Sending:\n${message}`);
+
 		this._ws.send(message);
 	} else {
 		this._queue.push(message);

@@ -1,57 +1,71 @@
 package jokatu.components.config
 
-import ophelia.exceptions.voidmaybe.VoidMaybe.wrap
-import ophelia.exceptions.voidmaybe.VoidMaybeCollectors.merge
 import org.slf4j.getLogger
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.annotation.web.configurers.RequestCacheConfigurer
+import org.springframework.security.core.userdetails.User
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.provisioning.InMemoryUserDetailsManager
+import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache
 import org.springframework.security.web.util.matcher.AndRequestMatcher
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher
 import org.springframework.security.web.util.matcher.RequestMatcher
 import java.util.*
+import java.util.stream.Stream
+
 
 /**
  * Sets up how users log in.
  * @author Steven Weston
  */
 @EnableWebSecurity
-class SecurityConfiguration : WebSecurityConfigurerAdapter() {
+@Configuration
+class SecurityConfiguration {
 
-	@Throws(Exception::class)
-	override fun configure(auth: AuthenticationManagerBuilder?) {
-		Arrays.stream(arrayOf("user", "user2", "user3", "user4"))
-				.map(wrap { name -> auth!!.inMemoryAuthentication().withUser(name).password("password").roles("USER") })
-				.collect(merge()).throwOnFailure()
-		log.debug("{} added user accounts", SecurityConfiguration::class.simpleName)
+	@Bean
+	fun userDetailsService(): InMemoryUserDetailsManager {
+		val users = Stream.of("user", "user2", "user3", "user4")
+			.map { name ->
+				User.withDefaultPasswordEncoder()
+					.username(name)
+					.password("password")
+					.roles("USER")
+					.build()
+			}
+			.toList()
+		return InMemoryUserDetailsManager(users)
 	}
 
-	@Throws(Exception::class)
-	override fun configure(http: HttpSecurity) {
+	@Bean
+	fun filterChain(http: HttpSecurity): SecurityFilterChain {
 
 		ignoreWsRequestsWhenSaving(http)
 
 		http
-			.authorizeRequests()
-				.antMatchers("/css/**").permitAll()
-				.antMatchers("/js/**").permitAll()
-				.antMatchers("/favicon.ico").permitAll()
-				.anyRequest().authenticated()
-				.and()
-			.formLogin()
-				.loginPage("/login")
-				.permitAll()
-				.defaultSuccessUrl("/")
-				.and()
-			.logout()
-				.logoutSuccessUrl("/")
+			.authorizeHttpRequests {
+				it.requestMatchers("/css/**").permitAll()
+					.requestMatchers("/js/**").permitAll()
+					.requestMatchers("/favicon.ico").permitAll()
+					.anyRequest().authenticated()
+			}
+			.formLogin {
+				it.loginPage("/login")
+					.permitAll()
+					.defaultSuccessUrl("/")
+			}
+			.logout {
+				it.logoutSuccessUrl("/")
+			}
 
 		log.debug("{} configured HTTP security", SecurityConfiguration::class.simpleName)
+		return http.build()
 	}
 
 	@Throws(Exception::class)
@@ -62,17 +76,17 @@ class SecurityConfiguration : WebSecurityConfigurerAdapter() {
 		)
 		createDefaultSavedRequestMatcher.isAccessible = true
 
-		val configurer = http.requestCache()
-		val defaultRequestMatcher = createDefaultSavedRequestMatcher.invoke(configurer, http) as RequestMatcher
-		val andRequestMatcher = AndRequestMatcher(
+		http.requestCache {
+			val defaultRequestMatcher = createDefaultSavedRequestMatcher.invoke(it, http) as RequestMatcher
+			val andRequestMatcher = AndRequestMatcher(
 				defaultRequestMatcher,
 				NegatedRequestMatcher(AntPathRequestMatcher("/ws"))
-		)
+			)
 
-		val requestCache = HttpSessionRequestCache()
-		requestCache.setRequestMatcher(andRequestMatcher)
-
-		configurer.requestCache(requestCache)
+			val requestCache = HttpSessionRequestCache()
+			requestCache.setRequestMatcher(andRequestMatcher)
+			it.requestCache(requestCache)
+		}
 	}
 
 	companion object {

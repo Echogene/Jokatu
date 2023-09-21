@@ -1,13 +1,6 @@
 package ophelia.kotlin.collections.pair
 
-interface Pair<out E: Any>: Collection<E> {
-	override val size: Int
-		get() = 2
-
-	override fun isEmpty() = false
-
-	override fun containsAll(elements: Collection<@UnsafeVariance E>) = elements.all(::contains)
-}
+interface Pair<out E: Any>: Collection<E>
 
 abstract class AbstractPair<out E: Any>(val first: E, val second: E): Pair<E> {
 	init {
@@ -15,8 +8,15 @@ abstract class AbstractPair<out E: Any>(val first: E, val second: E): Pair<E> {
 			throw IllegalArgumentException("The two entries in a pair cannot be the same.")
 		}
 	}
+	override val size: Int
+		get() = 2
+
+	override fun isEmpty() = false
 
 	override fun contains(element: @UnsafeVariance E) = first == element || second == element
+
+	override fun containsAll(elements: Collection<@UnsafeVariance E>) = elements.all(::contains)
+
 	override fun iterator() = PairIterator()
 
 	open inner class PairIterator: Iterator<E> {

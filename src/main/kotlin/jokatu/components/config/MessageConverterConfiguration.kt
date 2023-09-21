@@ -4,19 +4,15 @@ import jokatu.util.Json
 import org.slf4j.getLogger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
-import org.springframework.format.FormatterRegistry
 import org.springframework.format.support.DefaultFormattingConversionService
 import org.springframework.messaging.simp.annotation.support.SimpAnnotationMethodMessageHandler
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import javax.annotation.PostConstruct
 
 /**
- * Add a Jackson converter to the default FormatterRegistry and configure the conversion service for messages to use
- * the default Jackson converter.
+ * Configure the conversion service for messages to use the default Jackson converter.
  */
 @Configuration
-class ConverterConfig : WebMvcConfigurerAdapter() {
-
+class MessageConverterConfiguration {
 	@Autowired
 	private lateinit var simpAnnotationMethodMessageHandler: SimpAnnotationMethodMessageHandler
 
@@ -29,14 +25,10 @@ class ConverterConfig : WebMvcConfigurerAdapter() {
 		val conversionService = simpAnnotationMethodMessageHandler.conversionService as DefaultFormattingConversionService
 		conversionService.addConverterFactory(Json.JacksonConverterFactory())
 
-		log.debug("{} initialised", ConverterConfig::class.simpleName)
-	}
-
-	override fun addFormatters(registry: FormatterRegistry?) {
-		registry!!.addConverterFactory(Json.JacksonConverterFactory())
+		log.debug("{} initialised", ConverterConfiguration::class.simpleName)
 	}
 
 	companion object {
-		private val log = getLogger(ConverterConfig::class)
+		private val log = getLogger(ConverterConfiguration::class)
 	}
 }

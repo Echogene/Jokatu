@@ -1,11 +1,11 @@
 dependencies {
-	runtimeOnly "org.springframework:spring-beans:$springVersion"
-	runtimeOnly "org.springframework:spring-context:$springVersion"
-	runtimeOnly "org.springframework:spring-webmvc:$springVersion"
-	runtimeOnly "org.springframework:spring-websocket:$springVersion"
-	runtimeOnly "org.springframework:spring-messaging:$springVersion"
-	runtimeOnly "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
-	runtimeOnly "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
-	runtimeOnly "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion"
-	runtimeOnly group: 'org.ejml', name: 'all', version: '0.29'
+	api "org.springframework:spring-beans:$springVersion"
+	api "org.springframework:spring-context:$springVersion"
+	api "org.springframework:spring-webmvc:$springVersion"
+	api "org.springframework:spring-websocket:$springVersion"
+	api "org.springframework:spring-messaging:$springVersion"
+	api "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
+	api "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+	api "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion"
+	api group: 'org.ejml', name: 'all', version: '0.29'
 }

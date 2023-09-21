@@ -33,15 +33,11 @@ subprojects {
 
 def games = project(':Games').getChildProjects().values()
 
-// Source sets for other projects are not available until after they are evaluated.
-gradle.projectsEvaluated {
-	processResources {
-		from games*.sourceSets*.main.resources.srcDirs
-		dependsOn 'lesscss'
+processResources {
+	from games*.sourceSets*.main.resources.srcDirs
 
-		doLast {
-			println '*** Processed resources'
-		}
+	doLast {
+		println '*** Processed resources'
 	}
 }
 allprojects {
@@ -57,57 +53,45 @@ allprojects {
 		dest = 'src/main/resources/static/css'
 	}
 
-	build {
-		dependsOn 'lesscss'
-	}
-
-	version = '1.0'
-	sourceCompatibility = 19
+	version = '1.1'
+	sourceCompatibility = JavaVersion.VERSION_19
+	targetCompatibility = JavaVersion.VERSION_19
 
 	compileJava.options.encoding = 'UTF-8'
 	compileGroovy.options.encoding = 'UTF-8'
 
 	dependencies {
-		runtimeOnly 'org.slf4j:jcl-over-slf4j:2.0.9'
-		runtimeOnly 'org.jetbrains:annotations:24.0.1'
-		runtimeOnly files(System.properties['user.home'] + '/.lib/java/Ophelia/Ophelia.jar')
-		runtimeOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+		implementation 'org.slf4j:jcl-over-slf4j:2.0.9'
+		implementation 'org.jetbrains:annotations:24.0.1'
+		implementation files(System.properties['user.home'] + '/.lib/java/Ophelia/Ophelia.jar')
+		implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 		implementation "javax.annotation:javax.annotation-api:1.3.2"
 
 		testImplementation group: 'junit', name: 'junit', version: '4.13.1'
 		testImplementation 'org.hamcrest:hamcrest:2.2'
 	}
-	compileKotlin {
-		kotlinOptions {
-			jvmTarget = "19"
-		}
-	}
-	compileTestKotlin {
-		kotlinOptions {
-			jvmTarget = "19"
-		}
-	}
 }
 
 dependencies {
-	runtimeOnly project(':Core'),
+	api project(':Core'),
 			games
-	runtimeOnly "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-	runtimeOnly "org.springframework:spring-context:$springVersion"
-	runtimeOnly "org.springframework:spring-web:$springVersion"
-	runtimeOnly "org.springframework:spring-webmvc:$springVersion"
-	runtimeOnly "org.springframework:spring-websocket:$springVersion"
-	runtimeOnly "org.springframework:spring-messaging:$springVersion"
-	runtimeOnly 'io.projectreactor:reactor-net:2.0.8.RELEASE'
-	runtimeOnly 'io.netty:netty-all:4.1.86.Final'
-	runtimeOnly "org.springframework.security:spring-security-web:$springSecurityVersion"
-	runtimeOnly "org.springframework.security:spring-security-config:$springSecurityVersion"
-	runtimeOnly "org.springframework.security:spring-security-messaging:$springSecurityVersion"
-	runtimeOnly "org.springframework.session:spring-session-core:$springSessionVersion"
-	runtimeOnly 'org.apache.groovy:groovy-templates:4.0.15'
-	runtimeOnly 'ch.qos.logback:logback-classic:1.2.9'
-	runtimeOnly 'org.apache.commons:commons-lang3:3.4'
-	runtimeOnly 'com.codepoetics:protonpack:1.9'
+	implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+	implementation "org.springframework.boot:spring-boot-starter-reactor-netty:$springBootVersion"
+	implementation "org.springframework:spring-context:$springVersion"
+	implementation "org.springframework:spring-web:$springVersion"
+	implementation "org.springframework:spring-webmvc:$springVersion"
+	implementation "org.springframework:spring-websocket:$springVersion"
+	implementation "org.springframework:spring-messaging:$springVersion"
+	implementation 'io.projectreactor:reactor-net:2.0.8.RELEASE'
+	implementation 'io.netty:netty-all:4.1.86.Final'
+	implementation "org.springframework.security:spring-security-web:$springSecurityVersion"
+	implementation "org.springframework.security:spring-security-config:$springSecurityVersion"
+	implementation "org.springframework.security:spring-security-messaging:$springSecurityVersion"
+	implementation "org.springframework.session:spring-session-core:$springSessionVersion"
+	implementation 'org.apache.groovy:groovy-templates:4.0.15'
+	implementation 'ch.qos.logback:logback-classic:1.2.9'
+	implementation 'org.apache.commons:commons-lang3:3.4'
+	implementation 'com.codepoetics:protonpack:1.9'
 
 	testImplementation group: 'org.springframework', name: 'spring-test', version: "$springVersion"
 	testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
