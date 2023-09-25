@@ -53,12 +53,12 @@ class SecurityConfiguration {
 				it.requestMatchers("/css/**").permitAll()
 					.requestMatchers("/js/**").permitAll()
 					.requestMatchers("/favicon.ico").permitAll()
+					.requestMatchers("/error").permitAll()
 					.anyRequest().authenticated()
 			}
 			.formLogin {
 				it.loginPage("/login")
 					.permitAll()
-					.defaultSuccessUrl("/")
 			}
 			.logout {
 				it.logoutSuccessUrl("/")
