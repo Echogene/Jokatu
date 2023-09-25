@@ -6,6 +6,8 @@ import jokatu.game.event.GameEvent
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.getBeansOfType
 import org.springframework.context.ApplicationContext
+import org.springframework.context.event.ContextRefreshedEvent
+import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 
 import javax.annotation.PostConstruct
@@ -21,6 +23,11 @@ class EventBroadcaster @Autowired constructor(private val applicationContext: Ap
 	@PostConstruct
 	fun wireEventListeners() {
 		eventHandlers = applicationContext.getBeansOfType(EventHandler::class)
+	}
+
+	@EventListener
+	fun handleContextRefresh(event: ContextRefreshedEvent) {
+		wireEventListeners()
 	}
 
 	/**
